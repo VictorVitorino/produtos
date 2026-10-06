@@ -30,69 +30,140 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
   function readPts(p){const d=p.getAttribute("d");if(!d)return innerPts[0];return d.slice(1,-1).split("L").map(s=>s.split(" ").map(Number))}
   inner.setAttribute("d",toD(innerPts[0]));place(0);return mp}
 
-/* ---------- capa ---------- */
-$("cvLogos").innerHTML=`${amLogo(42)}<span class="am-div" style="height:48px;background:rgba(255,255,255,.3)"></span>${dtsLogo(44)}`;
-$("cvLines").innerHTML=amLines(760,450,1);
-const cvMorph=MorphScene($("cvMorph"),{btnHost:$("cvStates"),states:[
-  {shape:"blob",big:"29",lab:"SERVIÇOS",sub:"sob medida · sobrepostos · sem IA",dots:29,btn:"Serviço"},
-  {shape:"hex",big:"24",lab:"PRODUTOS",sub:"escopo · método · ferramenta · preço",dots:24,btn:"Produto"},
-  {shape:"circle",big:"19",lab:"COM IA NO NÚCLEO",sub:"plataforma DTS · dados · recorrência",dots:24,ai:19,btn:"Plataforma"}]});
-ENTER["Capa"]=()=>cvMorph.play();
+/* ---------- capa · Particle System ---------- */
+(function(){const sec=slides.find(x=>x.dataset.t==="Capa"),root=$("ps"),cv=root.querySelector(".ps__cv"),title=root.querySelector(".ps__title");
+  $("cvLogos").innerHTML=`${amLogo(40)}<span class="am-div" style="height:46px;background:rgba(255,255,255,.3)"></span>${dtsLogo(42)}`;
+  const nOut=root.querySelector("[data-n]"),linksOut=root.querySelector("[data-links]"),fpsOut=root.querySelector("[data-fps]");
+  const W=1600,H=900,dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+  let ctx=cv.getContext("2d",{alpha:true});if(ctx)ctx.setTransform(dpr,0,0,dpr,0,0);
+  const P=[],pulses=[];let count=90,mode="repel",cursor=null,idle=0,lost=false,links=0,fpsAcc=0,fpsN=0,running=false,raf=0,last=0;
+  const SPEED=REDMO?.07:.28,LINK=()=>Math.min(130,70+3600/count),CUR=150;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const spawn=()=>{const hub=Math.random()<.07;return{x:rnd(0,W),y:rnd(0,H),vx:rnd(-1,1)*SPEED,vy:rnd(-1,1)*SPEED,r:hub?rnd(2.8,3.6):rnd(1.2,2.2),hub}};
+  const setCount=n=>{count=REDMO?Math.min(n,60):n;while(P.length<count)P.push(spawn());P.length=count;nOut.textContent=String(count)};
+  setCount(count);
+  cv.addEventListener("contextlost",ev=>{ev.preventDefault();lost=true});cv.addEventListener("contextrestored",()=>{ctx=cv.getContext("2d");if(ctx){ctx.setTransform(dpr,0,0,dpr,0,0);lost=false}});
+  const toLocal=ev=>{const r=cv.getBoundingClientRect(),sc=r.width/W;return{x:(ev.clientX-r.left)/sc,y:(ev.clientY-r.top)/sc}};
+  root.addEventListener("pointermove",ev=>{cursor=toLocal(ev);idle=0});root.addEventListener("pointerleave",()=>{cursor=null});
+  root.addEventListener("pointerdown",ev=>{if(ev.target.closest("button"))return;const c=toLocal(ev);pulses.push({x:c.x,y:c.y,r:0,a:1})});
+  root.querySelector("[data-pulse]").addEventListener("click",()=>pulses.push({x:W*.66,y:H*.5,r:0,a:1}));
+  root.querySelectorAll("[data-density]").forEach(b=>b.addEventListener("click",()=>{root.querySelectorAll("[data-density]").forEach(x=>x.classList.toggle("is-on",x===b));setCount(parseInt(b.dataset.density,10))}));
+  root.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{root.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("is-on",x===b));mode=b.dataset.mode}));
+  function frame(t){if(!running)return;const dt=Math.min(64,t-last);last=t;
+    if(ctx&&!lost){const k=dt/16.7,L=LINK(),L2=L*L;
+      for(let i=0;i<P.length;i++){const p=P[i];
+        if(cursor){const dx=p.x-cursor.x,dy=p.y-cursor.y,d2=dx*dx+dy*dy;if(d2<CUR*CUR&&d2>1){const d=Math.sqrt(d2),g=REDMO?.3:1;if(mode==="repel"){const f=(1-d/CUR)*.9*g*k;p.vx+=dx/d*f;p.vy+=dy/d*f}else{const f=((d-62)/CUR)*1.1*g*k,sw=(1-d/CUR)*.3*g*k;p.vx+=-dx/d*f-dy/d*sw;p.vy+=-dy/d*f+dx/d*sw}}}
+        for(let q=0;q<pulses.length;q++){const u=pulses[q],dx=p.x-u.x,dy=p.y-u.y,d=Math.sqrt(dx*dx+dy*dy);if(d>2&&Math.abs(d-u.r)<22){const f=(REDMO?.4:1.4)*k*u.a;p.vx+=dx/d*f;p.vy+=dy/d*f}}
+        p.vx*=.975;p.vy*=.975;const sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy),max=REDMO?1.2:3.2;if(sp>max){p.vx*=max/sp;p.vy*=max/sp}
+        if(sp<SPEED*.6){p.vx+=rnd(-.02,.02)*k;p.vy+=rnd(-.02,.02)*k}
+        p.x+=p.vx*k;p.y+=p.vy*k;if(p.x<0){p.x=0;p.vx=Math.abs(p.vx)}else if(p.x>W){p.x=W;p.vx=-Math.abs(p.vx)}if(p.y<0){p.y=0;p.vy=Math.abs(p.vy)}else if(p.y>H){p.y=H;p.vy=-Math.abs(p.vy)}}
+      for(let q=pulses.length-1;q>=0;q--){const u=pulses[q];u.r+=(REDMO?3:6)*k;u.a-=.018*k;if(u.a<=0)pulses.splice(q,1)}
+      idle+=dt;const cf=cursor?Math.max(0,Math.min(1,1-(idle-400)/600)):0;
+      ctx.clearRect(0,0,W,H);links=0;ctx.lineWidth=1;
+      for(let i=0;i<P.length;i++){const a=P[i];for(let j=i+1;j<P.length;j++){const b=P[j],dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;if(d2<L2){const al=(1-Math.sqrt(d2)/L)*.55;ctx.strokeStyle=`rgba(163,184,214,${al.toFixed(3)})`;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();links++}}}
+      if(cursor&&cf>0){for(let i=0;i<P.length;i++){const p=P[i],dx=p.x-cursor.x,dy=p.y-cursor.y,d=Math.sqrt(dx*dx+dy*dy);if(d<CUR){ctx.strokeStyle=`rgba(255,138,76,${((1-d/CUR)*.5*cf).toFixed(3)})`;ctx.beginPath();ctx.moveTo(cursor.x,cursor.y);ctx.lineTo(p.x,p.y);ctx.stroke()}}ctx.strokeStyle=`rgba(255,138,76,${(.3*cf).toFixed(3)})`;ctx.beginPath();ctx.arc(cursor.x,cursor.y,CUR,0,Math.PI*2);ctx.stroke()}
+      for(let q=0;q<pulses.length;q++){const u=pulses[q];ctx.strokeStyle=`rgba(255,255,255,${(u.a*.5).toFixed(3)})`;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(u.x,u.y,u.r,0,Math.PI*2);ctx.stroke();ctx.lineWidth=1}
+      for(let i=0;i<P.length;i++){const p=P[i];ctx.fillStyle=p.hub?"#FF8A4C":"#C9D6E8";if(p.hub){ctx.shadowColor="rgba(255,138,76,.9)";ctx.shadowBlur=10}ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}
+      fpsAcc+=dt;fpsN++;if(fpsN>=20){fpsOut.textContent=String(Math.round(1000/(fpsAcc/fpsN)));linksOut.textContent=String(links);fpsAcc=0;fpsN=0}}
+    raf=requestAnimationFrame(frame)}
+  function start(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(frame)}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  new MutationObserver(()=>{if(!sec.classList.contains("active"))stop()}).observe(sec,{attributes:true,attributeFilter:["class"]});
+  ENTER["Capa"]=()=>{start();title.style.transition="none";title.style.opacity=0;title.style.transform="translateY(calc(-54% + 10px))";void title.offsetWidth;title.style.transition=REDMO?"none":"opacity .7s cubic-bezier(.22,.61,.36,1) .15s,transform .7s cubic-bezier(.22,.61,.36,1) .15s";title.style.opacity=1;title.style.transform="translateY(-54%)"};
+  PRINT.push(()=>{title.style.opacity=1;title.style.transform="translateY(-54%)";if(!running){start();setTimeout(stop,400)}})})();
 
-/* ---------- resumo ---------- */
-(function(){const M=[["O que temos","29","serviços em 4 pilares, com sobreposições, nomes pouco claros e IA ausente","#122143",6],["O que mudar","13 → 6","serviços que se sobrepõem fundidos em 6 produtos; nomes alinhados ao mercado","#33556D",6],["O que retirar","2","IT Business Partner e IT M&amp;A Playbook deixam de ser vendidos isolados","#BC0404",6],["Melhorar com IA","15","produtos remodelados com IA no método; IA presente em todos os 24","#5E8AB4",3],["Criar com IA","4","AI Value &amp; Governance Office · AI-Native IT · PE Tech Value Radar · Legacy X-Ray","#F78C16",3]];
-  M.forEach(([k,v,d,c,go],i)=>{const b=H("button",{class:"card clk"+(i===4?" holo":""),"data-a":"stack","data-go":go,style:`--d:${4+i};--r:${(i-2)*2}deg;--sx:${(2-i)*30}px;text-align:left;border-top:5px solid ${c};padding:12px 14px`,title:"Ir para o detalhe"},$("moves"));
-    b.innerHTML=`<div class="eye" style="color:${c};margin-bottom:2px">${k}</div><div class="big" style="font-size:44px;color:${i===4?"#C96A05":"#002B49"}">${v}</div><p style="font-size:12px;margin-top:4px">${d}</p>`});
-  [["01/01/2027","CBS plena: ERP e fiscal precisam estar prontos","LC 214/2025"],["2027","fim da manutenção padrão do SAP ECC (extensível a 2030)","Baguete"],["50%","dos deals no Brasil com PE/VC em 2025","KPMG"],["50% até 2028","meta global A&amp;M de receita ligada a IA","Bloomberg"]].forEach(([v,l,s])=>{const d=H("div",{class:"kpi-t",style:"padding:10px 12px"},$("whyNow"));d.innerHTML=`<div class="v" style="font-size:26px">${v}</div><div class="l" style="font-size:11.5px">${l}</div><div class="s"><span class="ev">E · ${s}</span></div>`});
-  const sig=PRODUCTS.filter(p=>p.sig),nw=PRODUCTS.filter(p=>p.st==="new");
-  $("bets").innerHTML=`<div><div class="eye" style="color:#9DBBD9;margin-bottom:4px">★ A&amp;M Signature · proteger e escalar</div><div class="chips-row">${sig.map(p=>plink(p.code,"dk")).join("")}</div></div><div><div class="eye" style="color:var(--orange-l);margin-bottom:4px">Novos com IA · incubar e lançar</div><div class="chips-row">${nw.map(p=>plink(p.code,"new")).join("")}</div></div>`;
-  const parts=[["Abertura","Mercado, benchmark, raio-X",4],["Pilar 1","IT Advisory",8],["Pilar 2","Technology Transformation",12],["Pilar 3","Tech M&amp;A",16],["Pilar 4","Modernization",20],["Fechamento","Fábrica, roadmap, decisões",24]];
-  parts.forEach(([a,b,go])=>{const x=H("button",{class:"clk","data-go":go,style:"text-align:left;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:8px;background:#fff;padding:6px 10px"},$("agenda"));x.innerHTML=`<div style="font:800 13px var(--fh);color:var(--navy);text-transform:uppercase;letter-spacing:.03em">${a}</div><div class="small" style="font-size:10.5px">${b}</div>`})})();
+/* ---------- contexto · Shimmer / Holographic Sweep ---------- */
+(function(){const root=$("sh"),vals=[...root.querySelectorAll(".sh__val")],kpis=[...root.querySelectorAll("[data-kpi]")],rows=[...root.querySelectorAll("[data-w]")],badge=root.querySelector("[data-badge]"),btn=root.querySelector("[data-load]"),status=root.querySelector("[data-status]");
+  const fmt=(v,dec)=>v.toLocaleString("pt-BR",{minimumFractionDigits:dec,maximumFractionDigits:dec}),AUTO=REDMO?1400:2600;let loaded=false,timers=[],rafs=[],t0=0,tick=0,mode="periodic";
+  const clearAll=()=>{timers.forEach(clearTimeout);timers=[];rafs.forEach(cancelAnimationFrame);rafs=[];clearInterval(tick)};
+  const clock=()=>{const left=Math.max(0,AUTO-(performance.now()-t0));status.textContent="carregando em "+(left/1000).toFixed(1).replace(".",",")+" s…"};
+  const tween=(out,v,dec,dur)=>{const s0=performance.now();const st=t=>{const k=Math.min(1,(t-s0)/dur),e=k===1?1:1-Math.pow(2,-10*k);out.textContent=fmt(v*e,dec);if(k<1)rafs.push(requestAnimationFrame(st))};rafs.push(requestAnimationFrame(st))};
+  function load(){if(loaded)return;loaded=true;clearAll();const took=((performance.now()-t0)/1000).toFixed(1).replace(".",",");root.classList.add("is-loaded");btn.textContent="↻ Recarregar";status.textContent="conteúdo real · "+took+" s";
+    vals.forEach((el,i)=>timers.push(setTimeout(()=>el.classList.add("is-in"),120+i*45)));
+    rows.forEach((r,i)=>timers.push(setTimeout(()=>{r.querySelector(".sh__bar i").style.width=r.dataset.w+"%"},420+i*90)));
+    kpis.forEach((k,i)=>{const out=k.querySelector("[data-out]"),v=parseFloat(k.dataset.value),dec=parseInt(k.dataset.dec,10)||0;timers.push(setTimeout(()=>tween(out,v,dec,REDMO?1:900),300+i*120))})}
+  function reset(){clearAll();loaded=false;root.classList.remove("is-loaded");btn.textContent="Carregar dados";vals.forEach(el=>el.classList.remove("is-in"));
+    rows.forEach(r=>{const b=r.querySelector(".sh__bar i");b.style.transition="none";b.style.width="0";void b.offsetWidth;b.style.transition=""});
+    kpis.forEach(k=>{k.querySelector("[data-out]").textContent=fmt(0,parseInt(k.dataset.dec,10)||0)});t0=performance.now();clock();tick=setInterval(clock,100);timers.push(setTimeout(load,AUTO))}
+  btn.addEventListener("click",()=>loaded?reset():load());
+  const applyMode=()=>{badge.classList.toggle("is-periodic",mode==="periodic");root.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("is-on",b.dataset.mode===mode))};
+  root.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.mode;badge.classList.remove("is-once");applyMode()}));
+  badge.addEventListener("pointerenter",()=>{badge.classList.remove("is-periodic","is-once");void badge.offsetWidth;badge.classList.add("is-once")});
+  badge.addEventListener("animationend",ev=>{if(ev.target!==badge.querySelector(".sh__sweep")||!badge.classList.contains("is-once"))return;badge.classList.remove("is-once");applyMode()});
+  PILLARS.forEach(pl=>{const d=H("div",{class:"sh__p4"},$("shPillars"));d.innerHTML=`<div class="sh__slot"><b class="sh__val n">Pilar ${pl.n} · ${pl.official}</b><i class="sh__sk" style="width:80%"></i></div><div class="sh__slot"><span class="sh__val w"><em>Quando nos contratam</em>${pl.when}</span><i class="sh__sk"></i></div>`});
+  vals.push(...root.querySelectorAll("#shPillars .sh__val"));
+  applyMode();reset();clearAll();
+  ENTER["DTS hoje"]=reset;PRINT.push(()=>{clearAll();loaded=false;load()})})();
 
-/* ---------- one-page + spotlight ---------- */
+/* ---------- portfólio atual (AS-IS) + spotlight ---------- */
+(function(){const g=$("asGrid");PILLARS.forEach(pl=>{const col=H("div",{class:"op-col",id:"asc"+pl.n,"data-a":"up",style:`--d:${3+pl.n}`},g);
+  col.innerHTML=`<div class="op-hd"><div class="n">PILAR ${pl.n}</div><h3>${pl.official}</h3><p>${pl.def_as}</p><span class="cnt">${pl.was} serviços</span></div>`;
+  const list=H("div",{class:"op-list"},col);OLD.filter(o=>o.p===pl.n).forEach(o=>{const d=H("div",{class:"svc"},list);d.innerHTML=`<i></i><span>${o.n}</span>`})});
+  const st=PILLARS.map(pl=>({sel:"#asc"+pl.n,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.official}`,text:`<span class="sl"><b>O que fazemos</b>${pl.def_as}</span><span class="sl"><b>Serviços</b>${pl.was} no portfólio atual</span><span class="sl"><b>Quando nos contratam</b>${pl.when}</span>`}));
+  st.push({sel:"#asChain",btn:"Cadeia de valor",title:"Cadeia de valor A&M",text:`<span class="sl"><b>Onde o DTS atua</b>Na frente Tech & Digital da cadeia de valor da A&M, ao lado das demais áreas funcionais.</span><span class="sl"><b>Como se conecta</b>Apoia as práticas de Transformação, Turnaround, Estratégia & M&A e Data & IA com a dimensão de tecnologia.</span>`,capY:300});
+  const sp=Spotlight($("asHost"),st,$("asSeg"));segSync($("asSeg"));
+  ENTER["Portfólio atual"]=()=>{sp.set(-1);segSync($("asSeg"))};
+  STEP["Portfólio atual"]=d=>{if(d>0){if(sp.cur<st.length-1){sp.set(sp.cur+1);return true}sp.set(-1);return false}if(sp.cur>=0){sp.set(sp.cur-1);return true}return false}})();
+
+/* ---------- one-page TO-BE + spotlight ---------- */
 (function(){const g=$("opGrid");PILLARS.forEach(pl=>{const col=H("div",{class:"op-col",id:"opc"+pl.n,"data-a":"up",style:`--d:${3+pl.n}`},g);
   col.innerHTML=`<div class="op-hd"><div class="n">PILAR ${pl.n}</div><h3>${pl.name}</h3><p>${pl.short}</p><span class="cnt">${pl.was} → ${pl.now}</span></div>`;
   const list=H("div",{class:"op-list"},col);PRODUCTS.filter(p=>p.pillar===pl.n).forEach((p,k)=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}${p.st==="new"?" holo":""}`,title:"Abrir ficha: "+p.name,style:`--hd:${(k*.6).toFixed(1)}s`},list);
     a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★ SIGNATURE</span>':""}</span><span class="ds">${p.tagline}</span></span><span class="go">›</span>`})});
-  const st=PILLARS.map(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new").map(p=>p.name),sg=ps.filter(p=>p.sig).map(p=>p.name);
-    return{sel:"#opc"+pl.n,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`${pl.was} serviços → ${pl.now} produtos.${sg.length?` <b>Signature:</b> ${sg.join(", ")}.`:""} <b>Novo:</b> ${nw.join(", ")}.`}});
-  st.push({sel:"#opAI",btn:"Plataforma",title:"Plataforma DTS de IA & dados",text:"Ativos compartilhados por todos os produtos: diagnóstico, radar de gastos, benchmark, agentes e LLM seguro. É o que torna o serviço replicável.",capY:330});
+  const st=PILLARS.map(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg=ps.filter(p=>p.sig),ai=ps.filter(p=>p.st!=="keep").length;
+    return{sel:"#opc"+pl.n,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pl.was} serviços de hoje viram ${pl.now} produtos; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span>`}});
+  st.push({sel:"#opAI",btn:"Plataforma",title:"Plataforma de Dados e AI",text:`<span class="sl"><b>O que é</b>Ativos compartilhados por todos os produtos: diagnóstico padrão, radar de gastos, benchmark Brasil, biblioteca de agentes e LLM corporativo seguro.</span><span class="sl"><b>Por que importa</b>É o que torna o serviço replicável de um cliente para o outro e sustenta a receita recorrente.</span>`,capY:330});
   const sp=Spotlight($("opHost"),st,$("opSeg"));segSync($("opSeg"));
   ENTER["One-page · novo portfólio"]=()=>{sp.set(-1);segSync($("opSeg"))};
   STEP["One-page · novo portfólio"]=d=>{if(d>0){if(sp.cur<st.length-1){sp.set(sp.cur+1);return true}sp.set(-1);return false}if(sp.cur>=0){sp.set(sp.cur-1);return true}return false}})();
 
-/* ---------- forças de mercado ---------- */
-(function(){[["US$ 67,8 bi","mercado de TI no Brasil em 2025 (+18,5%); 10º do mundo","ABES/IDC mar/2026"],["US$ 3,4 bi","gasto com IA no Brasil em 2026 (+30%)","IDC 2026"],["1.581","transações de M&amp;A em 2025; 50% com PE/VC","KPMG mar/2026"],["17%","das empresas (10+ empregados) usam IA; 50% das grandes","Cetic.br 2025"]].forEach(([v,l,s],i)=>{const d=H("div",{class:"kpi-t","data-a":"up",style:`--d:${2+i};border-top:4px solid ${i%2?"#5E8AB4":"#122143"}`},$("mktKpis"));d.innerHTML=`<div class="v">${v}</div><div class="l">${l}</div><div class="s"><span class="ev">E · ${s}</span></div>`});
-  const F=[["spark","IA: uso amplo, escala rara","56% dos CEOs ainda sem retorno financeiro com IA; só ~25% das empresas escalam ≥40% dos pilotos.","56%","sem retorno com IA","PwC · Deloitte 2026",["1.7","2.6","1.2"]],
-   ["doc","Reforma Tributária + SAP ECC","CBS plena em 01/01/2027, dois regimes até 2033 e fim da manutenção padrão do ECC em 2027.","01/01/27","CBS plena","LC 214/2025 · Baguete",["2.2","2.4","2.3"]],
-   ["deal","Deals com private equity","PE/VC em metade dos deals; TI é o setor nº 1 (274 deals no 1S26); separações como a da Raízen até 2027.","50%","dos deals com PE/VC","KPMG 2025 · 1S26",["3.1","3.5","3.2"]],
-   ["coin","Custo de tecnologia sob escrutínio","TI cresce só 5,3% em 2026; VMware 8–15× mais caro; até 40% dos insumos de TI são importados.","+5,3%","crescimento de TI em 2026","ABES/IDC · Baguete · TI Inside",["1.5","4.3","4.2"]],
-   ["shield","Risco e regulação","Ataques à cadeia do Pix; CMN 5.274; marco de IA (PL 2338) para depois das eleições; ANPD virou agência.","R$ 800 mi","desviados no ataque à C&M","Finsiders · Legisweb · MobileTime",["4.5","1.7"]],
-   ["people","Talento e liderança","Metade das empresas sem talento para IA; M&A e reestruturações pedem liderança de tecnologia imediata.","53%","sem talento necessário para IA","KPMG Global Tech Report",["1.3","1.4","2.5"]]];
-  F.forEach(([ic,t,x,v,vl,src,ps],i)=>{const d=H("div",{class:"force","data-a":"up",style:`--d:${5+i}`},$("forces"));d.innerHTML=`<div class="ic">${ico(ic)}</div><div><h4>${t}</h4><p>${x}</p><div class="v">${v}<small>${vl}</small></div><div style="margin-top:4px"><span class="ev">E · ${src}</span></div><div class="fx-imp"><span class="hy">Implicação</span> ${ps.map(c=>plink(c,"sm")).join(" ")}</div></div>`})})();
+/* ---------- 50/50 · de serviços a produtos ---------- */
+const BAS={};
+(function(){const asis=$("hbAsis"),tobe=$("hbTobe");PILLARS.forEach(pl=>{const c1=H("div",{class:"op-col"},asis);c1.innerHTML=`<div class="op-hd"><div class="n">HOJE · PILAR ${pl.n}</div><h3>${pl.official}</h3><span class="cnt">${pl.was}</span></div>`;const l1=H("div",{class:"op-list"},c1);OLD.filter(o=>o.p===pl.n).forEach(o=>{H("div",{class:"svc",html:`<i></i><span>${o.n}</span>`},l1)});
+    const c2=H("div",{class:"op-col"},tobe);c2.innerHTML=`<div class="op-hd"><div class="n">PROPOSTA · PILAR ${pl.n}</div><h3>${pl.name}</h3><span class="cnt">${pl.now}</span></div>`;const l2=H("div",{class:"op-list"},c2);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}`,title:"Abrir ficha: "+p.name},l2);a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span></span>`})});
+  const M=[["O que temos","29","serviços em 4 pilares, com sobreposições e sem IA no método","#122143"],["O que mudar","13 → 6","serviços que se sobrepõem fundidos em 6 produtos","#33556D"],["O que retirar","2","IT Business Partner e IT M&amp;A Playbook deixam de ser vendidos isolados","#BC0404"],["Melhorar com IA","15","produtos remodelados com IA no método","#5E8AB4"],["Criar com IA","4","AI Value &amp; Governance Office · AI-Native IT · PE Tech Value Radar · Legacy X-Ray","#F78C16"]];
+  M.forEach(([k,v,d,c],i)=>{const b=H("div",{class:"card"+(i===4?" holo":""),"data-a":"stack",style:`--d:${6+i};--r:${(i-2)*2}deg;--sx:${(2-i)*30}px;border-top:5px solid ${c}`},$("moves"));b.innerHTML=`<div class="eye" style="color:${c};margin-bottom:2px">${k}</div><div class="big" style="color:${i===4?"#C96A05":"#002B49"}">${v}</div><p>${d}</p>`});
+  let lastOn="";const ba=BeforeAfter($("hb"),{rest:50,l:"HOJE · 29 SERVIÇOS",r:"PROPOSTA · 24 PRODUTOS",onMove:x=>{let k="";$("hbSeg").querySelectorAll("button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync($("hbSeg"))}}});BAS.hb=ba;
+  $("hbSeg").querySelectorAll("button").forEach(b=>b.onclick=()=>{ba.tween(+b.dataset.v,800)});
+  ENTER["De serviços a produtos"]=()=>{segSync($("hbSeg"));ba.demo();setTimeout(()=>segSync($("hbSeg")),2700)}})();
 
-/* ---------- benchmark · timeline ---------- */
+/* ---------- nomenclatura ---------- */
+(function(){PILLARS.forEach((pl,i)=>{const d=H("div",{class:"nm-p","data-a":"up",style:`--d:${3+i}`},$("nmPillars"));d.innerHTML=`<div class="a">${pl.official}</div><div class="ar">→</div><div class="b">${pl.to}${pl.to===pl.official?"<small>sem mudança</small>":""}</div>`});
+  NM_MARKET.forEach(([m,d,c],i)=>{const el=H(c?"a":"div",{class:"nm-i","data-a":"up",style:`--d:${8+i}`},$("nmRow"));if(c){el.href="#p="+PBY(c).id;el.dataset.pd=PBY(c).id}el.innerHTML=`<div class="m">${m}</div><div class="ar">→ DTS</div><div class="d">${c?c+" · ":""}${d}</div>`});
+  NM_PRODS.forEach(([a,c],i)=>{const p=PBY(c);const el=H("a",{class:"nm-x",href:"#p="+p.id,"data-pd":p.id,"data-a":"up",style:`--d:${3+i}`,title:"Abrir ficha: "+p.name},$("nmProds"));el.innerHTML=`<div class="a">${a}</div><div class="ar">→</div><div class="b">${p.code} ${p.name}</div>`})})();
+
+/* ---------- forças de mercado ---------- */
+(function(){const F=[["spark","IA: uso amplo, retorno raro","Quase todas as grandes empresas usam IA, mas poucas saem do piloto e provam resultado no caixa.","56%","dos CEOs ainda sem retorno financeiro com IA","PwC, 29ª CEO Survey · jan/2026","Vender valor medido e governança de IA, não estratégia genérica."],
+   ["doc","Reforma Tributária e fim do SAP ECC","Dois prazos com data marcada obrigam a mexer em ERP, fiscal e dados ao mesmo tempo.","01/01/27","CBS plena; manutenção padrão do SAP ECC termina em 2027","LC 214/2025 · Baguete","Produtos com prazo e preço fixos: prontidão e resgate de projetos."],
+   ["deal","Deals liderados por private equity","Menos transações, tickets maiores e fundos em metade dos deals; tecnologia é o setor mais negociado.","50%","das transações de 2025 com fundos de PE ou VC","KPMG, Fusões e Aquisições 2025 · mar/2026","Diligência rápida, Dia 1 garantido e sinergias que viram EBITDA."],
+   ["coin","Custo de tecnologia sob escrutínio","O orçamento de TI desacelera, licenças sobem e contratos em dólar pesam no caixa.","8–15×","alta de licenças VMware após a compra pela Broadcom","Baguete · ABES/IDC (TI +5,3% em 2026)","Otimização de gastos com economia certificada e radar contínuo."],
+   ["shield","Risco operacional e regulação","Ataques à cadeia do Pix e novas regras do Banco Central elevam a exigência sobre terceiros de TI.","R$ 800 mi","desviados no ataque à C&M Software (jul/2025)","Finsiders · Res. CMN 5.274/2025","Resiliência, recuperação e avaliação de risco de terceiros."],
+   ["people","Talento e liderança escassos","Metade das empresas não tem o talento necessário para IA; transações e reestruturações pedem liderança imediata.","53%","das empresas sem o talento necessário para IA","KPMG Global Tech Report 2026","Liderança interina e modelo operacional para a era dos agentes."]];
+  F.forEach(([ic,t,x,v,vl,src,imp],i)=>{const d=H("div",{class:"f2","data-a":"up",style:`--d:${4+i}`},$("forces"));d.innerHTML=`<div class="hd"><div class="ic">${ico(ic)}</div><h4>${t}</h4></div><div class="th">${x}</div><div class="v">${v}<small>${vl}</small></div><div class="src">Fonte: ${src}</div><div class="imp"><b>Para o DTS</b>${imp}</div>`})})();
+
+/* ---------- benchmark · timeline 2026 ---------- */
 (function(){const host=$("tlMarket");let tl=null;
-  const T4=[["Plataforma própria + agentes","Zora AI, agent OS, EY.ai, Workbench e Lilli, com NVIDIA, Microsoft, Google e laboratórios de IA.","E","A&amp;M não deve competir em plataforma: deve ser neutra e orquestradora."],["Preço por resultado e por ativo","McKinsey ~25% outcome-based; Deloitte vende agentes por assinatura; IBM ‘asset-based consulting’.","E","O DNA A&amp;M de honorário por resultado vira vantagem."],["Nomes de mercado consolidados","Technology Strategy & Transformation, CIO Advisory, Office of the CIO, Separation & Carve-out, Trusted AI.","E","Nomes DTS em inglês e alinhados ao mercado facilitam RFP e compras."],["White space do operador","CIO interino não encontrado nas Big Four; AlixPartners compra capacidade (Artium); A&M já tem A&M Assist e DiligenceGPT.","E","Produtizar o DNA de operador com IA, antes dos pares."]];
-  T4.forEach(([t,x,e,h],i)=>{const d=H("div",{class:"card","data-a":"up",style:`--d:${8+i};padding:10px 14px;border-top:4px solid ${i===3?"#F78C16":"#33556D"}`},$("benchTake"));d.innerHTML=`<h4>${t}</h4><p style="font-size:11.8px">${x} <span class="ev">E</span></p><p style="font-size:11.8px;margin-top:5px;color:#002B49"><b>→</b> ${h} <span class="hy">H</span></p>`});
-  [["Technology Strategy & Transformation · CIO Advisory","IT Advisory · Strategy, Leadership & Value",null],["Office of the CIO · IT Finance · TBM","Tech Spend Optimization & Spend Radar","1.5"],["Tech Due Diligence · Transaction Technology","AI-Powered Tech Due Diligence","3.1"],["Separation & Carve-out · TSA · Dia 1","Integration & Separation Blueprint","3.2"],["Trusted AI · Trustworthy AI · AI governance","AI Value & Governance Office","1.7"],["LegacyX · GenWizard · AWS Transform","Legacy X-Ray & AI Modernization","4.6"]].forEach(([m,d,c],i)=>{const el=H(c?"a":"div",{class:"nm-i","data-a":"up",style:`--d:${13+i}`},$("nmRow"));if(c){el.href="#p="+PBY(c).id;el.dataset.pd=PBY(c).id}el.innerHTML=`<div class="m">${m}</div><div class="ar">→ DTS</div><div class="d">${c?c+" · ":""}${d}</div>`});
-  ENTER["Benchmark · IA nas consultorias"]=()=>{if(!tl)tl=Timeline(host,TL_MARKET,{w:1508,y:232,cardY:44,x0:70,x1:1440,dwell:2300});tl.play()};
-  $("tlPlay").onclick=()=>tl&&tl.play();PRINT.push(()=>{if(!tl)tl=Timeline(host,TL_MARKET,{w:1508,y:232,cardY:44,x0:70,x1:1440,dwell:2300});tl.stopAuto();tl.set(TL_MARKET.length-1)})})();
+  const T4=[["Plataforma própria + agentes","Zora AI, agent OS, EY.ai, Workbench e Lilli, com NVIDIA, Microsoft, Google e laboratórios de IA.","A A&M não precisa competir em plataforma: pode ser neutra e orquestradora."],["Preço por resultado e por ativo","McKinsey cobra ~25% por resultado; Deloitte vende agentes por assinatura; IBM fala em consultoria baseada em ativos.","O DNA de honorário por resultado da A&M vira vantagem."],["Diligência e PE sob pressão","DD com agentes por ~US$ 50 mil; laboratórios de IA entram nas investidas dos fundos (Ode); Bain replica o software do alvo.","O valor migra para o que vem depois do signing: Dia 1, TSA e sinergias."],["Pares compram capacidade","AlixPartners adquire a Artium; Falconi investe R$ 100 mi; CI&T monetiza IA pela plataforma Flow.","Produtizar o DNA de operador com IA, antes dos pares."]];
+  T4.forEach(([t,x,h],i)=>{const d=H("div",{class:"card","data-a":"up",style:`--d:${8+i};padding:10px 14px;border-top:4px solid ${i===3?"#F78C16":"#33556D"}`},$("benchTake"));d.innerHTML=`<h4>${t}</h4><p style="font-size:11.8px">${x}</p><p style="font-size:11.8px;margin-top:5px;color:#002B49"><b>→</b> ${h}</p>`});
+  const mk=()=>{if(!tl)tl=Timeline(host,TL_2026,{w:host.offsetWidth||1060,y:246,cardY:30,x0:60,x1:(host.offsetWidth||1060)-60,dwell:2400});return tl};
+  ENTER["Benchmark · IA nas consultorias"]=()=>mk().play();
+  $("tlPlay").onclick=()=>mk().play();PRINT.push(()=>{const t=mk();t.stopAuto();t.set(2)})})();
 
 /* ---------- raio-X ---------- */
-(function(){const svg=$("rxChart"),L=70,Rr=910,Tp=16,B=556,x=v=>L+(v-1.8)/(5-1.8)*(Rr-L),y=v=>B-(v-1.8)/(5-1.8)*(B-Tp);const mid=3.3;
+(function(){const svg=$("rxChart"),L=70,Rr=910,Tp=16,B=546,x=v=>L+(v-1.8)/(5-1.8)*(Rr-L),y=v=>B-(v-1.8)/(5-1.8)*(B-Tp);const mid=3.3;
   const q=[[x(mid),Tp,Rr-x(mid),y(mid)-Tp,"#FEF1E2","ESCALAR · NÚCLEO A&M",Rr-12,Tp+20,"end"],[L,Tp,x(mid)-L,y(mid)-Tp,"#EEF3F8","DEFENDER E PRODUTIZAR",L+12,Tp+20,"start"],[x(mid),y(mid),Rr-x(mid),B-y(mid),"#EEF3F8","DIFERENCIAR COM IA OU PARCERIA",Rr-12,B-12,"end"],[L,y(mid),x(mid)-L,B-y(mid),"#F4F5F7","CONSOLIDAR OU RETIRAR",L+12,B-12,"start"]];
   q.forEach(([a,b,w,h,f,t,tx,ty,an])=>{S("rect",{x:a,y:b,width:w,height:h,fill:f},svg);T(svg,tx,ty,t,{"text-anchor":an,fill:"#6B7B8C",style:"font:800 11px var(--fb);letter-spacing:.12em"})});
   S("line",{x1:L,y1:B,x2:Rr,y2:B,stroke:"#98A6B3","stroke-width":1.5},svg);S("line",{x1:L,y1:Tp,x2:L,y2:B,stroke:"#98A6B3","stroke-width":1.5},svg);
   for(let v=2;v<=5;v++){T(svg,x(v),B+18,String(v),{"text-anchor":"middle",fill:"#98A6B3",style:"font:600 11px var(--fb)"});T(svg,L-10,y(v)+4,String(v),{"text-anchor":"end",fill:"#98A6B3",style:"font:600 11px var(--fb)"})}
-  T(svg,(L+Rr)/2,B+42,"ATRATIVIDADE DE MERCADO · BRASIL 2026–27 →",{"text-anchor":"middle",fill:"#002B49",style:"font:800 11.5px var(--fb);letter-spacing:.12em"});
-  const yl=T(svg,22,(Tp+B)/2,"DIREITO DE VENCER · A&M →",{"text-anchor":"middle",fill:"#002B49",style:"font:800 11.5px var(--fb);letter-spacing:.12em"});yl.setAttribute("transform",`rotate(-90 22 ${(Tp+B)/2})`);
+  T(svg,(L+Rr)/2,B+42,"ATRATIVIDADE DE MERCADO · BRASIL 2026–27  →",{"text-anchor":"middle",fill:"#002B49",style:"font:800 11.5px var(--fb);letter-spacing:.12em"});
+  const yl=T(svg,22,(Tp+B)/2,"DIREITO DE VENCER DA A&M  →",{"text-anchor":"middle",fill:"#002B49",style:"font:800 11.5px var(--fb);letter-spacing:.12em"});yl.setAttribute("transform",`rotate(-90 22 ${(Tp+B)/2})`);
   const DC={keep:["#33556D","#33556D","#fff"],ai:["#5E8AB4","#5E8AB4","#fff"],merge:["#fff","#8FA6BA","#35516A"],cut:["#fff","#BC0404","#BC0404"]};const DN={keep:"Manter",ai:"Aprimorar com IA",merge:"Fundir",cut:"Retirar"};
-  const nodes=[];NEWPOS.forEach(n=>{const p=PBY(n.c),gg=S("g",{class:"bubble","data-p":p.pillar},svg);S("circle",{cx:x(n.x),cy:y(n.y),r:19,fill:"rgba(247,140,22,.12)",stroke:"#F78C16","stroke-width":2,"stroke-dasharray":"4 3"},gg);T(gg,x(n.x),y(n.y)+4,n.c,{"text-anchor":"middle",fill:"#B35F00",style:"font:800 11px var(--fb)"});tip(gg,`★ Novo · ${p.code} ${p.name}`,strip(p.tagline));gg.style.cursor="pointer";gg.addEventListener("click",()=>openPD(p.id));nodes.push(gg)});
-  OLD.forEach(o=>{const [f,s,tc]=DC[o.d],gg=S("g",{class:"bubble","data-p":o.p,"data-a":"pop",style:`--d:${2+(o.p-1)*2}`},svg);S("circle",{cx:x(o.x),cy:y(o.y),r:17,fill:f,stroke:s,"stroke-width":o.d==="merge"?2:2.2,"stroke-dasharray":o.d==="merge"?"4 3":"none"},gg);T(gg,x(o.x),y(o.y)+4,o.id.toUpperCase(),{"text-anchor":"middle",fill:tc,style:"font:800 10.5px var(--fb)"});
-    const dest=PBY(o.to);tip(gg,`${o.id.toUpperCase()} · ${o.n}`,`${DN[o.d]} → ${dest.code} ${dest.name}. ${o.w}`);gg.style.cursor="pointer";gg.addEventListener("click",()=>openPD(dest.id));nodes.push(gg)});
+  const line=(k,v)=>`<span class="tl"><b>${k}</b>${v}</span>`;
+  const nodes=[];NEWPOS.forEach(n=>{const p=PBY(n.c),w=S("g",{"data-a":"pop",style:`--d:${2+(p.pillar-1)*2}`},svg),gg=S("g",{class:"bubble in","data-p":p.pillar},w);S("circle",{cx:x(n.x),cy:y(n.y),r:19,fill:"rgba(247,140,22,.12)",stroke:"#F78C16","stroke-width":2,"stroke-dasharray":"4 3"},gg);T(gg,x(n.x),y(n.y)+4,n.c,{"text-anchor":"middle",fill:"#B35F00",style:"font:800 11px var(--fb)"});gg.setAttribute("data-tv",`★ Novo · ${p.code} ${p.name}`);gg.setAttribute("data-th",line("Decisão","Criar com IA")+line("Pilar",PILLARS[p.pillar-1].name)+line("Por quê",strip(p.tagline)));gg.addEventListener("click",()=>openPD(p.id));nodes.push(gg)});
+  OLD.forEach(o=>{const [f,s,tc]=DC[o.d],w=S("g",{"data-a":"pop",style:`--d:${2+(o.p-1)*2}`},svg),gg=S("g",{class:"bubble in","data-p":o.p},w);S("circle",{cx:x(o.x),cy:y(o.y),r:17,fill:f,stroke:s,"stroke-width":o.d==="merge"?2:2.2,"stroke-dasharray":o.d==="merge"?"4 3":"none"},gg);T(gg,x(o.x),y(o.y)+4,o.id.toUpperCase(),{"text-anchor":"middle",fill:tc,style:"font:800 10.5px var(--fb)"});
+    const dest=PBY(o.to);gg.setAttribute("data-tv",`${o.id.toUpperCase()} · ${o.n}`);gg.setAttribute("data-th",line("Decisão",DN[o.d])+line("Destino",`${dest.code} ${dest.name}`)+line("Por quê",o.w));gg.addEventListener("click",()=>openPD(dest.id));nodes.push(gg)});
   const list=$("rxList");PILLARS.forEach(pl=>{H("div",{class:"xg",style:"padding:6px 0 3px;font:800 10.5px var(--fb);letter-spacing:.12em;color:#5E8AB4;text-transform:uppercase"},list,`Pilar ${pl.n} · ${pl.name}`);
-    OLD.filter(o=>o.p===pl.n).forEach(o=>{const dest=PBY(o.to);const r=H("div",{class:"rx-row","data-p":pl.n},list);r.innerHTML=`<b>${o.id.toUpperCase()}</b><span class="nm" title="${o.n}">${o.n}</span><span class="st ${o.d}" style="font-size:8.5px;padding:3px 6px">${DN[o.d]}</span><a href="#p=${dest.id}" data-pd="${dest.id}" class="to">→ ${dest.code}</a>`;tip(r,o.n,o.w)})});
+    OLD.filter(o=>o.p===pl.n).forEach(o=>{const dest=PBY(o.to);const r=H("div",{class:"rx-row","data-p":pl.n},list);r.innerHTML=`<b>${o.id.toUpperCase()}</b><span class="nm" title="${o.n}">${o.n}</span><span class="st ${o.d}" style="font-size:8.5px;padding:3px 6px">${DN[o.d]}</span><a href="#p=${dest.id}" data-pd="${dest.id}" class="to">→ ${dest.code}</a>`;r.setAttribute("data-tv",o.n);r.setAttribute("data-th",line("Decisão",DN[o.d])+line("Destino",`${dest.code} ${dest.name}`)+line("Por quê",o.w))})});
   const seg=$("rxSeg");["Todos","P1","P2","P3","P4"].forEach((t,k)=>{const b=H("button",{class:k?"":"on"},seg,t);b.onclick=()=>{seg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(seg);nodes.forEach(n=>n.style.opacity=!k||+n.dataset.p===k?1:.12);list.querySelectorAll(".rx-row").forEach(r=>r.style.opacity=!k||+r.dataset.p===k?1:.3)}});
   ENTER["Raio-X do portfólio atual"]=()=>segSync(seg)})();
 
@@ -107,7 +178,7 @@ ENTER["Capa"]=()=>cvMorph.play();
 /* ---------- capas de pilar ---------- */
 const PCM={};
 document.querySelectorAll(".pcover").forEach(sec=>{const n=+sec.dataset.pillar,pl=PILLARS[n-1],ps=PRODUCTS.filter(p=>p.pillar===n),k=ps.filter(p=>p.st!=="keep").length,nw=ps.filter(p=>p.st==="new"),sg=ps.filter(p=>p.sig);
-  sec.innerHTML=`<div class="pillar-n">0${n}</div><div class="pc-lines">${amLines(640,380,1)}</div>
+  sec.innerHTML=`<div class="pillar-n">0${n}</div>
   <div style="position:absolute;left:84px;top:62px;right:760px;z-index:2">
     <div class="cover-wm" data-a="fade">${amLogo(34)}<span class="am-div" style="height:40px;background:rgba(255,255,255,.3)"></span>${dtsLogo(36)}</div>
     <div class="eye" data-a="fade" style="--d:2;color:var(--orange);margin-top:70px;font-size:12px">Pilar 0${n} · ${pl.short}</div>
@@ -174,7 +245,7 @@ document.querySelectorAll(".ws").forEach(h=>{const w=WS[h.dataset.pillar];h.inne
 (function(){const st=[["2026","Alíquota-teste de 1% (CBS 0,9% + IBS 0,1%)"],["01/01/2027","CBS plena; PIS/Cofins extintos"],["2027","Fim da manutenção padrão do SAP ECC (extensível a 2030)"],["2029–32","ICMS/ISS caem 10 p.p. ao ano"],["2033","ICMS e ISS extintos"]];const h=$("p2time");h.innerHTML=`<div class="rt">${st.map(([d,t],i)=>`<div class="rt-i${i===1?" hot":""}"><i></i><b>${d}</b><span>${t}</span></div>`).join("")}</div>`})();
 
 /* ---------- before / after por pilar ---------- */
-const BAS={};
+
 document.querySelectorAll(".bap").forEach(host=>{const n=+host.dataset.pillar,pl=PILLARS[n-1],ps=PRODUCTS.filter(p=>p.pillar===n);
   const rows=ps.map(p=>({p,olds:OLD.filter(o=>o.to===p.code)}));const out=OLD.filter(o=>o.p===n&&!ps.some(p=>p.code===o.to));const R=rows.length+out.length;
   const DN={keep:"Manter",ai:"Remodelar",merge:"Fundir",cut:"Retirar"};
@@ -202,7 +273,7 @@ document.querySelectorAll(".bap").forEach(host=>{const n=+host.dataset.pillar,pl
   let lastOn="";const ba=BeforeAfter(host.querySelector(".ba"),{rest:38.5,onMove:x=>{let k="";host.querySelectorAll(".ba-seg button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync(host.querySelector(".ba-seg"))}}});BAS[n]=ba;
   const sg=host.querySelector(".ba-seg");sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{ba.tween(+b.dataset.v,800);sg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(sg)});
   ENTER[host.closest(".slide").dataset.t]=()=>{segSync(sg);ba.demo();setTimeout(()=>segSync(sg),2700)}});
-PRINT.push(()=>Object.values(BAS).forEach(b=>b.set(38.5)));
+PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?50:38.5)));
 function pillarNotes(n){return{1:["3 ofertas de liderança viram 1 (Interim & Embedded)","Tax + incentivos viram 1 produto com A&M Tax","Resiliência migra para o Pilar 4","Novo: AI Value & Governance Office"],
  2:["TMO + Modelo de Implantação viram o Predictive Transformation Office","ERP Readiness incorpora a Reforma Tributária","IT Business Partner sai (vai para 1.3)","Novo: AI-Native IT Productivity"],
  3:["8 fases viram 4 produtos + 1 assinatura","DD buy + sell = 1 produto, 3 níveis","IMO + SMO = 1 escritório","Playbook vira motor do PE Tech Value Radar"],

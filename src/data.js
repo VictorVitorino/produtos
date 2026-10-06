@@ -6,17 +6,25 @@ const E=t=>`<span class="ev">${t?"E · "+t:"Evidência"}</span>`;
 const Hy=t=>`<span class="hy">${t||"Hipótese"}</span>`;
 
 const PILLARS=[
-  {n:1,name:"IT Advisory",to:"IT Advisory · Strategy, Leadership & Value",short:"Estratégia, liderança e valor de tecnologia",
+  {n:1,name:"IT Advisory",official:"IT Advisory",to:"IT Advisory · Strategy, Leadership & Value",short:"Estratégia, liderança e valor de tecnologia",
    def:"Apoiamos líderes nas decisões de tecnologia e IA que movem o resultado: diagnóstico, estratégia investível, liderança interina, modelo operacional e custo.",
+   def_as:"Apoiamos líderes na tomada de decisões estratégicas por meio de soluções de TI que integram diagnóstico, transformação e governança, acelerando resultados, mitigando riscos e gerando valor.",
+   when:"Empresas que enfrentam desafios na transformação da área de TI, custos elevados com tecnologia ou necessidade de redefinir sua direção tecnológica.",
    was:10,now:7,nnew:1},
-  {n:2,name:"Technology Transformation",to:"Technology Transformation",short:"Execução de transformações complexas",
+  {n:2,name:"Technology Transformation",official:"Technology Transformation",to:"Technology Transformation",short:"Execução de transformações complexas",
    def:"Garantimos que programas críticos de tecnologia entreguem: escolha de fornecedores, ERP e Reforma Tributária, governança preditiva, resgate de projetos e adoção.",
+   def_as:"Apoiamos na execução de projetos estratégicos complexos, garantindo implementações bem-sucedidas e alinhamento entre tecnologia e objetivos de negócio.",
+   when:"Empresas que executam projetos estratégicos e transformacionais de TI, com alto risco e impacto para o negócio.",
    was:7,now:6,nnew:1},
-  {n:3,name:"Tech M&A",to:"Tech M&A & Value Creation",short:"Tecnologia em todo o ciclo do deal",
+  {n:3,name:"Tech M&A",official:"Technology M&A Advisory & Transformation",to:"Tech M&A & Value Creation",short:"Tecnologia em todo o ciclo do deal",
    def:"Protegemos e criamos valor de tecnologia do signing à saída: due diligence com IA, Dia 1, integração e separação, sinergias e monitoramento de portfólio.",
+   def_as:"Oferecemos suporte estratégico e especializado em todo o ciclo de M&A, com foco em tecnologia, garantindo excelência na execução e aproveitamento de sinergias para maximizar o valor da transação.",
+   when:"Fundos de investimento e empresas em processos de aquisição ou venda, da definição da estratégia à execução da transição.",
    was:8,now:5,nnew:1},
-  {n:4,name:"Modernization",to:"Modernization & AI-Ready Technology",short:"Arquitetura, legado, infraestrutura e resiliência",
+  {n:4,name:"Modernization",official:"Technological Modernization & Digital Evolution",to:"Modernization & AI-Ready Technology",short:"Arquitetura, legado, infraestrutura e resiliência",
    def:"Modernizamos arquitetura, aplicações e infraestrutura para a era da IA, com custo sob controle, migrações garantidas e operação resiliente.",
+   def_as:"Entregamos soluções em arquitetura de TI e governança, modernizando sistemas e infraestruturas para garantir alinhamento estratégico e sustentabilidade a longo prazo.",
+   when:"Empresas que precisam avaliar e modernizar suas arquiteturas e infraestruturas de TI, otimizando custos e aumentando a eficiência operacional.",
    was:4,now:6,nnew:1}
 ];
 
@@ -461,6 +469,21 @@ const TL_MARKET=[
  {d:"Ago 2026",s:"AlixPartners",t:"AlixPartners compra a Artium (engenharia agêntica)",x:"O par mais comparável à A&M compra capacidade de IA pronta: 80+ pessoas, parceira de OpenAI e Anthropic.",src:"AlixPartners, 04/08/2026",tag:"Par direto"},
  {d:"Set 2026",s:"Falconi · CI&T",t:"Consultorias brasileiras viram ‘AI-native’",x:"Falconi investe R$ 100 mi em IA (80% dos projetos com agentes); CI&T monetiza IA pela plataforma Flow.",src:"Jornal do Comércio set/2026; IT Forum 2026",tag:"Brasil"}
 ];
+
+/* ---------- TIMELINE · 2026, IA nas consultorias (benchmark) ---------- */
+const TL_2026=[
+ {d:"Jan 2026",s:"McKinsey",t:"McKinsey opera com 25 mil agentes de IA",x:"Cerca de 25 mil agentes trabalham ao lado de ~40 mil pessoas; perto de 25% dos honorários globais já são cobrados por resultado.",src:"Business Insider / HBR, jan/2026; Yahoo Finance, nov/2025",tag:"Estratégia"},
+ {d:"Fev 2026",s:"Frontier Alliance",t:"OpenAI reúne McKinsey, BCG, Accenture e Capgemini",x:"Aliança para levar agentes a clientes: estratégia desenha o modelo operacional, integradores implementam.",src:"Fortune, 23/02/2026",tag:"Ecossistema"},
+ {d:"Mai 2026",s:"A&M AI Board",t:"Alvarez & Marsal cria o Global AI Board",x:"A firma global anuncia o conselho de IA e, segundo a Bloomberg, mira 50% da receita vinda de trabalho com IA até 2028, com até 200 contratações. Já usa A&M Assist e DiligenceGPT.",src:"A&M press release, 05/05/2026; Bloomberg, 04/05/2026",tag:"Alvarez & Marsal"},
+ {d:"Jun 2026",s:"PwC × ToltIQ",t:"Due diligence com IA vira disputa por exclusividade",x:"PwC passa a ser a única firma de serviços profissionais da ToltIQ, plataforma de diligência com IA; já vendia a clientes a ‘Harvey, powered by PwC’.",src:"PwC US, jun/2026; PwC Global, jul/2025",tag:"M&A"},
+ {d:"Jul 2026",s:"Ode · Bain",t:"Laboratórios de IA entram no canal de private equity",x:"Ode with Anthropic (Blackstone, Hellman & Friedman) coloca engenheiros dentro das investidas; a Bain replica o software do alvo com Claude Code durante a diligência.",src:"BusinessWire, jul/2026; Financial Times, jul/2026",tag:"Private equity"},
+ {d:"Ago 2026",s:"AlixPartners",t:"AlixPartners compra a Artium",x:"O par mais comparável à A&M adquire uma consultoria de engenharia agêntica com mais de 80 pessoas, parceira de OpenAI e Anthropic.",src:"AlixPartners, 04/08/2026",tag:"Par direto"},
+ {d:"Set 2026",s:"Falconi · CI&T",t:"Consultorias brasileiras viram ‘AI-native’",x:"Falconi investe R$ 100 milhões em IA, com 80% dos projetos usando agentes; a CI&T monetiza IA pela plataforma Flow.",src:"Jornal do Comércio, set/2026; IT Forum, 2026",tag:"Brasil"}
+];
+
+/* ---------- NOMENCLATURA · possível configuração ---------- */
+const NM_MARKET=[["Technology Strategy & Transformation · CIO Advisory","IT Advisory · Strategy, Leadership & Value",null],["Office of the CIO · IT Finance · TBM","Tech Spend Optimization & Spend Radar","1.5"],["Tech Due Diligence · Transaction Technology","AI-Powered Tech Due Diligence","3.1"],["Separation & Carve-out · TSA · Dia 1","Integration & Separation Blueprint","3.2"],["Trusted AI · Trustworthy AI · AI governance","AI Value & Governance Office","1.7"],["LegacyX · GenWizard · AWS Transform","Legacy X-Ray & AI Modernization","4.6"]];
+const NM_PRODS=[["Tech Maturity & Value Assessment","1.1"],["Digital Strategy & Roadmapping","1.2"],["Interim CIO/CTO + Embedded Tech Leadership + C-Level Enablement","1.3"],["Strategic Tech Tax + Innovation Tax Incentives","1.6"],["ERP Readiness & Gap Analysis","2.2"],["TMO + Modelo de Implantação e Governança","2.3"],["IT Due Diligence (Buy Side) + (Sell Side)","3.1"],["IT Integration MO + IT Separation MO","3.3"],["Strategy Architecture","4.1"],["Strategy Application","4.2"],["Infrastructure Management","4.3"],["Complex Migrations Support","4.4"]];
 
 /* ---------- ROADMAP de lançamento (closing) ---------- */
 const TL_LAUNCH=[

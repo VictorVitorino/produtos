@@ -8,21 +8,22 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 
 | Arquivo | O que é |
 |---|---|
-| `DTS_Portfolio_Estrategico_2027.html` | Apresentação interativa: 26 slides + 24 fichas de produto em um único arquivo. Abra no navegador. |
-| `DTS_Portfolio_Estrategico_2027.pdf` | Versão estática para envio: 50 páginas (slides + fichas). |
+| `DTS_Portfolio_Estrategico_2027.html` | Apresentação interativa: 29 slides + 24 fichas de produto em um único arquivo. Abra no navegador. |
+| `DTS_Portfolio_Estrategico_2027.pdf` | Versão estática para envio: 53 páginas (slides + fichas). |
 | `pesquisa/` | Os 4 relatórios de pesquisa completos, com URLs, datas e marcação evidência × hipótese. |
 | `src/` | Fontes da apresentação: estilos, motor, dados dos produtos e slides. |
 | `build.py` | Gera o HTML único a partir de `src/`, com os logos embutidos. |
 
 ## Roteiro da apresentação
 
-1. **Abertura:** capa, resumo executivo, one-page do novo portfólio, seis forças de mercado, benchmark de IA nas consultorias (timeline), raio-X dos 29 serviços e três caminhos estratégicos.
-2. **Pilares 1 a 4**, cada um com quatro telas:
+1. **Abertura (7 telas):** capa com campo de partículas; contexto do DTS (quem somos, 4 pilares, 29 serviços); portfólio atual com spotlight por pilar; seis forças do mercado brasileiro; benchmark de IA nas consultorias (linha do tempo de 2026); raio-X dos 29 serviços; três caminhos estratégicos.
+2. **Novo portfólio (3 telas):** antes/depois de serviços para produtos; one-page executiva do novo portfólio; possível configuração de nomes.
+3. **Pilares 1 a 4**, cada um com quatro telas:
    - capa;
    - contexto: compradores, gatilhos de compra e jornada comercial;
    - mercado: o nome que cada concorrente dá à oferta, o que faz com IA, a sobreposição com o DTS e o posicionamento proposto;
    - produtos: antes e depois.
-3. **Fechamento:** fábrica de produtos (como produtizar), roadmap de lançamento e decisões para o comitê, além do anexo de fontes.
+4. **Fechamento:** fábrica de produtos (como produtizar), roadmap de lançamento e decisões para o comitê, além do anexo de fontes.
 
 ## Novo portfólio · resumo
 
@@ -54,17 +55,18 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 - O link direto também funciona, por exemplo `DTS_Portfolio_Estrategico_2027.html#p=ai-value-governance-office`.
 
 **Efeitos de apresentação:**
-- **Spotlight / Focus:** one-page; a tecla `→` percorre os pilares.
-- **Morphing Shapes:** capa e capas de pilar.
-- **Shimmer / Holographic Sweep:** logo da A&M e produtos novos.
-- **Before / After Slider:** telas de produtos.
+- **Particle System:** capa (densidade, cursor repelir/atrair, pulso).
+- **Shimmer / Holographic Sweep:** contexto do DTS (painel que carrega e selo DTS com reflexo) e produtos novos.
+- **Spotlight / Focus:** portfólio atual e one-page; a tecla `→` percorre os pilares.
+- **Morphing Shapes:** capas de pilar.
+- **Before / After Slider:** de serviços a produtos e telas de produtos por pilar.
 - **Card Stack:** fábrica de produtos.
-- **Timeline Motion:** benchmark e roadmap.
+- **Timeline Motion:** benchmark 2026 e roadmap.
 
-## Evidência × hipótese
+## Fonte × proposta DTS
 
-- **EVIDÊNCIA:** dado público, com fonte e data.
-- **HIPÓTESE:** inferência ou proposta do DTS, a validar.
+- **Fonte:** dado público, com fonte e data (indicada no próprio slide e no rodapé).
+- **Proposta DTS:** inferência ou proposta nossa, a validar com os sócios.
 
 São hipóteses:
 - os escores do raio-X;

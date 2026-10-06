@@ -25,7 +25,7 @@ html = f"""<!doctype html>
 <title>DTS · Portfólio Estratégico 2027</title>
 <meta name="description" content="Alvarez &amp; Marsal · Digital &amp; Technology Services: revisão estratégica do portfólio de produtos DTS com pesquisa de mercado, benchmark e novos produtos com IA.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{{--am-logo:url({am})}}
 {css}
