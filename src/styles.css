@@ -189,12 +189,12 @@ svg text{font-family:var(--fb)}
 /* ---------- chapter card ---------- */
 #chap{position:absolute;inset:0;z-index:85;display:none;background:radial-gradient(1200px 800px at 70% 30%,#1F3263 0%,#122143 40%,#0E1C39 85%);color:#fff;overflow:hidden;cursor:pointer}
 #chap.on{display:block}
-#chap .n{position:absolute;right:90px;top:120px;font:800 419px/.8 var(--fh);color:rgba(255,255,255,.06);letter-spacing:-.04em}
-#chap .ey{position:absolute;left:120px;top:330px;font:700 15px var(--fb);letter-spacing:.3em;color:var(--orange)}
-#chap h1{position:absolute;left:112px;top:360px;font:800 120px/1 var(--fh);letter-spacing:-.01em}
-#chap p{position:absolute;left:120px;top:500px;font:400 23px/1.4 var(--fb);color:#C8DBEB;max-width:900px}
-#chap .ln{position:absolute;left:120px;top:590px;height:4px;width:0;background:linear-gradient(90deg,var(--orange),var(--blue))}
-#chap .sk{position:absolute;right:40px;bottom:30px;font:600 11px var(--fb);color:#9DB7CE;letter-spacing:.1em}
+
+
+
+
+
+
 
 /* ---------- wipe ---------- */
 #wipe{position:absolute;inset:0;z-index:90;pointer-events:none;overflow:hidden;visibility:hidden}
@@ -938,3 +938,31 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 .ba.hb .ba-asis .svc{padding:5px 8px;font-size:11.3px}
 .ba.hb .ba-asis .op-list{gap:4px}
 .ba.hb .op-when{font-size:10.6px;line-height:1.3;padding:7px 9px}
+
+/* ===================== V4 · 20 slides ===================== */
+/* capítulo do pilar */
+#chap{background:radial-gradient(1100px 700px at 78% 28%,#1F3263 0%,#122143 40%,#002B49 75%);color:#fff;cursor:pointer}
+#chap::before{content:"";position:absolute;inset:-25%;pointer-events:none;background:radial-gradient(640px 420px at 28% 32%,rgba(94,138,180,.26),transparent 60%),radial-gradient(760px 520px at 76% 72%,rgba(247,140,22,.10),transparent 62%);animation:aurora 22s ease-in-out infinite alternate}
+#chap .chap-l{position:absolute;left:84px;top:62px;right:760px;z-index:2}
+#chap .pc-morph{position:absolute;right:60px;top:100px;width:640px;height:640px}
+#chap .pc-states{position:absolute;right:150px;bottom:60px;display:flex;gap:10px;z-index:3}
+#chap .chap-skip{position:absolute;left:84px;bottom:34px;font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DB7CE;animation:aF 1s 1.4s both}
+/* abas na faixa */
+.sr-band .bseg{margin-left:auto;display:flex;gap:6px;text-transform:none;letter-spacing:0}
+.sr-band .bseg button{height:30px;padding:0 14px;border-radius:99px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#DDE6F0;font:700 12px var(--fb);white-space:nowrap;transition:background .25s,color .25s}
+.sr-band .bseg button:hover{border-color:#fff}
+.sr-band .bseg button.on{background:#fff;color:#122143;border-color:#fff}
+.body.pane:not(.on){display:none!important}
+.body.pane.on{animation:aF .35s both}
+.pane-print{display:none}
+@media print{.pane-print{display:block!important}}
+/* one-page: proposta de valor | nome de hoje */
+.prod .ds .v2,.op-hd p .v2{display:none}
+.op-grid.org .prod .ds .v1,.op-grid.org .op-hd p .v1{display:none}
+.op-grid.org .prod .ds .v2,.op-grid.org .op-hd p .v2{display:inline}
+.op-grid.org .prod .ds{color:var(--orange-dd);font-weight:600}
+#opMode button{padding:7px 12px;font-size:11px}
+
+#chap .chap-l{top:50%;transform:translateY(-54%)}
+#chap .pillar-n{left:auto;right:40px;bottom:auto;top:20px;font-size:300px}
+#opGrid .prod .nm{font-size:12.6px}

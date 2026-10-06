@@ -8,22 +8,21 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 
 | Arquivo | O que é |
 |---|---|
-| `DTS_Portfolio_Estrategico_2027.html` | Apresentação interativa: 29 slides + 24 fichas de produto em um único arquivo. Abra no navegador. |
-| `DTS_Portfolio_Estrategico_2027.pdf` | Versão estática para envio: 53 páginas (slides + fichas). |
+| `DTS_Portfolio_Estrategico_2027.html` | Apresentação interativa: 20 slides + 24 fichas de produto em um único arquivo. Abra no navegador. |
+| `DTS_Portfolio_Estrategico_2027.pdf` | Versão estática para envio: 48 páginas (20 slides, as 4 vistas de mercado dos pilares em página própria e as 24 fichas). |
 | `pesquisa/` | Os 4 relatórios de pesquisa completos, com URLs, datas e marcação evidência × hipótese. |
 | `src/` | Fontes da apresentação: estilos, motor, dados dos produtos e slides. |
 | `build.py` | Gera o HTML único a partir de `src/`, com os logos embutidos. |
 
-## Roteiro da apresentação
+## Roteiro da apresentação (20 slides)
 
-1. **Abertura (7 telas):** capa com campo de partículas; contexto do DTS (quem somos, 4 pilares, 29 serviços); portfólio atual com spotlight por pilar; seis forças do mercado brasileiro; benchmark de IA nas consultorias (linha do tempo de 2026); raio-X dos 29 serviços; três caminhos estratégicos.
-2. **Novo portfólio (3 telas):** antes/depois de serviços para produtos; one-page executiva do novo portfólio; possível configuração de nomes.
-3. **Pilares 1 a 4**, cada um com quatro telas:
-   - capa;
-   - contexto: compradores, gatilhos de compra e jornada comercial;
-   - mercado: o nome que cada concorrente dá à oferta, o que faz com IA, a sobreposição com o DTS e o posicionamento proposto;
-   - produtos: antes e depois.
-4. **Fechamento:** fábrica de produtos (como produtizar), roadmap de lançamento e decisões para o comitê, além do anexo de fontes.
+1. **Abertura (7):** capa com campo de partículas; contexto do DTS (quem somos, 4 pilares, 29 serviços); portfólio atual com spotlight por pilar; seis forças do mercado brasileiro; benchmark de IA nas consultorias (linha do tempo de 2026); raio-X dos 29 serviços; três caminhos estratégicos.
+2. **Novo portfólio (2):** antes/depois de serviços para produtos; one-page executiva do novo portfólio, com o botão "Nome de hoje" que mostra de quais serviços cada produto nasce.
+3. **Pilares 1 a 4 (8):** dois slides por pilar.
+   - Ao entrar no pilar, a capa aparece como transição de capítulo (morphing); → ou clique entra no pilar.
+   - **Cliente e mercado:** um slide com duas vistas na faixa do título. "O que o cliente vive" traz compradores, gatilhos, números e jornada comercial. "O que o mercado faz" traz o nome que cada concorrente dá à oferta, o que faz com IA, a sobreposição com o DTS e o posicionamento proposto. A tecla → passa de uma vista para a outra.
+   - **Produtos:** antes e depois.
+4. **Fechamento (3):** fábrica de produtos (inclui o passo "Nomear pelo que entrega"), roadmap de lançamento e decisões para o comitê, e o anexo de fontes.
 
 ## Novo portfólio · resumo
 
@@ -58,7 +57,8 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 - **Particle System:** capa (densidade, cursor repelir/atrair, pulso).
 - **Shimmer / Holographic Sweep:** contexto do DTS (painel que carrega e selo DTS com reflexo) e produtos novos.
 - **Spotlight / Focus:** portfólio atual e one-page; a tecla `→` percorre os pilares.
-- **Morphing Shapes:** capas de pilar.
+- **Duas vistas no mesmo slide:** cliente e mercado de cada pilar; a tecla `→` alterna.
+- **Morphing Shapes:** transição de capítulo de cada pilar.
 - **Before / After Slider:** de serviços a produtos e telas de produtos por pilar.
 - **Card Stack:** fábrica de produtos.
 - **Timeline Motion:** benchmark 2026 e roadmap.

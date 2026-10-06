@@ -20,6 +20,23 @@ slides.forEach((s,i)=>{
 });
 document.querySelectorAll(".kin").forEach(kin);
 
+/* --- vistas dentro do mesmo slide (ex.: cliente | mercado) --- */
+const PANE={};
+slides.forEach(s=>{if(!s.dataset.panes)return;const panes=[...s.querySelectorAll(":scope > .pane")],band=s.querySelector(".sr-band");const sm=band.querySelector("small");if(sm)sm.remove();
+  const sg=H("div",{class:"bseg"},band);const btns=s.dataset.panes.split("|").map((l,k)=>{const b=H("button",{class:k?"":"on"},sg,`${k+1} · ${l}`);b.addEventListener("click",e=>{e.stopPropagation();setPane(s,k)});return b});
+  PANE[s.dataset.t]={s,panes,btns,k:0}});
+function setPane(s,k){const P=PANE[s.dataset.t];if(!P)return;P.k=k;P.panes.forEach((p,j)=>p.classList.toggle("on",j===k));P.btns.forEach((b,j)=>b.classList.toggle("on",j===k));
+  const pn=P.panes[k],bt=s.querySelector(".sr-band .bt");if(bt&&pn.dataset.paneBand){bt.textContent=pn.dataset.paneBand;kin(bt)}
+  const fs=s.querySelector(".foot .s");if(fs&&pn.dataset.paneSrc){fs.textContent=pn.dataset.paneSrc;fs.title=pn.dataset.paneSrc}
+  tipEl.classList.remove("on");if(infoP.classList.contains("on"))fillInfo()}
+function paneStep(d){const P=PANE[slides[cur].dataset.t];if(!P)return false;if(d>0&&P.k<P.panes.length-1){setPane(P.s,P.k+1);return true}if(d<0&&P.k>0){setPane(P.s,P.k-1);return true}return false}
+
+/* --- transição de capítulo (capa do pilar sem ocupar um slide) --- */
+const CHAPTERS={};const chapEl=H("div",{id:"chap"},stage);let chapOn=null;
+function showChapter(p,done){chapEl.innerHTML="";chapEl.classList.remove("play");chapEl.classList.add("on");void chapEl.offsetWidth;chapEl.classList.add("play");const cleanup=CHAPTERS[p](chapEl)||(()=>{});chapOn={done,cleanup}}
+function hideChapter(run){if(!chapOn)return;const c=chapOn;chapOn=null;const a=chapEl.animate([{opacity:1},{opacity:0}],{duration:REDMO?1:380});a.onfinish=()=>{if(chapOn)return;chapEl.classList.remove("on","play");chapEl.innerHTML="";c.cleanup()};if(run)c.done();else c.cleanup()}
+chapEl.addEventListener("click",e=>{if(e.target.closest("button"))return;hideChapter(true)});
+
 /* --- controles --- */
 const ctr=H("div",{id:"controls"},document.body);
 ctr.innerHTML=`<button class="k" id="bProd" title="Fichas de produto (P)">▦ <span class="lb">Fichas de produto</span></button><button class="g" id="bInfo" title="Sobre este slide (I)">ⓘ <span class="lb">Sobre este slide</span></button><button class="g" id="bPrev">← <span class="lb">Voltar</span></button><span class="c" id="cnt" title="Índice"></span><button class="p" id="bNext"><span class="lb">Avançar</span> →</button>`;
@@ -49,24 +66,26 @@ function fit(){const vw=innerWidth,vh=innerHeight,sm=vw<760,pad=sm?8:22,bar=sm?5
 addEventListener("resize",fit);
 
 /* --- ativação --- */
-function activate(i,inst,back){tipEl.classList.remove("on");const n=slides[i];slides.forEach((s,k)=>{if(k!==i)s.classList.remove("active","entering","play","back")});n.classList.remove("play","entering","back");void n.offsetWidth;n.classList.add("active","play");if(!inst){n.classList.add("entering");if(back)n.classList.add("back")}cur=i;
+function activate(i,inst,back,noEnter){tipEl.classList.remove("on");const n=slides[i];if(PANE[n.dataset.t])setPane(n,back?PANE[n.dataset.t].panes.length-1:0);slides.forEach((s,k)=>{if(k!==i)s.classList.remove("active","entering","play","back")});n.classList.remove("play","entering","back");void n.offsetWidth;n.classList.add("active","play");if(!inst){n.classList.add("entering");if(back)n.classList.add("back")}cur=i;
   $("cnt").textContent=`${i+1} / ${N}`;$("progress").style.width=((i+1)/N*100)+"%";$("bPrev").disabled=i===0;$("bNext").disabled=i===N-1;
   if(!pdOpen)history.replaceState(null,"","#"+(i+1));
   RAIL.forEach(r=>{const k=r.idx.indexOf(i),on=k>=0;r.d.classList.toggle("on",on);r.b.style.width=on?((k+1)/r.idx.length*100)+"%":(r.idx[0]<i?"100%":"0")});
   n.querySelectorAll("[data-count]").forEach(el=>count(el,0,+el.dataset.count,el.dataset.suf||"",1200));
   if(infoP.classList.contains("on"))fillInfo();
-  const fn=ENTER[n.dataset.t];if(fn)setTimeout(fn,inst?0:60)}
-function go(i,inst){i=clamp(i,0,N-1);if(i===cur&&!inst)return;if(busy)return;const back=i<cur;
-  if(inst||REDMO){activate(i,true,back);return}
+  if(noEnter)return;const fn=ENTER[n.dataset.t];if(fn)setTimeout(fn,inst?0:60)}
+function go(i,inst){i=clamp(i,0,N-1);if(i===cur&&!inst)return;if(busy)return;const back=i<cur;if(chapOn)hideChapter(false);
+  const np=slides[i].dataset.p,chap=!back&&np!==slides[cur].dataset.p&&CHAPTERS[np];
+  if(inst||REDMO){activate(i,true,back);if(chap&&!inst)showChapter(np,()=>{});return}
   busy=true;const w=$("wipe");w.style.visibility="visible";const bars=[...w.querySelectorAll("i")],dir=back?-1:1;
   bars.forEach((b,k)=>b.animate([{transform:`translateX(${-110*dir}%) skewX(-12deg)`},{transform:"translateX(0) skewX(-12deg)"}],{duration:420,delay:k*70,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}));
-  setTimeout(()=>{activate(i,false,back);bars.forEach((b,k)=>b.animate([{transform:"translateX(0) skewX(-12deg)"},{transform:`translateX(${110*dir}%) skewX(-12deg)`}],{duration:460,delay:(2-k)*70,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}));setTimeout(()=>{w.style.visibility="hidden";busy=false},640)},560)}
+  setTimeout(()=>{if(chap){activate(i,true,back,true);const n=slides[i];n.classList.remove("play");showChapter(np,()=>{void n.offsetWidth;n.classList.add("play");n.querySelectorAll("[data-count]").forEach(el=>count(el,0,+el.dataset.count,el.dataset.suf||"",1200));const fn=ENTER[n.dataset.t];if(fn)setTimeout(fn,60)})}else activate(i,false,back);bars.forEach((b,k)=>b.animate([{transform:"translateX(0) skewX(-12deg)"},{transform:`translateX(${110*dir}%) skewX(-12deg)`}],{duration:460,delay:(2-k)*70,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}));setTimeout(()=>{w.style.visibility="hidden";busy=false},640)},560)}
 /* passos internos: slides podem consumir o "avançar" (ex.: spotlight, timeline) */
 const STEP={};
-function next(){if(pdOpen){pdStep(1);return}const f=STEP[slides[cur].dataset.t];if(f&&f(1))return;go(cur+1)}
-function prev(){if(pdOpen){pdStep(-1);return}const f=STEP[slides[cur].dataset.t];if(f&&f(-1))return;go(cur-1)}
+function next(){if(pdOpen){pdStep(1);return}if(chapOn){hideChapter(true);return}const f=STEP[slides[cur].dataset.t];if(f&&f(1))return;if(paneStep(1))return;go(cur+1)}
+function prev(){if(pdOpen){pdStep(-1);return}if(chapOn){hideChapter(false);slides[cur].classList.add("play");go(cur-1);return}const f=STEP[slides[cur].dataset.t];if(f&&f(-1))return;if(paneStep(-1))return;go(cur-1)}
 $("bNext").onclick=next;$("bPrev").onclick=prev;
 addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||e.defaultPrevented)return;
+  if(e.key==="Escape"&&chapOn){hideChapter(true);return}
   if(e.key==="Escape"){if(panels.some(p=>p.classList.contains("on"))){panels.forEach(p=>p.classList.remove("on"));closePanels(null)}else if(pdOpen)closePD();return}
   if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();next()}else if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();prev()}
   else if(e.key==="Home"){closePD(true);go(0)}else if(e.key==="End"){closePD(true);go(N-1)}
@@ -122,7 +141,9 @@ function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on")
 function pdStep(d){const k=PRODUCTS.findIndex(x=>x.id===pdOpen);const n=(k+d+PRODUCTS.length)%PRODUCTS.length;openPD(PRODUCTS[n].id)}
 /* versão de impressão: fichas como páginas ao final */
 const PRINT=[];
-function buildPrint(){PRINT.forEach(f=>{try{f()}catch(e){}});if(stage.querySelector(".pd-print"))return;PRODUCTS.forEach((P,k)=>{const sec=H("section",{class:"pd-print slide",html:pdHTML(P,k+1)},stage);sec.classList.add("play")})}
+function buildPrint(){PRINT.forEach(f=>{try{f()}catch(e){}});if(stage.querySelector(".pd-print"))return;
+  /* vistas extras dos slides com duas vistas viram páginas próprias no PDF */
+  Object.values(PANE).forEach(P=>{for(let k=P.panes.length-1;k>=1;k--){const c=P.s.cloneNode(true);c.classList.add("pane-print");c.classList.remove("active");const ps=[...c.querySelectorAll(":scope > .pane")];ps.forEach((x,j)=>{if(j!==k)x.remove();else x.classList.add("on")});const pn=P.panes[k];const bt=c.querySelector(".sr-band .bt");if(bt)bt.textContent=pn.dataset.paneBand;const fs=c.querySelector(".foot .s");if(fs)fs.textContent=pn.dataset.paneSrc;c.querySelectorAll(".bseg button").forEach((b,j)=>b.classList.toggle("on",j===k));P.s.after(c)}P.panes.forEach((x,j)=>x.classList.toggle("on",j===0));P.btns.forEach((b,j)=>b.classList.toggle("on",j===0))});PRODUCTS.forEach((P,k)=>{const sec=H("section",{class:"pd-print slide",html:pdHTML(P,k+1)},stage);sec.classList.add("play")})}
 addEventListener("beforeprint",buildPrint);
 
 /* --- tilt suave em cards marcados --- */
