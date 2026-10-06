@@ -442,7 +442,7 @@ a.prod{color:inherit}
 .pers{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:10px;background:#fff;padding:10px 14px}
 .pers .r{font:800 11px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
 .pers .q{font:700 16px/1.25 var(--fh);color:var(--navy);margin-top:3px;letter-spacing:.005em}
-.pers .ps{margin-top:6px}
+.pers .pq{margin-top:6px}
 /* white space */
 .ws-i{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.12)}
 .ws-i:first-of-type{border-top:0}
@@ -757,3 +757,184 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 .sh__rows{gap:12px}.sh__bar{height:10px}
 .sh__kpi{padding:14px 16px}.sh__num{font-size:34px;line-height:38px}
 .sh__panel{gap:14px}
+
+/* ===================== V3 · validação: uma linha, sem espaços vazios ===================== */
+/* slide 2 */
+.sh__chain .ln{font:600 12.5px/1.4 var(--fb);color:var(--ink2);white-space:nowrap}
+.sh__chain .ln b{color:var(--navy)}
+/* slide 3: chips em uma linha e títulos oficiais sem quebra */
+.op-ai .tg.one{flex-wrap:nowrap;gap:5px}
+.op-ai .tg.one span{font-size:10.8px;padding:5px 9px;white-space:nowrap}
+.op-grid.asis .op-hd h3{font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.op-grid.asis .op-hd .cnt{top:9px}
+/* capas de pilar: pills em uma linha */
+.pc-pills{margin-top:22px;display:flex;flex-wrap:nowrap;gap:8px;white-space:nowrap}
+.pc-pills .pill{font-size:11px;padding:8px 12px;font-weight:700}
+.pc-pills .pill.new{background:#F78C16;color:#1A1200;font-weight:800}
+.pc-pills .pill.sg{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28)}
+/* one-page: estrela signature inline */
+.prod .sig{font-size:12px;color:var(--orange);margin-left:4px;letter-spacing:0}
+/* benchmark: preencher a altura */
+#benchTake .card{padding:14px 16px;min-height:150px}
+#benchTake .card h4{font-size:15px}
+#benchTake .card p{font-size:12.6px!important;line-height:1.5}
+/* três caminhos */
+.path3.big h3{font-size:30px}.path3.big p,.path3.big li{font-size:13.5px;line-height:1.5}.path3.big ul{margin-top:8px}.path3.big li+li{margin-top:5px}
+.path3.big .meter i{height:8px}
+/* nomenclatura: uma linha por produto */
+.nm-wrap{grid-template-columns:1fr 1.15fr;gap:24px}
+.nm-x{grid-template-columns:1fr 20px 1.05fr;padding:8px 12px}
+.nm-x .a,.nm-x .b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.3px}
+.nm-x .b{font-size:12.8px}
+.nm-p .b small{display:inline;font-size:11px}
+.nm-row2 .nm-i .m,.nm-row2 .nm-i .d{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* contexto dos pilares: distribuir na altura com espaçamento uniforme */
+.body.ctx>div:first-child{display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:0}
+.body.ctx>div:first-child>*{margin-top:0!important}
+.body.ctx>div:first-child>.ttl{margin-bottom:-4px}
+.body.ctx>div:first-child>.fdii>div{padding:14px 16px;font-size:12.8px}
+.body.ctx>div:first-child>.kpi-row .kpi-t{padding:16px 16px}
+.body.ctx .persona{height:100%;align-content:stretch;grid-auto-rows:1fr}
+.body.ctx .persona .pers{display:flex;flex-direction:column;justify-content:center;padding:12px 16px}
+.body.ctx .persona .pers .q{font-size:17px}
+.body.ctx .pill{white-space:nowrap;font-size:12px;padding:7px 12px}
+.body.ctx>div>div[style*="flex-wrap:wrap"]{flex-wrap:nowrap!important}
+.body.ctx .rt-i b{font-size:17px}.body.ctx .rt-i span{font-size:11.5px}
+.body.ctx #p3cases .kpi-t{padding:14px 14px}
+.jr-i{min-height:128px}
+/* mercado: stmt no topo, posicionamento no rodapé */
+.body.mkb{display:grid;grid-template-columns:1fr 440px;grid-template-rows:auto 1fr auto;gap:12px 18px}
+.body.mkb .ws{align-self:stretch;display:flex;flex-direction:column}
+.body.mkb .ws .card.nv{flex:1}
+.body.mkb .pos{margin-top:0}
+/* produtos: painel lateral preenche */
+.ba-side{display:flex;flex-direction:column}
+.ba-side .card.soft{flex:1}
+/* fábrica */
+.body.fab>div:last-child{display:flex;flex-direction:column;justify-content:space-between}
+.cs-card{padding:26px 28px}
+/* roadmap */
+.body.rdm{display:flex;flex-direction:column}
+.body.rdm>#tlLaunch{flex:none}
+.body.rdm>.ttl{margin-top:auto!important}
+/* fontes */
+#sources .card{padding:12px 16px}#sources .card h4{font-size:14px}#sources .card p{font-size:12.3px!important;line-height:1.55}
+
+/* três caminhos: preencher o card */
+.path3.big{padding:20px 22px}
+.path3.big>p{font-size:14px;line-height:1.55;margin-top:10px}
+.path3.big ul{margin-top:12px;display:grid;gap:8px}
+.path3.big li{font-size:14px;line-height:1.5}.path3.big li+li{margin-top:0}
+.path3.big .k{font-size:12px}
+.path3.big>div[style*="margin-top:auto"]{padding-top:14px}
+.path3.big .meter i{height:9px}
+/* benchmark: cards abaixo da linha preenchem */
+#benchTake .card{min-height:170px;padding:16px 18px}
+#benchTake .card h4{font-size:15.5px;margin-bottom:6px}
+#benchTake .card p{font-size:13px!important;line-height:1.5}
+.bench-ctx .bc{padding:12px 16px}.bench-ctx .bc p{font-size:13.2px;line-height:1.5}
+/* roadmap: distribuir */
+.body.rdm{justify-content:space-between}
+.body.rdm>.ttl{margin-top:0!important}
+.body.rdm #decisions{font-size:13.4px!important;gap:7px!important}
+.body.rdm .cap-i{padding:12px 14px}.body.rdm .cap-i p{font-size:12.3px}
+#tlLaunch{height:290px!important}
+/* fontes: equilibrar */
+#sources{grid-auto-rows:auto!important;align-content:space-between!important}
+#sources .card{padding:14px 16px}#sources .card p{font-size:12.8px!important;line-height:1.6}
+
+/* fontes: preencher as duas colunas */
+.body.src .src-l{display:flex;flex-direction:column;gap:10px}
+.body.src .src-l #method{flex:1;align-content:stretch;grid-auto-rows:1fr}
+.body.src .src-l .mt-i{align-items:center}
+.body.src .src-l .card.soft{margin-top:0!important}
+#sources{align-content:stretch!important;grid-auto-rows:1fr!important;height:100%}
+#sources .card{display:flex;flex-direction:column;justify-content:center}
+#sources .card:last-child{grid-row:auto}
+.body.ctx .stmt{font-size:23.5px!important}
+
+/* ===== abertura: ocupar a altura do corpo ===== */
+/* slide 3 e 9: grid de pilares cresce; chips em uma linha */
+.spot-host{display:flex;flex-direction:column;height:100%}
+.spot-host .op-grid{flex:1;min-height:0}
+.op-col .op-list{justify-content:space-between}
+#asHost .svc{padding:9px 12px;font-size:13px}
+.op-ai .tg span{white-space:nowrap}
+#asChain .tg.one span{font-size:11.5px;padding:7px 11px}
+.body:has(#opHost),.body:has(#asHost){display:flex;flex-direction:column}
+.body:has(#opHost)>.spot-host,.body:has(#asHost)>.spot-host{flex:1}
+#opGrid .prod{padding:8px 10px 8px 0}
+#opGrid .prod .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.2px}
+/* slide 4: forças ocupam a altura */
+.body:has(.forces2){display:flex;flex-direction:column}
+.forces2{flex:1;grid-auto-rows:1fr}
+.f2{min-height:0}
+.body:has(.forces2) .sumbar{margin-top:14px}
+/* slide 5: benchmark */
+.body:has(.bench2){display:flex;flex-direction:column}
+.bench2{flex:1}
+.bench-ctx{align-content:space-between}
+.bench2 .tl-wrap{height:100%!important}
+#benchTake{margin-top:14px!important}
+/* slide 8: 50/50 */
+.body:has(.ba.hb){display:flex;flex-direction:column}
+.ba.hb{flex:1;height:auto!important}
+.op-grid.mini .svc,.op-grid.mini .prod{padding:7px 9px}
+.op-grid.mini .prod{padding-left:0}
+.op-grid.mini .prod .nm{font-size:12.3px}
+/* slide 10: nomenclatura */
+.body:has(.nm-wrap){display:flex;flex-direction:column}
+.nm-wrap{flex:1;align-items:stretch}
+.nm-wrap>div{display:flex;flex-direction:column}
+.nm-wrap>div>#nmProds{flex:1;align-content:space-between}
+.nm-wrap>div>#nmPillars{gap:10px}
+.nm-wrap .nm-p{padding:11px 14px}.nm-p .a{font-size:13px}.nm-p .b{font-size:14.5px}
+.nm-wrap .nm-row2{gap:10px}.nm-row2 .nm-i{padding:9px 12px}.nm-row2 .nm-i .m{font-size:11px}.nm-row2 .nm-i .d{font-size:12.5px}
+.nm-wrap .card.soft{margin-top:auto!important}
+.nm-x{padding:10px 14px}.nm-x .a{font-size:13px}.nm-x .b{font-size:13.5px}
+
+/* ===== ajuste final: compactar listas, preencher com rodapé por pilar ===== */
+.op-col .op-list{justify-content:flex-start;gap:6px}
+#asHost .svc{padding:8px 11px;font-size:12.6px}
+.op-when{margin-top:auto;padding:10px 12px;border-top:1px dashed var(--line);background:var(--ice2);font:500 11.5px/1.4 var(--fb);color:var(--ink2)}
+.op-when b{display:block;font:800 9.5px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--orange-dd);margin-bottom:2px}
+.op-grid.mini .op-list{gap:4px}
+.op-grid.mini .op-when{padding:7px 10px;font-size:10.8px}
+.ba.hb .ba-asis .op-when b{color:#6B7280}
+/* benchmark: timeline altura fixa; cards preenchem */
+.bench2{flex:none!important}
+.bench2 .tl-wrap{height:300px!important}
+.body:has(.bench2)>#benchTake{flex:1;grid-auto-rows:1fr}
+#benchTake .card{display:flex;flex-direction:column;justify-content:center}
+/* três caminhos: conteúdo distribuído */
+.path3.big{justify-content:space-between}
+.path3.big>p{font-size:14.5px}
+.path3.big li{font-size:14.5px}
+.path3.big ul{gap:10px}
+
+#asHost .svc{padding:6px 10px;font-size:12.3px}
+#asHost .op-list{gap:5px;padding:7px}
+#asHost .op-when{padding:8px 10px;font-size:11px;line-height:1.35}
+#asHost .op-hd{padding:8px 12px 7px}#asHost .op-hd p{font-size:10.5px;line-height:1.3}
+#asChain{padding:9px 16px}
+
+/* 50/50: rodapé por pilar não cortado; listas distribuídas */
+.op-grid.mini .op-list{justify-content:space-between}
+.op-grid.mini .op-when{font-size:10.5px;line-height:1.3;padding:6px 9px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.op-grid.mini .svc,.op-grid.mini .prod{padding:5px 8px}
+.op-grid.mini .prod{padding-left:0}
+/* slide 3: listas distribuídas na altura */
+#asHost .op-list{justify-content:space-between}
+#asHost .op-when{margin-top:0}
+
+/* 50/50: produtos distribuídos e rodapé inteiro */
+.op-grid.mini .op-list{justify-content:flex-start;gap:6px}
+.op-grid.mini .op-when{margin-top:auto;font-size:11px;line-height:1.35;padding:8px 10px;display:block;-webkit-line-clamp:unset;overflow:visible}
+.op-grid.mini .svc,.op-grid.mini .prod{padding:6px 9px}
+.op-grid.mini .prod{padding-left:0}
+.op-grid.mini .ba-tobe .op-list{gap:8px}
+.ba.hb .ba-tobe .prod{padding:8px 9px 8px 0}
+/* 50/50: pilar 1 (10 serviços) cabe inteiro */
+.ba.hb .ba-asis .svc{padding:5px 8px;font-size:11.3px}
+.ba.hb .ba-asis .op-list{gap:4px}
+.ba.hb .op-when{font-size:10.6px;line-height:1.3;padding:7px 9px}

@@ -453,7 +453,7 @@ a.prod{color:inherit}
 .pers{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:10px;background:#fff;padding:10px 14px}
 .pers .r{font:800 11px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
 .pers .q{font:700 16px/1.25 var(--fh);color:var(--navy);margin-top:3px;letter-spacing:.005em}
-.pers .ps{margin-top:6px}
+.pers .pq{margin-top:6px}
 /* white space */
 .ws-i{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.12)}
 .ws-i:first-of-type{border-top:0}
@@ -769,6 +769,187 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 .sh__kpi{padding:14px 16px}.sh__num{font-size:34px;line-height:38px}
 .sh__panel{gap:14px}
 
+/* ===================== V3 · validação: uma linha, sem espaços vazios ===================== */
+/* slide 2 */
+.sh__chain .ln{font:600 12.5px/1.4 var(--fb);color:var(--ink2);white-space:nowrap}
+.sh__chain .ln b{color:var(--navy)}
+/* slide 3: chips em uma linha e títulos oficiais sem quebra */
+.op-ai .tg.one{flex-wrap:nowrap;gap:5px}
+.op-ai .tg.one span{font-size:10.8px;padding:5px 9px;white-space:nowrap}
+.op-grid.asis .op-hd h3{font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.op-grid.asis .op-hd .cnt{top:9px}
+/* capas de pilar: pills em uma linha */
+.pc-pills{margin-top:22px;display:flex;flex-wrap:nowrap;gap:8px;white-space:nowrap}
+.pc-pills .pill{font-size:11px;padding:8px 12px;font-weight:700}
+.pc-pills .pill.new{background:#F78C16;color:#1A1200;font-weight:800}
+.pc-pills .pill.sg{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28)}
+/* one-page: estrela signature inline */
+.prod .sig{font-size:12px;color:var(--orange);margin-left:4px;letter-spacing:0}
+/* benchmark: preencher a altura */
+#benchTake .card{padding:14px 16px;min-height:150px}
+#benchTake .card h4{font-size:15px}
+#benchTake .card p{font-size:12.6px!important;line-height:1.5}
+/* três caminhos */
+.path3.big h3{font-size:30px}.path3.big p,.path3.big li{font-size:13.5px;line-height:1.5}.path3.big ul{margin-top:8px}.path3.big li+li{margin-top:5px}
+.path3.big .meter i{height:8px}
+/* nomenclatura: uma linha por produto */
+.nm-wrap{grid-template-columns:1fr 1.15fr;gap:24px}
+.nm-x{grid-template-columns:1fr 20px 1.05fr;padding:8px 12px}
+.nm-x .a,.nm-x .b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.3px}
+.nm-x .b{font-size:12.8px}
+.nm-p .b small{display:inline;font-size:11px}
+.nm-row2 .nm-i .m,.nm-row2 .nm-i .d{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* contexto dos pilares: distribuir na altura com espaçamento uniforme */
+.body.ctx>div:first-child{display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:0}
+.body.ctx>div:first-child>*{margin-top:0!important}
+.body.ctx>div:first-child>.ttl{margin-bottom:-4px}
+.body.ctx>div:first-child>.fdii>div{padding:14px 16px;font-size:12.8px}
+.body.ctx>div:first-child>.kpi-row .kpi-t{padding:16px 16px}
+.body.ctx .persona{height:100%;align-content:stretch;grid-auto-rows:1fr}
+.body.ctx .persona .pers{display:flex;flex-direction:column;justify-content:center;padding:12px 16px}
+.body.ctx .persona .pers .q{font-size:17px}
+.body.ctx .pill{white-space:nowrap;font-size:12px;padding:7px 12px}
+.body.ctx>div>div[style*="flex-wrap:wrap"]{flex-wrap:nowrap!important}
+.body.ctx .rt-i b{font-size:17px}.body.ctx .rt-i span{font-size:11.5px}
+.body.ctx #p3cases .kpi-t{padding:14px 14px}
+.jr-i{min-height:128px}
+/* mercado: stmt no topo, posicionamento no rodapé */
+.body.mkb{display:grid;grid-template-columns:1fr 440px;grid-template-rows:auto 1fr auto;gap:12px 18px}
+.body.mkb .ws{align-self:stretch;display:flex;flex-direction:column}
+.body.mkb .ws .card.nv{flex:1}
+.body.mkb .pos{margin-top:0}
+/* produtos: painel lateral preenche */
+.ba-side{display:flex;flex-direction:column}
+.ba-side .card.soft{flex:1}
+/* fábrica */
+.body.fab>div:last-child{display:flex;flex-direction:column;justify-content:space-between}
+.cs-card{padding:26px 28px}
+/* roadmap */
+.body.rdm{display:flex;flex-direction:column}
+.body.rdm>#tlLaunch{flex:none}
+.body.rdm>.ttl{margin-top:auto!important}
+/* fontes */
+#sources .card{padding:12px 16px}#sources .card h4{font-size:14px}#sources .card p{font-size:12.3px!important;line-height:1.55}
+
+/* três caminhos: preencher o card */
+.path3.big{padding:20px 22px}
+.path3.big>p{font-size:14px;line-height:1.55;margin-top:10px}
+.path3.big ul{margin-top:12px;display:grid;gap:8px}
+.path3.big li{font-size:14px;line-height:1.5}.path3.big li+li{margin-top:0}
+.path3.big .k{font-size:12px}
+.path3.big>div[style*="margin-top:auto"]{padding-top:14px}
+.path3.big .meter i{height:9px}
+/* benchmark: cards abaixo da linha preenchem */
+#benchTake .card{min-height:170px;padding:16px 18px}
+#benchTake .card h4{font-size:15.5px;margin-bottom:6px}
+#benchTake .card p{font-size:13px!important;line-height:1.5}
+.bench-ctx .bc{padding:12px 16px}.bench-ctx .bc p{font-size:13.2px;line-height:1.5}
+/* roadmap: distribuir */
+.body.rdm{justify-content:space-between}
+.body.rdm>.ttl{margin-top:0!important}
+.body.rdm #decisions{font-size:13.4px!important;gap:7px!important}
+.body.rdm .cap-i{padding:12px 14px}.body.rdm .cap-i p{font-size:12.3px}
+#tlLaunch{height:290px!important}
+/* fontes: equilibrar */
+#sources{grid-auto-rows:auto!important;align-content:space-between!important}
+#sources .card{padding:14px 16px}#sources .card p{font-size:12.8px!important;line-height:1.6}
+
+/* fontes: preencher as duas colunas */
+.body.src .src-l{display:flex;flex-direction:column;gap:10px}
+.body.src .src-l #method{flex:1;align-content:stretch;grid-auto-rows:1fr}
+.body.src .src-l .mt-i{align-items:center}
+.body.src .src-l .card.soft{margin-top:0!important}
+#sources{align-content:stretch!important;grid-auto-rows:1fr!important;height:100%}
+#sources .card{display:flex;flex-direction:column;justify-content:center}
+#sources .card:last-child{grid-row:auto}
+.body.ctx .stmt{font-size:23.5px!important}
+
+/* ===== abertura: ocupar a altura do corpo ===== */
+/* slide 3 e 9: grid de pilares cresce; chips em uma linha */
+.spot-host{display:flex;flex-direction:column;height:100%}
+.spot-host .op-grid{flex:1;min-height:0}
+.op-col .op-list{justify-content:space-between}
+#asHost .svc{padding:9px 12px;font-size:13px}
+.op-ai .tg span{white-space:nowrap}
+#asChain .tg.one span{font-size:11.5px;padding:7px 11px}
+.body:has(#opHost),.body:has(#asHost){display:flex;flex-direction:column}
+.body:has(#opHost)>.spot-host,.body:has(#asHost)>.spot-host{flex:1}
+#opGrid .prod{padding:8px 10px 8px 0}
+#opGrid .prod .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.2px}
+/* slide 4: forças ocupam a altura */
+.body:has(.forces2){display:flex;flex-direction:column}
+.forces2{flex:1;grid-auto-rows:1fr}
+.f2{min-height:0}
+.body:has(.forces2) .sumbar{margin-top:14px}
+/* slide 5: benchmark */
+.body:has(.bench2){display:flex;flex-direction:column}
+.bench2{flex:1}
+.bench-ctx{align-content:space-between}
+.bench2 .tl-wrap{height:100%!important}
+#benchTake{margin-top:14px!important}
+/* slide 8: 50/50 */
+.body:has(.ba.hb){display:flex;flex-direction:column}
+.ba.hb{flex:1;height:auto!important}
+.op-grid.mini .svc,.op-grid.mini .prod{padding:7px 9px}
+.op-grid.mini .prod{padding-left:0}
+.op-grid.mini .prod .nm{font-size:12.3px}
+/* slide 10: nomenclatura */
+.body:has(.nm-wrap){display:flex;flex-direction:column}
+.nm-wrap{flex:1;align-items:stretch}
+.nm-wrap>div{display:flex;flex-direction:column}
+.nm-wrap>div>#nmProds{flex:1;align-content:space-between}
+.nm-wrap>div>#nmPillars{gap:10px}
+.nm-wrap .nm-p{padding:11px 14px}.nm-p .a{font-size:13px}.nm-p .b{font-size:14.5px}
+.nm-wrap .nm-row2{gap:10px}.nm-row2 .nm-i{padding:9px 12px}.nm-row2 .nm-i .m{font-size:11px}.nm-row2 .nm-i .d{font-size:12.5px}
+.nm-wrap .card.soft{margin-top:auto!important}
+.nm-x{padding:10px 14px}.nm-x .a{font-size:13px}.nm-x .b{font-size:13.5px}
+
+/* ===== ajuste final: compactar listas, preencher com rodapé por pilar ===== */
+.op-col .op-list{justify-content:flex-start;gap:6px}
+#asHost .svc{padding:8px 11px;font-size:12.6px}
+.op-when{margin-top:auto;padding:10px 12px;border-top:1px dashed var(--line);background:var(--ice2);font:500 11.5px/1.4 var(--fb);color:var(--ink2)}
+.op-when b{display:block;font:800 9.5px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--orange-dd);margin-bottom:2px}
+.op-grid.mini .op-list{gap:4px}
+.op-grid.mini .op-when{padding:7px 10px;font-size:10.8px}
+.ba.hb .ba-asis .op-when b{color:#6B7280}
+/* benchmark: timeline altura fixa; cards preenchem */
+.bench2{flex:none!important}
+.bench2 .tl-wrap{height:300px!important}
+.body:has(.bench2)>#benchTake{flex:1;grid-auto-rows:1fr}
+#benchTake .card{display:flex;flex-direction:column;justify-content:center}
+/* três caminhos: conteúdo distribuído */
+.path3.big{justify-content:space-between}
+.path3.big>p{font-size:14.5px}
+.path3.big li{font-size:14.5px}
+.path3.big ul{gap:10px}
+
+#asHost .svc{padding:6px 10px;font-size:12.3px}
+#asHost .op-list{gap:5px;padding:7px}
+#asHost .op-when{padding:8px 10px;font-size:11px;line-height:1.35}
+#asHost .op-hd{padding:8px 12px 7px}#asHost .op-hd p{font-size:10.5px;line-height:1.3}
+#asChain{padding:9px 16px}
+
+/* 50/50: rodapé por pilar não cortado; listas distribuídas */
+.op-grid.mini .op-list{justify-content:space-between}
+.op-grid.mini .op-when{font-size:10.5px;line-height:1.3;padding:6px 9px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.op-grid.mini .svc,.op-grid.mini .prod{padding:5px 8px}
+.op-grid.mini .prod{padding-left:0}
+/* slide 3: listas distribuídas na altura */
+#asHost .op-list{justify-content:space-between}
+#asHost .op-when{margin-top:0}
+
+/* 50/50: produtos distribuídos e rodapé inteiro */
+.op-grid.mini .op-list{justify-content:flex-start;gap:6px}
+.op-grid.mini .op-when{margin-top:auto;font-size:11px;line-height:1.35;padding:8px 10px;display:block;-webkit-line-clamp:unset;overflow:visible}
+.op-grid.mini .svc,.op-grid.mini .prod{padding:6px 9px}
+.op-grid.mini .prod{padding-left:0}
+.op-grid.mini .ba-tobe .op-list{gap:8px}
+.ba.hb .ba-tobe .prod{padding:8px 9px 8px 0}
+/* 50/50: pilar 1 (10 serviços) cabe inteiro */
+.ba.hb .ba-asis .svc{padding:5px 8px;font-size:11.3px}
+.ba.hb .ba-asis .op-list{gap:4px}
+.ba.hb .op-when{font-size:10.6px;line-height:1.3;padding:7px 9px}
+
 </style>
 </head>
 <body>
@@ -803,7 +984,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <!--@CONTEXTO · Shimmer-->
-<section class="slide" data-t="DTS hoje" data-p="Abertura" data-band="Contexto · o portfólio DTS hoje" data-c="c-navy" data-bs="Quem somos, o que oferecemos e o que este planejamento decide" data-src="Portfólio e definições: material DTS (Digital & Tech Services). Contagens: 4 pilares e 29 serviços do portfólio atual.">
+<section class="slide" data-t="DTS hoje" data-p="Abertura" data-band="Onde estamos · o portfólio DTS hoje" data-c="c-navy" data-bs="Quem somos, o que oferecemos e o que este planejamento decide" data-src="Portfólio e definições: material DTS (Digital & Tech Services). Contagens: 4 pilares e 29 serviços do portfólio atual.">
   <template class="info"><p><b>Shimmer:</b> o painel entra como esqueleto e o conteúdo real pousa em cascata; o selo DTS recebe um reflexo holográfico periódico ou só no hover.</p><p>Os números são do portfólio atual: 4 pilares e 29 serviços. “0 com IA no método” é a leitura DTS do portfólio de hoje.</p></template>
   <div class="body">
     <div class="sh" id="sh">
@@ -812,7 +993,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
         <div class="stmt kin" style="font-size:27px">Um portfólio para apoiar os clientes em <em>todos os desafios estratégicos de tecnologia</em>.</div>
         <p data-a="fade" style="--d:4">O DTS atua do diagnóstico à execução: apoia líderes nas decisões de tecnologia, garante a entrega de transformações complexas, protege e cria valor de tecnologia em fusões e aquisições e moderniza arquitetura, aplicações e infraestrutura.</p>
         <p data-a="fade" style="--d:6">Este planejamento revisa o portfólio atual à luz do mercado brasileiro e do que as principais consultorias estão fazendo com inteligência artificial, para definir <b>o que manter, o que remodelar e o que criar</b>.</p>
-        <div class="sh__chain" data-a="up" style="--d:8"><span class="k">Cadeia de valor A&amp;M</span><span class="c">Transformação</span><span class="c">Turnaround</span><span class="c">Estratégia &amp; M&amp;A</span><span class="c">Data &amp; IA</span><span class="c on">Tech &amp; Digital · DTS</span></div>
+        <div class="sh__chain" data-a="up" style="--d:8"><span class="k">Cadeia de valor A&amp;M</span><span class="ln">Transformação · Turnaround · Estratégia &amp; M&amp;A · Data &amp; IA · <b>Tech &amp; Digital (DTS)</b></span></div>
         <div class="sh__intro" data-a="up" style="--d:10">
           <div><b>O que fazemos</b><p>Diagnóstico, estratégia, liderança, execução de transformações, M&amp;A de tecnologia e modernização.</p></div>
           <div><b>Para quem</b><p>CEOs, CFOs, CIOs e conselhos; fundos de private equity e empresas em transformação, transação ou crise.</p></div>
@@ -868,7 +1049,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <!--@ASIS · one-page do portfólio atual-->
-<section class="slide" data-t="Portfólio atual" data-p="Abertura" data-band="Portfólio atual · 4 pilares, 29 serviços" data-c="c-navy" data-bs="→ percorre os pilares com spotlight" data-src="Fonte: portfólio DTS (Digital & Tech Services) e definições de cada pilar; cadeia de valor A&M. Contagem de serviços por pilar: 10 · 7 · 8 · 4.">
+<section class="slide" data-t="Portfólio atual" data-p="Abertura" data-band="O que oferecemos · 4 pilares, 29 serviços" data-c="c-navy" data-bs="→ percorre os pilares com spotlight" data-src="Fonte: portfólio DTS (Digital & Tech Services) e definições de cada pilar; cadeia de valor A&M. Contagem de serviços por pilar: 10 · 7 · 8 · 4.">
   <template class="info"><p><b>Spotlight:</b> use → / ← ou os botões para iluminar um pilar de cada vez: definição, serviços e quando o cliente nos contrata.</p><p>Este é o portfólio como está hoje (AS-IS). A proposta de mudança vem depois do diagnóstico de mercado.</p></template>
   <div class="body" style="padding-top:12px">
     <div style="display:flex;align-items:center;gap:18px;margin-bottom:10px">
@@ -879,14 +1060,14 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
       <div class="op-grid asis" id="asGrid"></div>
       <div class="op-ai" id="asChain" data-a="up" style="--d:9">
         <div><div class="eye" style="color:var(--orange-l);margin-bottom:2px">Onde o DTS se conecta</div><div style="font:700 19px/1.1 var(--fh);letter-spacing:.02em;text-transform:uppercase">Cadeia de valor A&amp;M</div></div>
-        <div class="tg"><span>Gestão da Cadeia de Suprimentos &amp; Manufatura</span><span>Marketing &amp; Vendas</span><span>Gestão Jurídica</span><span class="on">Tech &amp; Digital</span><span>Gestão Financeira</span><span>Áreas Administrativas &amp; CSC</span><span class="sep"></span><span>Transformação</span><span>Turnaround</span><span>Estratégia &amp; M&amp;A</span><span>Data &amp; IA</span></div>
+        <div class="tg one"><span>Supply Chain &amp; Manufatura</span><span>Marketing &amp; Vendas</span><span>Jurídico</span><span class="on">Tech &amp; Digital</span><span>Financeiro</span><span>Administrativo &amp; CSC</span><span class="sep"></span><span>Transformação</span><span>Turnaround</span><span>Estratégia &amp; M&amp;A</span><span>Data &amp; IA</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!--@MERCADO · seis forças-->
-<section class="slide" data-t="Forças de mercado" data-p="Abertura" data-band="Mercado Brasil · seis forças que redesenham a demanda" data-c="c-blue" data-bs="O que mudou do lado do cliente em 2025–2026" data-src="Fontes: PwC 29ª CEO Survey (jan/2026); Deloitte State of AI 2026; LC 214/2025 e Baguete (SAP ECC); KPMG Pesquisa de Fusões e Aquisições 2025 e 1S26; ABES/IDC (mar/2026); Baguete (VMware); Finsiders/Tecnoblog (ataques C&M e Sinqia); Res. CMN 5.274/2025; KPMG Global Tech Report 2026.">
+<section class="slide" data-t="Forças de mercado" data-p="Abertura" data-band="O que os clientes vivem · seis forças que redesenham a demanda" data-c="c-blue" data-bs="O que mudou do lado do cliente em 2025–2026" data-src="Fontes: PwC 29ª CEO Survey (jan/2026); Deloitte State of AI 2026; LC 214/2025 e Baguete (SAP ECC); KPMG Pesquisa de Fusões e Aquisições 2025 e 1S26; ABES/IDC (mar/2026); Baguete (VMware); Finsiders/Tecnoblog (ataques C&M e Sinqia); Res. CMN 5.274/2025; KPMG Global Tech Report 2026.">
   <template class="info"><p>Seis forças, cada uma com um número de referência e a leitura para o portfólio. Os números vieram de imprensa e associações que citam o estudo primário; confirmar no original antes de uso externo.</p></template>
   <div class="body">
     <div class="stmt kin" style="font-size:24px">O cliente mudou a pergunta: de <em>“qual é a nossa estratégia digital?”</em> para <em>“quanto a tecnologia devolve, com que prazo e quem responde por isso?”</em></div>
@@ -896,7 +1077,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <!--@BENCH · IA nas consultorias-->
-<section class="slide" data-t="Benchmark · IA nas consultorias" data-p="Abertura" data-band="Benchmark · como as consultorias estão usando IA" data-c="c-steel" data-bs="Linha do tempo 2026 · clique nos marcos" data-src="Fontes: Business Insider/HBR (jan/2026); Fortune (fev/2026); A&M press release (05/05/2026) e Bloomberg (04/05/2026); PwC US (jun/2026); BusinessWire e Financial Times (jul/2026); AlixPartners (04/08/2026); Jornal do Comércio e IT Forum (set/2026); SiliconANGLE, PwC, EY e KPMG (2025).">
+<section class="slide" data-t="Benchmark · IA nas consultorias" data-p="Abertura" data-band="O que o mercado faz · IA nas consultorias" data-c="c-steel" data-bs="Linha do tempo 2026 · clique nos marcos" data-src="Fontes: Business Insider/HBR (jan/2026); Fortune (fev/2026); A&M press release (05/05/2026) e Bloomberg (04/05/2026); PwC US (jun/2026); BusinessWire e Financial Times (jul/2026); AlixPartners (04/08/2026); Jornal do Comércio e IT Forum (set/2026); SiliconANGLE, PwC, EY e KPMG (2025).">
   <template class="info"><p><b>Timeline Motion:</b> a linha se desenha marco a marco (autoplay); clique em qualquer marco para ver o detalhe.</p><p>Sobre a Alvarez &amp; Marsal: em 05/05/2026 a firma (global) anunciou um Global AI Board; a Bloomberg reportou a meta de 50% da receita vinda de trabalho com IA até 2028.</p></template>
   <div class="body">
     <div style="display:flex;align-items:center;gap:14px">
@@ -909,14 +1090,14 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
         <div class="bc"><div class="k">Como passaram a cobrar</div><p>O preço migra da hora para o <b>resultado e o ativo</b>: cerca de 25% dos honorários da McKinsey já são por resultado; a Deloitte vende agentes por assinatura.</p></div>
         <div class="bc"><div class="k">Onde está a Alvarez &amp; Marsal</div><p>A firma global criou um <b>Global AI Board</b> em maio de 2026, com a meta de 50% da receita vinda de trabalho com IA até 2028, e já tem ferramentas próprias (A&amp;M Assist, DiligenceGPT).</p></div>
       </div>
-      <div class="tl-wrap" id="tlMarket"></div>
+      <div class="tl-wrap" id="tlMarket" style="height:400px"></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px" id="benchTake"></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px" id="benchTake"></div>
   </div>
 </section>
 
 <!--@RAIOX-->
-<section class="slide" data-t="Raio-X do portfólio atual" data-p="Abertura" data-band="Raio-X · os 29 serviços atuais em uma matriz de decisão" data-c="c-navy" data-bs="Atratividade de mercado × direito de vencer" data-src="Avaliação qualitativa DTS, a validar com os sócios, informada pela pesquisa de mercado. Atratividade = demanda Brasil 2026–27, crescimento, disposição a pagar e risco de comoditização por IA. Direito de vencer = DNA A&M (operador, PE, turnaround, interim), ativos e reputação.">
+<section class="slide" data-t="Raio-X do portfólio atual" data-p="Abertura" data-band="Onde ganhamos · os 29 serviços em uma matriz de decisão" data-c="c-navy" data-bs="Atratividade de mercado × direito de vencer" data-src="Avaliação qualitativa DTS, a validar com os sócios, informada pela pesquisa de mercado. Atratividade = demanda Brasil 2026–27, crescimento, disposição a pagar e risco de comoditização por IA. Direito de vencer = DNA A&M (operador, PE, turnaround, interim), ativos e reputação.">
   <template class="info"><p>Cada bolha é um serviço atual; a cor é a decisão proposta. Passe o mouse para ver serviço, decisão, destino e justificativa. Círculos laranja tracejados: posição pretendida dos 4 produtos novos.</p><p>Os escores são julgamento qualitativo: devem ser calibrados em uma sessão com os sócios do DTS.</p></template>
   <div class="body" style="display:grid;grid-template-columns:930px 1fr;gap:18px">
     <div>
@@ -929,11 +1110,11 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <!--@CAMINHOS-->
-<section class="slide" data-t="Três caminhos estratégicos" data-p="Abertura" data-band="Três caminhos · incremental, transformacional ou disruptivo" data-c="c-mix" data-bs="Recomendação: transformacional com 2 apostas disruptivas" data-src="HFS Research (fev/2026): Services-as-Software US$ 1,5 tri até 2035; McKinsey ~25% dos honorários atrelados a resultado (nov/2025); Gartner: preço puramente por resultado transfere risco (resumo de busca, confirmar); IBM: asset-based consulting. Escalas de esforço: julgamento DTS.">
+<section class="slide" data-t="Três caminhos estratégicos" data-p="Abertura" data-band="O que podemos melhorar · três caminhos" data-c="c-mix" data-bs="Recomendação: transformacional com 2 apostas disruptivas" data-src="HFS Research (fev/2026): Services-as-Software US$ 1,5 tri até 2035; McKinsey ~25% dos honorários atrelados a resultado (nov/2025); Gartner: preço puramente por resultado transfere risco (resumo de busca, confirmar); IBM: asset-based consulting. Escalas de esforço: julgamento DTS.">
   <template class="info"><p>Brainstorming estruturado em três níveis de inovação. As réguas (investimento, diferenciação, recorrência) são julgamento DTS.</p></template>
   <div class="body">
     <div class="stmt kin" style="font-size:24px">Não basta colocar IA nos serviços de hoje. A recomendação é <em>redesenhar o portfólio como produtos</em> e incubar <em>duas apostas de plataforma</em>.</div>
-    <div style="display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:16px;margin-top:20px" id="paths"></div>
+    <div style="display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:16px;margin-top:18px;min-height:540px" id="paths"></div>
     <div class="card soft" data-a="up" style="--d:10;margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:12px 16px">
       <div style="font:500 12.5px/1.45 var(--fb);color:var(--ink2)"><span class="ev">HFS 2026</span> Mercado de <b>services-as-software</b> projetado em US$ 1,5 tri até 2035, absorvendo receita de serviços de TI e SaaS.</div>
       <div style="font:500 12.5px/1.45 var(--fb);color:var(--ink2)"><span class="ev">McKinsey 2025</span> ~25% dos honorários globais já atrelados a resultado. A&amp;M tem DNA de honorário por resultado.</div>
@@ -944,7 +1125,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 
 <!-- ===================================================== NOVO PORTFÓLIO -->
 <!--@5050-->
-<section class="slide" data-t="De serviços a produtos" data-p="Novo portfólio" data-band="O novo portfólio · de 29 serviços a 24 produtos" data-c="c-gold" data-bs="Arraste o divisor para comparar hoje e proposta" data-src="Mapeamento serviço → produto: análise DTS. 13 serviços sobrepostos viram 6 produtos; 2 deixam de ser vendidos isolados; 15 são remodelados com IA; 4 são novos.">
+<section class="slide" data-t="De serviços a produtos" data-p="Novo portfólio" data-band="O que muda · de 29 serviços a 24 produtos" data-c="c-gold" data-bs="Arraste o divisor para comparar hoje e proposta" data-src="Mapeamento serviço → produto: análise DTS. 13 serviços sobrepostos viram 6 produtos; 2 deixam de ser vendidos isolados; 15 são remodelados com IA; 4 são novos.">
   <template class="info"><p><b>Before / After:</b> à esquerda, o portfólio de hoje; à direita, o proposto. Arraste o divisor ou use os botões. Clique em um produto para abrir a ficha.</p></template>
   <div class="body" style="padding-top:12px">
     <div style="display:flex;align-items:center;gap:18px;margin-bottom:8px">
@@ -960,7 +1141,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <!--@ONEPAGE-->
-<section class="slide" data-t="One-page · novo portfólio" data-p="Novo portfólio" data-band="One-page executiva · novo modelo de portfólio DTS" data-c="c-mix" data-bs="Clique em um produto para abrir a ficha" data-src="Status: Manter = essência preservada · Aprimorar com IA = remodelado com IA no método · Criar com IA = produto novo. ★ A&M Signature = maior direito de vencer (DNA operador). Avaliação DTS a validar com os sócios.">
+<section class="slide" data-t="One-page · novo portfólio" data-p="Novo portfólio" data-band="O novo portfólio · em uma página" data-c="c-mix" data-bs="Clique em um produto para abrir a ficha" data-src="Status: Manter = essência preservada · Aprimorar com IA = remodelado com IA no método · Criar com IA = produto novo. ★ A&M Signature = maior direito de vencer (DNA operador). Avaliação DTS a validar com os sócios.">
   <template class="info"><p><b>Spotlight:</b> use → / ← ou os botões para percorrer os pilares com foco; o resto da tela fica em penumbra.</p><p>Cada produto é um hiperlink para a página de detalhamento (público-alvo, problema, entregáveis, método, skills, ferramentas, dados, papel da IA e como produtizar).</p></template>
   <div class="body" style="padding-top:12px">
     <div style="display:flex;align-items:center;gap:18px;margin-bottom:10px">
@@ -985,7 +1166,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <!--@NOMES-->
-<section class="slide" data-t="Nomenclatura" data-p="Novo portfólio" data-band="Uma possível configuração de nomes · pilares e produtos" data-c="c-steel" data-bs="Nomes que o mercado reconhece e que dizem o que entregamos" data-src="Nomes de mercado: páginas de serviço e press releases de Deloitte, EY, KPMG, PwC, McKinsey, Accenture, IBM e AWS (2025–26). Nomes propostos: hipótese DTS a validar.">
+<section class="slide" data-t="Nomenclatura" data-p="Novo portfólio" data-band="Como passamos a chamar · uma possível configuração de nomes" data-c="c-steel" data-bs="Nomes que o mercado reconhece e que dizem o que entregamos" data-src="Nomes de mercado: páginas de serviço e press releases de Deloitte, EY, KPMG, PwC, McKinsey, Accenture, IBM e AWS (2025–26). Nomes propostos: proposta DTS a validar.">
   <template class="info"><p>Princípios: nomes em inglês, alinhados ao vocabulário usado em RFPs e compras; o nome diz o que o produto entrega; um nome por produto, sem sinônimos.</p></template>
   <div class="body">
     <div class="stmt kin" style="font-size:23px">Nomes que o comprador reconhece em uma RFP e que <em>dizem o que entregamos</em>: uma possível configuração, a validar com os sócios.</div>
@@ -993,13 +1174,13 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
       <div>
         <div class="ttl" style="font-size:13px;margin-bottom:8px">Pilares · hoje → proposta</div>
         <div id="nmPillars" style="display:grid;gap:8px"></div>
-        <div class="ttl" style="font-size:13px;margin:14px 0 8px">Como o mercado chama → como o DTS passa a chamar</div>
+        <div class="ttl" style="font-size:13px;margin:16px 0 8px">Como o mercado chama → como o DTS passa a chamar</div>
         <div id="nmRow" class="nm-row2"></div>
+        <div class="card soft" data-a="up" style="--d:14;margin-top:16px;padding:10px 14px"><h4>Três princípios</h4><p>1. Nome em inglês, no vocabulário de RFP e compras. 2. O nome diz o que o produto entrega, não como é feito. 3. Um nome por produto; as variações (buy-side, sell-side, nível) são edições do mesmo produto.</p></div>
       </div>
       <div>
         <div class="ttl" style="font-size:13px;margin-bottom:8px">Produtos · serviços de hoje → nome proposto</div>
-        <div id="nmProds" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
-        <div class="card soft" data-a="up" style="--d:14;margin-top:12px;padding:10px 14px"><h4>Três princípios</h4><p>1. Nome em inglês, no vocabulário de RFP e compras. 2. O nome diz o que o produto entrega, não como é feito. 3. Um nome por produto; as variações (buy-side, sell-side, nível) são edições do mesmo produto.</p></div>
+        <div id="nmProds" style="display:grid;grid-template-columns:1fr;gap:7px"></div>
       </div>
     </div>
   </div>
@@ -1009,9 +1190,9 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 <section class="slide dark pcover" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Capa" data-nofoot data-pillar="1"></section>
 
 <section class="slide" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Contexto" data-band="IT Advisory · contexto: a pergunta do comprador mudou" data-c="c-navy" data-bs="Compradores, gatilhos e implicação" data-src="ABES/IDC (mar/2026): IA/GenAI prioridade nº 1 para 53%; PwC CEO Survey (jan/2026): 56% sem retorno financeiro; Deloitte State of AI 2026: 27% com governança madura; ABES/IDC: TI +18,5% em 2025 e +5,3% em 2026; MCTI (Lei do Bem).">
-  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+  <div class="body ctx" style="display:grid;grid-template-columns:1fr 520px;grid-template-rows:1fr auto;gap:18px 20px">
     <div>
-      <div class="stmt kin" style="font-size:25px">De <em>“qual é a nossa estratégia digital?”</em> para <em>“quanto a tecnologia e a IA devolvem, e quem responde por isso?”</em></div>
+      <div class="stmt kin" style="font-size:24px">De <em>“qual é a nossa estratégia digital?”</em> para <em>“quanto a tecnologia devolve e quem responde por isso?”</em></div>
       <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
         <div class="f"><span class="k">Fato</span>IA generativa e agentes são a <b>prioridade nº 1</b> de investimento para 53% dos executivos. <span class="ev">ABES/IDC 2026</span></div>
         <div class="d"><span class="k">Dado</span><b>56%</b> dos CEOs sem retorno financeiro com IA; só <b>27%</b> com governança madura. <span class="ev">PwC · Deloitte</span></div>
@@ -1020,9 +1201,9 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
       </div>
       <div class="ttl" data-a="fade" style="--d:7;margin-top:18px;font-size:14px">Gatilhos de compra (quando o cliente nos chama)</div>
       <div class="trig" data-a="up" style="--d:8;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-        <span class="pill">Saída ou troca de CIO</span><span class="pill">Orçamento 2027 (out–dez)</span><span class="pill">Renovação de contratos em dólar</span><span class="pill">Conselho cobra resultado de IA</span><span class="pill">Prazo do FormP&amp;D (Lei do Bem, set.)</span><span class="pill">Reestruturação / turnaround</span><span class="pill">Aquisição por fundo de PE</span>
+        <span class="pill">Troca de CIO</span><span class="pill">Orçamento 2027</span><span class="pill">Contratos em dólar</span><span class="pill">Conselho cobra IA</span><span class="pill">FormP&amp;D (Lei do Bem)</span><span class="pill">Turnaround</span><span class="pill">Aquisição por PE</span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;--d:9" data-a="up">
+      <div class="kpi-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;--d:9" data-a="up">
         <div class="kpi-t"><div class="v" data-count="67.8">67,8</div><div class="l">US$ bi · mercado de TI no Brasil em 2025 (+18,5%)</div><div class="s">ABES/IDC mar/2026 <span class="ev">E</span></div></div>
         <div class="kpi-t"><div class="v">+5,3%</div><div class="l">crescimento projetado de TI em 2026: orçamento sob escrutínio</div><div class="s">ABES/IDC mar/2026 <span class="ev">E</span></div></div>
         <div class="kpi-t"><div class="v" data-count="4.2" data-suf=" mil">4,2 mil</div><div class="l">empresas usaram a Lei do Bem (ano-base 2024)</div><div class="s">MCTI via Convergência Digital <span class="ev">E</span></div></div>
@@ -1037,15 +1218,13 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <section class="slide" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Mercado" data-band="IT Advisory · visão de mercado: nomes, posicionamento e IA" data-c="c-steel" data-bs="Big Four · estratégia · pares" data-src="Deloitte, EY, KPMG, PwC: páginas de serviço, vagas e press releases 2025–26; Anthropic (06/10/2025); BI/HBR (jan/2026); BCG (abr/2026); AlixPartners (ago/2026). Ausência de oferta = ‘não encontrado’ na pesquisa, não prova de inexistência.">
-  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
-    <div>
-      <div class="stmt kin" style="font-size:23px">Estratégia e governança de IA estão lotadas. <em>Liderança interina, custo com êxito e valor de IA com accountability</em> são espaço aberto.</div>
-      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="1"></table>
-      <div class="pos" data-pos="1" data-a="up" style="--d:8"></div>
-    </div>
+  <div class="body mkb">
+    <div class="stmt kin" style="font-size:23px;grid-column:1/-1">Estratégia e governança de IA estão lotadas; <em>liderança interina, custo com êxito e valor de IA com accountability</em> são o espaço aberto.</div>
+    <table class="tbl mk" data-a="up" style="--d:4" data-mk="1"></table>
     <div class="ws" data-pillar="1" data-a="right" style="--d:6"></div>
+    <div class="pos" data-pos="1" data-a="up" style="--d:8;grid-column:1/-1"></div>
   </div>
-</section>
+  </section>
 
 <section class="slide" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Produtos" data-band="IT Advisory · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. IT Resilience & BCP migra para o Pilar 4 (resiliência é arquitetura); IT Business Partner (Pilar 2) é absorvido pela liderança embarcada.">
   <template class="info"><p><b>Before / After:</b> arraste o divisor (ou use ← → com o painel em foco). À esquerda, o portfólio de hoje e o diagnóstico; à direita, o produto proposto e o papel da IA. Clique em um produto para abrir a ficha.</p></template>
@@ -1056,9 +1235,9 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 <section class="slide dark pcover" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Capa" data-nofoot data-pillar="2"></section>
 
 <section class="slide" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Contexto" data-band="Technology Transformation · contexto: 2027 é ano de viradas obrigatórias" data-c="c-navy" data-bs="Compradores, gatilhos e implicação" data-src="EC 132/2023, LC 214/2025, LC 227/2026, Decreto 12.955/2026 (via Congresso em Foco, CNBSP, Mattos Filho); PwC ‘Tributos no centro’; Gartner (ERP, citado em nov/2025); Baguete (SAP ECC); reformatributaria.com (trocas de ERP); Cetic.br TIC Empresas 2025.">
-  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+  <div class="body ctx" style="display:grid;grid-template-columns:1fr 520px;grid-template-rows:1fr auto;gap:18px 20px">
     <div>
-      <div class="stmt kin" style="font-size:25px">2027 concentra viradas com data marcada: <em>CBS plena em 01/01/2027</em>, <em>fim da manutenção padrão do SAP ECC</em> e IA comprada que precisa ser usada.</div>
+      <div class="stmt kin" style="font-size:24px">2027 tem data marcada: <em>CBS plena</em>, <em>fim da manutenção do SAP ECC</em> e IA comprada que precisa ser usada.</div>
       <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
         <div class="f"><span class="k">Fato</span>Reforma Tributária: teste em 2026, <b>CBS plena em 2027</b>, ICMS/ISS reduzidos de 2029 a 2032 e extintos em 2033. <span class="ev">LC 214/2025</span></div>
         <div class="d"><span class="k">Dado</span><b>37%</b> das empresas no início da adequação; <b>&gt;70%</b> das iniciativas de ERP não atingirão o business case até 2027. <span class="ev">PwC · Gartner</span></div>
@@ -1069,7 +1248,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
       <div id="p2time" data-a="up" style="--d:8;margin-top:8px"></div>
       <div class="ttl" data-a="fade" style="--d:9;margin-top:14px;font-size:14px">Gatilhos de compra</div>
       <div data-a="up" style="--d:10;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-        <span class="pill">Prazo da CBS (01/01/2027)</span><span class="pill">Decisão SAP ECC → S/4HANA</span><span class="pill">Go-live em risco</span><span class="pill">Disputa com o integrador</span><span class="pill">Licenças de IA ociosas</span><span class="pill">Troca de ERP motivada pela Reforma</span>
+        <span class="pill">CBS em 01/01/2027</span><span class="pill">SAP ECC → S/4HANA</span><span class="pill">Go-live em risco</span><span class="pill">Disputa com integrador</span><span class="pill">IA ociosa</span><span class="pill">Troca de ERP</span>
       </div>
     </div>
     <div data-a="right" style="--d:4">
@@ -1081,15 +1260,13 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <section class="slide" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Mercado" data-band="Technology Transformation · visão de mercado" data-c="c-steel" data-bs="Big Four · integradores · players locais" data-src="Consultancy.lat e Movimento Econômico (Deloitte e EY em Recife); Deloitte Brasil (AWS até 2031); EY (jan/2025, Beyond Tax Analytics); KPMG Brasil (Reforma, nov/2025); IT Forum (CI&T); Jornal do Comércio (Falconi, set/2026); reformatributaria.com (TOTVS); Capgemini (out/2025); IBM newsroom (jan/2026).">
-  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
-    <div>
-      <div class="stmt kin" style="font-size:23px">Integradores e Big Four ganham escala com centros de entrega e IA embutida. O DTS ganha como <em>a voz independente do cliente</em>.</div>
-      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="2"></table>
-      <div class="pos" data-pos="2" data-a="up" style="--d:8"></div>
-    </div>
+  <div class="body mkb">
+    <div class="stmt kin" style="font-size:23px;grid-column:1/-1">Integradores e Big Four ganham escala com centros de entrega e IA embutida. O DTS ganha como <em>a voz independente do cliente</em>.</div>
+    <table class="tbl mk" data-a="up" style="--d:4" data-mk="2"></table>
     <div class="ws" data-pillar="2" data-a="right" style="--d:6"></div>
+    <div class="pos" data-pos="2" data-a="up" style="--d:8;grid-column:1/-1"></div>
   </div>
-</section>
+  </section>
 
 <section class="slide" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Produtos" data-band="Technology Transformation · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. TMO e Modelo de Implantação e Governança se fundem; IT Business Partner é retirado e absorvido pela liderança embarcada (1.3).">
   <template class="info"><p><b>Before / After:</b> arraste o divisor para comparar hoje e proposta. Clique em um produto para abrir a ficha.</p></template>
@@ -1100,9 +1277,9 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 <section class="slide dark pcover" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Capa" data-nofoot data-pillar="3"></section>
 
 <section class="slide" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Contexto" data-band="Tech M&A · contexto: menos deals, tickets maiores, PE em metade" data-c="c-navy" data-bs="Compradores, casos e implicação" data-src="KPMG Pesquisa de Fusões e Aquisições 2025 (mar/2026) e 1S26 (ago/2026); TTR Data; Giro News (MBRF); Mercado Hoje (Petz+Cobasi); IstoÉ Dinheiro (Braskem); Forbes (Raízen, mai/2026); TechCrunch (DiligenceSquared, mar/2026).">
-  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+  <div class="body ctx" style="display:grid;grid-template-columns:1fr 520px;grid-template-rows:1fr auto;gap:18px 20px">
     <div>
-      <div class="stmt kin" style="font-size:25px">Com <em>PE em metade das transações</em>, o comprador quer velocidade na diligência e certeza no Dia 1, e a DD com IA ficou barata.</div>
+      <div class="stmt kin" style="font-size:24px">Com <em>PE em metade dos deals</em>, o comprador quer diligência rápida e Dia 1 garantido, e a DD com IA já é barata.</div>
       <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
         <div class="f"><span class="k">Fato</span><b>1.581</b> transações em 2025; PE/VC passou de 43% para <b>50%</b> do total. <span class="ev">KPMG</span></div>
         <div class="d"><span class="k">Dado</span>1S26: 610 deals (−35%) e R$ 195 bi (+22,3%); <b>TI é o setor nº 1</b>, com 274 deals. <span class="ev">KPMG</span></div>
@@ -1121,15 +1298,13 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <section class="slide" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Mercado" data-band="Tech M&A · visão de mercado: o campo mais disputado da IA" data-c="c-steel" data-bs="Big Four · estratégia · entrantes · A&M" data-src="Deloitte UK (M&A Technology) e US (ACDC); EY-Parthenon (vagas TSE); PwC (jul/2025; jun/2026); CAST (caso EY); FT via The Decoder (Bain, jul/2026); TechCrunch (DiligenceSquared, mar/2026); BusinessWire (Ode, jul/2026); A&M (A&M Assist, abr/2025).">
-  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
-    <div>
-      <div class="stmt kin" style="font-size:23px">Tech DD é onde a IA mais avançou: <em>plataformas, exclusividades e novos entrantes</em> atacam prazo e preço.</div>
-      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="3"></table>
-      <div class="pos" data-pos="3" data-a="up" style="--d:8"></div>
-    </div>
+  <div class="body mkb">
+    <div class="stmt kin" style="font-size:23px;grid-column:1/-1">Tech DD é onde a IA mais avançou: <em>plataformas, exclusividades e novos entrantes</em> atacam prazo e preço.</div>
+    <table class="tbl mk" data-a="up" style="--d:4" data-mk="3"></table>
     <div class="ws" data-pillar="3" data-a="right" style="--d:6"></div>
+    <div class="pos" data-pos="3" data-a="up" style="--d:8;grid-column:1/-1"></div>
   </div>
-</section>
+  </section>
 
 <section class="slide" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Produtos" data-band="Tech M&A · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. 8 serviços que eram fases de um mesmo ciclo viram 4 produtos + 1 assinatura; o IT M&A Playbook deixa de ser vendido isolado e vira o motor do PE Tech Value Radar.">
   <template class="info"><p><b>Before / After:</b> arraste o divisor para comparar hoje e proposta. Clique em um produto para abrir a ficha.</p></template>
@@ -1140,7 +1315,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 <section class="slide dark pcover" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Capa" data-nofoot data-pillar="4"></section>
 
 <section class="slide" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Contexto" data-band="Modernization · contexto: o legado ficou caro, a IA barateou a saída" data-c="c-navy" data-bs="Compradores, gatilhos e implicação" data-src="Baguete (VMware 8–15×); TI Inside (fev/2025, câmbio); Febraban/Deloitte via Forbes (jun/2026); Convergência Digital (Bradesco e Caixa); Jornal Opção/Finsiders (C&M); Tecnoblog (Sinqia); Legisweb (CMN 5.274); SiliconANGLE/AWS (AWS Transform).">
-  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+  <div class="body ctx" style="display:grid;grid-template-columns:1fr 520px;grid-template-rows:1fr auto;gap:18px 20px">
     <div>
       <div class="stmt kin" style="font-size:25px">A pergunta deixou de ser <em>“se”</em> modernizar e virou <em>“por onde, a que custo e com que garantia”</em>.</div>
       <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
@@ -1151,9 +1326,9 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
       </div>
       <div class="ttl" data-a="fade" style="--d:7;margin-top:18px;font-size:14px">Gatilhos de compra</div>
       <div data-a="up" style="--d:8;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-        <span class="pill">Renovação de VMware</span><span class="pill">Fim de suporte de plataforma</span><span class="pill">Incidente de cyber ou de terceiro</span><span class="pill">CMN 5.274 (adequação mar/2026)</span><span class="pill">Pessoas-chave do legado se aposentando</span><span class="pill">Plano de IA esbarra em dados</span>
+        <span class="pill">Renovação VMware</span><span class="pill">Fim de suporte</span><span class="pill">Incidente de cyber</span><span class="pill">CMN 5.274</span><span class="pill">Legado sem dono</span><span class="pill">IA esbarra em dados</span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;--d:9" data-a="up">
+      <div class="kpi-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;--d:9" data-a="up">
         <div class="kpi-t"><div class="v">8–15×</div><div class="l">alta de licenças VMware pós-Broadcom</div><div class="s">Baguete <span class="ev">E</span></div></div>
         <div class="kpi-t"><div class="v">R$ 3,9 bi</div><div class="l">bancos em migração para cloud em 2026 (+30%)</div><div class="s">Febraban/Deloitte <span class="ev">E</span></div></div>
         <div class="kpi-t"><div class="v">até 4×</div><div class="l">mais rápido em migração .NET com AWS Transform</div><div class="s">AWS/SiliconANGLE <span class="ev">E</span></div></div>
@@ -1168,15 +1343,13 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 </section>
 
 <section class="slide" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Mercado" data-band="Modernization · visão de mercado: o pilar mais exposto" data-c="c-steel" data-bs="Estratégia · integradores · hyperscalers · laboratórios" data-src="McKinsey (LegacyX, 2025); BusinessWire (Accenture GenWizard, abr/2025); Anthropic (Accenture, dez/2025); IBM (WCA for Z, Bob, Enterprise Advantage); SiliconANGLE e Qovery (AWS Transform); ADTmag (GitHub Copilot); Gigazine/Malay Mail (Claude Code e COBOL, fev/2026); SAP LeanIX e Ardoq (2026).">
-  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
-    <div>
-      <div class="stmt kin" style="font-size:23px">Ferramentas agênticas fazem em semanas o que levava anos. O DTS precisa sair da execução e ir para <em>decisão e garantia</em>.</div>
-      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="4"></table>
-      <div class="pos" data-pos="4" data-a="up" style="--d:8"></div>
-    </div>
+  <div class="body mkb">
+    <div class="stmt kin" style="font-size:23px;grid-column:1/-1">Ferramentas agênticas fazem em semanas o que levava anos. O DTS precisa sair da execução e ir para <em>decisão e garantia</em>.</div>
+    <table class="tbl mk" data-a="up" style="--d:4" data-mk="4"></table>
     <div class="ws" data-pillar="4" data-a="right" style="--d:6"></div>
+    <div class="pos" data-pos="4" data-a="up" style="--d:8;grid-column:1/-1"></div>
   </div>
-</section>
+  </section>
 
 <section class="slide" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Produtos" data-band="Modernization · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. ‘Strategy Architecture’, ‘Strategy Application’ e ‘Infrastructure Management’ são renomeados pelo que entregam; IT Resilience chega do Pilar 1; Legacy X-Ray é novo.">
   <template class="info"><p><b>Before / After:</b> arraste o divisor para comparar hoje e proposta. Clique em um produto para abrir a ficha.</p></template>
@@ -1186,10 +1359,10 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 <!-- ===================================================== FECHAMENTO -->
 <section class="slide" data-p="Fechamento" data-t="Fábrica de produtos" data-band="Do serviço ao produto · como produtizar e comercializar" data-c="c-mix" data-bs="Arraste ou clique no card do topo" data-src="IBM (asset-based consulting, 2025); MIT NANDA via Fortune (ago/2025): soluções compradas ou com parceiros têm ~67% de sucesso vs ~1/3 das internas; Everest Group (2026): compradores migram de T&M para modelos de plataforma e valor. Modelo operacional: proposta DTS.">
   <template class="info"><p><b>Card Stack:</b> seis passos para transformar um serviço em produto. Arraste o card do topo para o lado ou clique para avançar.</p></template>
-  <div class="body" style="display:grid;grid-template-columns:600px 1fr;gap:26px">
+  <div class="body fab" style="display:grid;grid-template-columns:600px 1fr;gap:26px">
     <div>
       <div class="stmt kin" style="font-size:23px">Um produto DTS é <em>método + ferramenta + dados + preço + time</em>, igual em todo cliente.</div>
-      <div class="cs-scene" id="csScene" style="height:430px;margin-top:40px;--d:4" data-a="zoom"></div>
+      <div class="cs-scene" id="csScene" style="height:400px;margin-top:40px;--d:4" data-a="zoom"></div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
         <button class="pill clk" id="csPrev" style="border:1px solid var(--line);background:#fff;padding:8px 14px;font:700 12px var(--fb)">‹ Anterior</button>
         <div class="cs-dots" id="csDots"></div>
@@ -1211,7 +1384,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
 
 <section class="slide" data-p="Fechamento" data-t="Roadmap e decisões" data-band="Roadmap de lançamento · decisões para o comitê" data-c="c-navy" data-bs="Timeline 4T26 → 4T27" data-src="Janelas: LC 214/2025 (CBS em 01/01/2027); orçamento 2027; A&M Global AI Board (mai/2026). Datas, metas e sequência: proposta DTS a calibrar com os sócios.">
   <template class="info"><p><b>Timeline Motion:</b> as ondas se revelam em sequência; clique em uma onda para ver o detalhe. Metas são hipóteses a calibrar.</p></template>
-  <div class="body">
+  <div class="body rdm">
     <div style="display:flex;align-items:center;gap:14px">
       <div class="stmt kin" style="font-size:23px;flex:1">Lançar em ondas: <em>proteger o núcleo Signature</em>, capturar as janelas de 2027 e <em>construir recorrência</em>.</div>
       <button class="pill clk" id="tl2Play" style="border:0;background:#122143;color:#fff;padding:10px 16px;font:700 12px var(--fb)">▶ Reproduzir</button>
@@ -1232,9 +1405,9 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
   </div>
 </section>
 
-<section class="slide" data-p="Fechamento" data-t="Fontes e método" data-band="Anexo · fontes, método e grau de evidência" data-c="c-steel" data-bs="Evidência × hipótese" data-src="Pesquisa realizada em 06/10/2026 por 4 frentes paralelas. Relatórios completos, com URLs, na pasta /pesquisa do repositório.">
-  <div class="body" style="display:grid;grid-template-columns:420px 1fr;gap:20px">
-    <div>
+<section class="slide" data-p="Fechamento" data-t="Fontes e método" data-band="Anexo · fontes e método" data-c="c-steel" data-bs="Fonte × proposta DTS" data-src="Pesquisa realizada em 06/10/2026 por 4 frentes paralelas. Relatórios completos, com URLs, na pasta /pesquisa do repositório.">
+  <div class="body src" style="display:grid;grid-template-columns:420px 1fr;gap:20px">
+    <div class="src-l">
       <div class="ttl" style="font-size:15px">Método</div>
       <div id="method" style="display:grid;gap:8px;margin-top:8px"></div>
       <div class="card soft" style="margin-top:12px;padding:10px 14px">
@@ -1243,7 +1416,7 @@ a.tb:hover .more{opacity:1;color:var(--orange)}
         <p style="margin-top:6px"><b>Limitação:</b> a leitura direta de várias páginas estava bloqueada; muitos números vieram de imprensa e associações que citam o estudo primário. <b>Confirmar no original antes de uso externo.</b></p>
       </div>
     </div>
-    <div id="sources" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start"></div>
+    <div id="sources" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:stretch;grid-auto-rows:1fr"></div>
   </div>
 </section>
 
@@ -2099,7 +2272,7 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
 /* ---------- portfólio atual (AS-IS) + spotlight ---------- */
 (function(){const g=$("asGrid");PILLARS.forEach(pl=>{const col=H("div",{class:"op-col",id:"asc"+pl.n,"data-a":"up",style:`--d:${3+pl.n}`},g);
   col.innerHTML=`<div class="op-hd"><div class="n">PILAR ${pl.n}</div><h3>${pl.official}</h3><p>${pl.def_as}</p><span class="cnt">${pl.was} serviços</span></div>`;
-  const list=H("div",{class:"op-list"},col);OLD.filter(o=>o.p===pl.n).forEach(o=>{const d=H("div",{class:"svc"},list);d.innerHTML=`<i></i><span>${o.n}</span>`})});
+  const list=H("div",{class:"op-list"},col);OLD.filter(o=>o.p===pl.n).forEach(o=>{const d=H("div",{class:"svc"},list);d.innerHTML=`<i></i><span>${o.n}</span>`});H("div",{class:"op-when",html:`<b>Quando nos contratam</b>${pl.when}`},list)});
   const st=PILLARS.map(pl=>({sel:"#asc"+pl.n,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.official}`,text:`<span class="sl"><b>O que fazemos</b>${pl.def_as}</span><span class="sl"><b>Serviços</b>${pl.was} no portfólio atual</span><span class="sl"><b>Quando nos contratam</b>${pl.when}</span>`}));
   st.push({sel:"#asChain",btn:"Cadeia de valor",title:"Cadeia de valor A&M",text:`<span class="sl"><b>Onde o DTS atua</b>Na frente Tech & Digital da cadeia de valor da A&M, ao lado das demais áreas funcionais.</span><span class="sl"><b>Como se conecta</b>Apoia as práticas de Transformação, Turnaround, Estratégia & M&A e Data & IA com a dimensão de tecnologia.</span>`,capY:300});
   const sp=Spotlight($("asHost"),st,$("asSeg"));segSync($("asSeg"));
@@ -2110,7 +2283,7 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
 (function(){const g=$("opGrid");PILLARS.forEach(pl=>{const col=H("div",{class:"op-col",id:"opc"+pl.n,"data-a":"up",style:`--d:${3+pl.n}`},g);
   col.innerHTML=`<div class="op-hd"><div class="n">PILAR ${pl.n}</div><h3>${pl.name}</h3><p>${pl.short}</p><span class="cnt">${pl.was} → ${pl.now}</span></div>`;
   const list=H("div",{class:"op-list"},col);PRODUCTS.filter(p=>p.pillar===pl.n).forEach((p,k)=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}${p.st==="new"?" holo":""}`,title:"Abrir ficha: "+p.name,style:`--hd:${(k*.6).toFixed(1)}s`},list);
-    a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★ SIGNATURE</span>':""}</span><span class="ds">${p.tagline}</span></span><span class="go">›</span>`})});
+    a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig" title="A&M Signature">★</span>':""}</span><span class="ds">${p.tagline}</span></span><span class="go">›</span>`})});
   const st=PILLARS.map(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg=ps.filter(p=>p.sig),ai=ps.filter(p=>p.st!=="keep").length;
     return{sel:"#opc"+pl.n,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pl.was} serviços de hoje viram ${pl.now} produtos; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span>`}});
   st.push({sel:"#opAI",btn:"Plataforma",title:"Plataforma de Dados e AI",text:`<span class="sl"><b>O que é</b>Ativos compartilhados por todos os produtos: diagnóstico padrão, radar de gastos, benchmark Brasil, biblioteca de agentes e LLM corporativo seguro.</span><span class="sl"><b>Por que importa</b>É o que torna o serviço replicável de um cliente para o outro e sustenta a receita recorrente.</span>`,capY:330});
@@ -2120,8 +2293,8 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
 
 /* ---------- 50/50 · de serviços a produtos ---------- */
 const BAS={};
-(function(){const asis=$("hbAsis"),tobe=$("hbTobe");PILLARS.forEach(pl=>{const c1=H("div",{class:"op-col"},asis);c1.innerHTML=`<div class="op-hd"><div class="n">HOJE · PILAR ${pl.n}</div><h3>${pl.official}</h3><span class="cnt">${pl.was}</span></div>`;const l1=H("div",{class:"op-list"},c1);OLD.filter(o=>o.p===pl.n).forEach(o=>{H("div",{class:"svc",html:`<i></i><span>${o.n}</span>`},l1)});
-    const c2=H("div",{class:"op-col"},tobe);c2.innerHTML=`<div class="op-hd"><div class="n">PROPOSTA · PILAR ${pl.n}</div><h3>${pl.name}</h3><span class="cnt">${pl.now}</span></div>`;const l2=H("div",{class:"op-list"},c2);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}`,title:"Abrir ficha: "+p.name},l2);a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span></span>`})});
+(function(){const asis=$("hbAsis"),tobe=$("hbTobe");PILLARS.forEach(pl=>{const c1=H("div",{class:"op-col"},asis);c1.innerHTML=`<div class="op-hd"><div class="n">HOJE · PILAR ${pl.n}</div><h3>${pl.official}</h3><span class="cnt">${pl.was}</span></div>`;const l1=H("div",{class:"op-list"},c1);OLD.filter(o=>o.p===pl.n).forEach(o=>{H("div",{class:"svc",html:`<i></i><span>${o.n}</span>`},l1)});H("div",{class:"op-when",html:`<b>Quando nos contratam</b>${pl.when}`},l1);
+    const c2=H("div",{class:"op-col"},tobe);c2.innerHTML=`<div class="op-hd"><div class="n">PROPOSTA · PILAR ${pl.n}</div><h3>${pl.name}</h3><span class="cnt">${pl.now}</span></div>`;const l2=H("div",{class:"op-list"},c2);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}`,title:"Abrir ficha: "+p.name},l2);a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span></span>`});H("div",{class:"op-when",html:`<b>Como fica</b>${pl.short}, com inteligência artificial no método e preço por valor.`},l2)});
   const M=[["O que temos","29","serviços em 4 pilares, com sobreposições e sem IA no método","#122143"],["O que mudar","13 → 6","serviços que se sobrepõem fundidos em 6 produtos","#33556D"],["O que retirar","2","IT Business Partner e IT M&amp;A Playbook deixam de ser vendidos isolados","#BC0404"],["Melhorar com IA","15","produtos remodelados com IA no método","#5E8AB4"],["Criar com IA","4","AI Value &amp; Governance Office · AI-Native IT · PE Tech Value Radar · Legacy X-Ray","#F78C16"]];
   M.forEach(([k,v,d,c],i)=>{const b=H("div",{class:"card"+(i===4?" holo":""),"data-a":"stack",style:`--d:${6+i};--r:${(i-2)*2}deg;--sx:${(2-i)*30}px;border-top:5px solid ${c}`},$("moves"));b.innerHTML=`<div class="eye" style="color:${c};margin-bottom:2px">${k}</div><div class="big" style="color:${i===4?"#C96A05":"#002B49"}">${v}</div><p>${d}</p>`});
   let lastOn="";const ba=BeforeAfter($("hb"),{rest:50,l:"HOJE · 29 SERVIÇOS",r:"PROPOSTA · 24 PRODUTOS",onMove:x=>{let k="";$("hbSeg").querySelectorAll("button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync($("hbSeg"))}}});BAS.hb=ba;
@@ -2129,7 +2302,7 @@ const BAS={};
   ENTER["De serviços a produtos"]=()=>{segSync($("hbSeg"));ba.demo();setTimeout(()=>segSync($("hbSeg")),2700)}})();
 
 /* ---------- nomenclatura ---------- */
-(function(){PILLARS.forEach((pl,i)=>{const d=H("div",{class:"nm-p","data-a":"up",style:`--d:${3+i}`},$("nmPillars"));d.innerHTML=`<div class="a">${pl.official}</div><div class="ar">→</div><div class="b">${pl.to}${pl.to===pl.official?"<small>sem mudança</small>":""}</div>`});
+(function(){PILLARS.forEach((pl,i)=>{const d=H("div",{class:"nm-p","data-a":"up",style:`--d:${3+i}`},$("nmPillars"));d.innerHTML=`<div class="a">${pl.official}</div><div class="ar">→</div><div class="b">${pl.to}${pl.to===pl.official?' <small>· sem mudança</small>':""}</div>`});
   NM_MARKET.forEach(([m,d,c],i)=>{const el=H(c?"a":"div",{class:"nm-i","data-a":"up",style:`--d:${8+i}`},$("nmRow"));if(c){el.href="#p="+PBY(c).id;el.dataset.pd=PBY(c).id}el.innerHTML=`<div class="m">${m}</div><div class="ar">→ DTS</div><div class="d">${c?c+" · ":""}${d}</div>`});
   NM_PRODS.forEach(([a,c],i)=>{const p=PBY(c);const el=H("a",{class:"nm-x",href:"#p="+p.id,"data-pd":p.id,"data-a":"up",style:`--d:${3+i}`,title:"Abrir ficha: "+p.name},$("nmProds"));el.innerHTML=`<div class="a">${a}</div><div class="ar">→</div><div class="b">${p.code} ${p.name}</div>`})})();
 
@@ -2146,7 +2319,7 @@ const BAS={};
 (function(){const host=$("tlMarket");let tl=null;
   const T4=[["Plataforma própria + agentes","Zora AI, agent OS, EY.ai, Workbench e Lilli, com NVIDIA, Microsoft, Google e laboratórios de IA.","A A&M não precisa competir em plataforma: pode ser neutra e orquestradora."],["Preço por resultado e por ativo","McKinsey cobra ~25% por resultado; Deloitte vende agentes por assinatura; IBM fala em consultoria baseada em ativos.","O DNA de honorário por resultado da A&M vira vantagem."],["Diligência e PE sob pressão","DD com agentes por ~US$ 50 mil; laboratórios de IA entram nas investidas dos fundos (Ode); Bain replica o software do alvo.","O valor migra para o que vem depois do signing: Dia 1, TSA e sinergias."],["Pares compram capacidade","AlixPartners adquire a Artium; Falconi investe R$ 100 mi; CI&T monetiza IA pela plataforma Flow.","Produtizar o DNA de operador com IA, antes dos pares."]];
   T4.forEach(([t,x,h],i)=>{const d=H("div",{class:"card","data-a":"up",style:`--d:${8+i};padding:10px 14px;border-top:4px solid ${i===3?"#F78C16":"#33556D"}`},$("benchTake"));d.innerHTML=`<h4>${t}</h4><p style="font-size:11.8px">${x}</p><p style="font-size:11.8px;margin-top:5px;color:#002B49"><b>→</b> ${h}</p>`});
-  const mk=()=>{if(!tl)tl=Timeline(host,TL_2026,{w:host.offsetWidth||1060,y:246,cardY:30,x0:60,x1:(host.offsetWidth||1060)-60,dwell:2400});return tl};
+  const mk=()=>{if(!tl)tl=Timeline(host,TL_2026,{w:host.offsetWidth||1060,y:300,cardY:50,x0:60,x1:(host.offsetWidth||1060)-60,dwell:2400});return tl};
   ENTER["Benchmark · IA nas consultorias"]=()=>mk().play();
   $("tlPlay").onclick=()=>mk().play();PRINT.push(()=>{const t=mk();t.stopAuto();t.set(2)})})();
 
@@ -2171,10 +2344,10 @@ const BAS={};
 /* ---------- três caminhos ---------- */
 (function(){const P=[["Incremental","IA dentro dos serviços de hoje","Mantém os 29 serviços e nomes; IA como produtividade interna da equipe.",["Rápido e barato","Não resolve sobreposições nem nomes","Preço continua por hora: pressão de preço com a IA","<b>Receita:</b> horas e projetos sob medida"],[1,1,0],"~3 meses",false],
   ["Transformacional","Portfólio de produtos com IA","29 → 24 produtos com escopo, método, ferramenta, dados e preço; 4 Signature; 4 novos com IA.",["Funde 13 serviços sobrepostos em 6 produtos","IA no método de 19 produtos","Plataforma DTS compartilhada","<b>Receita:</b> sprint fixo + execução com êxito + primeiras assinaturas"],[3,4,2],"6–9 meses",true],
-  ["Disruptivo","DTS como plataforma (service-as-software)","Radares e escritórios por assinatura, benchmark Brasil como produto de dados e agentes operando para o cliente.",["Receita recorrente e escalável","Exige engenharia, dados e parcerias (como AlixPartners–Artium)","Risco de canibalizar projetos","<b>Receita:</b> assinatura por empresa, agente ou fundo"],[5,5,5],"18–24 meses",false]];
-  P.forEach(([k,h,p,li,m,t,rec],i)=>{const d=H("div",{class:"path3"+(rec?" rec":""),"data-a":"up",style:`--d:${4+i*2}`},$("paths"));
+  ["Disruptivo","DTS como plataforma","Service-as-software: radares e escritórios por assinatura, benchmark Brasil como produto de dados e agentes operando para o cliente.",["Receita recorrente e escalável","Exige engenharia, dados e parcerias (como AlixPartners–Artium)","Risco de canibalizar projetos","<b>Receita:</b> assinatura por empresa, agente ou fundo"],[5,5,5],"18–24 meses",false]];
+  P.forEach(([k,h,p,li,m,t,rec],i)=>{const d=H("div",{class:"path3 big"+(rec?" rec":""),"data-a":"up",style:`--d:${4+i*2}`},$("paths"));
     const mt=(lab,v,o)=>`<div style="display:grid;grid-template-columns:110px 1fr;gap:8px;align-items:center;margin-top:5px"><span class="small" style="font-size:11px;font-weight:700;color:#35516A">${lab}</span><div class="meter${o?" o":""}">${[1,2,3,4,5].map(j=>`<i class="${j<=v?"on":""}"></i>`).join("")}</div></div>`;
-    d.innerHTML=`${rec?'<span class="rib">★ RECOMENDADO</span>':""}<div class="k">${k}</div><h3 style="margin-top:4px">${h}</h3><p style="margin-top:8px">${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul><div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--line2)">${mt("Investimento",m[0])}${mt("Diferenciação",m[1],1)}${mt("Recorrência",m[2],1)}<div class="small" style="margin-top:6px;font-size:11.5px">Tempo até impacto: <b style="color:#002B49">${t}</b> <span class="hy">H</span></div></div>${rec?`<div style="margin-top:10px;background:var(--orange-bg);border:1px dashed var(--orange-line);border-radius:8px;padding:7px 10px;font:600 11.8px/1.4 var(--fb);color:#8A4A05">+ incubar 2 apostas disruptivas: ${plink("3.5")} e ${plink("1.7")}</div>`:""}`})})();
+    d.innerHTML=`${rec?'<span class="rib">★ RECOMENDADO</span>':""}<div class="k">${k}</div><h3 style="margin-top:4px">${h}</h3><p style="margin-top:8px">${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul><div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--line2)">${mt("Investimento",m[0])}${mt("Diferenciação",m[1],1)}${mt("Recorrência",m[2],1)}<div class="small" style="margin-top:6px;font-size:11.5px">Tempo até impacto: <b style="color:#002B49">${t}</b> <span class="hy">H</span></div></div>${rec?`<div style="margin-top:10px;background:var(--orange-bg);border:1px dashed var(--orange-line);border-radius:8px;padding:8px 10px;font:600 11.8px/1.4 var(--fb);color:#8A4A05"><div style="margin-bottom:5px">+ incubar duas apostas disruptivas desde já</div><div class="chips-row">${plink("3.5")}${plink("1.7")}</div></div>`:""}`})})();
 
 /* ---------- capas de pilar ---------- */
 const PCM={};
@@ -2183,7 +2356,7 @@ document.querySelectorAll(".pcover").forEach(sec=>{const n=+sec.dataset.pillar,p
   <div style="position:absolute;left:84px;top:62px;right:760px;z-index:2">
     <div class="cover-wm" data-a="fade">${amLogo(34)}<span class="am-div" style="height:40px;background:rgba(255,255,255,.3)"></span>${dtsLogo(36)}</div>
     <div class="eye" data-a="fade" style="--d:2;color:var(--orange);margin-top:70px;font-size:12px">Pilar 0${n} · ${pl.short}</div>
-    <h1 class="cv-title kin" style="font-size:${pl.name.length>18?78:96}px">${pl.name}</h1>
+    <h1 class="cv-title kin" style="font-size:${pl.name.length>22?68:pl.name.length>18?78:96}px">${pl.name}</h1>
     ${pl.to!==pl.name?`<div data-a="fade" style="--d:5;margin-top:12px;font:600 14px var(--fb);color:#9DB7CE">Nome proposto: <b style="color:#fff">${pl.to}</b></div>`:""}
     <p class="cv-lead" data-a="blur" style="--d:6;margin-top:18px;font-size:19px">${pl.def}</p>
     <div data-a="up" style="--d:8;display:flex;gap:40px;margin-top:28px">
@@ -2191,7 +2364,7 @@ document.querySelectorAll(".pcover").forEach(sec=>{const n=+sec.dataset.pillar,p
       <div><div class="big" style="color:var(--orange-l);font-size:50px">${k}/${pl.now}</div><div class="small" style="color:#9DB7CE;font-size:12px">com IA no núcleo</div></div>
       <div><div class="big" style="color:#fff;font-size:50px">${nw.length}</div><div class="small" style="color:#9DB7CE;font-size:12px">produto novo</div></div>
     </div>
-    <div data-a="fade" style="--d:10;margin-top:24px;display:flex;flex-wrap:wrap;gap:8px">${nw.map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="pill holo" style="background:#F78C16;color:#1A1200;padding:9px 14px;font-weight:800">★ Novo · ${p.name}</a>`).join("")}${sg.map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="pill" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);padding:9px 14px">Signature · ${p.name}</a>`).join("")}</div>
+    <div data-a="fade" class="pc-pills" style="--d:10">${nw.map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="pill holo new" title="Produto novo com IA">✦ Novo · ${p.name}</a>`).join("")}${sg.map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="pill sg" title="A&M Signature">★ ${p.name}</a>`).join("")}</div>
   </div>
   <svg class="pc-morph" viewBox="0 0 640 640" style="position:absolute;right:60px;top:100px;width:640px;height:640px" aria-hidden="true"></svg>
   <div class="pc-states" style="position:absolute;right:150px;bottom:60px;display:flex;gap:10px"></div>`;
@@ -2207,7 +2380,7 @@ const PERS={1:[["CEO · Conselho","A IA está gerando resultado ou só custo? Qu
  2:[["CFO · Head Tax","Meu ERP estará pronto para a CBS em 01/01/2027?",["2.2"]],["CIO · Compras","Qual fornecedor escolher e como contratar sem lock-in?",["2.1"]],["Sponsor · Conselho","Por que o programa atrasou e quanto custa terminar?",["2.3","2.4"]],["CHRO · CIO","Por que ninguém usa a IA que compramos?",["2.5","2.6"]]],
  3:[["Sócio de PE","Quais riscos de tecnologia mudam o preço? E depois do closing?",["3.1","3.5"]],["Corporate development","Como integramos sem parar a operação?",["3.2","3.3"]],["CFO do vendedor","Como separamos a TI e saímos da TSA no prazo?",["3.2","3.3"]],["CEO pós-deal","Onde estão as sinergias de TI prometidas no deal?",["3.4"]]],
  4:[["CIO · CTO","Por onde começo a modernizar o legado e quanto custa?",["4.1","4.6"]],["CFO","Quanto pago em virtualização, nuvem e sistemas redundantes?",["4.2","4.3"]],["CRO · COO","Aguentamos um ataque ou a falha de um terceiro?",["4.5"]],["Conselho","A migração vai dar certo? Quem garante?",["4.4"]]]};
-document.querySelectorAll(".persona").forEach(h=>{PERS[h.dataset.pillar].forEach(([r,q,ps],i)=>{const d=H("div",{class:"pers"},h);d.innerHTML=`<div class="r">${r}</div><div class="q">“${q}”</div><div class="ps">${ps.map(c=>plink(c,"sm")).join(" ")}</div>`})});
+document.querySelectorAll(".persona").forEach(h=>{PERS[h.dataset.pillar].forEach(([r,q,ps],i)=>{const d=H("div",{class:"pers"},h);d.innerHTML=`<div class="r">${r}</div><div class="q">“${q}”</div><div class="pq">${ps.map(c=>plink(c,"sm")).join(" ")}</div>`})});
 const MK={1:[["Deloitte","Technology Strategy & Transformation; Technology Strategy & Architecture","Zora AI (agentes por assinatura); aliança Anthropic (470 mil profissionais); Trustworthy AI","Forte em estratégia e plataforma; CIO interino não encontrado","E"],
   ["EY","Technology Strategy & Transformation · Office of the CIO (IT Finance, Sourcing, PPM)","EY.ai Agentic Platform com NVIDIA; investimento de US$ 1,4 bi","Op model e finanças de TI robustos","E"],
   ["KPMG","CIO Advisory (TBM/Apptio); KPMG Trusted AI","Workbench multiagente; 1ª Big Four com ISO/IEC 42001","Concorrente direto em custo de TI e governança de IA","E"],
@@ -2250,7 +2423,7 @@ document.querySelectorAll(".ws").forEach(h=>{const w=WS[h.dataset.pillar];h.inne
 document.querySelectorAll(".bap").forEach(host=>{const n=+host.dataset.pillar,pl=PILLARS[n-1],ps=PRODUCTS.filter(p=>p.pillar===n);
   const rows=ps.map(p=>({p,olds:OLD.filter(o=>o.to===p.code)}));const out=OLD.filter(o=>o.p===n&&!ps.some(p=>p.code===o.to));const R=rows.length+out.length;
   const DN={keep:"Manter",ai:"Remodelar",merge:"Fundir",cut:"Retirar"};
-  const asisRow=r=>{if(!r.olds.length)return`<div class="c a"><div class="asis-none">— não existe hoje —</div></div><div class="c b"><div class="why"><b>Lacuna:</b> ${strip(r.p.pain[0])}.</div></div>`;
+  const asisRow=r=>{if(!r.olds.length)return`<div class="c a"><div class="asis-none">não existe hoje</div></div><div class="c b"><div class="why"><b>Lacuna:</b> ${strip(r.p.pain[0])}.</div></div>`;
     const prim=r.olds.find(o=>o.d!=="merge"&&o.d!=="cut")||r.olds[0];
     return`<div class="c a">${r.olds.map(o=>`<span class="asis-chip ${o.d}">${o.n}${o.p!==n?` <i>(Pilar ${o.p})</i>`:""}</span>`).join("")}</div><div class="c b"><div class="why">${r.olds.length>1?`<b>Sobreposição:</b> ${r.olds.length} serviços para o mesmo comprador. `:""}${prim.w}</div><span class="dec">${[...new Set(r.olds.map(o=>DN[o.d]))].join(" + ")}</span></div>`};
   const tobeRow=r=>{const p=r.p;return`<div class="c a"><div class="tb-code">${p.code}</div>${stTag(p.st)}${p.sig?'<span class="sig2">★ Signature</span>':""}</div><a class="c b tb" href="#p=${p.id}" data-pd="${p.id}"><div class="tb-nm">${p.name}<span class="more">ficha ›</span></div><div class="tb-tl">${p.tagline}</div><div class="tb-ai"><b>IA:</b> ${strip(p.ai[0])}</div></a>`};
@@ -2296,7 +2469,7 @@ function pillarNotes(n){return{1:["3 ofertas de liderança viram 1 (Interim & Em
   [["Dono de produto","1 por pilar + 1 de IA: P&L, roadmap e qualidade da ficha"],["Squad padrão","Sócio · gerente · 2 consultores · engenheiro de IA/dados"],["Comitê trimestral","Escalar · ajustar · aposentar com base em receita, margem e conversão"]].forEach(([t,x],i)=>{const d=H("div",{class:"card soft","data-a":"up",style:`--d:${11+i};padding:10px 12px`},$("opm"));d.innerHTML=`<h4>${t}</h4><p style="font-size:11.8px">${x}</p>`})})();
 
 /* ---------- roadmap + decisões ---------- */
-(function(){let tl=null;ENTER["Roadmap e decisões"]=()=>{if(!tl)tl=Timeline($("tlLaunch"),TL_LAUNCH,{w:1508,y:196,cardY:14,x0:110,x1:1400,dwell:2400});tl.play()};$("tl2Play").onclick=()=>tl&&tl.play();PRINT.push(()=>{if(!tl)tl=Timeline($("tlLaunch"),TL_LAUNCH,{w:1508,y:196,cardY:14,x0:110,x1:1400,dwell:2400});tl.stopAuto();tl.set(1)});
+(function(){let tl=null;ENTER["Roadmap e decisões"]=()=>{if(!tl)tl=Timeline($("tlLaunch"),TL_LAUNCH,{w:1508,y:214,cardY:14,x0:110,x1:1400,dwell:2400});tl.play()};$("tl2Play").onclick=()=>tl&&tl.play();PRINT.push(()=>{if(!tl)tl=Timeline($("tlLaunch"),TL_LAUNCH,{w:1508,y:214,cardY:14,x0:110,x1:1400,dwell:2400});tl.stopAuto();tl.set(1)});
   ["<b>Aprovar o portfólio de 24 produtos</b> (5 manter · 15 aprimorar · 4 criar) e os 4 A&amp;M Signature.","<b>Nomear donos de produto</b> (1 por pilar + 1 de IA) e instituir o comitê trimestral de portfólio.","<b>Investir na plataforma DTS</b>: LLM corporativo seguro, Spend Radar, benchmark DTS Brasil, biblioteca de agentes.","<b>Atacar as janelas de 2027</b>: Reforma Tributária (CBS em 01/01/2027) e orçamento/custo de tecnologia.","<b>Validar os 4 produtos novos</b> com 3–5 clientes-piloto cada, incluindo 1–2 fundos de PE.","<b>Alinhar fronteiras</b> com A&amp;M Tax, Data &amp; IA, PEPI e o Global AI Board (reuso de A&amp;M Assist e DiligenceGPT)."].forEach(x=>H("li",{html:x},$("decisions")));
   [["Pessoas","4 donos de produto (1 por pilar) + 1 de IA; 2–3 engenheiros de IA/dados; trilha de skills para o time"],["Ferramentas","LLM corporativo seguro; Power BI/Fabric; análise de código para DD e legado; repositório de agentes e prompts"],["Parcerias","1 hyperscaler e 1 laboratório de IA; ferramentas de code analysis e FinOps; A&M Tax e PEPI internamente"],["Dados","Benchmark DTS Brasil (gasto, maturidade, preços unitários), alimentado por cada projeto, anonimizado"]].forEach(([t,x],i)=>{const d=H("div",{class:"cap-i","data-a":"up",style:`--d:${10+i}`},$("caps"));d.innerHTML=`<b>${t}</b><p>${x}</p>`});
   [["≥30%","da receita DTS de produtos com IA no método em 2027"],["≥10%","de receita recorrente (radares e escritórios)"],["−30%","no tempo de entrega de diagnósticos e DDs"],["≥40%","de conversão sprint → execução"]].forEach(([v,l])=>{const d=H("div",null,$("kpisOK"));d.innerHTML=`<div style="font:700 28px/1 var(--fh);color:var(--orange-l)">${v}</div><div style="font:500 11.5px/1.35 var(--fb);color:#C8DBEB;margin-top:3px">${l}</div>`})})();
