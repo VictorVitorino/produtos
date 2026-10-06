@@ -1,0 +1,368 @@
+<!-- ===================================================== ABERTURA -->
+<!--@CAPA-->
+<section class="slide dark" data-t="Capa" data-nofoot>
+  <div id="cvLines" style="position:absolute;left:-60px;bottom:-30px;opacity:.35"></div>
+  <div style="position:absolute;left:84px;top:62px;right:780px;z-index:2">
+    <div data-a="fade" class="cover-wm" id="cvLogos"></div>
+    <div class="eye" data-a="fade" style="--d:2;color:var(--orange);margin-top:80px;font-size:12px">Planejamento estratégico · Portfólio DTS 2027</div>
+    <h1 class="cv-title kin">Do serviço ao <em>produto</em>, com IA no centro</h1>
+    <p class="cv-lead" data-a="blur" style="--d:6;margin-top:24px">Revisamos os <b>29 serviços</b> do DTS à luz do mercado brasileiro e das principais consultorias para decidir o que <b>manter</b>, <b>aprimorar com IA</b>, <b>retirar</b> e quais <b>produtos novos</b> criar.</p>
+    <div data-a="up" style="--d:8;display:flex;gap:46px;margin-top:34px">
+      <div><div class="big" style="color:#fff;font-size:54px"><span data-count="29">29</span> → <span data-count="24">24</span></div><div class="small" style="color:#9DB7CE;font-size:12px">serviços → produtos</div></div>
+      <div><div class="big" style="color:var(--orange-l);font-size:54px" data-count="19">19</div><div class="small" style="color:#9DB7CE;font-size:12px">com IA no núcleo do método</div></div>
+      <div><div class="big" style="color:#fff;font-size:54px" data-count="4">4</div><div class="small" style="color:#9DB7CE;font-size:12px">produtos novos com IA</div></div>
+    </div>
+    <div data-a="fade" style="--d:10;margin-top:30px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span class="pill" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Mercado Brasil</span>
+      <span class="pill" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">Big Four · Estratégia · Integradores · Pares</span>
+      <span class="pill" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">24 fichas de produto</span>
+      <span style="margin-left:6px;font:600 11.5px var(--fb);color:#9DB7CE"><span class="ev">Evidência</span> dado com fonte · <span class="hy">Hipótese</span> proposta a validar</span>
+    </div>
+  </div>
+  <svg id="cvMorph" viewBox="0 0 640 640" style="position:absolute;right:70px;top:110px;width:660px;height:660px" aria-hidden="true"></svg>
+  <div id="cvStates" style="position:absolute;right:120px;bottom:64px;display:flex;gap:10px"></div>
+</section>
+
+<!--@RESUMO-->
+<section class="slide" data-t="Resumo executivo" data-band="Resumo executivo · o que muda no portfólio DTS" data-c="c-navy" data-bs="Diagnóstico → decisão" data-src="Fontes: PwC 29ª CEO Survey (jan/2026); Deloitte State of AI 2026; KPMG M&A 2025; LC 214/2025; A&M press release (05/05/2026) e Bloomberg (04/05/2026). Contagens do portfólio: análise DTS.">
+  <template class="info"><p>Resposta primeiro (princípio da pirâmide): o que o DTS tem hoje, o que muda, o que sai, o que melhora com IA e o que nasce.</p><p>As contagens vêm do mapeamento serviço → produto (slide do Raio-X). Dados de mercado com fonte no rodapé.</p></template>
+  <div class="body">
+    <div class="stmt kin" style="font-size:26px;max-width:1400px">O DTS tem <em>direito de vencer</em> onde a A&amp;M é operadora: liderança, custo, crise e deals. O próximo passo é <em>transformar esse DNA em produtos</em>, com IA no método.</div>
+    <div id="moves" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px"></div>
+    <div class="fdii" data-a="up" style="--d:9;margin-top:14px">
+      <div class="f"><span class="k">Situação</span>29 serviços em 4 pilares, com <b>sobreposições</b> (3 ofertas de liderança, IMO × SMO, DD buy × sell), nomes pouco claros (“Strategy Application”) e <b>IA ausente</b> do portfólio.</div>
+      <div class="d"><span class="k">Complicação</span>A IA comprime prazo e preço de diagnósticos e DDs; Big Four e MBB lançaram plataformas agênticas; <b>56% dos CEOs</b> ainda não veem retorno da IA <span class="ev">PwC 2026</span>.</div>
+      <div class="i"><span class="k">Questão</span>Onde o DTS deve jogar em 2027 e como transformar serviços sob medida em <b>produtos replicáveis e comercializáveis</b>?</div>
+      <div class="m"><span class="k">Resposta</span><b>24 produtos</b>: 5 mantidos, 15 aprimorados com IA, 4 novos; 4 <b>A&amp;M Signature</b>; uma fábrica de produtos com plataforma DTS compartilhada.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:14px;--d:11" data-a="up">
+      <div class="card soft" style="padding:12px 16px">
+        <div class="ttl" style="font-size:14px;margin-bottom:8px">Por que agora · janelas de 2027</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px" id="whyNow"></div>
+      </div>
+      <div class="card" style="padding:12px 16px">
+        <div class="ttl" style="font-size:14px;margin-bottom:8px">Roteiro</div>
+        <div id="agenda" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
+      </div>
+    </div>
+    <div class="sumbar" data-a="up" style="--d:12"><div class="t">Onde apostar</div><div id="bets" style="display:grid;grid-template-columns:1fr 1fr;gap:14px"></div></div>
+  </div>
+</section>
+
+<!--@ONEPAGE-->
+<section class="slide" data-t="One-page · novo portfólio" data-band="One-page executiva · novo modelo de portfólio DTS" data-c="c-mix" data-bs="Clique em um produto para abrir a ficha" data-src="Status: Manter = essência preservada · Aprimorar com IA = remodelado com IA no método · Criar com IA = produto novo. ★ A&M Signature = maior direito de vencer (DNA operador). Avaliação DTS a validar com os sócios.">
+  <template class="info"><p><b>Spotlight:</b> use → / ← ou os botões para percorrer os pilares com foco; o resto da tela fica em penumbra.</p><p>Cada produto é um hiperlink para a página de detalhamento (público-alvo, problema, entregáveis, método, skills, ferramentas, dados, papel da IA e como produtizar).</p></template>
+  <div class="body" style="padding-top:12px">
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:10px">
+      <div class="stmt kin" style="font-size:22px;flex:1">De <em>29 serviços</em> para <em>24 produtos</em>: menos sobreposição, IA no método e 4 apostas novas.</div>
+      <div class="seg" id="opSeg" data-a="fade" style="--d:4"></div>
+    </div>
+    <div class="legend" data-a="fade" style="--d:3;margin-bottom:10px">
+      <span><i style="background:var(--st-keep)"></i>Manter (5)</span>
+      <span><i style="background:var(--st-ai)"></i>Aprimorar com IA (15)</span>
+      <span><i style="background:var(--st-new)"></i>Criar com IA (4)</span>
+      <span style="color:var(--orange-dd);font-weight:800">★ A&amp;M Signature (4)</span>
+      <span class="hint" style="margin-left:auto">→ percorre os pilares com spotlight</span>
+    </div>
+    <div class="spot-host" id="opHost">
+      <div class="op-grid" id="opGrid"></div>
+      <div class="op-ai" id="opAI" data-a="up" style="--d:9">
+        <div><div class="eye" style="color:var(--orange-l);margin-bottom:2px">Camada transversal</div><div style="font:700 19px/1.1 var(--fh);letter-spacing:.02em;text-transform:uppercase">Plataforma DTS de IA &amp; dados</div></div>
+        <div class="tg"><span>DTS Lens · diagnóstico</span><span>Spend Radar</span><span>Benchmark DTS Brasil</span><span>Biblioteca de agentes e prompts</span><span>Playbooks &amp; kits</span><span>LLM corporativo seguro</span><span>A&amp;M Assist · DiligenceGPT</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--@MERCADO-->
+<section class="slide" data-t="Forças de mercado" data-p="Abertura" data-band="Mercado Brasil · seis forças que redesenham a demanda" data-c="c-blue" data-bs="Evidências 2025–2026" data-src="ABES/IDC (mar/2026); IDC via EuQueroInvestir (2026); PwC CEO Survey (jan/2026); Deloitte State of AI 2026; KPMG M&A 2025 e 1S26; LC 214/2025; Baguete; TI Inside; Finsiders/Tecnoblog; Legisweb (CMN 5.274); KPMG Global Tech Report; Brasscom (mai/2026).">
+  <template class="info"><p>Cada força traz um dado com fonte (Evidência) e a implicação para o portfólio (Hipótese DTS). Os números vieram de imprensa e associações que citam o estudo primário; confirmar no original antes de uso externo.</p></template>
+  <div class="body">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px" id="mktKpis"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px" id="forces"></div>
+    <div class="sumbar" data-a="up" style="--d:12"><div class="t">Leitura DTS</div><p>As seis forças premiam ofertas com <b>prazo, preço e resultado definidos</b>, independência de fornecedor e capacidade de assumir o comando: exatamente o DNA A&amp;M. Perdem força a estratégia digital genérica, o PMO sem accountability e a alocação de perfis. <span class="hy">Hipótese</span></p></div>
+  </div>
+</section>
+
+<!--@BENCH-->
+<section class="slide" data-t="Benchmark · IA nas consultorias" data-p="Abertura" data-band="Benchmark · como as consultorias estão usando IA" data-c="c-steel" data-bs="Timeline 2023–2026 · clique nos marcos" data-src="ICMIF (set/2023); SiliconANGLE; PwC; EY; KPMG International (jun/2025); Business Insider/HBR (jan/2026); A&M press release e Bloomberg (mai/2026); PwC US (jun/2026); BusinessWire/FT (jul/2026); AlixPartners (ago/2026); Jornal do Comércio e IT Forum (2026).">
+  <template class="info"><p><b>Timeline Motion:</b> a linha se desenha marco a marco (autoplay); clique em qualquer marco para ver o detalhe.</p><p>Leitura: as grandes firmas convergiram para plataforma própria + agentes + parcerias com laboratórios; a precificação migra para resultado e ativo.</p></template>
+  <div class="body">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="stmt kin" style="font-size:23px;flex:1">Em 3 anos, IA virou <em>plataforma, produto e modelo de preço</em> nas consultorias. A própria A&amp;M mira <em>50% da receita ligada a IA até 2028</em>.</div>
+      <button class="pill clk" id="tlPlay" style="border:0;background:#122143;color:#fff;padding:10px 16px;font:700 12px var(--fb)">▶ Reproduzir</button>
+    </div>
+    <div class="tl-wrap" id="tlMarket" style="height:300px;margin-top:4px"></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px" id="benchTake"></div>
+    <div class="ttl" data-a="fade" style="--d:12;font-size:13px;margin-top:12px">Como o mercado chama → como o DTS passa a chamar</div>
+    <div class="nm-row" id="nmRow"></div>
+  </div>
+</section>
+
+<!--@RAIOX-->
+<section class="slide" data-t="Raio-X do portfólio atual" data-p="Abertura" data-band="Raio-X · os 29 serviços atuais em uma matriz de decisão" data-c="c-navy" data-bs="Atratividade × direito de vencer" data-src="Avaliação qualitativa DTS (hipótese a validar com os sócios), informada pela pesquisa de mercado: atratividade = demanda Brasil 2026–27, crescimento, disposição a pagar e risco de comoditização por IA; direito de vencer = DNA A&M (operador, PE, turnaround, interim), ativos e reputação.">
+  <template class="info"><p>Cada bolha é um serviço atual; a cor é a decisão. Passe o mouse para ver a justificativa. Estrelas laranja tracejadas: posição pretendida dos 4 produtos novos.</p><p>Os escores são <b>julgamento qualitativo</b> (hipótese): devem ser calibrados em uma sessão com os sócios do DTS.</p></template>
+  <div class="body" style="display:grid;grid-template-columns:930px 1fr;gap:18px">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px"><div class="seg" id="rxSeg"></div><span class="legend" style="margin-left:auto"><span><i style="background:var(--st-keep)"></i>Manter</span><span><i style="background:var(--st-ai)"></i>Aprimorar c/ IA</span><span><i style="background:#fff;border:2px dashed #8FA6BA"></i>Fundir</span><span><i style="background:#fff;border:2px solid var(--st-cut)"></i>Retirar</span><span><i style="background:transparent;border:2px dashed var(--orange);border-radius:50%"></i>Novo</span></span></div>
+      <svg id="rxChart" viewBox="0 0 930 610" width="930" height="610"></svg>
+    </div>
+    <div id="rxList" style="overflow:hidden"></div>
+  </div>
+</section>
+
+<!--@CAMINHOS-->
+<section class="slide" data-t="Três caminhos estratégicos" data-p="Abertura" data-band="Três caminhos · incremental, transformacional ou disruptivo" data-c="c-mix" data-bs="Recomendação: transformacional com 2 apostas disruptivas" data-src="HFS Research (fev/2026): Services-as-Software US$ 1,5 tri até 2035; McKinsey ~25% dos honorários atrelados a resultado (nov/2025); Gartner: preço puramente por resultado transfere risco (resumo de busca, confirmar); IBM: asset-based consulting. Escalas de esforço: julgamento DTS.">
+  <template class="info"><p>Brainstorming estruturado em três níveis de inovação. As réguas (investimento, diferenciação, recorrência) são julgamento DTS.</p></template>
+  <div class="body">
+    <div class="stmt kin" style="font-size:24px">Não basta colocar IA nos serviços de hoje. A recomendação é <em>redesenhar o portfólio como produtos</em> e incubar <em>duas apostas de plataforma</em>.</div>
+    <div style="display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:16px;margin-top:20px" id="paths"></div>
+    <div class="card soft" data-a="up" style="--d:10;margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:12px 16px">
+      <div style="font:500 12.5px/1.45 var(--fb);color:var(--ink2)"><span class="ev">HFS 2026</span> Mercado de <b>services-as-software</b> projetado em US$ 1,5 tri até 2035, absorvendo receita de serviços de TI e SaaS.</div>
+      <div style="font:500 12.5px/1.45 var(--fb);color:var(--ink2)"><span class="ev">McKinsey 2025</span> ~25% dos honorários globais já atrelados a resultado. A&amp;M tem DNA de honorário por resultado.</div>
+      <div style="font:500 12.5px/1.45 var(--fb);color:var(--ink2)"><span class="hy">Hipótese</span> Arquitetura comercial em 3 camadas: <b>sprint fixo</b> → <b>execução com êxito</b> → <b>assinatura</b> (radar/office).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== PILAR 1 -->
+<section class="slide dark pcover" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Capa" data-nofoot data-pillar="1"></section>
+
+<section class="slide" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Contexto" data-band="IT Advisory · contexto: a pergunta do comprador mudou" data-c="c-navy" data-bs="Compradores, gatilhos e implicação" data-src="ABES/IDC (mar/2026): IA/GenAI prioridade nº 1 para 53%; PwC CEO Survey (jan/2026): 56% sem retorno financeiro; Deloitte State of AI 2026: 27% com governança madura; ABES/IDC: TI +18,5% em 2025 e +5,3% em 2026; MCTI (Lei do Bem).">
+  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+    <div>
+      <div class="stmt kin" style="font-size:25px">De <em>“qual é a nossa estratégia digital?”</em> para <em>“quanto a tecnologia e a IA devolvem, e quem responde por isso?”</em></div>
+      <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
+        <div class="f"><span class="k">Fato</span>IA generativa e agentes são a <b>prioridade nº 1</b> de investimento para 53% dos executivos. <span class="ev">ABES/IDC 2026</span></div>
+        <div class="d"><span class="k">Dado</span><b>56%</b> dos CEOs sem retorno financeiro com IA; só <b>27%</b> com governança madura. <span class="ev">PwC · Deloitte</span></div>
+        <div class="i"><span class="k">Insight</span>Diagnóstico de maturidade e estratégia digital genérica perdem valor; ganha quem liga tecnologia a <b>caixa, risco e liderança</b>. <span class="hy">Hipótese</span></div>
+        <div class="m"><span class="k">Implicação</span>IT Advisory deve vender <b>decisões com valor em R$</b>, liderança que assume o cargo e governança de IA. <span class="hy">Hipótese</span></div>
+      </div>
+      <div class="ttl" data-a="fade" style="--d:7;margin-top:18px;font-size:14px">Gatilhos de compra (quando o cliente nos chama)</div>
+      <div class="trig" data-a="up" style="--d:8;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="pill">Saída ou troca de CIO</span><span class="pill">Orçamento 2027 (out–dez)</span><span class="pill">Renovação de contratos em dólar</span><span class="pill">Conselho cobra resultado de IA</span><span class="pill">Prazo do FormP&amp;D (Lei do Bem, set.)</span><span class="pill">Reestruturação / turnaround</span><span class="pill">Aquisição por fundo de PE</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;--d:9" data-a="up">
+        <div class="kpi-t"><div class="v" data-count="67.8">67,8</div><div class="l">US$ bi · mercado de TI no Brasil em 2025 (+18,5%)</div><div class="s">ABES/IDC mar/2026 <span class="ev">E</span></div></div>
+        <div class="kpi-t"><div class="v">+5,3%</div><div class="l">crescimento projetado de TI em 2026: orçamento sob escrutínio</div><div class="s">ABES/IDC mar/2026 <span class="ev">E</span></div></div>
+        <div class="kpi-t"><div class="v" data-count="4.2" data-suf=" mil">4,2 mil</div><div class="l">empresas usaram a Lei do Bem (ano-base 2024)</div><div class="s">MCTI via Convergência Digital <span class="ev">E</span></div></div>
+      </div>
+    </div>
+    <div data-a="right" style="--d:4">
+      <div class="ttl" style="font-size:14px;margin-bottom:8px">Quem compra e o que pergunta</div>
+      <div class="grid persona" data-pillar="1"></div>
+    </div>
+    <div class="jr-wrap" data-pillar="1" data-a="up" style="grid-column:1/-1;--d:11"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Mercado" data-band="IT Advisory · visão de mercado: nomes, posicionamento e IA" data-c="c-steel" data-bs="Big Four · estratégia · pares" data-src="Deloitte, EY, KPMG, PwC: páginas de serviço, vagas e press releases 2025–26; Anthropic (06/10/2025); BI/HBR (jan/2026); BCG (abr/2026); AlixPartners (ago/2026). Ausência de oferta = ‘não encontrado’ na pesquisa, não prova de inexistência.">
+  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
+    <div>
+      <div class="stmt kin" style="font-size:23px">Estratégia e governança de IA estão lotadas. <em>Liderança interina, custo com êxito e valor de IA com accountability</em> são espaço aberto.</div>
+      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="1"></table>
+      <div class="pos" data-pos="1" data-a="up" style="--d:8"></div>
+    </div>
+    <div class="ws" data-pillar="1" data-a="right" style="--d:6"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 1 · IT Advisory" data-t="Pilar 1 · Produtos" data-band="IT Advisory · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. IT Resilience & BCP migra para o Pilar 4 (resiliência é arquitetura); IT Business Partner (Pilar 2) é absorvido pela liderança embarcada.">
+  <template class="info"><p><b>Before / After:</b> arraste o divisor (ou use ← → com o painel em foco). À esquerda, o portfólio de hoje e o diagnóstico; à direita, o produto proposto e o papel da IA. Clique em um produto para abrir a ficha.</p></template>
+  <div class="body bap" data-pillar="1"></div>
+</section>
+
+<!-- ===================================================== PILAR 2 -->
+<section class="slide dark pcover" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Capa" data-nofoot data-pillar="2"></section>
+
+<section class="slide" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Contexto" data-band="Technology Transformation · contexto: 2027 é ano de viradas obrigatórias" data-c="c-navy" data-bs="Compradores, gatilhos e implicação" data-src="EC 132/2023, LC 214/2025, LC 227/2026, Decreto 12.955/2026 (via Congresso em Foco, CNBSP, Mattos Filho); PwC ‘Tributos no centro’; Gartner (ERP, citado em nov/2025); Baguete (SAP ECC); reformatributaria.com (trocas de ERP); Cetic.br TIC Empresas 2025.">
+  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+    <div>
+      <div class="stmt kin" style="font-size:25px">2027 concentra viradas com data marcada: <em>CBS plena em 01/01/2027</em>, <em>fim da manutenção padrão do SAP ECC</em> e IA comprada que precisa ser usada.</div>
+      <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
+        <div class="f"><span class="k">Fato</span>Reforma Tributária: teste em 2026, <b>CBS plena em 2027</b>, ICMS/ISS reduzidos de 2029 a 2032 e extintos em 2033. <span class="ev">LC 214/2025</span></div>
+        <div class="d"><span class="k">Dado</span><b>37%</b> das empresas no início da adequação; <b>&gt;70%</b> das iniciativas de ERP não atingirão o business case até 2027. <span class="ev">PwC · Gartner</span></div>
+        <div class="i"><span class="k">Insight</span>Programas obrigatórios, com prazo fixo e alto risco de atraso: a demanda é por <b>certeza de entrega</b>, não por mais PMO. <span class="hy">Hipótese</span></div>
+        <div class="m"><span class="k">Implicação</span>Produtos com prazo e preço fixos (readiness, rescue) e <b>governança preditiva</b> com IA. <span class="hy">Hipótese</span></div>
+      </div>
+      <div class="ttl" data-a="fade" style="--d:7;margin-top:18px;font-size:14px">Linha do tempo regulatória e de plataforma</div>
+      <div id="p2time" data-a="up" style="--d:8;margin-top:8px"></div>
+      <div class="ttl" data-a="fade" style="--d:9;margin-top:14px;font-size:14px">Gatilhos de compra</div>
+      <div data-a="up" style="--d:10;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="pill">Prazo da CBS (01/01/2027)</span><span class="pill">Decisão SAP ECC → S/4HANA</span><span class="pill">Go-live em risco</span><span class="pill">Disputa com o integrador</span><span class="pill">Licenças de IA ociosas</span><span class="pill">Troca de ERP motivada pela Reforma</span>
+      </div>
+    </div>
+    <div data-a="right" style="--d:4">
+      <div class="ttl" style="font-size:14px;margin-bottom:8px">Quem compra e o que pergunta</div>
+      <div class="grid persona" data-pillar="2"></div>
+    </div>
+    <div class="jr-wrap" data-pillar="2" data-a="up" style="grid-column:1/-1;--d:11"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Mercado" data-band="Technology Transformation · visão de mercado" data-c="c-steel" data-bs="Big Four · integradores · players locais" data-src="Consultancy.lat e Movimento Econômico (Deloitte e EY em Recife); Deloitte Brasil (AWS até 2031); EY (jan/2025, Beyond Tax Analytics); KPMG Brasil (Reforma, nov/2025); IT Forum (CI&T); Jornal do Comércio (Falconi, set/2026); reformatributaria.com (TOTVS); Capgemini (out/2025); IBM newsroom (jan/2026).">
+  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
+    <div>
+      <div class="stmt kin" style="font-size:23px">Integradores e Big Four ganham escala com centros de entrega e IA embutida. O DTS ganha como <em>a voz independente do cliente</em>.</div>
+      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="2"></table>
+      <div class="pos" data-pos="2" data-a="up" style="--d:8"></div>
+    </div>
+    <div class="ws" data-pillar="2" data-a="right" style="--d:6"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 2 · Technology Transformation" data-t="Pilar 2 · Produtos" data-band="Technology Transformation · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. TMO e Modelo de Implantação e Governança se fundem; IT Business Partner é retirado e absorvido pela liderança embarcada (1.3).">
+  <template class="info"><p><b>Before / After:</b> arraste o divisor para comparar hoje e proposta. Clique em um produto para abrir a ficha.</p></template>
+  <div class="body bap" data-pillar="2"></div>
+</section>
+
+<!-- ===================================================== PILAR 3 -->
+<section class="slide dark pcover" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Capa" data-nofoot data-pillar="3"></section>
+
+<section class="slide" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Contexto" data-band="Tech M&A · contexto: menos deals, tickets maiores, PE em metade" data-c="c-navy" data-bs="Compradores, casos e implicação" data-src="KPMG Pesquisa de Fusões e Aquisições 2025 (mar/2026) e 1S26 (ago/2026); TTR Data; Giro News (MBRF); Mercado Hoje (Petz+Cobasi); IstoÉ Dinheiro (Braskem); Forbes (Raízen, mai/2026); TechCrunch (DiligenceSquared, mar/2026).">
+  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+    <div>
+      <div class="stmt kin" style="font-size:25px">Com <em>PE em metade das transações</em>, o comprador quer velocidade na diligência e certeza no Dia 1, e a DD com IA ficou barata.</div>
+      <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
+        <div class="f"><span class="k">Fato</span><b>1.581</b> transações em 2025; PE/VC passou de 43% para <b>50%</b> do total. <span class="ev">KPMG</span></div>
+        <div class="d"><span class="k">Dado</span>1S26: 610 deals (−35%) e R$ 195 bi (+22,3%); <b>TI é o setor nº 1</b>, com 274 deals. <span class="ev">KPMG</span></div>
+        <div class="i"><span class="k">Insight</span>DD com agentes já custa ~US$ 50 mil (DiligenceSquared); o valor migra para <b>o que vem depois do signing</b>. <span class="hy">Hipótese</span></div>
+        <div class="m"><span class="k">Implicação</span>Tech M&amp;A como <b>ciclo contínuo</b>: DD com IA → Dia 1 → TSA → sinergias → radar do portfólio. <span class="hy">Hipótese</span></div>
+      </div>
+      <div class="ttl" data-a="fade" style="--d:7;margin-top:18px;font-size:14px">Casos públicos que exigem integração ou separação de TI <span class="ev">imprensa 2025–26</span></div>
+      <div id="p3cases" data-a="up" style="--d:8;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:8px"></div>
+    </div>
+    <div data-a="right" style="--d:4">
+      <div class="ttl" style="font-size:14px;margin-bottom:8px">Quem compra e o que pergunta</div>
+      <div class="grid persona" data-pillar="3"></div>
+    </div>
+    <div class="jr-wrap" data-pillar="3" data-a="up" style="grid-column:1/-1;--d:11"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Mercado" data-band="Tech M&A · visão de mercado: o campo mais disputado da IA" data-c="c-steel" data-bs="Big Four · estratégia · entrantes · A&M" data-src="Deloitte UK (M&A Technology) e US (ACDC); EY-Parthenon (vagas TSE); PwC (jul/2025; jun/2026); CAST (caso EY); FT via The Decoder (Bain, jul/2026); TechCrunch (DiligenceSquared, mar/2026); BusinessWire (Ode, jul/2026); A&M (A&M Assist, abr/2025).">
+  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
+    <div>
+      <div class="stmt kin" style="font-size:23px">Tech DD é onde a IA mais avançou: <em>plataformas, exclusividades e novos entrantes</em> atacam prazo e preço.</div>
+      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="3"></table>
+      <div class="pos" data-pos="3" data-a="up" style="--d:8"></div>
+    </div>
+    <div class="ws" data-pillar="3" data-a="right" style="--d:6"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 3 · Tech M&A" data-t="Pilar 3 · Produtos" data-band="Tech M&A · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. 8 serviços que eram fases de um mesmo ciclo viram 4 produtos + 1 assinatura; o IT M&A Playbook deixa de ser vendido isolado e vira o motor do PE Tech Value Radar.">
+  <template class="info"><p><b>Before / After:</b> arraste o divisor para comparar hoje e proposta. Clique em um produto para abrir a ficha.</p></template>
+  <div class="body bap" data-pillar="3"></div>
+</section>
+
+<!-- ===================================================== PILAR 4 -->
+<section class="slide dark pcover" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Capa" data-nofoot data-pillar="4"></section>
+
+<section class="slide" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Contexto" data-band="Modernization · contexto: o legado ficou caro, a IA barateou a saída" data-c="c-navy" data-bs="Compradores, gatilhos e implicação" data-src="Baguete (VMware 8–15×); TI Inside (fev/2025, câmbio); Febraban/Deloitte via Forbes (jun/2026); Convergência Digital (Bradesco e Caixa); Jornal Opção/Finsiders (C&M); Tecnoblog (Sinqia); Legisweb (CMN 5.274); SiliconANGLE/AWS (AWS Transform).">
+  <div class="body" style="display:grid;grid-template-columns:1fr 520px;gap:20px">
+    <div>
+      <div class="stmt kin" style="font-size:25px">A pergunta deixou de ser <em>“se”</em> modernizar e virou <em>“por onde, a que custo e com que garantia”</em>.</div>
+      <div class="fdii" data-a="up" style="--d:5;margin-top:16px">
+        <div class="f"><span class="k">Fato</span>VMware até <b>8–15×</b> mais caro pós-Broadcom; até 40% dos insumos de TI são importados. <span class="ev">Baguete · TI Inside</span></div>
+        <div class="d"><span class="k">Dado</span>Bancos: R$ 50,4 bi em tecnologia em 2026, cloud +30%; ataques à C&amp;M (~R$ 800 mi) e à Sinqia (R$ 710 mi). <span class="ev">Febraban · imprensa</span></div>
+        <div class="i"><span class="k">Insight</span>Hyperscalers dão a ferramenta quase de graça; o risco passa a ser <b>escolher a rota errada</b> e migrar sem garantia. <span class="hy">Hipótese</span></div>
+        <div class="m"><span class="k">Implicação</span>Modernização deve vender <b>decisão, business case e assurance</b> independente, não horas de execução. <span class="hy">Hipótese</span></div>
+      </div>
+      <div class="ttl" data-a="fade" style="--d:7;margin-top:18px;font-size:14px">Gatilhos de compra</div>
+      <div data-a="up" style="--d:8;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="pill">Renovação de VMware</span><span class="pill">Fim de suporte de plataforma</span><span class="pill">Incidente de cyber ou de terceiro</span><span class="pill">CMN 5.274 (adequação mar/2026)</span><span class="pill">Pessoas-chave do legado se aposentando</span><span class="pill">Plano de IA esbarra em dados</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;--d:9" data-a="up">
+        <div class="kpi-t"><div class="v">8–15×</div><div class="l">alta de licenças VMware pós-Broadcom</div><div class="s">Baguete <span class="ev">E</span></div></div>
+        <div class="kpi-t"><div class="v">R$ 3,9 bi</div><div class="l">bancos em migração para cloud em 2026 (+30%)</div><div class="s">Febraban/Deloitte <span class="ev">E</span></div></div>
+        <div class="kpi-t"><div class="v">até 4×</div><div class="l">mais rápido em migração .NET com AWS Transform</div><div class="s">AWS/SiliconANGLE <span class="ev">E</span></div></div>
+      </div>
+    </div>
+    <div data-a="right" style="--d:4">
+      <div class="ttl" style="font-size:14px;margin-bottom:8px">Quem compra e o que pergunta</div>
+      <div class="grid persona" data-pillar="4"></div>
+    </div>
+    <div class="jr-wrap" data-pillar="4" data-a="up" style="grid-column:1/-1;--d:11"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Mercado" data-band="Modernization · visão de mercado: o pilar mais exposto" data-c="c-steel" data-bs="Estratégia · integradores · hyperscalers · laboratórios" data-src="McKinsey (LegacyX, 2025); BusinessWire (Accenture GenWizard, abr/2025); Anthropic (Accenture, dez/2025); IBM (WCA for Z, Bob, Enterprise Advantage); SiliconANGLE e Qovery (AWS Transform); ADTmag (GitHub Copilot); Gigazine/Malay Mail (Claude Code e COBOL, fev/2026); SAP LeanIX e Ardoq (2026).">
+  <div class="body" style="display:grid;grid-template-columns:1fr 440px;gap:18px">
+    <div>
+      <div class="stmt kin" style="font-size:23px">Ferramentas agênticas fazem em semanas o que levava anos. O DTS precisa sair da execução e ir para <em>decisão e garantia</em>.</div>
+      <table class="tbl mk" data-a="up" style="--d:4;margin-top:12px" data-mk="4"></table>
+      <div class="pos" data-pos="4" data-a="up" style="--d:8"></div>
+    </div>
+    <div class="ws" data-pillar="4" data-a="right" style="--d:6"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Pilar 4 · Modernization" data-t="Pilar 4 · Produtos" data-band="Modernization · produtos: antes e depois" data-c="c-gold" data-bs="Arraste o divisor · clique para abrir a ficha" data-src="Mapeamento serviço → produto: análise DTS. ‘Strategy Architecture’, ‘Strategy Application’ e ‘Infrastructure Management’ são renomeados pelo que entregam; IT Resilience chega do Pilar 1; Legacy X-Ray é novo.">
+  <template class="info"><p><b>Before / After:</b> arraste o divisor para comparar hoje e proposta. Clique em um produto para abrir a ficha.</p></template>
+  <div class="body bap" data-pillar="4"></div>
+</section>
+
+<!-- ===================================================== FECHAMENTO -->
+<section class="slide" data-p="Fechamento" data-t="Fábrica de produtos" data-band="Do serviço ao produto · como produtizar e comercializar" data-c="c-mix" data-bs="Arraste ou clique no card do topo" data-src="IBM (asset-based consulting, 2025); MIT NANDA via Fortune (ago/2025): soluções compradas ou com parceiros têm ~67% de sucesso vs ~1/3 das internas; Everest Group (2026): compradores migram de T&M para modelos de plataforma e valor. Modelo operacional: proposta DTS.">
+  <template class="info"><p><b>Card Stack:</b> seis passos para transformar um serviço em produto. Arraste o card do topo para o lado ou clique para avançar.</p></template>
+  <div class="body" style="display:grid;grid-template-columns:600px 1fr;gap:26px">
+    <div>
+      <div class="stmt kin" style="font-size:23px">Um produto DTS é <em>método + ferramenta + dados + preço + time</em>, igual em todo cliente.</div>
+      <div class="cs-scene" id="csScene" style="height:430px;margin-top:40px;--d:4" data-a="zoom"></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
+        <button class="pill clk" id="csPrev" style="border:1px solid var(--line);background:#fff;padding:8px 14px;font:700 12px var(--fb)">‹ Anterior</button>
+        <div class="cs-dots" id="csDots"></div>
+        <button class="pill clk" id="csNext" style="border:0;background:var(--navy2);color:#fff;padding:8px 14px;font:700 12px var(--fb)">Próximo ›</button>
+      </div>
+    </div>
+    <div>
+      <div class="ttl" style="font-size:14px">Anatomia de uma ficha de produto (padrão para os 24)</div>
+      <div id="anat" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px"></div>
+      <div class="ttl" style="font-size:14px;margin-top:16px">Arquitetura comercial em 3 camadas</div>
+      <div id="tiers" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px"></div>
+      <div class="ttl" style="font-size:14px;margin-top:16px">Modelo operacional da fábrica</div>
+      <div id="opm" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px"></div>
+      <div class="ttl" style="font-size:14px;margin-top:16px">Portão de produto · quando um serviço vira produto <span class="hy">Hipótese</span></div>
+      <div id="gate" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-p="Fechamento" data-t="Roadmap e decisões" data-band="Roadmap de lançamento · decisões para o comitê" data-c="c-navy" data-bs="Timeline 4T26 → 4T27" data-src="Janelas: LC 214/2025 (CBS em 01/01/2027); orçamento 2027; A&M Global AI Board (mai/2026). Datas, metas e sequência: proposta DTS a calibrar com os sócios.">
+  <template class="info"><p><b>Timeline Motion:</b> as ondas se revelam em sequência; clique em uma onda para ver o detalhe. Metas são hipóteses a calibrar.</p></template>
+  <div class="body">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="stmt kin" style="font-size:23px;flex:1">Lançar em ondas: <em>proteger o núcleo Signature</em>, capturar as janelas de 2027 e <em>construir recorrência</em>.</div>
+      <button class="pill clk" id="tl2Play" style="border:0;background:#122143;color:#fff;padding:10px 16px;font:700 12px var(--fb)">▶ Reproduzir</button>
+    </div>
+    <div class="tl-wrap" id="tlLaunch" style="height:268px;margin-top:0"></div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:6px">
+      <div class="card" data-a="up" style="--d:6;padding:12px 16px">
+        <div class="ttl" style="font-size:14px;margin-bottom:6px">Decisões para o comitê</div>
+        <ol id="decisions" style="margin:0;padding-left:20px;display:grid;gap:5px;font:500 12.8px/1.4 var(--fb);color:var(--ink2)"></ol>
+      </div>
+      <div class="card nv" data-a="up" style="--d:8;padding:12px 16px">
+        <div class="ttl" style="font-size:14px;margin-bottom:6px;color:#fff">Como medir o sucesso <span class="hy">metas a calibrar</span></div>
+        <div id="kpisOK" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+      </div>
+    </div>
+    <div class="ttl" data-a="fade" style="--d:9;font-size:14px;margin-top:12px">Capacidades a construir para executar <span class="hy">Hipótese</span></div>
+    <div id="caps" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="Fechamento" data-t="Fontes e método" data-band="Anexo · fontes, método e grau de evidência" data-c="c-steel" data-bs="Evidência × hipótese" data-src="Pesquisa realizada em 06/10/2026 por 4 frentes paralelas. Relatórios completos, com URLs, na pasta /pesquisa do repositório.">
+  <div class="body" style="display:grid;grid-template-columns:420px 1fr;gap:20px">
+    <div>
+      <div class="ttl" style="font-size:15px">Método</div>
+      <div id="method" style="display:grid;gap:8px;margin-top:8px"></div>
+      <div class="card soft" style="margin-top:12px;padding:10px 14px">
+        <h4>Como ler as marcas</h4>
+        <p><span class="ev">Evidência</span> dado público com fonte e data. <span class="hy">Hipótese</span> inferência ou proposta DTS a validar.</p>
+        <p style="margin-top:6px"><b>Limitação:</b> a leitura direta de várias páginas estava bloqueada; muitos números vieram de imprensa e associações que citam o estudo primário. <b>Confirmar no original antes de uso externo.</b></p>
+      </div>
+    </div>
+    <div id="sources" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start"></div>
+  </div>
+</section>
