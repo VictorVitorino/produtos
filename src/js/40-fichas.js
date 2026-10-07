@@ -54,7 +54,10 @@ function pdVars(f){const L=pdLerp(PDL,f.tl),R=pdLerp(PDR,f.tr);if(f.nm)L[0][1]=f
 function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);const f=PDFIT[P.id]||{tl:.5,tr:.6,nm:0};
   const li=a=>a.map(x=>`<li>${x}</li>`).join("");
   const who2=P.who.length>=3&&Math.max(...P.who.map(x=>strip(x).length))<=30;
-  const from=P.from.split(/\s+\+\s+/).map(x=>`<b>${x}</b>`).join("<i>+</i>");
+  /* origem: cada serviço de origem em uma peça sem quebra; a nota final entre parênteses (em minúscula, ex.: "(vem do Pilar 1)")
+     vira peça própria, enquanto parênteses que fazem parte do nome, como "(Buy Side)", ficam junto do nome */
+  const from=P.from.split(/\s+\+\s+/).map(x=>x.split(/\s+(?=\([a-zà-ú][^()]*\)$)/).map(y=>`<b>${y}</b>`).join(" ")).join(" <i>+</i> ");
+  const fromLbl=/^Novo\b/.test(P.from)?"Origem":"Nasce de";
   const pains=P.pain.map(x=>{const t=x.trim();return /[.!?]$/.test(t)?t:t+"."});
   const ug=new Set(),us=new Set();
   const get=P.deliv.map((d,i)=>`<div style="--k:${i}"><span class="r">${pdIco(pdKw([d],i,DEF_GET,ug),i+3)}<em>${pad(i+1)}</em></span><span class="t">${d}</span></div>`).join("");
@@ -70,8 +73,8 @@ function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);const f=PDFIT[P.
           <div class="pd-ttl pz" style="--z:9"><div class="pd-ph">Produto ${P.code} · Pilar ${pl.n} · ${pl.name}</div><div class="pd-name">${P.name}<small>${P.tagline}</small></div></div>
           <p class="pd-pitch pz" style="--z:6">${P.pitch}</p>
           <div class="pd-who pz${who2?" two":""}" style="--z:4"><span class="label">Para quem é</span><ul>${li(P.who)}</ul></div>
-          <div class="pd-fmt pz" style="--z:3"><span class="label">Formato do produto</span><div class="chips">${P.meta.map(m=>`<span>${m}</span>`).join("")}</div></div>
-          <div class="pd-from pz" style="--z:2"><span>Nasce de</span>${from}</div>
+          <div class="pd-fmt pz" style="--z:3"><span class="label">Formato e encaixe</span><div class="chips">${P.meta.map(m=>`<span>${m}</span>`).join("")}</div></div>
+          <div class="pd-from pz" style="--z:2"><span class="label">${fromLbl}</span>${from}</div>
         </div>
       </div>
       <div class="pd-why" data-a="fade" style="--d:9"><span class="label">${pdIco("hand",8)}Por que A&amp;M · mercado e diferencial</span><p>${P.bench.replace(/\s*<span class="ev">Evidência<\/span>/g,"")}</p></div>
@@ -87,7 +90,7 @@ function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);const f=PDFIT[P.
         <section class="pd-card tl"><span class="label">Ferramentas e dados</span><p><b>Ferramentas:</b> ${P.tools}</p><p><b>Dados:</b> ${P.data}</p></section>
       </div>
       <div class="pd-tech" data-a="mask" style="--d:9"><span class="label">Skills aplicadas</span>${P.skills.map(x=>`<span class="pd-chip">${x}</span>`).join("")}</div>
-      ${P.ev?`<p class="pd-src" data-a="fade" style="--d:10"><b>FONTE</b>${P.ev}</p>`:""}
+      ${P.ev?`<p class="pd-src" data-a="fade" style="--d:10"><b>FONTES E NOTAS</b>${P.ev}</p>`:""}
     </div>
   </div></div>
   <div class="pd-foot"><div class="rel"><span class="label">Outros do Pilar ${pl.n}</span>${rel}</div></div>`}
@@ -112,9 +115,11 @@ function pdFit(root){const w=root.querySelector(".pd-wrap");if(!w||!w.offsetHeig
     if(set2(0))A.hi=0;else{let lo=0,hi=A.hi;for(let k=0;k<6;k++){const m=(lo+hi)/2;if(set2(m))hi=m;else lo=m}A.hi=hi}}
   f.tl=A.hi;f.tr=B.hi;f.nm=n;w.style.cssText=pdVars(f);return {tl:f.tl,tr:f.tr,nm:f.nm}}
 /* impressão: mede as 24 fichas fora da tela antes de buildPrint gerar as páginas */
-function pdMeasureAll(){const box=H("div",{class:"stage pd-measure"},stage);
-  const ok=document.fonts&&document.fonts.status==="loaded";
-  PRODUCTS.forEach((P,k)=>{box.innerHTML=pdHTML(P,k+1);plainBadges(box);const f=pdFit(box);if(f)PDFIT[P.id]=ok?Object.assign(f,{v:1}):f});box.remove()}
+/* (idempotente: com as páginas já criadas não mede nada; fichas já medidas com as fontes carregadas ficam no cache) */
+function pdMeasureAll(){if(stage.querySelector(".pd-print"))return;
+  const ok=document.fonts&&document.fonts.status==="loaded";const todo=PRODUCTS.filter(P=>!(ok&&PDFIT[P.id]&&PDFIT[P.id].v===1));if(!todo.length)return;
+  const box=H("div",{class:"stage pd-measure"},stage);
+  todo.forEach(P=>{box.innerHTML=pdHTML(P,PRODUCTS.indexOf(P)+1);plainBadges(box);const f=pdFit(box);if(f)PDFIT[P.id]=ok?Object.assign(f,{v:1}):f});box.remove()}
 PRINT.push(pdMeasureAll);
 
 /* --- card hologram: inclinação 3D com brilho e paralaxe que seguem o cursor (fx 03) --- */
@@ -125,17 +130,24 @@ function pdHolo(el,max){max=max||8;if(REDMO||!el)return;
 
 function renderPD(id){const k=PRODUCTS.findIndex(x=>x.id===id);if(k<0)return false;const P=PRODUCTS[k];
   pd.classList.remove("play");pd.innerHTML=pdHTML(P,k+1);
-  const nav=H("div",{class:"pd-nav"});pd.querySelector(".top-right").prepend(nav);
-  const bk=H("button",{class:"bk",title:"Voltar à apresentação (Esc)"},nav,"← Voltar à apresentação");bk.onclick=()=>closePD();
-  const bp=H("button",{title:"Ficha anterior (←)"},nav,"‹ Anterior");bp.onclick=()=>pdStep(-1);const bn=H("button",{title:"Próxima ficha (→) · → e ← navegam entre as 24 fichas"},nav,"Próxima ›");bn.onclick=()=>pdStep(1);
-  const op=H("button",{title:"Voltar ao mapa do novo portfólio (One-page)"},nav,"One-page");op.onclick=()=>{closePD(true);go(ONEPAGE-1,true)};
+  const KB=`→ e ← navegam entre as ${PRODUCTS.length} fichas · Esc volta à apresentação`;
+  const nav=H("div",{class:"pd-nav","data-tv":"Navegação","data-tl":KB});pd.querySelector(".top-right").prepend(nav);
+  const bk=H("button",{class:"bk","data-tv":"Voltar à apresentação · Esc","data-tl":"Fecha a ficha e volta ao slide de onde ela foi aberta."},nav,"← Voltar à apresentação");bk.onclick=()=>closePD();
+  const bp=H("button",{"data-tv":"Ficha anterior · ←","data-tl":KB},nav,"‹ Anterior");bp.onclick=()=>pdStep(-1);
+  const bn=H("button",{"data-tv":"Próxima ficha · →","data-tl":KB},nav,"Próxima ›");bn.onclick=()=>pdStep(1);
+  const op=H("button",{"data-tv":"One-page","data-tl":"Volta ao mapa do novo portfólio (One-page)."},nav,"One-page");op.onclick=()=>{closePD(true);go(ONEPAGE-1,true)};
+  /* dica de teclado à direita do rodapé (o tamanho é escolhido por pdKbd depois que a ficha aparece) */
+  H("span",{class:"pd-kbd","data-tv":"Navegação","data-tl":KB,html:`<b>→</b><b>←</b><span class="lg">navegam entre as ${PRODUCTS.length} fichas</span><span class="sh">fichas</span><i>·</i><b>Esc</b><span class="lg">volta à apresentação</span><span class="sh">volta</span>`},pd.querySelector(".pd-foot"));
   plainBadges(pd);fixPaths(pd);return true}
+/* versão longa da dica se couber ao lado dos links do pilar, curta se não, oculta se nem a curta couber (os links nunca são cortados) */
+function pdKbd(){const kb=pd.querySelector(".pd-kbd"),rl=pd.querySelector(".pd-foot .rel");if(!kb||!rl)return;const fits=()=>rl.scrollWidth<=rl.clientWidth+1;
+  kb.className="pd-kbd";if(!fits()){kb.className="pd-kbd short";if(!fits())kb.className="pd-kbd off"}}
 function openPD(id){if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");
   const ok=document.fonts&&document.fonts.status==="loaded",c=PDFIT[id];
   const cached=ok&&c&&c.v===1&&!pdOver(pd.querySelector(".pd-holo"))&&!pdOver(pd.querySelector(".pd-hero"))&&!pdOver(pd.querySelector(".pd-right"));
   if(!cached){const f=pdFit(pd);if(ok){if(f)PDFIT[id]=Object.assign(f,{v:1})}
-    else if(document.fonts)document.fonts.ready.then(()=>{if(pdOpen===id){const g=pdFit(pd);if(g)PDFIT[id]=Object.assign(g,{v:1})}})}
-  pdHolo(pd.querySelector(".pd-holo"));void pd.offsetWidth;pd.classList.add("play");
+    else if(document.fonts)document.fonts.ready.then(()=>{if(pdOpen===id){const g=pdFit(pd);if(g)PDFIT[id]=Object.assign(g,{v:1});pdKbd()}})}
+  pdKbd();pdHolo(pd.querySelector(".pd-holo"));void pd.offsetWidth;pd.classList.add("play");
   history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${pad(PRODUCTS.findIndex(x=>x.id===id)+1)} / ${PRODUCTS.length}`;if(infoP.classList.contains("on"))fillInfo()}
 function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");if(!silent){activate(pdFrom,true)}else{$("cnt").textContent=`${pad(cur+1)} / ${pad(N)}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;history.replaceState(null,"","#"+(cur+1))}}
 function pdStep(d){const k=PRODUCTS.findIndex(x=>x.id===pdOpen);const n=(k+d+PRODUCTS.length)%PRODUCTS.length;openPD(PRODUCTS[n].id)}

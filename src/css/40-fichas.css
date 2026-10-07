@@ -49,7 +49,9 @@
 .pd-who li::before{content:"";position:absolute;left:1px;top:.5em;width:6px;height:6px;border-radius:1px;background:var(--orange-500);transform:rotate(45deg)}
 .pd-fmt .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .pd-fmt .chips span{font-size:var(--cf,12px);font-weight:600;line-height:1.2;color:#fff;padding:calc(var(--cf,12px) / 2) calc(var(--cf,12px) - 2px);border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);white-space:nowrap}
+/* origem: rótulo sempre na primeira linha; cada serviço (e a nota entre parênteses) em uma peça sem quebra */
 .pd-from{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-family:var(--fm);font-size:10.5px;letter-spacing:.06em;color:var(--steel-300);padding-top:12px;border-top:1px solid rgba(255,255,255,.12)}
+.pd-from>.label{flex-basis:100%;margin-bottom:2px}
 .pd-from b{color:#fff;font-weight:600;white-space:nowrap}
 .pd-from i{font-style:normal;color:var(--orange-400)}
 /* caixa "Por que A&M" */
@@ -85,7 +87,7 @@
 @keyframes pdRun{0%{left:0;opacity:0}5%{opacity:1}86%{left:100%;opacity:1}93%,100%{left:100%;opacity:0}}
 .pd-flow>.s{position:relative;display:flex;flex-direction:column;gap:3px;min-width:0}
 .pd-flow>.s>i{position:relative;z-index:1;width:var(--ic);height:var(--ic);border-radius:12px;margin-bottom:7px;display:grid;place-items:center;color:var(--steel-200);
-  background:var(--navy-700);border:1px solid rgba(163,184,214,.3);animation:pdHit 5s linear infinite;animation-delay:calc(var(--k) * 1.075s - .25s);transition:transform .25s var(--ease)}
+  background:var(--navy-700);border:1px solid rgba(163,184,214,.3);animation:pdHit 5s linear infinite;animation-delay:calc(var(--k) * 4.3s / max(var(--n) - 1, 1) - .25s);transition:transform .25s var(--ease)}
 .pd-flow>.s>i .ico{width:calc(var(--ic) * .5);height:calc(var(--ic) * .5)}
 .pd-flow>.s:last-child>i{background:var(--orange-500);border-color:var(--orange-400);color:#fff}
 .pd-flow>.s:hover>i{transform:translateY(-2px) scale(1.06)}
@@ -132,18 +134,25 @@
 .pd-foot .rel{display:flex;align-items:center;gap:6px;flex:1;min-width:0;white-space:nowrap;overflow:hidden}
 .pd-foot .rel .label{color:var(--steel-300);margin-right:6px}
 .pd-foot .plink{margin:0;font-size:11.5px;padding:3px 7px}
+/* dica de teclado (só na tela) */
+.pd-kbd{flex:none;display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:10px;letter-spacing:.08em;color:var(--steel-300);white-space:nowrap;cursor:default}
+.pd-kbd b{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;border:1px solid rgba(163,184,214,.3);background:rgba(255,255,255,.05);font-weight:600;color:#fff;letter-spacing:0}
+.pd-kbd i{font-style:normal;color:var(--orange-400);margin:0 2px}
+.pd-kbd .sh,.pd-kbd.short .lg,.pd-kbd.off{display:none}
+.pd-kbd.short .sh{display:inline}
 
 /* medição fora da tela (impressão) */
 .pd-measure{position:absolute;left:0;top:0;width:1600px;height:900px;visibility:hidden;pointer-events:none;z-index:-1;overflow:hidden}
 
 /* movimento reduzido e impressão: estático */
 @media (prefers-reduced-motion:reduce){
-  .pd-holo::after,.pd-ic .pulse,.pd-track i,.pd-flow>.s>i{animation:none!important}
+  #pd.on,.pd-holo::after,.pd-ic .pulse,.pd-track i,.pd-flow>.s>i{animation:none!important}
   .pd-track i{display:none}.pd-holo .pz{transform:none!important}
+  .pd-get>div:hover,.pd-flow>.s:hover>i{transform:none!important}
 }
 @media print{
   .pd-holo::before,.pd-holo::after,.pd-track i{display:none!important}
   .pd-ic .pulse,.pd-flow>.s>i{animation:none!important}
   .pd-holo{transform:none!important}.pd-holo .pz{transform:none!important}
-  .pd-print .pd-foot{display:flex!important}
+  .pd-print .pd-foot{display:flex!important}.pd-kbd{display:none!important}
 }
