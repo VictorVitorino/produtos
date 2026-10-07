@@ -142,12 +142,12 @@ function renderPD(id){const k=PRODUCTS.findIndex(x=>x.id===id);if(k<0)return fal
 /* versão longa da dica se couber ao lado dos links do pilar, curta se não, oculta se nem a curta couber (os links nunca são cortados) */
 function pdKbd(){const kb=pd.querySelector(".pd-kbd"),rl=pd.querySelector(".pd-foot .rel");if(!kb||!rl)return;const fits=()=>rl.scrollWidth<=rl.clientWidth+1;
   kb.className="pd-kbd";if(!fits()){kb.className="pd-kbd short";if(!fits())kb.className="pd-kbd off"}}
-function openPD(id){if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");
+function openPD(id){tipEl.classList.remove("on");if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");
   const ok=document.fonts&&document.fonts.status==="loaded",c=PDFIT[id];
   const cached=ok&&c&&c.v===1&&!pdOver(pd.querySelector(".pd-holo"))&&!pdOver(pd.querySelector(".pd-hero"))&&!pdOver(pd.querySelector(".pd-right"));
   if(!cached){const f=pdFit(pd);if(ok){if(f)PDFIT[id]=Object.assign(f,{v:1})}
     else if(document.fonts)document.fonts.ready.then(()=>{if(pdOpen===id){const g=pdFit(pd);if(g)PDFIT[id]=Object.assign(g,{v:1});pdKbd()}})}
   pdKbd();pdHolo(pd.querySelector(".pd-holo"));void pd.offsetWidth;pd.classList.add("play");
   history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${pad(PRODUCTS.findIndex(x=>x.id===id)+1)} / ${PRODUCTS.length}`;if(infoP.classList.contains("on"))fillInfo()}
-function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");if(!silent){activate(pdFrom,true)}else{$("cnt").textContent=`${pad(cur+1)} / ${pad(N)}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;history.replaceState(null,"","#"+(cur+1))}}
+function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");if(!silent&&pdFrom!==cur){activate(pdFrom,true)}else{$("cnt").textContent=`${pad(cur+1)} / ${pad(N)}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;history.replaceState(null,"","#"+(cur+1));if(infoP.classList.contains("on"))fillInfo()}}
 function pdStep(d){const k=PRODUCTS.findIndex(x=>x.id===pdOpen);const n=(k+d+PRODUCTS.length)%PRODUCTS.length;openPD(PRODUCTS[n].id)}
