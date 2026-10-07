@@ -24,8 +24,9 @@
   const nodes=F.map((f,i)=>{const w=H("div",{class:"fm-w","data-a":"left",style:`--d:${3+i*.8}`},L);
     const b=H("button",{class:"fm-node",type:"button","aria-label":`Força ${nn(i)}: ${f.t}`},w);
     b.innerHTML=`<span class="fm-ic">${icoSvg(f.ic,4+i)}</span><span class="fm-tx"><b><i>${nn(i)}</i>${f.t}</b><span class="fm-k"><em>${f.v}</em>${f.vl}</span></span>`;
-    b.addEventListener("pointerenter",()=>{clearTimeout(hv);if(lock){pv=i;apply();return}hv=setTimeout(()=>sel(i),120)});
-    b.addEventListener("pointerleave",()=>{clearTimeout(hv);if(pv===i){pv=-1;apply()}});
+    /* hover no invólucro, que não se desloca: o nó anda 4px sem sair de baixo do cursor (sem oscilar na borda) */
+    w.addEventListener("pointerenter",()=>{clearTimeout(hv);if(lock){pv=i;apply();return}hv=setTimeout(()=>sel(i),120)});
+    w.addEventListener("pointerleave",()=>{clearTimeout(hv);if(pv===i){pv=-1;apply()}});
     const pick=()=>{clearTimeout(hv);lock=true;pv=-1;sel(i)};b.addEventListener("click",pick);b.addEventListener("focus",pick);return b});
   /* nós das exigências */
   const DL=H("div",{class:"fm-dl"},M),dems={};K.forEach((k,j)=>{const w=H("div",{class:"fm-w","data-a":"right",style:`--d:${5+j}`},DL);
@@ -44,20 +45,22 @@
     <div class="fm-g"><div class="fm-sec fm-imp"><span class="fm-sh">Para o DTS</span><p id="fmI"></p></div>
       <div class="fm-sec fm-prod"><span class="fm-sh">Quem responde</span><div id="fmP"></div></div></div></div>`;
   const dots=F.map((f,i)=>{const b=H("button",{type:"button","aria-label":`Força ${nn(i)}`,title:f.t},$("fmDots"));b.addEventListener("click",()=>{lock=true;pv=-1;sel(i)});return b});
+  /* clique num produto do painel: a ficha abre por cima, então a dica do chip sai junto */
+  P.addEventListener("click",e=>{if(e.target.closest("[data-pd]"))$("tip").classList.remove("on")});
 
-  let edges=[],cur=0,hk=null,lock=false,pv=-1,hv=0,vTok=0;
+  let edges=[],fi=0,hk=null,lock=false,pv=-1,hv=0,vTok=0;
   /* sair da rede solta a trava do clique */
   map.addEventListener("pointerleave",()=>{clearTimeout(hv);lock=false;if(pv>=0){pv=-1;apply()}});
   function draw(){const W=map.offsetWidth,Hh=map.offsetHeight;if(!W||!Hh)return;svg.setAttribute("viewBox",`0 0 ${W} ${Hh}`);svg.setAttribute("width",W);svg.setAttribute("height",Hh);svg.innerHTML="";edges=[];
     F.forEach((f,i)=>{const a=rel(nodes[i],map);f.ask.forEach(k=>{const b=rel(dems[k],map);const x1=a.x+a.w,y1=a.cy,x2=b.x,y2=b.cy,mx=(x1+x2)/2;
       const p=S("path",{d:`M${x1} ${y1} C${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`,class:"fm-edge"},svg);p.dataset.f=i;p.dataset.k=k;edges.push(p)})});apply()}
   /* hk = exigência sob o mouse (mostra as forças que a puxam); pv = força pré-visualizada com a escolha travada */
-  function apply(){const f=F[cur],q=!hk&&pv>=0&&pv!==cur?pv:-1;map.classList.add("focus");map.classList.toggle("dem",!!hk);
-    nodes.forEach((n,i)=>{n.classList.toggle("on",!hk&&i===cur);n.classList.toggle("lit",!!hk&&F[i].ask.includes(hk))});
-    K.forEach(k=>{dems[k].classList.toggle("on",hk?hk===k:f.ask.includes(k));dems[k].querySelectorAll(".fm-tags i").forEach(t=>t.classList.toggle("on",hk?hk===k:+t.dataset.f===cur))});
-    edges.forEach(e=>{const on=hk?e.dataset.k===hk:+e.dataset.f===cur;e.classList.toggle("on",on);e.classList.toggle("pv",!on&&+e.dataset.f===q);if(on)svg.appendChild(e)});
-    dots.forEach((d,i)=>d.classList.toggle("on",i===cur))}
-  function fill(still){const f=F[cur];$("fmK").textContent=`Força ${nn(cur)} de ${nn(F.length-1)}`;$("fmIc").innerHTML=icoSvg(f.ic);fixPaths($("fmIc"));$("fmT").textContent=f.t;
+  function apply(){const f=F[fi],q=!hk&&pv>=0&&pv!==fi?pv:-1;map.classList.add("focus");map.classList.toggle("dem",!!hk);
+    nodes.forEach((n,i)=>{n.classList.toggle("on",!hk&&i===fi);n.classList.toggle("lit",!!hk&&F[i].ask.includes(hk))});
+    K.forEach(k=>{dems[k].classList.toggle("on",hk?hk===k:f.ask.includes(k));dems[k].querySelectorAll(".fm-tags i").forEach(t=>t.classList.toggle("on",hk?hk===k:+t.dataset.f===fi))});
+    edges.forEach(e=>{const on=hk?e.dataset.k===hk:+e.dataset.f===fi;e.classList.toggle("on",on);e.classList.toggle("pv",!on&&+e.dataset.f===q);if(on)svg.appendChild(e)});
+    dots.forEach((d,i)=>d.classList.toggle("on",i===fi))}
+  function fill(still){const f=F[fi];$("fmK").textContent=`Força ${nn(fi)} de ${nn(F.length-1)}`;$("fmIc").innerHTML=icoSvg(f.ic);fixPaths($("fmIc"));$("fmT").textContent=f.t;
     $("fmX").textContent=f.x;const v=$("fmV"),m=/^(\d+)%$/.exec(f.v);if(m&&!still&&!REDMO)cnt(v,+m[1],"%");else{vTok++;v.textContent=f.v}$("fmVl").textContent=f.vl;
     $("fmS").textContent="Fonte: "+f.src;$("fmI").textContent=f.imp;
     $("fmP").innerHTML=f.p.map(c=>{const q=PBY(c);return q?`<a href="#p=${q.id}" data-pd="${q.id}" class="fm-pchip" data-tv="${q.code} · ${q.name}" data-tl="${strip(q.tagline).replace(/"/g,"&quot;")}">${picoSvg(c)}<b>${q.code}</b><span>${q.name}</span><i>→</i></a>`:""}).join("");fixPaths($("fmP"));
@@ -65,16 +68,27 @@
   /* contador local que pode ser cancelado: trocar de força antes do fim nunca deixa o número de outra força */
   function cnt(el,to,suf){const t=++vTok,t0=performance.now();el.textContent="0"+suf;
     const st=n=>{if(t!==vTok)return;const k=clamp((n-t0)/700,0,1);el.textContent=Math.round(to*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
-  function sel(i,still){const ch=i!==cur||!$("fmT").textContent;cur=i;if(ch||still)fill(still);apply()}
+  function sel(i,still){const ch=i!==fi||!$("fmT").textContent;fi=i;if(ch||still)fill(still);apply()}
   fill(true);apply();
 
-  /* ao voltar do slide seguinte (←), abre na última força, como as vistas dos outros slides */
-  ENTER["Forças de mercado"]=()=>{hk=null;pv=-1;lock=false;clearTimeout(hv);const i=sl.classList.contains("back")?F.length-1:0;requestAnimationFrame(()=>{draw();sel(i)})};
-  STEP["Forças de mercado"]=d=>{const n=cur+d;if(n<0||n>=F.length)return false;hk=null;pv=-1;lock=true;clearTimeout(hv);sel(n);return true};
+  /* de onde se veio: observa qual slide fica ativo (o core só marca "back" nas trocas animadas,
+     e reativa o mesmo slide ao fechar uma ficha). fresh = o slide acabou de ser aberto vindo de outro;
+     from = índice do slide anterior. Funciona igual com e sem movimento reduzido. */
+  const idx=slides.indexOf(sl);let act=slides.findIndex(s=>s.classList.contains("active")),from=-1,fresh=true;
+  const mo=new MutationObserver(()=>{const a=slides.findIndex(s=>s.classList.contains("active"));if(a===act)return;if(a===idx){from=act;fresh=true}act=a});
+  slides.forEach(s=>mo.observe(s,{attributes:true,attributeFilter:["class"]}));
+  /* entrada nova: ← vindo de um slide posterior abre na última força (como as vistas dos outros slides); senão, na primeira.
+     reentrada (fechar uma ficha aberta daqui): mantém a força e a trava, e o → continua de onde parou */
+  ENTER["Forças de mercado"]=()=>{hk=null;pv=-1;clearTimeout(hv);
+    if(!fresh){lock=true;requestAnimationFrame(()=>{draw();sel(fi,true)});return}
+    fresh=false;lock=false;const i=from>idx?F.length-1:0;requestAnimationFrame(()=>{draw();sel(i)})};
+  STEP["Forças de mercado"]=d=>{const n=fi+d;if(n<0||n>=F.length)return false;hk=null;pv=-1;lock=true;clearTimeout(hv);sel(n);return true};
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(sl.classList.contains("active"))draw()});
 
-  /* impressão: rede estática com a força 1 e uma página extra com as seis forças completas */
-  PRINT.push(()=>{const was=sl.style.display;sl.style.display="block";hk=null;pv=-1;lock=false;clearTimeout(hv);cur=0;draw();sel(0,true);sl.style.display=was;
+  /* impressão: rede estática com a força 1 e uma página extra com as seis forças completas;
+     depois da impressão (afterprint) a tela volta à força em que estava */
+  let rest=null;addEventListener("afterprint",()=>{if(!rest)return;const r=rest;rest=null;if(!sl.classList.contains("active"))return;lock=r.lock;draw();sel(r.fi,true)});
+  PRINT.push(()=>{if(!rest)rest={fi,lock};const was=sl.style.display;sl.style.display="block";hk=null;pv=-1;lock=false;clearTimeout(hv);fi=0;draw();sel(0,true);sl.style.display=was;
     if(stage.querySelector(".fm-print"))return;
     const c=sl.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","fm-print","play");
     c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));

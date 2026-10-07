@@ -22,7 +22,8 @@
 .fm-tx b i{font-style:normal;font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--grey-500)}
 .fm-k{display:block;font-size:11.6px;font-weight:500;line-height:1.35;color:var(--grey-500);white-space:nowrap}
 .fm-k em{font-style:normal;font-weight:800;font-size:12.6px;letter-spacing:-.01em;color:var(--orange-600);margin-right:6px}
-.fm-node:hover,.fm-node.on{border-color:var(--orange-500);box-shadow:0 0 0 3px rgba(242,107,33,.15),0 10px 24px rgba(11,37,69,.1);transform:translateX(4px)}
+/* o hover vem do invólucro, que não se move: o nó anda 4px sem sair de baixo do cursor na borda esquerda */
+.fm-w:hover .fm-node,.fm-node:focus-visible,.fm-node.on{border-color:var(--orange-500);box-shadow:0 0 0 3px rgba(242,107,33,.15),0 10px 24px rgba(11,37,69,.1);transform:translateX(4px)}
 .fm-node.on .fm-ic{background:var(--orange-500);color:#fff}
 .fm-node.on .fm-tx b i{color:var(--orange-600)}
 .fm-node.on::after,.fm-node.lit::after{border-color:var(--orange-500);background:var(--orange-500)}
@@ -44,7 +45,7 @@
 .fm-dem.on .fm-dt b{color:#fff}
 .fm-dem.on .fm-tags .lb{color:var(--steel-300)}
 .fm-dem.on .fm-tags i{background:rgba(255,255,255,.1);color:var(--steel-200)}
-.fm-tags i.on,.fm-dem.on .fm-tags i.on{background:var(--orange-500);color:#fff}
+.fm-tags i.on,.fm-dem.on .fm-tags i.on{background:var(--orange-600);color:#fff;font-weight:700}
 /* recuo sem perder contraste: borda, fundo e ícone recuam; o texto continua legível */
 .fm-map.focus .fm-dem:not(.on){background:rgba(255,255,255,.55);border-color:var(--line);box-shadow:none}
 .fm-map.focus .fm-dem:not(.on)>.ico{color:var(--steel-300)}
@@ -61,7 +62,7 @@
 .fm-panel{grid-column:4;margin-left:28px;position:relative;z-index:1;min-height:0;background:var(--navy-900);color:#fff;border-radius:20px;padding:22px 22px 22px;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(11,37,69,.28);overflow:hidden}
 .fm-panel::before{content:"";position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;background:radial-gradient(closest-side,rgba(242,107,33,.18),transparent);pointer-events:none}
 /* espaçamento fixo entre os blocos (como .r-panel da referência); a sobra de altura vai só para a faixa do número */
-.fm-pin{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;gap:16px}
+.fm-pin{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;gap:14px}
 .fm-g{display:flex;flex-direction:column;gap:12px}
 .fm-ptop{display:flex;align-items:center;gap:10px}
 .fm-pic{width:30px;height:30px;border-radius:9px;background:rgba(242,107,33,.16);color:var(--orange-400);display:grid;place-items:center;flex:none}
@@ -74,14 +75,14 @@
 .fm-pt{font-size:19.5px;font-weight:800;line-height:1.2;letter-spacing:-.02em;color:#fff;white-space:nowrap}
 .fm-sh{display:block;font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel-300);white-space:nowrap}
 .fm-sec p{font-size:14px;line-height:1.5;color:var(--steel-200);margin-top:5px}
-.fm-big{flex:1 0 auto;justify-content:center;gap:7px;padding:14px 0 13px;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px dashed rgba(255,255,255,.18)}
+.fm-big{flex:1 0 auto;justify-content:center;gap:7px;padding:12px 0 11px;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px dashed rgba(255,255,255,.18)}
 .fm-big b{font-size:52px;font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--orange-400);white-space:nowrap}
 .fm-big span{font-size:13.5px;font-weight:600;line-height:1.4;color:#fff;text-wrap:balance}
 .fm-big .fm-src{font-family:var(--fm);font-size:10px;font-weight:400;line-height:1.4;letter-spacing:.02em;color:var(--steel-300)}
 .fm-imp p{font-size:15px;font-weight:600;line-height:1.45;color:#fff}
 .fm-prod{padding-top:12px;border-top:1px solid rgba(255,255,255,.12)}
 .fm-prod>div{display:flex;flex-direction:column;gap:6px;margin-top:9px}
-.fm-pchip{display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:10px;background:rgba(242,107,33,.14);border:1px solid rgba(242,107,33,.45);color:#fff;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap;transition:background .2s,border-color .2s,transform .2s var(--ease)}
+.fm-pchip{display:flex;align-items:center;gap:9px;padding:6px 12px;border-radius:10px;background:rgba(242,107,33,.14);border:1px solid rgba(242,107,33,.45);color:#fff;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap;transition:background .2s,border-color .2s,transform .2s var(--ease)}
 .fm-pchip .ico{width:16px;height:16px;color:var(--orange-400);flex:none}
 .fm-pchip b{font-family:var(--fm);font-size:11px;font-weight:600;color:var(--orange-400)}
 .fm-pchip span{min-width:0}
@@ -89,7 +90,7 @@
 .fm-pchip:hover{background:rgba(242,107,33,.28);border-color:var(--orange-400)}
 .fm-pchip:hover i{transform:translateX(3px)}
 
-@media (prefers-reduced-motion:reduce){.fm-edge{animation:none!important}.fm-node,.fm-node:hover,.fm-node.on{transform:none}}
+@media (prefers-reduced-motion:reduce){.fm-edge{animation:none!important}.fm-node,.fm-w:hover .fm-node,.fm-node.on{transform:none}}
 
 /* impressão: rede estática (força 1) + página extra com as seis forças completas */
 .fm-print .forces2{flex:1;min-height:0}
