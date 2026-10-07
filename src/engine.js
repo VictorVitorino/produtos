@@ -69,8 +69,12 @@ function BeforeAfter(box,opts){const asis=box.querySelector(".ba-asis"),hd=H("di
   let X=100,raf=0,drag=false;const W=()=>box.offsetWidth;
   const kb=hd.firstChild;
   function set(p){X=clamp(p,0,100);asis.style.clipPath=`inset(0 ${100-X}% 0 0)`;hd.style.left=X+"%";la.style.opacity=X<14?0:1;lb.style.opacity=X>86?0:1;
-    /* o botão (52px) acompanha o divisor, mas fica sempre inteiro dentro do painel */
-    const w=W(),px=X/100*w,m=33;kb.style.transform=w?`translateX(${(px<m?m-px:px>w-m?w-m-px:0).toFixed(1)}px)`:"";opts&&opts.onMove&&opts.onMove(X)}
+    /* o botão (52px) acompanha o divisor, mas fica sempre inteiro dentro do painel;
+       nas pontas (Hoje / Proposta) vira uma aba estreita colada na borda, para não cobrir o conteúdo */
+    const w=W(),px=X/100*w,m=33,edge=!!w&&(X<=2||X>=98);hd.classList.toggle("edge",edge);hd.classList.toggle("r",edge&&X>=50);
+    if(edge){const kw=16;kb.textContent=X<50?"›":"‹";kb.style.transform=`translateX(${((X<50?0:w-kw)-px+26).toFixed(1)}px)`}
+    else{if(kb.textContent!=="⇔")kb.textContent="⇔";kb.style.transform=w?`translateX(${(px<m?m-px:px>w-m?w-m-px:0).toFixed(1)}px)`:""}
+    opts&&opts.onMove&&opts.onMove(X)}
   function tween(to,d){cancelAnimationFrame(raf);if(REDMO){set(to);return}const from=X,t0=performance.now(),dd=d||900;const st=t=>{const k=clamp((t-t0)/dd,0,1);set(from+(to-from)*ease.inOut(k));if(k<1)raf=requestAnimationFrame(st)};raf=requestAnimationFrame(st)}
   const toP=e=>{const r=box.getBoundingClientRect();return (e.clientX-r.left)/r.width*100};
   hd.addEventListener("pointerdown",e=>{drag=true;hd.setPointerCapture(e.pointerId);cancelAnimationFrame(raf);e.stopPropagation()});
@@ -93,7 +97,7 @@ function CardStack(scene,cards,dotsHost,onChange){let order=cards.map((_,i)=>i);
   els.forEach(el=>{let sx=0,dx=0,dn=false;el.addEventListener("pointerdown",e=>{if(el.style.pointerEvents==="none")return;dn=true;sx=e.clientX;dx=0;el.setPointerCapture(e.pointerId);el.style.transition="none"});
     el.addEventListener("pointermove",e=>{if(!dn)return;dx=(e.clientX-sx)/(scene.getBoundingClientRect().width/scene.offsetWidth);el.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`});
     el.addEventListener("pointerup",()=>{if(!dn)return;dn=false;el.style.transition="";if(Math.abs(dx)>80||Math.abs(dx)<4)next();else layout()})});
-  layout();return{next,prev,reset(){order=cards.map((_,i)=>i);layout()},get top(){return order[0]}}}
+  layout();return{next,prev,reset(){order=cards.map((_,i)=>i);layout()},to(k){order=cards.map((_,i)=>(i+k)%cards.length);layout()},get top(){return order[0]}}}
 
 /* =====================================================================
    EFEITO · TIMELINE MOTION

@@ -1,0 +1,95 @@
+/* =====================================================================
+   REVISÃO 2 · vazios, antes/depois nas pontas, painéis no celular e páginas extras da impressão
+   (carregado depois de 90-revisao.css)
+   ===================================================================== */
+
+/* ---------- antes/depois: nas pontas o botão vira uma aba de 16px colada na borda ---------- */
+.ba-handle.edge .ba-knob{width:16px;height:64px;margin-top:-32px;border-radius:0 10px 10px 0;font-size:16px;font-weight:700;box-shadow:0 6px 16px rgba(242,107,33,.4)}
+.ba-handle.edge.r .ba-knob{border-radius:10px 0 0 10px}
+
+/* ---------- slide 8: as listas ocupam a coluna (itens crescem até 60px), sem vão antes de "Como fica" ---------- */
+#hb .op-grid.mini .op-list>.prod,#hb .op-grid.mini .op-list>.svc{flex:1 1 auto;max-height:60px}
+#hb .op-grid.mini .op-list>.prod{min-height:30px}
+
+/* ---------- slide 5: a caixa da A&M cresce com o texto (as outras dividem a sobra) ---------- */
+.bench-ctx .bc{flex:1 1 auto;overflow:visible}
+
+/* ---------- slide 2: cartões do tamanho do texto; pergunta maior e cadeia de valor em pílulas ---------- */
+.sh__text p.sh__q{font-size:22px;line-height:1.42}
+.sh__text .sh__intro{flex:1;grid-auto-rows:auto;align-content:stretch}
+.sh__text .sh__intro div{justify-content:center;padding:14px 20px}
+.sh__text .sh__intro p{font-size:16.5px;line-height:1.5}
+.sh__chain{gap:9px;padding-top:14px}
+.sh__chain .ln{display:flex;flex-wrap:wrap;gap:7px;white-space:normal;font-size:13px;letter-spacing:0}
+.sh__chain .ln i,.sh__chain .ln b{font-style:normal;white-space:nowrap;padding:6px 12px;border-radius:99px;border:1px solid var(--line-strong);background:#fff;color:var(--navy-800)}
+.sh__chain .ln b{background:var(--orange-500);border-color:var(--orange-500);color:#fff}
+
+/* ---------- slide 18: pilha do tamanho do card mais longo; a sobra vai para o modelo operacional e o portão ---------- */
+.fab-l .cs-scene{flex:none;height:362px}
+.fab-l>.grp{flex:1;min-height:0}
+.fab-l .opm{flex:1;grid-auto-rows:1fr}
+.fab-l .opm>div{align-items:center;padding:10px 16px}
+.fab-l .opm h4{font-size:15px}
+.fab-l .opm p{font-size:13.5px;line-height:1.45}
+.fab-r{justify-content:flex-start;gap:22px}
+.fab-r>.grp:last-child{flex:1;min-height:0}
+.fab-r .gate{flex:1;grid-auto-rows:1fr}
+.fab-r .gate-i{align-items:center}
+.fab-r .anat-i{padding:18px 14px;font-size:14px}
+.fab-r .tier{padding:20px 22px}
+.fab-r .gate-i{padding:17px 16px}
+.tier h4{font-size:17px}
+.tier p{font-size:13.5px}
+.gate-i b{font-size:15px}
+.gate-i p{font-size:13px}
+
+/* ---------- slides 11/13/15/17 · vista 2: sufixo "(Pilar n)" do chip no corpo mínimo ---------- */
+.asis-chip i{font-size:11.5px}
+
+/* ---------- impressão · página extra do benchmark (7 eventos + leitura): cartões cheios, fonte logo após o texto ---------- */
+.tl7{grid-auto-rows:1fr;gap:16px}
+.tl7-i{gap:8px;padding:18px 20px}
+.tl7-i .d{font-size:10.5px}
+.tl7-i h4{font-size:21px;line-height:1.18}
+.tl7-i p{font-size:16px;line-height:1.5}
+.tl7-i .src{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line-strong);font-size:10px;line-height:1.4}
+.tl7-i.am .src{border-top-color:rgba(255,255,255,.18)}
+.tl7-i.rd{background:var(--orange-100);border-color:rgba(242,107,33,.35)}
+.tl7-i.rd ol{list-style:none;display:flex;flex-direction:column;gap:9px;margin:4px 0 0;padding:0}
+.tl7-i.rd li{display:grid;grid-template-columns:26px 1fr;align-items:center;font-size:16px;font-weight:700;line-height:1.3;color:var(--navy-800)}
+.tl7-i.rd li i{font-style:normal;display:grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--orange-500);color:#fff;font-family:var(--fm);font-size:11px}
+.tl7-i.rd .so{margin-top:auto;padding-top:10px;border-top:1px dashed rgba(242,107,33,.45);font-size:15px;line-height:1.45;color:var(--navy-800)}
+
+/* ---------- impressão · página extra da fábrica (7 passos + modelo operacional) ---------- */
+.cs-grid{gap:14px}
+.cs-g{gap:6px;padding:16px 18px}
+.cs-g h4{font-size:20px}
+.cs-g p{font-size:13px;line-height:1.45}
+.cs-g li{font-size:12.5px;line-height:1.4}
+.cs-g .ex{font-size:12.5px;line-height:1.4;padding-top:9px}
+.cs-g.op{background:linear-gradient(155deg,#1B2F4D 0%,#0B2545 60%,#071A33 100%);border:1px solid rgba(242,107,33,.45)}
+.cs-g.op .om{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.cs-g.op .om:last-of-type{border-bottom:0}
+.cs-g.op .om b{font-size:16px;font-weight:800;color:#fff}
+.cs-g.op .om span{font-size:13.5px;line-height:1.42;color:var(--steel-200)}
+.cs-g.op .ex{font-family:var(--fm);font-weight:500;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel-300)}
+
+/* ---------- painel de fichas no celular (< 576px): o status vira só o ponto colorido (nome na dica) ---------- */
+@media (max-width:575px){
+  #pdxP .xi{grid-template-columns:30px minmax(0,1fr) auto;gap:6px;padding:7px 12px;font-size:12.5px}
+  #pdxP .xi .st{font-size:0;letter-spacing:0;gap:0;padding:0;width:20px;height:20px;justify-content:center;border-radius:50%}
+  #pdxP .xi .st::before{width:8px;height:8px}
+}
+@media (max-width:380px){
+  #pdxP .xi{grid-template-columns:28px minmax(0,1fr) auto;gap:5px;padding:7px 10px;font-size:11.5px}
+}
+
+/* impressão: na página principal da fábrica a lista dos 7 passos ocupa a coluna; o modelo operacional fica do tamanho do texto */
+@media print{
+  .fab-l>.grp{flex:none}
+  .fab-l .opm{grid-auto-rows:auto}
+  .fab-l .opm>div{padding:9px 14px}
+  .cs-print{justify-content:space-between;padding:20px 22px}
+  .cs-print b{font-size:16.5px}
+  .cs-print span{font-size:13px;line-height:1.42}
+}

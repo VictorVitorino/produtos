@@ -1,8 +1,11 @@
 /* Arquivo carregado depois de engine.js, data.js, core.js e slides.js (ver build.py). */
 /* ---------- origem de cada produto (nome de hoje): gerada de OLD, com os nomes oficiais do portfólio atual ---------- */
-const ORG={};PRODUCTS.forEach(p=>{const rk=o=>o.d==="cut"?2:o.d==="merge"?1:0,os=OLD.filter(o=>o.to===p.code).sort((a,b)=>rk(a)-rk(b));
+const ORG={},ORGT={};PRODUCTS.forEach(p=>{const rk=o=>o.d==="cut"?2:o.d==="merge"?1:0,os=OLD.filter(o=>o.to===p.code).sort((a,b)=>rk(a)-rk(b));
   const nm=o=>o.n+(o.p!==p.pillar?` (Pilar ${o.p})`:"");
-  ORG[p.code]=p.st==="new"?(os.length?`novo · absorve o ${os.map(o=>o.n).join(" + ")}`:"novo · produto com IA"):`de ${os.map(nm).join(" + ")}`});
+  ORG[p.code]=p.st==="new"?(os.length?`novo · absorve o ${os.map(o=>o.n).join(" + ")}`:"novo · produto com IA"):`de ${os.map(nm).join(" + ")}`;
+  /* no tile: cada nome inteiro numa linha; com mais de 2 serviços, o primeiro nome + a contagem (a dica traz a lista completa) */
+  const nw=s=>`<span class="nwr">${s}</span>`;
+  ORGT[p.code]=p.st==="new"?(os.length?`novo · absorve o ${nw(os[0].n)}`:"novo · produto com IA"):os.length>2?`de ${nw(nm(os[0]))} + ${os.length-1} serviços`:`de ${os.map(o=>nw(nm(o))).join(" + ")}`});
 /* frase "serviços → produtos" por pilar, calculada dos dados (quem fica, quem chega de outro pilar, quantos são novos) */
 const pillarFlow=pl=>{const n=pl.n,own=OLD.filter(o=>o.p===n),stay=own.filter(o=>PBY(o.to).pillar===n).length,inn=OLD.filter(o=>o.p!==n&&o.d!=="cut"&&PBY(o.to).pillar===n),nw=PRODUCTS.filter(p=>p.pillar===n&&p.st==="new").length;
   return`${stay===own.length?`Os ${own.length} serviços de hoje`:`${stay} dos ${own.length} serviços de hoje`}${inn.length?`, mais ${inn.length} vindo do Pilar ${inn[0].p},`:""}${nw?` e ${nw} novo`:""} formam ${pl.now} produtos`};
@@ -24,7 +27,7 @@ const pillarFlow=pl=>{const n=pl.n,own=OLD.filter(o=>o.p===n),stay=own.filter(o=
     const list=H("div",{class:"sy-list",style:`--rows:${ROWS}`},col);
     ps.forEach((p,k)=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,"data-pl":pl.n,class:`sy-t ${p.st}${p.st==="new"?" holo":""}`,style:`--hd:${(k*.7).toFixed(1)}s`,
         "data-tv":`${p.code} · ${p.name}`,"data-th":`<span class="tl"><b>Proposta</b>${p.tagline}</span><span class="tl">${orgTip(p.code)}</span><span class="tl"><b>Status</b>${STATUS[p.st][0]}${p.sig?" · ★ A&amp;M Signature":""}</span><span class="tl">Clique para abrir a ficha.</span>`},list);
-      a.innerHTML=`${picoSvg(p.code,pl.n+k)}<span class="sy-nm"><em>${p.code}</em> · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span><span class="sy-tx"><i class="sy-fl"></i>${stTag(p.st)}<span class="v1">${p.tagline}</span><span class="v2">${ORG[p.code]}</span></span>`});
+      a.innerHTML=`${picoSvg(p.code,pl.n+k)}<span class="sy-nm"><em>${p.code}</em> · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span><span class="sy-tx"><i class="sy-fl"></i>${stTag(p.st)}<span class="v1">${p.tagline}</span><span class="v2">${ORGT[p.code]}</span></span>`});
     /* linhas livres da coluna: sempre o mesmo bloco (a proposta do pilar); "Quando nos contratam" fica no spotlight dos 4 pilares */
     if(ps.length<ROWS){const n=H("div",{class:"sy-note",style:`grid-row:span ${ROWS-ps.length}`},list);n.innerHTML=`<span><b class="label">Proposta</b>${pl.def}</span>`}});
   fixPaths(sec);

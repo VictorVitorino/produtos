@@ -5,6 +5,8 @@ const ONEPAGE=slides.findIndex(s=>s.dataset.t==="One-page · novo portfólio")+1
 const PBY=c=>PRODUCTS.find(p=>p.code===c);
 const plink=(c,cls)=>{const p=PBY(c);return p?`<a href="#p=${p.id}" data-pd="${p.id}" class="plink ${cls||""} ${p.st}" title="Abrir ficha: ${p.name}">${p.code} ${p.name}</a>`:""};
 const strip=h=>h.replace(/<[^>]+>/g,"");
+/* chip só com o código (onde falta espaço): o nome completo vai na dica e o clique abre a ficha */
+const pcode=(c,cls)=>{const p=PBY(c);return p?`<a href="#p=${p.id}" data-pd="${p.id}" class="plink ${cls||""} ${p.st}" data-tv="${p.code} · ${p.name}" data-tl="Clique para abrir a ficha.">${p.code}</a>`:""};
 const ICO={spark:'<path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/>',doc:'<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>',deal:'<path d="M3 12l4-4 4 3 3-3 7 6"/><path d="M3 18h18"/>',coin:'<circle cx="12" cy="12" r="8"/><path d="M14.5 9.5c-.6-.9-1.5-1.2-2.5-1.2-1.4 0-2.5.7-2.5 1.9 0 2.8 5 1.5 5 4.2 0 1.2-1.1 2-2.5 2-1.1 0-2.1-.4-2.7-1.3M12 6.5v1.8M12 16.4v1.6"/>',shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',people:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M15 14.5c3 0 6 2 6 5.5"/>'};
 const ico=(k,c)=>`<svg class="i24" viewBox="0 0 24 24" style="color:${c||"currentColor"}">${ICO[k]}</svg>`;
 
@@ -74,7 +76,7 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
 
 /* ---------- contexto · Shimmer / Holographic Sweep ---------- */
 (function(){const root=$("sh"),vals=[...root.querySelectorAll(".sh__val")],kpis=[...root.querySelectorAll("[data-kpi]")],rows=[...root.querySelectorAll("[data-w]")],badge=root.querySelector("[data-badge]"),btn=root.querySelector("[data-load]"),status=root.querySelector("[data-status]");
-  const fmt=(v,dec)=>v.toLocaleString("pt-BR",{minimumFractionDigits:dec,maximumFractionDigits:dec}),AUTO=REDMO?1400:2600;let loaded=false,timers=[],rafs=[],t0=0,tick=0,mode="periodic";
+  const fmt=(v,dec)=>v.toLocaleString("pt-BR",{minimumFractionDigits:dec,maximumFractionDigits:dec}),AUTO=REDMO?500:1000;let loaded=false,timers=[],rafs=[],t0=0,tick=0,mode="periodic";
   const clearAll=()=>{timers.forEach(clearTimeout);timers=[];rafs.forEach(cancelAnimationFrame);rafs=[];clearInterval(tick)};
   const clock=()=>{const left=Math.max(0,AUTO-(performance.now()-t0));status.textContent="carregando em "+(left/1000).toFixed(1).replace(".",",")+" s…"};
   const tween=(out,v,dec,dur)=>{const s0=performance.now();const st=t=>{const k=Math.min(1,(t-s0)/dur),e=k===1?1:1-Math.pow(2,-10*k);out.textContent=fmt(v*e,dec);if(k<1)rafs.push(requestAnimationFrame(st))};rafs.push(requestAnimationFrame(st))};
@@ -97,7 +99,10 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
     const d=H("div",{class:"sh__p4"},$("shPillars"));d.innerHTML=`<div class="sh__slot"><b class="sh__val n">Pilar ${pl.n} · ${pl.name}</b><i class="sh__sk" style="width:80%"></i></div><div class="sh__slot"><span class="sh__val w"><em>Sobreposição</em>${txt}</span><i class="sh__sk"></i></div>`});
   vals.push(...root.querySelectorAll("#shPillars .sh__val"));
   applyMode();reset();clearAll();
-  ENTER["DTS hoje"]=reset;PRINT.push(()=>{clearAll();loaded=false;load()})})();
+  /* impressão: conteúdo final na hora (sem contagem nem barras em animação) */
+  ENTER["DTS hoje"]=reset;PRINT.push(()=>{clearAll();loaded=false;load();clearAll();vals.forEach(el=>el.classList.add("is-in"));
+    rows.forEach(r=>{const b=r.querySelector(".sh__bar i");b.style.transition="none";b.style.width=r.dataset.w+"%"});
+    kpis.forEach(k=>{k.querySelector("[data-out]").textContent=fmt(parseFloat(k.dataset.value),parseInt(k.dataset.dec,10)||0)})})})();
 
 /* ---------- portfólio atual (AS-IS) + spotlight ---------- */
 (function(){const g=$("asGrid");PILLARS.forEach(pl=>{const col=H("div",{class:"op-col",id:"asc"+pl.n,"data-a":"up",style:`--d:${3+pl.n}`},g);
@@ -112,7 +117,7 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
 /* ---------- 50/50 · de serviços a produtos ---------- */
 const BAS={};
 (function(){const asis=$("hbAsis"),tobe=$("hbTobe");PILLARS.forEach(pl=>{const c1=H("div",{class:"op-col"},asis);c1.innerHTML=`<div class="op-hd"><div class="n">HOJE · PILAR ${pl.n}</div><h3>${pl.official}</h3><span class="cnt">${pl.was}</span></div>`;const l1=H("div",{class:"op-list"},c1);OLD.filter(o=>o.p===pl.n).forEach(o=>{H("div",{class:"svc",html:`<i></i><span>${o.n}</span>`},l1)});H("div",{class:"op-when",html:`<b>Quando nos contratam</b>${pl.when}`},l1);
-    const c2=H("div",{class:"op-col"},tobe);c2.innerHTML=`<div class="op-hd"><div class="n">PROPOSTA · PILAR ${pl.n}</div><h3>${pl.name}</h3><span class="cnt">${pl.now}</span></div>`;const l2=H("div",{class:"op-list"},c2);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}`,title:"Abrir ficha: "+p.name},l2);a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span></span>`});H("div",{class:"op-when",html:`<b>Como fica</b>${pl.short}, com inteligência artificial no método e preço por valor.`},l2)});
+    const c2=H("div",{class:"op-col"},tobe);c2.innerHTML=`<div class="op-hd"><div class="n">PROPOSTA · PILAR ${pl.n} · nome proposto</div><h3 title="Hoje: ${pl.official}">${pl.to}</h3><span class="cnt">${pl.now}</span></div>`;const l2=H("div",{class:"op-list"},c2);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}`,title:"Abrir ficha: "+p.name},l2);a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span></span>`});H("div",{class:"op-when",html:`<b>Como fica</b>${pl.short}, com inteligência artificial no método e preço por valor.`},l2)});
   /* ponte 29 → 24: à esquerda o que acontece com os serviços de hoje, à direita a composição dos 24 produtos */
   const nst=k=>PRODUCTS.filter(p=>p.st===k).length,nwc=PRODUCTS.filter(p=>p.st==="new").map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="plink sm dk new" data-tv="${p.code} · ${p.name}" data-tl="Produto novo com IA · clique para abrir a ficha">${p.code}</a>`).join("");
   const M=[["O que temos","29","serviços em 4 pilares, com sobreposições e sem IA no método",""],["O que fundir","13 → 6","serviços que se sobrepõem viram 6 produtos",""],["O que retirar","2","IT Business Partner e IT M&amp;A Playbook deixam de ser vendidos isolados","out"],"=",["Manter",String(nst("keep")),"produtos com a essência preservada","keep"],["Aprimorar com IA",String(nst("ai")),"produtos remodelados com IA no método",""],["Criar com IA",String(nst("new")),`produtos novos <span class="nwc">${nwc}</span>`,"new holo"]];
@@ -124,11 +129,21 @@ const BAS={};
 
 /* ---------- benchmark · timeline 2026 ---------- */
 (function(){const host=$("tlMarket");let tl=null;
-  const T4=[["Plataforma própria + agentes","Zora AI, agent OS, EY.ai, Workbench e Lilli, com NVIDIA, Microsoft, Google e laboratórios de IA.","A A&M não precisa competir em plataforma: pode ser neutra e orquestradora."],["Preço por resultado e por ativo","McKinsey cobra ~25% por resultado; Deloitte vende agentes por assinatura; IBM fala em consultoria baseada em ativos.","O DNA de honorário por resultado da A&M vira vantagem."],["Diligência e PE sob pressão","DD com agentes por ~US$ 50 mil; laboratórios de IA entram nas investidas dos fundos (Ode); Bain replica o software do alvo.","O valor migra para o que vem depois do signing: Dia 1, TSA e sinergias."],["Pares compram capacidade","AlixPartners adquire a Artium; Falconi investe R$ 100 mi; CI&T monetiza IA pela plataforma Flow.","produtizar o DNA de operador com IA, antes dos pares."]];
+  const T4=[["Plataforma própria + agentes","Zora AI, agent OS, EY.ai, Workbench e Lilli, com NVIDIA, Microsoft, Google e laboratórios de IA.","A A&M não precisa competir em plataforma: pode ser neutra e orquestradora."],["Preço por resultado e por ativo","McKinsey cobra ~25% por resultado; Deloitte vende agentes por assinatura; IBM fala em consultoria baseada em ativos.","O DNA de honorário por resultado da A&M vira vantagem."],["Diligência e PE sob pressão","DD com agentes por ~US$ 50 mil; laboratórios de IA entram nas investidas dos fundos (Ode); Bain replica o software do alvo.","O valor migra para o que vem depois do signing: Dia 1, TSA e sinergias."],["Pares compram capacidade","AlixPartners adquire a Artium; Falconi investe R$&nbsp;100&nbsp;mi; CI&T monetiza IA pela plataforma Flow.","produtizar o DNA de operador com IA, antes dos pares."]];
   T4.forEach(([t,x,h],i)=>{const d=H("div",{class:"card"+(i===3?" am":""),"data-a":"up",style:`--d:${8+i}`},$("benchTake"));d.innerHTML=`<span class="label">Sinal ${i+1} de 4</span><h4>${t}</h4><p>${x}</p><p class="so">→ ${i===3?"Para a A&amp;M: ":""}${h}</p>`});
-  const mk=()=>{if(!tl)tl=Timeline(host,TL_2026,{w:host.offsetWidth||1076,y:232,cardY:8,x0:70,x1:(host.offsetWidth||1076)-70,dwell:2400});return tl};
+  /* a linha fica embaixo da área disponível e o card logo acima (a altura vem do layout do slide) */
+  const mk=()=>{if(!tl){const hh=host.offsetHeight||320,y=Math.max(232,hh-78);tl=Timeline(host,TL_2026,{w:host.offsetWidth||1076,y,cardY:Math.max(8,Math.round((y-30-190)/2)),x0:70,x1:(host.offsetWidth||1076)-70,dwell:2400})}return tl};
   ENTER["Benchmark · IA nas consultorias"]=()=>mk().play();
-  $("tlPlay").onclick=()=>mk().play();PRINT.push(()=>{const t=mk();t.stopAuto();t.set(2)})})();
+  $("tlPlay").onclick=()=>mk().play();
+  /* impressão: todos os marcos acesos com o card da A&M, e uma página extra com os 7 eventos completos */
+  PRINT.push(()=>{const sec=slides.find(s=>s.dataset.t==="Benchmark · IA nas consultorias"),d0=sec.style.display;if(!host.offsetWidth)sec.style.display="block";
+    const t=mk();t.stopAuto();t.set(2);host.classList.add("tl-lit");const tr=host.querySelector(".tl-track"),pg=host.querySelector(".tl-prog");if(tr&&pg)pg.style.width=tr.style.width;sec.style.display=d0;
+    if(stage.querySelector(".tl7-page"))return;const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","tl7-page","play");
+    c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));c.querySelector(".hd .eyebrow").textContent="Linha do tempo 2026 em detalhe · os sete eventos com fonte";
+    const g=H("div",{class:"main tl7"});TL_2026.forEach(it=>{H("div",{class:"tl7-i"+(it.tag==="Alvarez & Marsal"?" am":""),html:`<div class="d">${it.d} · ${it.tag}</div><h4>${it.t}</h4><p>${it.x}</p><div class="src">Fonte: ${it.src}</div>`},g)});
+    /* 8ª célula: a leitura do slide (os quatro sinais) fecha a grade */
+    H("div",{class:"tl7-i rd",html:`<div class="d">Leitura · os quatro sinais</div><ol>${T4.map(([t],i)=>`<li><i>${i+1}</i>${t}</li>`).join("")}</ol><p class="so"><b>Para a A&amp;M:</b> ${T4[3][2]}</p>`},g);
+    c.querySelector(".main").replaceWith(g);sec.after(c)})})();
 
 /* ---------- raio-X ---------- */
 (function(){const svg=$("rxChart"),L=70,Rr=910,Tp=16,B=546,x=v=>L+(v-1.8)/(5-1.8)*(Rr-L),y=v=>B-(v-1.8)/(5-1.8)*(B-Tp);const mid=3.3;
@@ -154,7 +169,7 @@ const BAS={};
   ["Disruptivo","DTS como plataforma","Services-as-software: radares e escritórios por assinatura, benchmark Brasil como produto de dados e agentes operando para o cliente.",["Receita recorrente e escalável","Exige engenharia, dados e parcerias (ex.: compra da Artium pela AlixPartners)","Risco de canibalizar projetos","<b>Receita:</b> assinatura por empresa, agente ou fundo"],[5,5,5],"18–24 meses",false,[ev("HFS, fev/2026"),"Mercado de <b>services-as-software</b> projetado em US$ 1,5 tri até 2035, absorvendo receita de serviços de TI e SaaS."]]];
   P.forEach(([k,h,p,li,m,t,rec,evd],i)=>{const d=H("div",{class:"path3"+(rec?" rec":""),"data-a":"up",style:`--d:${4+i*2}`},$("paths"));
     const mt=(lab,v,o)=>`<div class="mr"><span>${lab}</span><div class="meter${o?" o":""}">${[1,2,3,4,5].map(j=>`<i class="${j<=v?"on":""}"></i>`).join("")}</div></div>`;
-    d.innerHTML=`${rec?'<span class="rib">★ RECOMENDADO</span>':""}<div class="k">${k}</div><h3>${h}</h3><p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul>${rec?`<div class="inc"><div>+ incubar duas apostas disruptivas desde já</div>${plink("3.5")}${plink("1.7")}</div>`:""}<div class="pev">${evd[0]}<span>${evd[1]}</span>${evd[2]?`<span class="rs">${evd[2]}</span>`:""}</div><div class="ms">${mt("Investimento",m[0])}${mt("Diferenciação",m[1],1)}${mt("Recorrência",m[2],1)}<div class="tm">Tempo até impacto: <b>${t}</b> <span class="hy">H</span></div></div>`})})();
+    d.innerHTML=`${rec?'<span class="rib">✓ RECOMENDADO</span>':""}<div class="k">${k}</div><h3>${h}</h3><p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul>${rec?`<div class="inc"><div>+ incubar duas apostas disruptivas desde já</div>${plink("3.5")}${plink("1.7")}</div>`:""}<div class="pev">${evd[0]}<span>${evd[1]}</span>${evd[2]?`<span class="rs">${evd[2]}</span>`:""}</div><div class="ms">${mt("Investimento",m[0])}${mt("Diferenciação",m[1],1)}${mt("Recorrência",m[2],1)}<div class="tm">Tempo até impacto: <b>${t}</b> <span class="hy">H</span></div></div>`})})();
 
 /* ---------- capítulos dos pilares: o capítulo ganha morphing (fx 29) e os números do pilar ---------- */
 PILLARS.forEach(pl=>{const n=pl.n,dp=slides.find(x=>x.dataset.t===`Pilar ${n} · Cliente e mercado`).dataset.p;
@@ -186,7 +201,7 @@ const MK={1:[["Deloitte","Technology Strategy & Transformation; Technology Strat
  2:[["Deloitte","Alianças de implementação (AWS até 2031; Google); Technology Center em Recife (~600 pessoas)","Zora AI integrada aos agentes SAP Joule","Escala de entrega e alianças","E"],
   ["EY","Service Delivery Center em Recife (SAP, ServiceNow, IA, RPA)","EY Beyond Tax Analytics para a Reforma","Reforma entra pelo Tax","E"],
   ["KPMG","Powered Enterprise; Consultoria Reforma Tributária","Thomson Reuters ONESOURCE; Workbench","Fiscal + tecnologia","E"],
-  ["CI&T · Falconi","Entrega AI-native; hiperautomação","CI&T Flow; Falconi: R$ 100 mi em IA, 80% dos projetos com agentes","Comprimem preço de PMO e entrega","E"],
+  ["CI&T · Falconi","Entrega AI-native; hiperautomação","CI&T Flow; Falconi: R$&nbsp;100&nbsp;mi em IA, 80% dos projetos com agentes","Comprimem preço de PMO e entrega","E"],
   ["TOTVS · SAP","Jornada da Reforma Tributária; RISE / S/4HANA","Chatbot especialista em Reforma (TOTVS)","O fornecedor também ‘aconselha’: falta voz independente","E"],
   ["Capgemini · Accenture · IBM","Recife: de 250 para 1.000 pessoas até o fim de 2026 (Capgemini); Accenture compra Tenbu","IBM Enterprise Advantage: consultoria baseada em ativos","Escala e ativos proprietários","E"]],
  3:[["Deloitte","M&A Technology: Tech DD, Software/Data Diligence, Sell-side & Exit Readiness, Separation & Carve-out (ACDC)","Plataforma de agentes Zora AI","Ciclo completo do deal","E"],
@@ -211,7 +226,7 @@ document.querySelectorAll(".ws").forEach(h=>{const w=WS[h.dataset.pillar];h.inne
   <div class="thr"><div class="eye">Ameaça a monitorar ${w.th[1]==="E"?'<span class="ev">E</span>':'<span class="hy">H</span>'}</div><p>${w.th[0]}</p></div>`});
 
 /* ---------- casos M&A e linha regulatória ---------- */
-[["MBRF","Marfrig + BRF, concluída em set/2025; sinergias anunciadas de R$ 485 mi/ano","Integração"],["Petz + Cobasi","Cade aprovou em dez/2025, com venda de 26 lojas","Integração"],["Braskem","Controle passa à IG4 (abr/2026)","Troca de controle"],["Raízen","Separação em Energia e Combustíveis até o fim de 2027","Carve-out"],["Motiva","Venda de participações em aeroportos por R$ 5,2 bi","Desinvestimento"]].forEach(([n,x,t])=>{const d=H("div",{class:"kpi-t"},$("p3cases"));d.innerHTML=`<span class="st ${t==="Carve-out"?"new":t==="Integração"?"ai":"keep"}">${t}</span><div class="nm">${n}</div><div class="l">${x}</div>`});
+[["MBRF","Marfrig + BRF, concluída em set/2025; sinergias anunciadas de R$&nbsp;485&nbsp;mi/ano","Integração"],["Petz + Cobasi","Cade aprovou em dez/2025, com venda de 26 lojas","Integração"],["Braskem","Controle passa à IG4 (abr/2026)","Troca de controle"],["Raízen","Separação em Energia e Combustíveis até o fim de 2027","Carve-out"],["Motiva","Venda de participações em aeroportos por R$&nbsp;5,2&nbsp;bi","Desinvestimento"]].forEach(([n,x,t])=>{const d=H("div",{class:"kpi-t"},$("p3cases"));d.innerHTML=`<span class="st ${t==="Carve-out"?"new":t==="Integração"?"ai":"keep"}">${t}</span><div class="nm">${n}</div><div class="l">${x}</div>`});
 (function(){const st=[["2026","Alíquota-teste de 1% (CBS 0,9% + IBS 0,1%)"],["01/01/2027","CBS plena; PIS/Cofins extintos"],["2027","Fim da manutenção padrão do SAP ECC (extensível a 2030)"],["2029–32","ICMS/ISS recolhidos a 90% → 60% da alíquota atual"],["2033","ICMS e ISS extintos"]];const h=$("p2time");h.innerHTML=`<div class="rt">${st.map(([d,t],i)=>`<div class="rt-i${i===1?" hot":""}"><i></i><b>${d}</b><span>${t}</span></div>`).join("")}</div>`})();
 
 /* ---------- fábrica: card stack + anatomia ---------- */
@@ -223,26 +238,29 @@ document.querySelectorAll(".ws").forEach(h=>{const w=WS[h.dataset.pillar];h.inne
   ["06","Equipar o time","Dono de produto, squad padrão e trilha de skills com certificação interna.",["1 dono por pilar + 1 de IA","Squad: sócio, gerente, consultores, eng. de IA/dados","Certificação interna por produto"]],
   ["07","Escalar e medir","Funil, conversão, margem e NPS por produto: o comitê trimestral acompanha e a revisão anual decide.",["Revisão anual: escalar · ajustar · aposentar","Conversão sprint → execução","Casos de sucesso viram material de venda"]]];
   const EXS=["Ex.: <b>3.1 AI-Powered Tech Due Diligence</b> · checklist padrão, modelo de custos e relatório em 3 níveis", "Ex.: <b>IT Integration Management Office + IT Separation Management Office</b> → 3.3 Integration & Separation Office (IMO/SMO)", "Ex.: <b>1.5 Tech Spend Optimization & Spend Radar</b> · agente lê contratos e faturas; o gerente valida cada achado", "Ex.: <b>3.5 PE Tech Value Radar</b> · score comparável entre investidas", "Ex.: <b>1.7 AI Value & Governance Office</b> · assinatura Essencial · Avançado · Regulado", "Ex.: <b>2.4 Tech Project Rescue</b> · squad forense pronto em 1 semana", "Ex.: <b>1.1 Tech & AI Value Diagnostic</b> → 1.4 e 1.5 · meta de conversão sprint → execução"];
+  const OPM=[["Dono de produto","1 por pilar + 1 de IA: P&L, roadmap e qualidade da ficha"],["Squad padrão","Sócio · gerente · 2 consultores · engenheiro de IA/dados"],["Comitê trimestral","Acompanha receita, margem e conversão; a revisão anual decide escalar, ajustar ou aposentar"]];
   const cs=CardStack($("csScene"),C.map(([n,t,p,li],i)=>`<div class="q">${n}</div><div class="k">PASSO ${n} DE 07</div><h3>${t}</h3><p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul><div class="ex">${EXS[i]}</div>`),$("csDots"));
-  $("csNext").onclick=()=>cs.next();$("csPrev").onclick=()=>cs.prev();ENTER["Fábrica de produtos"]=()=>cs.reset();
-  /* → percorre os 7 passos antes de sair do slide; ← volta passo a passo */
+  $("csNext").onclick=()=>cs.next();$("csPrev").onclick=()=>cs.prev();ENTER["Fábrica de produtos"]=()=>{if(goLast)cs.to(C.length-1);else cs.reset()};
+  /* → percorre os 7 passos antes de sair do slide; ← volta passo a passo (entrando pelo ←, abre no passo 07) */
   STEP["Fábrica de produtos"]=d=>{if(d>0&&cs.top<C.length-1){cs.next();return true}if(d<0&&cs.top>0){cs.prev();return true}return false};
   /* impressão: a pilha vira a lista dos 7 passos e uma página extra traz os 7 cards completos */
   PRINT.push(()=>{const sec=slides.find(s=>s.dataset.t==="Fábrica de produtos");cs.reset();
-    if(!sec.querySelector(".cs-print")){const l=H("ol",{class:"cs-print"},$("csScene").parentNode);C.forEach(([n,t,p])=>{H("li",{html:`<i>${n}</i><b>${t}</b><span>${p}</span>`},l)})}
+    if(!sec.querySelector(".cs-print")){const l=H("ol",{class:"cs-print"});$("csScene").after(l);C.forEach(([n,t,p])=>{H("li",{html:`<i>${n}</i><b>${t}</b><span>${p}</span>`},l)})}
     if(stage.querySelector(".cs-print-page"))return;const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","cs-print-page","play");
     c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));c.querySelector(".hd .eyebrow").textContent="Os sete passos em detalhe · método, exemplo e entregas";
     const g=H("div",{class:"cs-grid"});C.forEach(([n,t,p,li],i)=>{H("div",{class:"cs-g",html:`<div class="k">PASSO ${n} DE 07</div><h4>${t}</h4><p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul><div class="ex">${EXS[i]}</div>`},g)});
+    /* 8ª célula: o modelo operacional que sustenta os sete passos (o mesmo do slide) */
+    H("div",{class:"cs-g op",html:`<div class="k">MODELO OPERACIONAL DA FÁBRICA</div>${OPM.map(([t,x])=>`<div class="om"><b>${t}</b><span>${x}</span></div>`).join("")}<div class="ex">Proposta DTS</div>`},g);
     c.querySelector(".main").replaceWith(Object.assign(g,{className:"main cs-grid"}));sec.after(c)});
   /* anatomia: os blocos da ficha real (modelo Playbook), na ordem em que aparecem */
   [["1","Para quem é"],["2","Formato e encaixe"],["3","Origem"],["4","Por que A&amp;M"],["5","O problema"],["6","O que recebe"],["7","Como funciona"],["8","Números"],["9","Papel da IA"],["10","Como vira produto"],["11","Ferramentas e dados"],["12","Skills aplicadas"]].forEach(([n,t],i)=>{const d=H("div",{class:"anat-i","data-a":"up",style:`--d:${3+i}`},$("anat"));d.innerHTML=`<i>${n}</i><span>${t}</span>`});
   [["Sprint","Diagnóstico com escopo e preço fixos <span class=\"nwr\">(1–6 semanas)</span>",["1.1","2.4","3.1","4.6"]],["Execução","Programa com fee + êxito ou marcos",["1.5","2.3","3.3","4.3"]],["Assinatura","Radar ou escritório contínuo: receita recorrente",["1.7","3.5","1.5"]]].forEach(([t,x,ps],i)=>{const d=H("div",{class:"tier","data-a":"up",style:`--d:${8+i}`},$("tiers"));d.innerHTML=`<h4>${i+1} · ${t}</h4><p>${x}</p><div class="pls">${ps.map(c=>`<a href="#p=${PBY(c).id}" data-pd="${PBY(c).id}" class="plink sm ${PBY(c).st}">${c}</a>`).join("")}</div>`});
   [["Demanda recorrente","≥ 3 clientes por ano com o mesmo problema"],["Método repetível","≥ 70% do escopo igual entre clientes"],["Dados reaproveitáveis","cada projeto melhora o benchmark e o próximo"],["IA com ganho real","≥ 30% menos esforço nas etapas automatizadas"],["Preço por valor","fixo, êxito ou assinatura, defensável pelo resultado"],["Dono e squad","responsável pelo P&L e time treinado"]].forEach(([t,x],i)=>{const d=H("div",{class:"gate-i","data-a":"up",style:`--d:${14+i}`},$("gate"));d.innerHTML=`<i>✓</i><div><b>${t}</b><p>${x}</p></div>`});
-  [["Dono de produto","1 por pilar + 1 de IA: P&L, roadmap e qualidade da ficha"],["Squad padrão","Sócio · gerente · 2 consultores · engenheiro de IA/dados"],["Comitê trimestral","Acompanha receita, margem e conversão; a revisão anual decide escalar, ajustar ou aposentar"]].forEach(([t,x],i)=>{const d=H("div",{"data-a":"up",style:`--d:${11+i}`},$("opm"));d.innerHTML=`<h4>${t}</h4><p>${x}</p>`})})();
+  OPM.forEach(([t,x],i)=>{const d=H("div",{"data-a":"up",style:`--d:${11+i}`},$("opm"));d.innerHTML=`<h4>${t}</h4><p>${x}</p>`})})();
 
 /* ---------- roadmap + decisões ---------- */
 (function(){let tl=null;const mk=()=>{if(!tl)tl=Timeline($("tlLaunch"),TL_LAUNCH,{w:1520,y:198,cardY:2,x0:110,x1:1410,dwell:2400});return tl};
-  ENTER["Roadmap e decisões"]=()=>mk().play();$("tl2Play").onclick=()=>mk().play();
+  ENTER["Roadmap e decisões"]=()=>{const t=mk();if(goLast){t.stopAuto();t.set(TL_LAUNCH.length-1)}else t.play()};$("tl2Play").onclick=()=>mk().play();
   /* → abre a próxima onda (interrompe a reprodução) antes de sair do slide; ← volta */
   STEP["Roadmap e decisões"]=d=>{if(!tl)return false;return d>0?tl.next():tl.prev()};
   /* impressão: as 5 ondas lado a lado, com todos os marcos acesos */
@@ -268,7 +286,7 @@ const JR={1:[["Gatilho","Troca de CIO · orçamento 2027 · conselho cobra IA",[
  2:[["Gatilho","CBS em 01/01/2027 · go-live em risco · IA ociosa",[],"prazo fixo e risco alto"],["Entrada · sprint","Prontidão ou diagnóstico forense",["2.2","2.4"],"2–8 semanas, preço fixo"],["Expansão · execução","Governar, recuperar, contratar",["2.3","2.1"],"entrega garantida"],["Recorrência","IA na própria TI, em ondas",["2.6","2.5"],"ganho medido trimestre a trimestre"]],
  3:[["Gatilho","Mandato de compra ou venda · carve-out anunciado",[],"relógio do deal"],["Entrada · sprint","Red flag em 1 semana",["3.1"],"DD com IA, 3 níveis"],["Expansão · execução","Dia 1, TSA e sinergias",["3.2","3.3","3.4"],"do signing ao Dia 100"],["Recorrência","Radar do portfólio do fundo",["3.5"],"assinatura anual · leitura trimestral por investida"]],
  4:[["Gatilho","Renovação VMware · incidente · legado sem dono",[],"custo ou risco explícito"],["Entrada · sprint","Raio-X do legado ou TCO",["4.6","4.3"],"4–10 semanas, fixo ou fixo + % de economia"],["Expansão · execução","Arquitetura, racionalização, assurance",["4.1","4.2","4.4"],"rota e garantia"],["Recorrência","Resiliência e arquitetura vivas",["4.5","4.1"],"exercícios anuais e repositório"]]};
-document.querySelectorAll(".jr-wrap").forEach(h=>{const n=h.dataset.pillar;h.innerHTML=`<span class="ttl">Jornada comercial do pilar · entrada → expansão → recorrência · proposta DTS</span><div class="jr">${JR[n].map(([k,t,ps,x],i)=>`<div class="jr-i ${i===0?"l":i===3?"r":""}"><div class="k">${k}</div><b>${t}</b><div>${ps.map(c=>plink(c,"sm")).join("")}</div><p>${x}</p></div>`).join("")}</div>`});
+document.querySelectorAll(".jr-wrap").forEach(h=>{const n=h.dataset.pillar;h.innerHTML=`<span class="ttl">Jornada comercial do pilar · entrada → expansão → recorrência · proposta DTS</span><div class="jr">${JR[n].map(([k,t,ps,x],i)=>`<div class="jr-i ${i===0?"l":i===3?"r":""}"><div class="k">${k}</div><b>${t}</b><div class="jr-c">${ps.map(c=>pcode(c,"sm")).join("")}</div><p>${x}</p></div>`).join("")}</div>`});
 const POS={1:"Para <b>CEOs, CFOs, conselhos e fundos</b> que precisam de resultado de tecnologia agora, o DTS é <em>a liderança que assume o cargo e entrega valor em R$, com IA no método</em>. Diferente de Big Four e estratégia, <b>assinamos o resultado</b> e não vendemos plataforma.",
  2:"Para <b>CFOs, CIOs e sponsors</b> de programas obrigatórios e críticos, o DTS é <em>a voz independente que garante a entrega</em> (Reforma, ERP, IA). Diferente de integradores e fornecedores, <b>não vendemos software nem horas de fábrica</b>: respondemos por prazo e valor.",
  3:"Para <b>fundos de PE e compradores estratégicos</b>, o DTS é <em>o operador de tecnologia do signing à saída</em>: DD com IA em 1–3 semanas, Dia 1 sem susto e sinergias que viram EBITDA. Diferente de quem só diligencia, <b>executamos o que recomendamos</b>.",

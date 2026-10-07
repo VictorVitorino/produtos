@@ -108,7 +108,7 @@ const PRODUCTS=[
  pain:["Vacância ou fragilidade da liderança de TI em momento crítico","Transformação sem dono","Conselho sem repertório para decidir sobre IA"],
  deliv:["Executivo alocado (interino ou embarcado)","Plano de 100 dias","Estabilização e decisões críticas","Sucessão: recrutamento e passagem de bastão","Programa Board & C-Level AI Fluency"],
  skills:["Liderança executiva","Gestão de crise","Governança","Finanças de TI","Comunicação com conselho"],
- steps:[["S0","Match","Perfil e seleção na rede A&M (global + Brasil)"],["D1–30","Estabilizar","Diagnóstico rápido (1.1 light) e decisões imediatas"],["D30–100","Comandar","Plano de 100 dias: time, orçamento, fornecedores"],["M4+","Transformar","Execução do roadmap e reporte ao conselho"],["Fim","Passar o bastão","Sucessor contratado, onboarding e saída"]],
+ steps:[["S0","Match","Perfil e seleção na rede A&M (global + Brasil)"],["D1–30","Estabilizar","Diagnóstico rápido (1.1 light) e decisões imediatas"],["D30–100","Comandar","Plano de 100 dias: time, orçamento, fornecedores"],["M4+","Transformar","Execução do roadmap e reporte ao conselho"],["Fim","Passar o bastão","Sucessor contratado, onboarding e saída","hand"]],
  tools:"Playbook A&M de 100 dias, copiloto do executivo interino (IA sobre a base de conhecimento DTS e documentos do cliente), dashboards de gestão, rede global de executivos A&M.",
  data:"Orçamento, portfólio de projetos, contratos, organograma, indicadores de serviço e atas de comitês.",
  ai:["Copiloto do interino: briefing da 1ª semana gerado a partir dos documentos da empresa","Monitora riscos e compromissos (contratos, prazos, renovações)","Trilhas personalizadas de AI Fluency por papel no conselho","Playbooks consultáveis em linguagem natural"],
@@ -161,7 +161,7 @@ const PRODUCTS=[
  data:"Backlog e histórico de projetos, commits e documentação, timesheets, despesas de P&D, contratos de terceiros, balancete.",
  ai:["Lê histórias, commits e documentação para identificar inovação e risco tecnológico","Redige o rascunho do relatório técnico por projeto, com evidências","Cruza horas, pessoas e despesas para a memória de cálculo","Aponta fragilidades antes da entrega ao MCTI"],
  prodz:["Parceria com A&M Tax: o DTS entrega o lado técnico","Ciclo anual recorrente","Fixo de varredura + êxito sobre o benefício","Cross-sell com 1.5: o incentivo financia parte da modernização"],
- bench:"<b>Mercado:</b> KPMG tem área de Incentivos Fiscais com estudo sobre Lei do Bem "+E()+"; boutiques especializadas dominam o modelo de êxito "+Hy()+". <b>Diferencial:</b> leitura técnica do software com IA + integração com custo de TI "+Hy()+".",
+ bench:"<b>Mercado:</b> KPMG tem área de Incentivos Fiscais com estudo sobre Lei do Bem "+E()+"; boutiques especializadas dominam o modelo de êxito "+Hy()+". <b>Diferencial A&M:</b> leitura técnica do software com IA + integração com custo de TI "+Hy()+".",
  ev:"MCTI via Convergência Digital (ano-base 2024); LC 224/2025 via Correio Braziliense (ago/2026). Redata aprovado no Senado em set/2026 (sanção não verificada)."},
 {id:"ai-value-governance-office",code:"1.7",pillar:1,st:"new",name:"AI Value & Governance Office",from:"Novo · produto com IA",
  tagline:"Do piloto ao P&L: a torre que governa valor, risco e custo da IA",
@@ -226,7 +226,7 @@ const PRODUCTS=[
  data:"Cronogramas, backlogs, status reports, RAID logs, orçamento e benefícios.",
  ai:["Lê status, atas e backlogs e detecta sinais de risco (linguagem e tendência)","Projeta desvio de prazo e custo a partir do histórico","Gera atas e planos de ação","Responde perguntas do sponsor em linguagem natural"],
  prodz:["Funde TMO + Modelo de Implantação e Governança","Fee mensal por porte do programa","Painel e modelo de risco reutilizáveis","Base técnica do IMO/SMO (3.3)"],
- bench:"<b>Mercado:</b> integradores e Big Four oferecem PMO; concorrentes locais nativos em IA (CI&T, Falconi) levam IA à entrega "+E()+". <b>Diferencial:</b> foco em valor + predição + postura de operador "+Hy()+".",
+ bench:"<b>Mercado:</b> integradores e Big Four oferecem PMO; concorrentes locais nativos em IA (CI&T, Falconi) levam IA à entrega "+E()+". <b>Diferencial A&M:</b> foco em valor + predição + postura de operador "+Hy()+".",
  ev:"CI&T Flow e Falconi (R$ 100 mi em IA): IT Forum e Jornal do Comércio 2026. Alertas antecipados: meta de produto (proposta DTS)."},
 {id:"tech-project-rescue",code:"2.4",pillar:2,st:"keep",sig:true,name:"Tech Project Rescue",from:"Project Remediation",
  tagline:"Turnaround de projetos de tecnologia em crise",
@@ -273,7 +273,7 @@ const PRODUCTS=[
  tools:"Assistentes de código (ex.: GitHub Copilot, Claude Code, Gemini Code Assist), agentes de ITSM (ServiceNow, Jira Service Management), observabilidade/AIOps, painel DTS de produtividade.",
  data:"Repositórios e pipelines, tickets, incidentes, métricas DORA, custos de terceiros.",
  ai:["É o próprio objeto do produto: IA no ciclo de software e na operação","Agentes resolvem tickets de nível 1 e sugerem soluções","Causa-raiz de incidentes assistida","Medição automática de produtividade e qualidade"],
- prodz:["Piloto padronizado de 8 semanas com métricas fixas","Playbook de guardrails reaproveitável","Fixo + bônus sobre capacidade liberada e medida","Alimenta 1.4 (op model) e 1.5 (custo)"],
+ prodz:["Piloto padronizado de 10 semanas com métricas fixas","Playbook de guardrails reaproveitável","Fixo + bônus sobre capacidade liberada e medida","Alimenta 1.4 (op model) e 1.5 (custo)"],
  bench:"<b>Mercado:</b> integradores vendem produtividade com IA atrelada à própria entrega (ex.: CI&T Flow) "+E()+". <b>Diferencial A&M:</b> medição independente e conversão do ganho em custo ou capacidade "+Hy()+".",
  ev:"Deloitte Tech Trends 2026 (fonte secundária): 11% com agentes em produção, 38% em piloto. Bônus por ganho: proposta DTS."},
 /* ======================= PILAR 3 ======================= */
@@ -415,7 +415,7 @@ const PRODUCTS=[
  pain:["O integrador avalia o próprio trabalho","Perda ou inconsistência de dados","Go-lives arriscados"],
  deliv:["Plano de assurance e critérios","Reconciliação de dados","Revisões de qualidade e testes","Prontidão de go-live","Relatórios ao comitê"],
  skills:["Migração de dados","Testes e QA","Arquitetura","Gestão de fornecedores"],
- steps:[["Início","Plano","Critérios e checkpoints"],["Build","Qualidade","Revisões e testes"],["Cargas","Dados","Reconciliação automatizada"],["Pré-go-live","Prontidão","Go/No-go"],["Hypercare","Estabilizar","Acompanhamento"]],
+ steps:[["Início","Plano","Critérios e checkpoints"],["Build","Qualidade","Revisões e testes","search"],["Cargas","Dados","Reconciliação automatizada"],["Pré-go-live","Prontidão","Go/No-go"],["Hypercare","Estabilizar","Acompanhamento"]],
  tools:"Ferramentas de reconciliação de dados, scripts de comparação assistidos por IA, painel DTS.",
  data:"Dados de origem e destino, planos de teste, defeitos, cronogramas.",
  ai:["Gera regras de reconciliação e compara volume e conteúdo","Analisa defeitos e padrões de falha","Gera casos de teste a partir de regras de negócio","Resume a prontidão para o comitê"],
@@ -467,7 +467,7 @@ const TL_MARKET=[
  {d:"Jun 2026",s:"PwC × ToltIQ",t:"Due diligence com IA vira disputa por exclusividade",x:"PwC passa a ser a única firma de serviços profissionais da ToltIQ; já havia lançado ‘Harvey, powered by PwC’ para deals.",src:"PwC US, jun/2026; PwC Global, jul/2025",tag:"M&A"},
  {d:"Jul 2026",s:"Ode · Bain",t:"Laboratórios de IA entram no canal de PE",x:"Ode with Anthropic (Blackstone, H&F) leva engenheiros às investidas; Bain replica o software do alvo com Claude Code na DD.",src:"BusinessWire jul/2026; FT jul/2026",tag:"PE"},
  {d:"Ago 2026",s:"AlixPartners",t:"AlixPartners compra a Artium (engenharia agêntica)",x:"O par mais comparável à A&M compra capacidade de IA pronta: 80+ pessoas, parceira de OpenAI e Anthropic.",src:"AlixPartners, 04/08/2026",tag:"Par direto"},
- {d:"Set 2026",s:"Falconi · CI&T",t:"Consultorias brasileiras viram ‘AI-native’",x:"Falconi investe R$ 100 mi em IA (80% dos projetos com agentes); CI&T monetiza IA pela plataforma Flow.",src:"Jornal do Comércio set/2026; IT Forum 2026",tag:"Brasil"}
+ {d:"Set 2026",s:"Falconi · CI&T",t:"Consultorias brasileiras viram ‘AI-native’",x:"Falconi investe R$&nbsp;100&nbsp;mi em IA (80% dos projetos com agentes); CI&T monetiza IA pela plataforma Flow.",src:"Jornal do Comércio set/2026; IT Forum 2026",tag:"Brasil"}
 ];
 
 /* ---------- TIMELINE · 2026, IA nas consultorias (benchmark) ---------- */
@@ -478,7 +478,7 @@ const TL_2026=[
  {d:"Jun 2026",s:"PwC × ToltIQ",t:"Due diligence com IA vira disputa por exclusividade",x:"PwC passa a ser a única firma de serviços profissionais da ToltIQ, plataforma de diligência com IA; já vendia a clientes a ‘Harvey, powered by PwC’.",src:"PwC US, jun/2026; PwC Global, jul/2025",tag:"M&A"},
  {d:"Jul 2026",s:"Ode · Bain",t:"Laboratórios de IA entram no canal de private equity",x:"Ode with Anthropic (Blackstone, Hellman & Friedman) coloca engenheiros dentro das investidas; a Bain replica o software do alvo com Claude Code durante a diligência.",src:"BusinessWire, jul/2026; Financial Times, jul/2026",tag:"Private equity"},
  {d:"Ago 2026",s:"AlixPartners",t:"AlixPartners compra a Artium",x:"O par mais comparável à A&M adquire uma consultoria de engenharia agêntica com mais de 80 pessoas, parceira de OpenAI e Anthropic.",src:"AlixPartners, 04/08/2026",tag:"Par direto"},
- {d:"Set 2026",s:"Falconi · CI&T",t:"Consultorias brasileiras viram ‘AI-native’",x:"Falconi investe R$ 100 milhões em IA, com 80% dos projetos usando agentes; a CI&T monetiza IA pela plataforma Flow.",src:"Jornal do Comércio, set/2026; IT Forum, 2026",tag:"Brasil"}
+ {d:"Set 2026",s:"Falconi · CI&T",t:"Consultorias brasileiras viram ‘AI-native’",x:"Falconi investe R$&nbsp;100&nbsp;milhões em IA, com 80% dos projetos usando agentes; a CI&T monetiza IA pela plataforma Flow.",src:"Jornal do Comércio, set/2026; IT Forum, 2026",tag:"Brasil"}
 ];
 
 /* ---------- NOMENCLATURA · possível configuração ---------- */

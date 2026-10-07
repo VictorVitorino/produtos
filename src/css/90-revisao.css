@@ -1,0 +1,263 @@
+/* =====================================================================
+   REVISÃO 1 · ajustes de layout, legibilidade e impressão apontados na revisão
+   (carregado por último: sobrepõe styles.css e os módulos)
+   ===================================================================== */
+.nwr{white-space:nowrap}
+
+/* ---------- capa e slide 2: sem telemetria; controles de demonstração só no hover ---------- */
+.ps__read,.sh__status{display:none}
+.ps__ctl,.sh__ctl{opacity:0;transition:opacity .3s}
+.ps:hover .ps__ctl,.ps__ctl:focus-within,.sh:hover .sh__ctl,.sh__ctl:focus-within{opacity:1}
+.cv-moments{gap:12px;font-size:12px;letter-spacing:.18em}
+.cv-moments i{width:30px}
+.sh__text p.sh__q{font-size:19px;line-height:1.45;font-weight:500;color:var(--navy-800);letter-spacing:-.01em}
+.sh__text p.sh__q b{font-weight:800}
+.sh__text .sh__intro p{font-size:15.5px;line-height:1.5}
+.sh__text .sh__intro b{font-size:10.5px}
+.sh__rows{gap:16px}
+.sh__pill4{flex:1;grid-auto-rows:1fr}
+.sh__p4{justify-content:center;gap:5px;padding:12px 14px}
+.sh__p4 .n{font-size:14px}
+.sh__p4 .w{font-size:12.8px;line-height:1.42}
+
+/* ---------- slide 3: separador da cadeia de valor é um fio; "Quando nos contratam" do tamanho do texto ---------- */
+.op-ai .tg.one span.sep{padding:0;width:1px;height:22px;flex:none;background:rgba(255,255,255,.3);border:0;border-radius:0}
+.op-grid.asis .op-when{flex:none;margin-top:auto;justify-content:flex-start}
+#asHost .op-list .svc{flex:1 1 auto;max-height:60px}
+
+/* ---------- slide 5: sinais sem miolo vazio ---------- */
+.take4{flex:none;margin-top:16px}
+.bench2{flex:1;min-height:0}
+.bench-ctx .bc{flex:1;display:flex;flex-direction:column;justify-content:center;padding:14px 18px 14px 20px}
+.bench-ctx .bc p{font-size:14px;line-height:1.5}
+.bench-ctx .bc .k{font-size:10.5px;margin-bottom:6px}
+#tlMarket{height:auto;min-height:310px}
+#tlMarket .tl-card{width:620px;padding:20px 24px}
+#tlMarket .tl-card h4{font-size:22px}
+#tlMarket .tl-card p{font-size:15px}
+#tlMarket .tl-card .src{font-size:10px}
+.take4 .card{gap:8px;padding:18px 20px}
+.take4 .card h4{font-size:17px}
+.take4 .card p{font-size:13.6px;line-height:1.5}
+.take4 .card .so{margin-top:6px;padding-top:10px}
+
+/* ---------- slide 6: lista do raio-X legível (corpo ≥ 11,5 · mono ≥ 9,5) ---------- */
+.rx-row{font-size:11.5px;line-height:1.25;padding:1px 0;grid-template-columns:30px minmax(0,1fr) auto 38px;gap:7px}
+.rx-row b{font-size:10px}
+.rx-row .st{font-size:9.5px;height:16px;padding:0 6px;letter-spacing:.06em}
+.rx-row .to{font-size:10px}
+.rx{grid-template-columns:900px 1fr;gap:24px}
+#rxList .xg{padding:4px 0 1px}
+
+/* ---------- slide 7: evidência dentro de cada caminho; réguas logo abaixo, espaço distribuído ---------- */
+.paths{padding-top:14px}
+/* o caminho recomendado define a altura; os outros dois ficam do tamanho do conteúdo, centrados ao lado dele */
+.paths{align-items:center}
+.path3{gap:12px}
+.path3 ul{gap:12px}
+.path3 .pev{margin-top:4px}
+.path3 h3{font-size:29px}
+.path3>p{font-size:15px}
+.path3 ul{gap:11px}
+.path3 li{font-size:14.5px}
+.path3 .ms{margin-top:0}
+.path3 .pev{display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:13px;line-height:1.45;color:var(--grey-700)}
+.path3 .pev b{color:var(--navy-800)}
+.path3 .pev .srcx{color:var(--orange-600)}
+.path3 .pev .rs{font-size:12px;color:var(--grey-500)}
+.path3 .pev .rs .srcx{display:inline;margin:0}
+
+/* ---------- slide 8: ponte 29 → 24 em uma linha ---------- */
+.moves{grid-template-columns:repeat(3,minmax(0,1fr)) 150px repeat(3,minmax(0,1fr));gap:10px}
+.moves .card{padding:11px 13px}
+.moves .card .big{font-size:30px}
+.moves .card.keep .big{color:var(--navy-700)}
+.moves .bridge{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;border-radius:14px;background:var(--orange-100);border:1px dashed rgba(242,107,33,.55);padding:8px 6px}
+.moves .bridge span{font-family:var(--fm);font-size:10px;letter-spacing:0;color:var(--orange-600);white-space:nowrap}
+.moves .bridge b{font-weight:800;font-size:30px;line-height:1;letter-spacing:-.03em;color:var(--navy-800)}
+.moves .nwc{display:inline-flex;gap:4px;vertical-align:middle;margin-left:4px}
+.moves .nwc .plink{margin:0}
+
+/* ---------- capítulos dos pilares: pílulas nunca cortadas ---------- */
+#chap .pc-pills{flex-wrap:wrap;row-gap:8px}
+#chap .pc-pills a{flex:none}
+
+/* ---------- slides 10/12/14/16 · vista 1: coluna da esquerda sem vazios, personas sem aperto ---------- */
+.fdii>div{font-size:15px;line-height:1.5;padding:20px 20px}
+.fdii .k{font-size:10.5px;margin-bottom:8px}
+.ctx .grp{gap:10px}
+.ctx .grp .pill{font-size:12.5px;padding:9px 12px}
+.ctx .trig{flex-wrap:wrap;row-gap:8px}
+.kpi-t .v{font-size:46px}
+.kpi-t .l{font-size:13.6px}
+.kpi-t{padding:18px 20px}
+.cases .kpi-t{padding:16px 16px}
+.cases .l{font-size:13px;line-height:1.42}
+.cases .nm{font-size:21px}
+.rt{padding:20px 6px 18px}
+.rt-i b{font-size:18px}
+.rt-i span{font-size:13px}
+.persona{grid-auto-rows:minmax(min-content,1fr);gap:9px}
+.pers{min-height:auto;padding:11px 16px;gap:5px}
+.pers .q{font-size:15px}
+.pers .pq{display:flex;flex-wrap:wrap;gap:4px}
+.pers .pq .plink{margin:0}
+.jr-i{min-height:0;padding-top:12px;padding-bottom:12px}
+.jr-c{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0}
+.jr-c .plink{margin:0}
+
+/* chips de produto: corpo mínimo 11,5 */
+.plink.sm{font-size:11.5px;padding:3px 7px}
+.dec{font-size:9.5px}
+
+/* ---------- slides 10–17 · vista 2: painel "Onde o DTS ganha" e "O que muda" sem fundo vazio ---------- */
+.ws .card.nv{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.ba-side .chg{display:flex;flex-direction:column}
+.ba-side .chg ul{flex:1;justify-content:space-evenly;gap:10px}
+.ba-side .chg li{font-size:12.8px}
+a.xr{color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:rgba(242,107,33,.6);text-underline-offset:2px}
+a.xr:hover{color:var(--orange-400)}
+.pp-out a.xr{color:var(--orange-200)}
+/* coluna "produto proposto": só existe no papel */
+.ba-grid .c.p{display:none}
+
+/* ---------- slides 11/13/15/17 · vista 1: mesma escala nos quatro pilares ---------- */
+.pp-prods,.pp-prods.n5,.pp-prods.n6{--nm:15.5px;--tl:13px;--ai:12px;--fr:10px}
+
+/* ---------- slide 18: pilha menor, anatomia em 3 linhas, modelo operacional sob a pilha ---------- */
+.anat{grid-template-columns:repeat(4,1fr);gap:7px}
+.anat-i{padding:8px 10px}
+.anat-i i{width:24px}
+.anat-i:nth-child(7) i{background:var(--navy-800)}
+.anat-i:nth-child(9) i{background:var(--orange-500)}
+.cs-card .ex{position:static;margin-top:auto;padding-top:12px}
+.cs-card{display:flex;flex-direction:column}
+.cs-card h3{font-size:40px}
+.cs-card p{font-size:17px}
+.cs-card li{font-size:15.5px}
+.cs-print{display:none}
+/* modelo operacional da fábrica sob a pilha, em linhas */
+.fab-l .opm{grid-template-columns:1fr;gap:6px}
+.fab-l .opm>div{display:grid;grid-template-columns:150px 1fr;column-gap:12px;align-items:baseline;padding:9px 14px}
+.fab-l .opm p{margin-top:0;font-size:12.5px}
+.fab-l .grp{display:flex;flex-direction:column;gap:8px}
+.cs-scene{margin-top:26px}
+.pp-from{white-space:normal}
+.cs-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:14px;flex:1;min-height:0}
+.cs-g{display:flex;flex-direction:column;gap:6px;border-radius:16px;padding:16px 18px;background:linear-gradient(155deg,#16396B 0%,#0B2545 52%,#071A33 100%);color:#fff}
+.cs-g .k{font-family:var(--fm);font-size:10px;letter-spacing:.18em;color:var(--orange-400)}
+.cs-g h4{font-weight:800;font-size:19px;letter-spacing:-.02em}
+.cs-g p{font-size:12.5px;line-height:1.45;color:var(--steel-200)}
+.cs-g ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.cs-g li{position:relative;padding-left:14px;font-size:12px;line-height:1.4;color:var(--steel-100)}
+.cs-g li::before{content:"";position:absolute;left:0;top:6px;width:6px;height:6px;border-radius:2px;background:var(--orange-500);transform:rotate(45deg)}
+.cs-g .ex{margin-top:auto;padding-top:8px;border-top:1px solid rgba(255,255,255,.15);font-size:12px;line-height:1.4;font-weight:600;color:var(--orange-200)}
+.cs-g .ex b{color:#fff}
+
+/* ---------- slide 19: cabeçalho na mesma altura dos outros slides ---------- */
+.hd.hd-start{align-items:start}
+.hd.hd-start .hd-r{padding-top:2px}
+.tl-print{display:none}
+
+/* ---------- painéis: largura que cabe no celular; nomes de produto em uma linha ---------- */
+#idxP,#pdxP{max-width:calc(100vw - 36px)}
+#pdxP{width:540px}
+#pdxP .xi span:nth-of-type(1){white-space:nowrap}
+#infoP{max-height:calc(100vh - 90px);overflow:auto}
+/* celular em retrato: aviso para girar e alvos de toque maiores */
+.rot-tip{display:none}
+@media (max-width:600px) and (orientation:portrait){
+  .rot-tip{display:block;position:fixed;left:12px;right:12px;top:12px;z-index:200;padding:10px 14px;border-radius:12px;background:var(--navy-800);color:#fff;font-size:13px;font-weight:600;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  #controls button,#controls .c{min-width:44px;height:44px}
+}
+
+/* ---------- foco de teclado do antes/depois só quando vem do teclado ---------- */
+.ba:focus{outline:none}
+.ba:focus-visible{outline:2px solid var(--orange-500);outline-offset:3px}
+
+/* =====================================================================
+   IMPRESSÃO
+   ===================================================================== */
+@media print{
+  /* controles, dicas e telemetria não vão para o papel */
+  .ps__ctl,.ps__read,.cv-foot,.sh__ctl,.hint,.btn-play,.cs-nav,.ba-handle,.ba-lab,.rot-tip{display:none!important}
+  .ps .cv-top{background:linear-gradient(180deg,#071A33 55%,rgba(7,26,51,0));padding-bottom:18px}
+  /* seletores: o botão ativo legível sem o indicador animado */
+  .sh__val,.sh__bar i{transition:none!important}
+  .seg .seg-ind{display:none!important}
+  .seg button.on{background:var(--navy-800)!important;color:#fff!important;border-radius:7px}
+  .stage .seg button.on{background:#fff!important;color:var(--navy-800)!important}
+  /* antes/depois: só a camada visível vai ao papel */
+  .ba .ba-asis{clip-path:none!important}
+  .pp-v2 .ba .ba-tobe{display:none!important}
+  .ba.hb .ba-asis{display:none!important}
+  .pp-v2 .ba-asis .ba-grid{grid-template-columns:27% 47% 26%}
+  .pp-v2 .ba-grid .c.p{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:4px 12px;border-left:1px dashed var(--line-strong)}
+  .pp-v2 .ba-grid .c.p.hd{justify-content:flex-end;border-left:0}
+  .pp-v2 .ba-grid .c.p .tb-code{font-family:var(--fm);font-size:10px;color:var(--orange-600)}
+  .pp-v2 .ba-grid .c.p b{font-size:12.5px;font-weight:700;color:var(--navy-800);white-space:nowrap}
+  .pp-v2 .ba-grid .c.p i{font-style:normal;font-family:var(--fm);font-size:9.5px;color:var(--grey-500)}
+  .pp-v2 .ba-grid .c.p .st{align-self:flex-start;color:var(--navy-700)!important;background:#fff!important;border:1px solid var(--line-strong)!important}
+  .pp-v2 .ba-grid .c.p .st.new{color:var(--orange-600)!important;border-color:rgba(242,107,33,.5)!important}
+  /* fábrica: a pilha vira a lista dos 7 passos */
+  .fab-l .cs-scene{display:none!important}
+  .cs-print{display:flex;flex-direction:column;gap:8px;list-style:none;flex:1;min-height:0;margin:0;padding:18px 20px;border-radius:20px;background:linear-gradient(155deg,#16396B 0%,#0B2545 52%,#071A33 100%);color:#fff}
+  .cs-print li{display:grid;grid-template-columns:30px 1fr;column-gap:10px;align-items:baseline}
+  .cs-print i{font-style:normal;font-family:var(--fm);font-size:11px;color:var(--orange-400);grid-row:span 2}
+  .cs-print b{font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .cs-print span{font-size:12px;line-height:1.4;color:var(--steel-200)}
+  .cs-print-page .main{padding-top:4px}
+  /* linhas do tempo: todos os marcos acesos; roadmap com as 5 ondas lado a lado */
+  .tl-all .tl-card{display:none!important}
+  .tl-all .tl-dot{background:var(--steel-300)!important;border-color:var(--steel-300)!important;transform:none!important}
+  .tl-all .tl-dot::after{display:none}
+  .tl-all .tl-date,.tl-all .tl-lab{color:#fff!important}
+  .tl-print{display:grid;position:absolute;left:0;right:0;top:0;height:178px;grid-template-columns:repeat(5,1fr);gap:12px}
+  .tl-print>div{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:12px;background:linear-gradient(155deg,#16396B 0%,#0B2545 60%,#071A33 100%);border:1px solid rgba(255,255,255,.14);color:#fff;overflow:hidden}
+  .tl-print .d{font-family:var(--fm);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-400)}
+  .tl-print h4{font-size:14px;font-weight:800;line-height:1.2}
+  .tl-print p{font-size:11.5px;line-height:1.38;color:var(--steel-200)}
+  .tl-print p b{color:#fff}
+  .tl-print .tg{margin-top:auto;font-family:var(--fm);font-size:9.5px;color:var(--steel-300)}
+}
+
+/* benchmark: página extra da impressão com os 7 eventos; na página principal, todos os marcos acesos */
+.tl7{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:14px;flex:1;min-height:0}
+.tl7-i{display:flex;flex-direction:column;gap:6px;padding:16px 18px;border-radius:16px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--orange-500)}
+.tl7-i .d{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange-600)}
+.tl7-i h4{font-weight:800;font-size:17px;line-height:1.2;letter-spacing:-.02em;color:var(--navy-800)}
+.tl7-i p{font-size:13px;line-height:1.5;color:var(--grey-700)}
+.tl7-i .src{margin-top:auto;font-family:var(--fm);font-size:9.5px;color:var(--grey-500)}
+.tl7-i.am{background:var(--navy-800);border-color:var(--navy-800);border-top-color:var(--orange-500)}
+.tl7-i.am h4{color:#fff}.tl7-i.am p{color:var(--steel-200)}.tl7-i.am .src{color:var(--steel-300)}.tl7-i.am .d{color:var(--orange-400)}
+@media print{
+  .tl-lit .tl-dot:not(.cur){background:var(--navy-800)!important;border-color:var(--navy-800)!important}
+  .tl-lit .tl-dot.cur::after{display:none}
+  .tl-lit .tl-date{color:var(--navy-800)!important}.tl-lit .tl-lab{color:var(--grey-700)!important}
+}
+
+/* ---------- fichas ---------- */
+a.pd-xref{color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:rgba(242,107,33,.7);text-underline-offset:2px}
+a.pd-xref:hover{color:var(--orange-400)}
+#pd .top-right .pd-kbd{flex:none}
+.pd-out .srcx{white-space:nowrap}
+
+/* fábrica · coluna direita mais legível e sem vãos grandes */
+.fab-r .anat-i{font-size:13px;padding:11px 12px}
+.tier{padding:16px 18px}
+.tier h4{font-size:16px}
+.tier p{font-size:13px}
+.gate{gap:10px}
+.gate-i{padding:13px 14px}
+.gate-i b{font-size:14px}
+.gate-i p{font-size:12.5px;line-height:1.4;margin-top:2px}
+/* card da ficha: a sobra vertical se divide entre os blocos (público, formato, origem), sem um vão único */
+.pd-fmt,.pd-from{margin-top:auto}
+
+/* corpo mínimo de 11,5 px nos textos que ainda estavam em 11 */
+.op-ai .tg.one span{font-size:11.5px;padding:6px 9px}
+.rx-axes{font-size:11.5px}
+.op-grid.mini .op-when{font-size:11.5px}
+.tb-ai{font-size:11.5px}
+.gate-i i{font-size:11.5px}
+#asHost #asc4 .op-list .svc{max-height:none}

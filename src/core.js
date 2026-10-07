@@ -51,7 +51,7 @@ chapEl.addEventListener("click",e=>{if(e.target.closest("button,a"))return;hideC
 /* --- controles --- */
 const ctr=H("div",{id:"controls"},document.body);
 ctr.innerHTML=`<button class="k" id="bProd" title="Fichas de produto (P)">▦ <span class="lb">Fichas de produto</span></button><button class="g" id="bInfo" title="Sobre este slide (I)"><span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:2px solid currentColor;font:800 10px/1 var(--fb)">i</span> <span class="lb">Sobre este slide</span></button><button class="g" id="bPrev">← <span class="lb">Voltar</span></button><span class="c" id="cnt" title="Índice (G)"></span><button class="p" id="bNext"><span class="lb">Avançar</span> →</button>`;
-H("div",{id:"progress"},document.body);
+H("div",{id:"progress"},document.body);H("div",{class:"rot-tip"},document.body,"Gire o aparelho para ver a apresentação inteira.");
 const tipEl=H("div",{id:"tip",html:"<b></b><span></span>"},document.body);
 const infoP=H("div",{class:"panel",id:"infoP",html:`<button class="px" aria-label="Fechar">×</button><div class="ie">Sobre este slide</div><div class="it"></div><div class="id"></div><div class="ifx"></div><div class="isrc"></div>`},document.body);
 const idxP=H("div",{class:"panel",id:"idxP",html:`<div class="xh">Roteiro da apresentação<button class="px" style="position:static" aria-label="Fechar">×</button></div><div class="xl"></div>`},document.body);
@@ -70,7 +70,7 @@ function fillInfo(){const s=pdOpen?null:slides[cur];const P=pdOpen?PRODUCTS.find
   infoP.querySelector(".isrc").textContent=P?"":(vs?"Fonte: "+vs.replace(/^Fontes?:\s*/,""):"")}
 function fillIdx(){const xl=idxP.querySelector(".xl");xl.innerHTML="";let last="";slides.forEach((s,i)=>{const g=s.dataset.p||"Abertura";if(g!==last){H("div",{class:"xg"},xl,CHMETA[g]?`${CHMETA[g].n} · ${g}`:g);last=g}const b=H("button",{class:"xi"+(i===cur&&!pdOpen?" cur":"")},xl);H("b",null,b,pad(i+1));H("span",null,b,s.dataset.t);b.onclick=()=>{idxP.classList.remove("on");closePanels(null);closePD(true);go(i,true)}});
   requestAnimationFrame(()=>{const c=xl.querySelector(".xi.cur");if(c)c.scrollIntoView({block:"nearest"})})}
-function fillPdx(){const xl=pdxP.querySelector(".xl");xl.innerHTML="";PILLARS.forEach(pl=>{H("div",{class:"xg"},xl,`Pilar ${pl.n} · ${pl.name}`);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const b=H("button",{class:"xi"+(pdOpen===p.id?" cur":"")},xl);H("b",null,b,p.code);H("span",null,b,p.name);H("span",{html:stTag(p.st)},b);b.onclick=()=>{pdxP.classList.remove("on");closePanels(null);openPD(p.id)}})})}
+function fillPdx(){const xl=pdxP.querySelector(".xl");xl.innerHTML="";PILLARS.forEach(pl=>{H("div",{class:"xg"},xl,`Pilar ${pl.n} · ${pl.name}`);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const b=H("button",{class:"xi"+(pdOpen===p.id?" cur":"")},xl);H("b",null,b,p.code);H("span",null,b,p.name);H("span",{class:"xst",title:STATUS[p.st][0],html:stTag(p.st)},b);b.onclick=()=>{pdxP.classList.remove("on");closePanels(null);openPD(p.id)}})})}
 
 /* --- trilha narrativa (atos) --- */
 const PARTS=[...new Set(slides.map(s=>s.dataset.p||"Abertura"))];

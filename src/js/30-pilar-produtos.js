@@ -83,7 +83,7 @@ document.querySelectorAll(".pp").forEach(host=>{
       <span class="pp-ico">${picoSvg(p.code,4+i)}</span>
       <span class="pp-tx">
         <span class="pp-h"><b class="pp-code">${p.code}</b><b class="pp-nm">${p.name}</b><span class="pp-tags">${p.sig?'<span class="sig2">★ Signature</span>':""}${stTag(p.st)}</span></span>
-        <span class="pp-from">${p.st==="new"?p.from:"Evolui de "+p.from}</span>
+        <span class="pp-from">${p.st==="new"?p.from:"Evolui de "+p.from.split(" + ").map(x=>`<span class="nwr">${x}</span>`).join(" + ")}</span>
         <span class="pp-tl">${p.tagline}</span>
         ${ps.length<=5?`<span class="pp-get" aria-label="Entregas"></span>`:""}
         <span class="pp-ai"><b>IA:</b> ${strip(p.ai[0])}</span>

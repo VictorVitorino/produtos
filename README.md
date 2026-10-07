@@ -9,14 +9,14 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 | Arquivo | O que é |
 |---|---|
 | `DTS_Portfolio_Estrategico_2027.html` | Apresentação interativa: 20 slides + 24 fichas de produto em um único arquivo. Abra no navegador. |
-| `DTS_Portfolio_Estrategico_2027.pdf` | Versão estática para envio: 48 páginas (20 slides, as 4 vistas de mercado dos pilares em página própria e as 24 fichas). |
+| `DTS_Portfolio_Estrategico_2027.pdf` | Versão estática para envio, gerada pela impressão do HTML: 56 páginas (20 slides, a segunda vista de cada slide de pilar em página própria, 4 páginas de detalhe e as 24 fichas). As páginas de detalhe trazem as seis forças, a one-page com o nome de hoje, os sete eventos da linha do tempo de 2026 e os sete passos da fábrica. Nas páginas do PDF, os links de produto levam à ficha correspondente. |
 | `pesquisa/` | Os 4 relatórios de pesquisa completos, com URLs, datas e marcação evidência × hipótese. |
 | `src/` | Fontes da apresentação: estilos, motor, dados dos produtos e slides. |
 | `build.py` | Gera o HTML único a partir de `src/`, com os logos embutidos. |
 
 ## Roteiro da apresentação (20 slides em 9 capítulos)
 
-A história segue quatro movimentos: o que temos, o que o mercado vive, nossa posição e os novos produtos. Cada capítulo abre com uma transição própria, sem ocupar slide.
+A história segue cinco movimentos: o que temos, o que o mercado vive, nossa posição, o que melhorar e os novos produtos. Cada capítulo abre com uma transição própria, sem ocupar slide.
 
 | Capítulo | Slides |
 |---|---|
@@ -24,8 +24,8 @@ A história segue quatro movimentos: o que temos, o que o mercado vive, nossa po
 | 01 · O ponto de partida | DTS hoje (4 pilares, 29 serviços, nenhum com IA no método) · portfólio atual com spotlight por pilar |
 | 02 · O que o mercado vive | Seis forças que redesenham a demanda · benchmark de IA nas consultorias (linha do tempo de 2026) |
 | 03 · Nossa posição | Raio-X dos 29 serviços em matriz interativa · três caminhos estratégicos |
-| 04 · O novo portfólio | Antes e depois de serviços para produtos · one-page com os 24 produtos e o botão "Nome de hoje" |
-| 05 a 08 · Pilares 1 a 4 | Para cada pilar: transição com morphing e os números do pilar; "Cliente e mercado" com duas vistas (o que o cliente vive / o que o mercado faz, alternadas no seletor do topo ou com →); "Produtos" em antes e depois |
+| 04 · O novo portfólio | Antes e depois de serviços para produtos, com a ponte 29 → 24 (5 manter · 15 aprimorar · 4 criar) · one-page com os 24 produtos e o botão "Nome de hoje" |
+| 05 a 08 · Pilares 1 a 4 | Para cada pilar: transição com morphing e os números do pilar; "Cliente e mercado" com duas vistas (o que o cliente vive / o que o mercado faz, alternadas no seletor do topo ou com →); "Produtos" com duas vistas: o grafo que muda de forma (Hoje → Produtos → Com IA) com os cards dos produtos, e o antes e depois linha a linha |
 | 09 · Como fazer acontecer | Fábrica de produtos (card stack) · roadmap e decisões para o comitê · fontes e método |
 
 ## Sistema visual
@@ -39,7 +39,7 @@ Segue a mesma linguagem da apresentação DTS Tech M&A, a partir do Guia de Desi
   - *stage*, navy profundo, para one-page, produtos, roadmap e fichas.
 - **Cabeçalho de cada slide:** topo leve com logos A&M e DTS, capítulo e página; rótulo mono, título de uma linha com destaque laranja sublinhado e texto de apoio à direita.
 - **Rodapé:** fonte do slide e o efeito do guia usado (número, nome e dose).
-- **Fichas de produto:** card hologram com nome, proposta, números e outros produtos do pilar; à direita, os sete blocos da ficha.
+- **Fichas de produto (modelo Playbook):** card hologram com status, nome, proposta, público, formato e encaixe, origem e "Por que A&M"; à direita, o problema, o que o cliente recebe, como funciona, o produto em números, papel da IA, como vira produto, ferramentas e dados, skills e fontes. As letras têm o mesmo tamanho em todas as fichas (dois degraus); o ajuste ao palco fica nos espaçamentos.
 
 ## Novo portfólio · resumo
 
@@ -60,9 +60,9 @@ Segue a mesma linguagem da apresentação DTS Tech M&A, a partir do Guia de Desi
 
 | Ação | Como fazer |
 |---|---|
-| Avançar e voltar | `→` / `←` ou os botões no canto inferior direito |
+| Avançar e voltar | `→` / `←` ou os botões no canto inferior direito. Nos slides com passos internos (spotlight, seis forças, grafo dos produtos, cards da fábrica, ondas do roadmap), `→` percorre os passos antes de trocar de slide; `←` abre o slide anterior na última vista ou passo |
 | Abrir o índice | botão `nn / 20` ou tecla `G` |
-| Ver as fichas de produto | botão **Fichas de produto** (tecla `P`) |
+| Ver as fichas de produto | botão **Fichas de produto** (tecla `P`). Com uma ficha aberta, os botões de baixo viram **Ficha anterior** e **Próxima ficha**, e `Esc` volta à apresentação |
 | Ver fontes e notas do slide | botão **Sobre este slide** (tecla `I`) |
 | Tela cheia | tecla `F` |
 
@@ -74,19 +74,22 @@ Segue a mesma linguagem da apresentação DTS Tech M&A, a partir do Guia de Desi
 - **fx 30 · Particle System:** capa.
 - **fx 31 · Shimmer / Holographic Sweep:** DTS hoje (painel que carrega e selo DTS com reflexo).
 - **fx 24 · Spotlight / Focus:** portfólio atual e one-page; a tecla `→` percorre os pilares.
-- **fx 10 · Reveal / Mask Reveal:** seis forças.
+- **fx 39 · Node Network Motion:** seis forças.
+- **fx 18 · Connector / Flow Line:** one-page.
 - **fx 38 · Timeline Motion:** benchmark 2026 e roadmap.
 - **fx 35 · Interactive Matrix:** raio-X.
 - **fx 37 · Before / After Slider:** de serviços a produtos e produtos por pilar.
 - **fx 26 · Microinteractions:** duas vistas de cliente e mercado.
-- **fx 29 · Morphing Shapes:** capítulo de cada pilar.
+- **fx 29 · Morphing Shapes:** capítulo de cada pilar e grafo dos produtos.
 - **fx 33 · Card Stack:** fábrica de produtos.
 - **fx 03 · Hologram 3D Cards:** fichas de produto.
 
 ## Fonte × proposta DTS
 
 - **Fonte:** dado público, com fonte e data (indicada no próprio slide e no rodapé).
-- **Proposta DTS:** inferência ou proposta nossa, a validar com os sócios.
+- **Proposta DTS:** inferência ou proposta nossa, a validar com os sócios. Nas fichas, os números sem fonte (metas e desenho do produto) levam essa marca.
+- **Não verificado:** leitura de mercado sem fonte primária confirmada.
+- **A alinhar:** parceria interna da A&M ainda a combinar com a outra área.
 
 São hipóteses:
 - os escores do raio-X;
@@ -99,8 +102,9 @@ São hipóteses:
 
 Os conteúdos ficam em `src/`:
 - `src/data.js`: produtos, serviços atuais e timelines;
-- `src/slides.html`: estrutura dos slides;
-- `src/slides.js`: tabelas, personas e posicionamento.
+- `src/slides/NN-*.html`: estrutura de cada slide;
+- `src/slides.js` e `src/js/*.js`: tabelas, personas, posicionamento e os módulos de forças, one-page, produtos por pilar e fichas;
+- `src/styles.css` e `src/css/*.css`: estilos (o `90-revisao.css` e o `91-revisao-2.css` reúnem os ajustes das duas rodadas de revisão e a impressão).
 
 Depois de editar, gere o HTML de novo:
 
