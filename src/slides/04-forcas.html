@@ -1,13 +1,22 @@
 <!-- ===================================================== 02 · MERCADO -->
-<section class="slide" data-t="Forças de mercado" data-p="Mercado" data-chapter="02|O que o *mercado vive*|O cliente mudou a pergunta. As consultorias mudaram a oferta." data-fx="10|Reveal / Mask Reveal|moderada" data-src="PwC 29ª CEO Survey (jan/2026); Deloitte State of AI 2026; LC 214/2025 e Baguete (SAP ECC); KPMG Pesquisa de Fusões e Aquisições 2025 e 1S26; ABES/IDC (mar/2026); Baguete (VMware); Finsiders/Tecnoblog (ataques C&M e Sinqia); Res. CMN 5.274/2025; KPMG Global Tech Report 2026.">
-  <template class="info"><p>Seis forças, cada uma com um número de referência e a leitura para o portfólio. As forças entram como cortina, uma após a outra.</p><p>Os números vieram de imprensa e associações que citam o estudo primário; confirmar no original antes de uso externo.</p></template>
+<section class="slide" data-t="Forças de mercado" data-p="Mercado" data-chapter="02|O que o *mercado vive*|O cliente mudou a pergunta. As consultorias mudaram a oferta." data-fx="39|Node Network Motion|moderada" data-src="PwC 29ª CEO Survey (jan/2026); Deloitte State of AI 2026; LC 214/2025 e Baguete (SAP ECC); KPMG Pesquisa de Fusões e Aquisições 2025 e 1S26; ABES/IDC (mar/2026); Baguete (VMware); Finsiders/Tecnoblog (ataques C&M e Sinqia); Res. CMN 5.274/2025; KPMG Global Tech Report 2026.">
+  <template class="info"><p>Seis forças de mercado à esquerda, o que o cliente passa a exigir no meio e o detalhe da força escolhida no painel à direita: o que mudou, o número de referência com a fonte, a leitura para o DTS e os produtos que respondem, com link para a ficha.</p><p>Passe o mouse em uma força: só as ligações dela acendem, em laranja, e o resto recua. Clique para fixar a escolha e ir até os produtos do painel sem trocar de força; com a escolha fixa, passar sobre outra força só mostra as ligações dela. Passe o mouse em uma exigência para ver quais forças a puxam. A seta → percorre as seis forças antes de avançar de slide; ← volta. Ao fechar uma ficha aberta pelo painel, o slide reabre na mesma força.</p><p>As ligações entre força e exigência são uma leitura DTS (proposta) a partir do que mudou e da implicação de cada força. Os números vieram de imprensa e associações que citam o estudo primário; confirmar no original antes de uso externo. Na impressão, uma página extra traz as seis forças completas.</p></template>
   <div class="body">
     <div class="hd">
-      <div class="hd-l"><div class="eyebrow">O que os clientes vivem · seis forças de 2025–2026</div><h2 class="h2 kin">O cliente mudou <span class="hl">a pergunta.</span></h2></div>
+      <div class="hd-l"><div class="eyebrow">O que os clientes vivem · seis forças de 2025–2026</div><h2 class="h2 kin">Cada força vira uma <span class="hl">exigência do cliente.</span></h2></div>
       <p class="lead" data-a="fade" style="--d:4">Antes: <b>“qual é a nossa estratégia digital?”</b>. Agora: <b>“quanto a tecnologia devolve, com que prazo e quem responde por isso?”</b></p>
     </div>
     <div class="main col">
-      <div class="forces2" id="forces"></div>
+      <div class="fm-map" id="fmMap">
+        <svg class="fm-svg" id="fmSvg" data-a="fade" style="--d:7" aria-hidden="true"></svg>
+        <div class="fm-col fm-left" id="fmLeft">
+          <div class="fm-cap" data-a="fade" style="--d:2"><span class="label">Seis forças · 2025–2026</span><span class="hint">Passe o mouse ou use →</span></div>
+        </div>
+        <div class="fm-col fm-mid" id="fmMid">
+          <div class="fm-cap" data-a="fade" style="--d:5"><span class="label">O cliente passa a exigir</span><span class="hy">H</span></div>
+        </div>
+        <aside class="fm-panel" id="fmPanel" data-a="right" style="--d:8" aria-live="polite"></aside>
+      </div>
       <div class="sumbar" data-a="up" style="--d:12"><span class="t">Leitura DTS</span><p>As seis forças premiam ofertas com <b>prazo, preço e resultado definidos</b>, independência de fornecedor e capacidade de assumir o comando. Perdem força a estratégia digital genérica, o PMO sem dono e a alocação de perfis.</p></div>
     </div>
   </div>
