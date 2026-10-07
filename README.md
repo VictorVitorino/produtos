@@ -14,15 +14,32 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 | `src/` | Fontes da apresentação: estilos, motor, dados dos produtos e slides. |
 | `build.py` | Gera o HTML único a partir de `src/`, com os logos embutidos. |
 
-## Roteiro da apresentação (20 slides)
+## Roteiro da apresentação (20 slides em 9 capítulos)
 
-1. **Abertura (7):** capa com campo de partículas; contexto do DTS (quem somos, 4 pilares, 29 serviços); portfólio atual com spotlight por pilar; seis forças do mercado brasileiro; benchmark de IA nas consultorias (linha do tempo de 2026); raio-X dos 29 serviços; três caminhos estratégicos.
-2. **Novo portfólio (2):** antes/depois de serviços para produtos; one-page executiva do novo portfólio, com o botão "Nome de hoje" que mostra de quais serviços cada produto nasce.
-3. **Pilares 1 a 4 (8):** dois slides por pilar.
-   - Ao entrar no pilar, a capa aparece como transição de capítulo (morphing); → ou clique entra no pilar.
-   - **Cliente e mercado:** um slide com duas vistas na faixa do título. "O que o cliente vive" traz compradores, gatilhos, números e jornada comercial. "O que o mercado faz" traz o nome que cada concorrente dá à oferta, o que faz com IA, a sobreposição com o DTS e o posicionamento proposto. A tecla → passa de uma vista para a outra.
-   - **Produtos:** antes e depois.
-4. **Fechamento (3):** fábrica de produtos (inclui o passo "Nomear pelo que entrega"), roadmap de lançamento e decisões para o comitê, e o anexo de fontes.
+A história segue quatro movimentos: o que temos, o que o mercado vive, nossa posição e os novos produtos. Cada capítulo abre com uma transição própria, sem ocupar slide.
+
+| Capítulo | Slides |
+|---|---|
+| Capa | Campo de partículas (repelir, atrair, pulso, densidade) |
+| 01 · O ponto de partida | DTS hoje (4 pilares, 29 serviços, nenhum com IA no método) · portfólio atual com spotlight por pilar |
+| 02 · O que o mercado vive | Seis forças que redesenham a demanda · benchmark de IA nas consultorias (linha do tempo de 2026) |
+| 03 · Nossa posição | Raio-X dos 29 serviços em matriz interativa · três caminhos estratégicos |
+| 04 · O novo portfólio | Antes e depois de serviços para produtos · one-page com os 24 produtos e o botão "Nome de hoje" |
+| 05 a 08 · Pilares 1 a 4 | Para cada pilar: transição com morphing e os números do pilar; "Cliente e mercado" com duas vistas (o que o cliente vive / o que o mercado faz, alternadas no seletor do topo ou com →); "Produtos" em antes e depois |
+| 09 · Como fazer acontecer | Fábrica de produtos (card stack) · roadmap e decisões para o comitê · fontes e método |
+
+## Sistema visual
+
+Segue a mesma linguagem da apresentação DTS Tech M&A, a partir do Guia de Design DTS:
+
+- **Tokens do guia:** navy 950–500, steel e laranja #F26B21.
+- **Tipografia:** Inter 800 nos títulos e JetBrains Mono em rótulos, etiquetas e números de capítulo.
+- **Duas superfícies:**
+  - *paper*, claro com grade fina, para contexto e mercado;
+  - *stage*, navy profundo, para one-page, produtos, roadmap e fichas.
+- **Cabeçalho de cada slide:** topo leve com logos A&M e DTS, capítulo e página; rótulo mono, título de uma linha com destaque laranja sublinhado e texto de apoio à direita.
+- **Rodapé:** fonte do slide e o efeito do guia usado (número, nome e dose).
+- **Fichas de produto:** card hologram com nome, proposta, números e outros produtos do pilar; à direita, os sete blocos da ficha.
 
 ## Novo portfólio · resumo
 
@@ -44,7 +61,7 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 | Ação | Como fazer |
 |---|---|
 | Avançar e voltar | `→` / `←` ou os botões no canto inferior direito |
-| Abrir o índice | botão `n / 26` |
+| Abrir o índice | botão `nn / 20` ou tecla `G` |
 | Ver as fichas de produto | botão **Fichas de produto** (tecla `P`) |
 | Ver fontes e notas do slide | botão **Sobre este slide** (tecla `I`) |
 | Tela cheia | tecla `F` |
@@ -53,15 +70,18 @@ A apresentação reúne pesquisa de mercado (Brasil e principais consultorias), 
 - Na one-page e nas telas de produtos, cada produto é um hiperlink para a sua ficha (`#p=<id>`).
 - O link direto também funciona, por exemplo `DTS_Portfolio_Estrategico_2027.html#p=ai-value-governance-office`.
 
-**Efeitos de apresentação:**
-- **Particle System:** capa (densidade, cursor repelir/atrair, pulso).
-- **Shimmer / Holographic Sweep:** contexto do DTS (painel que carrega e selo DTS com reflexo) e produtos novos.
-- **Spotlight / Focus:** portfólio atual e one-page; a tecla `→` percorre os pilares.
-- **Duas vistas no mesmo slide:** cliente e mercado de cada pilar; a tecla `→` alterna.
-- **Morphing Shapes:** transição de capítulo de cada pilar.
-- **Before / After Slider:** de serviços a produtos e telas de produtos por pilar.
-- **Card Stack:** fábrica de produtos.
-- **Timeline Motion:** benchmark 2026 e roadmap.
+**Efeitos de apresentação (numeração do Guia de Design DTS):**
+- **fx 30 · Particle System:** capa.
+- **fx 31 · Shimmer / Holographic Sweep:** DTS hoje (painel que carrega e selo DTS com reflexo).
+- **fx 24 · Spotlight / Focus:** portfólio atual e one-page; a tecla `→` percorre os pilares.
+- **fx 10 · Reveal / Mask Reveal:** seis forças.
+- **fx 38 · Timeline Motion:** benchmark 2026 e roadmap.
+- **fx 35 · Interactive Matrix:** raio-X.
+- **fx 37 · Before / After Slider:** de serviços a produtos e produtos por pilar.
+- **fx 26 · Microinteractions:** duas vistas de cliente e mercado.
+- **fx 29 · Morphing Shapes:** capítulo de cada pilar.
+- **fx 33 · Card Stack:** fábrica de produtos.
+- **fx 03 · Hologram 3D Cards:** fichas de produto.
 
 ## Fonte × proposta DTS
 

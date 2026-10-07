@@ -17,15 +17,6 @@ const ev=t=>`<span class="ev" title="Evidência com fonte">${t||"Evidência"}</s
 const hy=t=>`<span class="hy" title="Hipótese / inferência a validar">${t||"Hipótese"}</span>`;
 function tip(el,v,l){el.setAttribute("data-tv",v);el.setAttribute("data-tl",l||"")}
 
-/* A&M linhas (assinatura gráfica) · vetor recriado do anexo */
-function amLines(w,h,op){const o=op==null?1:op;return `<svg class="amlines" viewBox="0 0 531 314" preserveAspectRatio="xMidYMid meet" style="width:${w}px;height:${h}px;opacity:${o}" aria-hidden="true">
-<line class="dr" pathLength="1" style="--d:2;--dur:1.4s" x1="35" y1="314" x2="215" y2="0" stroke="#F78C16" stroke-width="2.2"/>
-<line class="dr" pathLength="1" style="--d:4;--dur:1.2s" x1="270" y1="0" x2="270" y2="314" stroke="#F78C16" stroke-width="2"/>
-<line class="dr" pathLength="1" style="--d:3;--dur:1.4s" x1="150" y1="314" x2="331" y2="0" stroke="#39566D" stroke-width="13"/>
-<polygon points="270,314 300,314 474,0 452,0" fill="#39566D" opacity=".95"/>
-<line class="dr" pathLength="1" style="--d:5;--dur:1.2s" x1="464" y1="0" x2="464" y2="314" stroke="#39566D" stroke-width="9"/>
-</svg>`}
-const AMDECO=`<svg class="am-deco" viewBox="0 0 520 80" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><path d="M40 80 L100 0" stroke="#F78C16" stroke-width="1.4" fill="none"/><path d="M150 80 L210 0" stroke="#5E8AB4" stroke-width="7" fill="none" opacity=".55"/><path d="M190 80 V0" stroke="#F78C16" stroke-width="1.2" opacity=".7"/><path d="M280 80 L340 0" stroke="#5E8AB4" stroke-width="16" fill="none" opacity=".45"/><path d="M350 80 V0" stroke="#5E8AB4" stroke-width="5" opacity=".45"/><path d="M420 80 L480 0" stroke="#F78C16" stroke-width="1.4" fill="none" opacity=".8"/></svg>`;
 /* logo A&M com shimmer holográfico (máscara pela própria marca) */
 const amLogo=(h)=>`<span class="am-logo" style="height:${h}px;width:${Math.round(h*227/36)}px" role="img" aria-label="Alvarez &amp; Marsal Performance"></span>`;
 const dtsLogo=(h,dark)=>`<img class="dts-logo" src="${dark===false?LOGO_DTS_NAVY:LOGO_DTS}" alt="DTS · Digital &amp; Technology Services" style="height:${h}px;width:auto">`;
@@ -108,7 +99,7 @@ function Timeline(host,items,o){const W=host.offsetWidth||o.w,y=o.y||250,x0=o.x0
   const labs=items.map((it,i)=>H("div",{class:"tl-lab",style:`left:${xs[i]}px;top:${y+40}px`},host,it.s||""));
   const card=H("div",{class:"tl-card",style:`top:${o.cardY!=null?o.cardY:y-200}px;opacity:0`},host);let cur=-1,auto=0;
   function set(i){cur=i;prog.style.width=(i<0?0:xs[i]-x0)+"px";dots.forEach((d,k)=>{d.classList.toggle("done",k<i);d.classList.toggle("cur",k===i)});dates.forEach((d,k)=>d.classList.toggle("on",k<=i));labs.forEach((d,k)=>d.classList.toggle("on",k<=i));
-    if(i<0){card.style.opacity=0;return}const it=items[i];card.innerHTML=`<div class="d">${it.d}${it.tag?" · "+it.tag:""}</div><h4>${it.t}</h4><p>${it.x}</p>${it.src?`<div class="src">${it.src}</div>`:""}`;const cw=420;card.style.left=clamp(xs[i]-cw/2,0,W-cw)+"px";card.style.opacity=1;o.onSet&&o.onSet(i)}
+    if(i<0){card.style.opacity=0;return}const it=items[i];card.innerHTML=`<div class="d">${it.d}${it.tag?" · "+it.tag:""}</div><h4>${it.t}</h4><p>${it.x}</p>${it.src?`<div class="src">${it.src}</div>`:""}`;const cw=card.offsetWidth||420;card.style.left=clamp(xs[i]-cw/2,0,W-cw)+"px";card.style.opacity=1;o.onSet&&o.onSet(i)}
   function stopAuto(){clearInterval(auto);auto=0;o.onAuto&&o.onAuto(false)}
   function play(){stopAuto();set(-1);let k=-1;const step=()=>{k++;if(k>=items.length){stopAuto();return}set(k)};setTimeout(step,500);auto=setInterval(step,o.dwell||2600);o.onAuto&&o.onAuto(true)}
   return{set,play,stopAuto,next(){stopAuto();if(cur<items.length-1){set(cur+1);return true}return false},prev(){stopAuto();if(cur>0){set(cur-1);return true}return false},get cur(){return cur},get auto(){return !!auto}}}
