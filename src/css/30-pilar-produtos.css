@@ -1,0 +1,108 @@
+/* =====================================================================
+   PILAR N · PRODUTOS · vista 1 (fx 29 · Morphing Shapes)
+   grafo serviço → produto em 3 estados + cards de produto + "O que muda"
+   (modelo: slide "Separação e Day 1" da apresentação DTS Tech M&A)
+   ===================================================================== */
+.pp-lead{max-width:565px;font-size:14px}
+.main.pp{display:flex;flex-direction:column;gap:12px}
+.pp-wrap{flex:1;min-height:0;display:grid;grid-template-columns:780px minmax(0,1fr);gap:22px}
+
+/* painel do grafo */
+.pp-panel{position:relative;min-height:0;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.12);padding:14px 16px 12px;display:flex;flex-direction:column;gap:6px}
+.pp-bar{flex:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pp-leg{display:flex;gap:10px;font-family:var(--fm);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--steel-300);white-space:nowrap}
+.pp-leg span{display:flex;align-items:center;gap:5px}
+.pp-leg i{display:inline-block;width:14px;height:10px;border-radius:3px;flex:none}
+.pp-leg .lg-s{background:rgba(255,255,255,.08);border:1.2px solid rgba(163,184,214,.6)}
+.pp-leg .lg-p{background:var(--navy-700);border:1.5px solid #fff}
+.pp-leg .lg-n{background:var(--orange-500);border:1.5px solid var(--orange-200)}
+.pp-leg .lg-c{background:transparent;border:1.2px dashed #E89A8A}
+.pp-leg .lg-o{height:0;border-top:2px dashed #E89A8A;border-radius:0}
+.pp-leg .lg-t{height:0;border-top:2px dashed var(--orange-400);border-radius:0}
+.pp-svg{flex:1;min-height:0;width:100%;display:block;overflow:visible}
+.pp-capw{flex:none;display:flex;align-items:center;gap:16px;padding-top:8px;border-top:1px solid rgba(163,184,214,.14)}
+.pp-cap{flex:1;min-width:0;font-size:14px;line-height:1.45;color:var(--steel-200);min-height:41px;display:flex;align-items:center}
+.pp-cap.in{animation:aF .5s both}
+.pp-stat{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px;padding-left:16px;border-left:1px solid rgba(163,184,214,.14)}
+.pp-stat b{font-size:26px;font-weight:800;line-height:1;letter-spacing:-.03em;color:#fff;white-space:nowrap}
+.pp-stat span{font-family:var(--fm);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel-300);white-space:nowrap}
+
+/* nós e ligações do grafo */
+.pn{cursor:pointer}
+/* preenchimentos sólidos: as ligações passam por baixo sem riscar o rótulo */
+.pn rect{fill:#15283F;stroke:rgba(163,184,214,.5);stroke-width:1.2;transition:fill .4s,stroke .4s,opacity .25s}
+.pn text{fill:var(--steel-100);font:600 11.5px var(--fb);transition:opacity .25s}
+.pn.sv.m rect{fill:#15283F;stroke:rgba(163,184,214,.5)}
+.pn.sv.m text{fill:var(--steel-200)}
+.pn.sv.fx rect{stroke-dasharray:4 3;stroke:var(--orange-400);fill:#1E2433}
+.pn.sv rect{fill:var(--navy-600);stroke:var(--steel-400)}
+.pn.sv.cut rect{fill:#0D1C31;stroke:#E89A8A;stroke-dasharray:4 3}
+.pn.sv.cut text{fill:var(--steel-300);text-decoration:line-through}
+.pn.sv.out rect{stroke:var(--orange-400);stroke-dasharray:4 3}
+.pn.hub rect{fill:var(--navy-700);stroke:#fff;stroke-width:1.6}
+.pn.hub text{font:800 15px var(--fb);fill:#fff}
+.pn.hub.ghost rect{fill:#0D1C31;stroke:var(--orange-400);stroke-dasharray:4 4}
+.pn.hub.ghost text{fill:var(--orange-200)}
+.pn.hub.n rect{fill:var(--orange-500);stroke:var(--orange-200);filter:drop-shadow(0 0 8px rgba(242,107,33,.55))}
+.pn .halo{display:none;fill:none;stroke:var(--orange-400);stroke-width:1.5}
+.pn.hub.nw .halo{display:block;transform-box:fill-box;transform-origin:center;animation:ppHalo 2.2s ease-out infinite}
+@keyframes ppHalo{from{transform:scale(.8);opacity:.9}to{transform:scale(1.7);opacity:0}}
+.pn.h0 rect{fill:var(--navy-600);stroke:var(--steel-300);stroke-width:1.4}
+.pn.h0 text{font:800 13px var(--fb);fill:#fff}
+.pn.xn rect{fill:#2A2630;stroke:var(--orange-400);stroke-dasharray:4 3}
+.pn.xn text{font:700 11.5px var(--fb);fill:var(--orange-200)}
+.pe{stroke-width:1.5;stroke-linecap:round;transition:stroke-opacity .25s}
+.pe-m{stroke:rgba(163,184,214,.34)}
+.pe-o{stroke:#E89A8A;stroke-width:1.6;stroke-dasharray:5 4}
+.pe-s{stroke:rgba(110,143,191,.8)}
+.pe-c{stroke:rgba(232,154,138,.6);stroke-dasharray:3 4}
+.pe-n{stroke:rgba(255,138,76,.85);stroke-width:2}
+.pe-b{stroke:rgba(163,184,214,.2);stroke-width:2}
+.pe-t{stroke:var(--orange-400);stroke-width:2;stroke-dasharray:6 6;animation:ppFlow 1.2s linear infinite;filter:drop-shadow(0 0 4px rgba(242,107,33,.7))}
+@keyframes ppFlow{to{stroke-dashoffset:-24}}
+.pp-svg.focus .pn:not([data-hot]) rect,.pp-svg.focus .pn:not([data-hot]) text{opacity:.22}
+.pp-svg.focus .pe:not([data-hot]){stroke-opacity:.12}
+.pp-svg .pn[data-hot] rect{stroke:var(--orange-400)}
+
+/* cards de produto (densidade conforme o número de produtos do pilar) */
+.pp-prods{--nm:14.5px;--fr:10px;--tl:12.5px;--ai:11.5px;--ic:40px;--icg:22px;--py:5px;--rg:1px;--sth:20px;
+  display:flex;flex-direction:column;gap:6px;min-width:0;min-height:0}
+.pp-prods.n6{--nm:16px;--fr:10.5px;--tl:13.5px;--ai:12px;--ic:46px;--icg:25px;--py:8px;--rg:3px;--sth:22px}
+.pp-prods.n5{--nm:17px;--fr:10.5px;--tl:14.5px;--ai:12.5px;--ic:50px;--icg:27px;--py:10px;--rg:4px;--sth:22px}
+.pp-c{flex:1 1 0;min-height:0;display:flex;align-items:center;gap:14px;padding:var(--py) 16px var(--py) 12px;border-radius:14px;background:linear-gradient(155deg,#16396B 0%,#0B2545 60%,#071A33 100%);border:1px solid rgba(255,255,255,.12);box-shadow:0 14px 34px rgba(0,0,0,.25);color:#fff;transition:border-color .25s,filter .25s,translate .25s,box-shadow .25s}
+.pp-c:hover,.pp-c.hot{border-color:rgba(255,138,76,.7);translate:-4px 0;box-shadow:0 14px 34px rgba(0,0,0,.25),0 0 0 3px rgba(242,107,33,.14)}
+.pp.foc .pp-c:not(.hot){filter:saturate(.5) brightness(.7)}
+.pp-ico{flex:none;width:var(--ic);height:var(--ic);border-radius:12px;background:rgba(242,107,33,.14);border:1px solid rgba(242,107,33,.45);display:grid;place-items:center}
+.pp-ico .ico{width:var(--icg);height:var(--icg);color:var(--orange-400)}
+.pp-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--rg)}
+.pp-h{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.pp-code{font-weight:800;font-size:var(--nm);letter-spacing:-.02em;color:var(--orange-400);flex:none}
+.pp-nm{font-weight:800;font-size:var(--nm);letter-spacing:-.02em;line-height:1.2;color:#fff}
+.pp-tags{margin-left:auto;display:flex;align-items:center;gap:8px;flex:none}
+.pp-tags .st{height:var(--sth)}
+.pp-from{display:block;font-family:var(--fm);font-size:var(--fr);line-height:1.3;color:var(--steel-300);white-space:nowrap}
+.pp-tl{display:block;font-size:var(--tl);font-weight:600;line-height:1.3;color:#fff}
+.pp-ai{display:block;font-size:var(--ai);line-height:1.35;color:var(--steel-300)}
+.pp-ai b{color:var(--orange-400);font-weight:700}
+/* no estado "Com IA" os cards com IA no método ganham a borda laranja */
+.pp[data-st="2"] .pp-c.ai,.pp[data-st="2"] .pp-c.new{border-color:rgba(242,107,33,.42)}
+.pp[data-st="2"] .pp-c.new .pp-ico{background:var(--orange-500);border-color:var(--orange-200)}
+.pp[data-st="2"] .pp-c.new .pp-ico .ico{color:#fff}
+
+/* barra "O que muda" */
+.pp-out{flex:none;display:flex;align-items:center;gap:16px}
+.pp-out .label{flex:none;color:var(--orange-200)}
+.pp-out>div{flex:1;min-width:0;display:flex;gap:10px}
+.pp-out>div>*{flex:1 1 auto;padding:9px 14px;border-radius:12px;background:linear-gradient(160deg,rgba(242,107,33,.16),rgba(242,107,33,.03));border:1px solid rgba(242,107,33,.32);font-size:13px;font-weight:700;line-height:1.3;color:#fff;white-space:nowrap;text-align:center}
+.pp-out>div>a{transition:background .2s,border-color .2s}
+.pp-out>div>a:hover{background:rgba(242,107,33,.3);border-color:var(--orange-400)}
+
+/* chip de efeito do rodapé acompanha a vista visível */
+.slide:has(> .body.pp-v2.on) .fxchip .fx-a,.slide:not(:has(> .body.pp-v2.on)) .fxchip .fx-b{display:none}
+
+@media (prefers-reduced-motion:reduce){.pe-t,.pn.hub.nw .halo{animation:none}.pp-c{transition:none}}
+@media print{
+  .pe-t{animation:none}.pn .halo{display:none!important}
+  .pp-seg .seg-ind,.bap .ba-seg .seg-ind,.slide:has(> .body.pp-v2) .pseg .seg-ind{display:none}
+  .pp-seg button.on,.bap .ba-seg button.on,.slide:has(> .body.pp-v2) .pseg button.on{background:#fff;border-radius:7px}
+}
