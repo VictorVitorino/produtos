@@ -38,22 +38,27 @@ document.querySelectorAll(".bap").forEach(host=>{const n=+host.dataset.pillar,pl
   const sg=host.querySelector(".ba-seg");sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{ba.tween(+b.dataset.v,800);sg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(sg)});
   BAPX[n]={ba,sg}});
 
-PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?50:38.5)));
+/* impressão: o antes/depois dos pilares sai com o divisor em "Hoje" (serviço + diagnóstico por linha);
+   a proposta (produto, status, tagline e IA) já está impressa na vista 1 */
+PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?50:BAPX[k]?100:38.5)));
 
 /* ---------- vista 1 · grafo que muda de forma + cards de produto ---------- */
 const PPG={};
-/* frase-resumo por estado: Hoje · Produtos (o terceiro, Com IA, é calculado dos dados) */
+/* frase-resumo por estado: Hoje · Produtos narram o movimento do grafo (o terceiro, Com IA, é calculado dos dados).
+   Nomes compostos ficam inteiros na mesma linha (span.nw) */
 const PP_CAP={
- 1:["10 serviços e duas sobreposições: três ofertas de liderança (Interim CIO/CTO, Embedded e C-Level Enablement) e duas de impostos e incentivos.",
-    "3 ofertas de liderança viram 1 (Interim & Embedded), Tax + incentivos viram 1 produto com A&M Tax e a resiliência migra para o Pilar 4."],
+ 1:["10 serviços e 2 sobreposições: 3 ofertas de liderança (Interim CIO/CTO, Embedded e <span class='nw'>C-Level Enablement</span>) e 2 de impostos e incentivos.",
+    "As 3 ofertas de liderança e o IT Business Partner (Pilar 2) formam o 1.3, os 2 serviços de impostos formam o 1.6 e a resiliência sai para o 4.5, no Pilar 4."],
  2:["7 serviços: TMO e Modelo de Implantação e Governança têm o mesmo comprador e o mesmo método, e o IT Business Partner tem baixa diferenciação.",
-    "TMO + Modelo de Implantação viram o Predictive Transformation Office; o IT Business Partner é retirado e absorvido pela liderança embarcada (1.3)."],
+    "TMO e Modelo de Implantação se fundem no 2.3; o IT Business Partner sai para a liderança embarcada (1.3, Pilar 1) e o 2.6 nasce no lugar tracejado."],
  3:["8 serviços que são fases de um mesmo ciclo, em pares que se sobrepõem: DD buy e sell, integração e separação, IMO e SMO.",
-    "Os pares viram produtos: DD buy + sell = 1 produto, IMO + SMO = 1 escritório; o IT M&A Playbook deixa de ser vendido isolado."],
- 4:["Três dos 4 serviços têm nomes que não dizem o que entregam, e a resiliência ainda está no Pilar 1.",
-    "Cada serviço ganha o nome do que entrega e vira produto; a resiliência chega do Pilar 1 como IT Resilience & Recovery."]};
-function ppCapAI(n){const ps=PRODUCTS.filter(p=>p.pillar===n),pl=PILLARS[n-1],a=ps.filter(p=>p.st==="ai").length,k=ps.filter(p=>p.st==="keep").length,nw=ps.filter(p=>p.st==="new");
-  return`${a} ${a>1?"produtos são aprimorados":"produto é aprimorado"} com IA, ${k} ${k>1?"se mantêm":"se mantém"} e ${nw.length>1?"nascem":"nasce"} ${nw.map(p=>"o "+p.name).join(" e ")}: de ${pl.was} serviços para ${pl.now} produtos.`}
+    "Os pares se fundem: DD buy e sell no 3.1, planejamento e desenho de separação no 3.2, IMO e SMO no 3.3; o Playbook deixa de ser vendido isolado e alimenta o 3.5."],
+ 4:["3 dos 4 serviços têm nomes que não dizem o que entregam, e a resiliência ainda está no Pilar 1.",
+    "Cada serviço vira o produto com o nome do que entrega (4.1 a 4.4); a resiliência chega do Pilar 1 como 4.5 e o 4.6 nasce no lugar tracejado."]};
+/* estado Com IA: narra o que acende no grafo; os produtos "Manter" também têm IA de apoio no método (p.ai) */
+function ppCapAI(n){const ps=PRODUCTS.filter(p=>p.pillar===n),a=ps.filter(p=>p.st==="ai").length,k=ps.filter(p=>p.st==="keep"),nw=ps.filter(p=>p.st==="new");
+  const ks=k.map(p=>"o "+p.code).join(" e ");
+  return`${nw.map(p=>`O novo <span class="nw">${p.name} (${p.code})</span>`).join(" e ")} e ${a>1?`os ${a} produtos aprimorados`:"o produto aprimorado"} com IA acendem em laranja${k.length?`; ${ks} ${k.length>1?"se mantêm":"se mantém"}, com IA de apoio no método`:""}.`}
 
 document.querySelectorAll(".pp").forEach(host=>{
   const n=+host.dataset.pillar,pl=PILLARS[n-1],sec=host.closest(".slide"),t=sec.dataset.t;
@@ -72,7 +77,7 @@ document.querySelectorAll(".pp").forEach(host=>{
         <span class="pp-h"><b class="pp-code">${p.code}</b><b class="pp-nm">${p.name}</b><span class="pp-tags">${p.sig?'<span class="sig2">★ Signature</span>':""}${stTag(p.st)}</span></span>
         <span class="pp-from">${p.st==="new"?p.from:"Evolui de "+p.from}</span>
         <span class="pp-tl">${p.tagline}</span>
-        ${ps.length<=5?`<span class="pp-get" aria-label="Entregas">${p.deliv.slice(0,2).map(x=>`<span>${icoSvg("check",5+i)}${strip(x)}</span>`).join("")}</span>`:""}
+        ${ps.length<=5?`<span class="pp-get" aria-label="Entregas"></span>`:""}
         <span class="pp-ai"><b>IA:</b> ${strip(p.ai[0])}</span>
       </span></a>`;
   /* legenda em grade de 2 linhas: coluna 1 = serviços, 2 = produtos, 3 = mudanças (cada item em uma linha) */
@@ -102,8 +107,8 @@ document.querySelectorAll(".pp").forEach(host=>{
     const hl=kind==="hub"?S("rect",{class:"halo",rx:14},g):null;
     g.setAttribute("data-tv",tv);g.setAttribute("data-th",th);if(pd)g.setAttribute("data-pd",pd);NODES[id]={g,r,hl,tx,lab,kind,o,w:60,h:NH[kind],code:o?o.to:(id.split(":")[1]||"")};return NODES[id]}
   const tl=(k,v)=>`<span class="tl"><b>${k}</b>${v}</span>`;
-  node("h0","h0",`Pilar ${n} · hoje`,null,`Pilar ${n} · ${pl.name} hoje`,tl("Serviços",`${own.length} no portfólio atual`)+tl("Proposta",`${pl.now} produtos`),null);
-  ps.forEach(p=>node("p:"+p.code,"hub",p.code,null,`${p.code} · ${p.name}`,tl("Status",STATUS[p.st][0]+(p.sig?" · ★ Signature":""))+tl("Produto",p.tagline)+tl("Ficha","clique para abrir"),p.id));
+  node("h0","h0",`Pilar ${n} · hoje`,null,`Pilar ${n} · ${pl.name} · hoje`,tl("Serviços",`${own.length} no portfólio atual`)+tl("Proposta",`${pl.now} produtos`),null);
+  ps.forEach(p=>node("p:"+p.code,"hub",p.code,null,`${p.code} · ${p.name}`,tl("Status",STATUS[p.st][0]+(p.sig?" · ★ Signature":""))+tl("Produto",p.tagline)+tl("IA",strip(p.ai[0]))+tl("Ficha","clique para abrir"),p.id));
   svcs.forEach(o=>{const d=PBY(o.to),fo=o.p!==n,mv=d.pillar!==o.p;
     const dec=fo?(o.d==="cut"?`Retirar no Pilar ${o.p} e absorver aqui`:`Transferir do Pilar ${o.p} para cá`):(d.pillar!==n?(o.d==="cut"?`Retirar · absorvido no Pilar ${d.pillar}`:`Transferir para o Pilar ${d.pillar}`):DN[o.d]);
     node("s:"+o.id,"sv",o.n+(fo?` · Pilar ${o.p}`:""),o,o.n+(fo?` (Pilar ${o.p})`:""),tl("Decisão",dec)+tl("Destino",`${d.code} ${d.name}${mv?` · Pilar ${d.pillar}`:""}`)+tl("Por quê",o.w),d.id)});
@@ -113,6 +118,12 @@ document.querySelectorAll(".pp").forEach(host=>{
     nd.r.setAttribute("x",-nd.w/2);nd.r.setAttribute("y",-nd.h/2);nd.r.setAttribute("width",nd.w);nd.r.setAttribute("height",nd.h);
     /* halo do produto novo: contorno arredondado com 6px de folga em volta do nó (nunca atravessa a caixa) */
     if(nd.hl){nd.hl.setAttribute("x",-nd.w/2-6);nd.hl.setAttribute("y",-nd.h/2-6);nd.hl.setAttribute("width",nd.w+12);nd.hl.setAttribute("height",nd.h+12)}})}
+  /* entregas dos cards (pilar com 5 produtos): as 2 primeiras de p.deliv que cabem em uma linha da coluna */
+  const GETF="600 11.5px Inter, sans-serif";
+  function fillGet(){host.querySelectorAll(".pp-get").forEach((el,i)=>{const p=PBY(el.closest(".pp-c").dataset.code);ctx.font=GETF;
+    const max=((el.clientWidth||624)-6)/2-42,pick=p.deliv.map(x=>strip(x)).filter(x=>ctx.measureText(x).width<=max).slice(0,2),key=pick.join("|");
+    if(el.dataset.k===key)return;el.dataset.k=key;el.innerHTML=pick.map(x=>`<span>${icoSvg("check",5+i)}${x}</span>`).join("");fixPaths(el)})}
+  fillGet();
   const rnd=k=>{const a=Math.sin(k*12.9898+78.233)*43758.5453;return a-Math.floor(a)};
   const gcd=(a,b)=>b?gcd(b,a%b):a;
   const bySt=(a,b)=>((a.d==="cut")-(b.d==="cut"))||((a.p!==n)-(b.p!==n));
@@ -120,10 +131,13 @@ document.querySelectorAll(".pp").forEach(host=>{
   const STK=31,HH=17,ZMAX=1.15;
   const split=(L,f)=>{if(L.length<=1)return f?[[],L]:[L,[]];const h=Math.ceil(L.length/2);return[L.slice(0,h),L.slice(h)]};
   /* segmento × retângulo (Liang–Barsky): a ligação passa por baixo deste nó? */
-  const segHit=(x1,y1,x2,y2,r)=>{let t0=0,t1=1;const dx=x2-x1,dy=y2-y1,pp=[-dx,dx,-dy,dy],qq=[x1-r[0],r[2]-x1,y1-r[1],r[3]-y1];
-    for(let k=0;k<4;k++){if(pp[k]===0){if(qq[k]<0)return false;continue}const u=qq[k]/pp[k];if(pp[k]<0){if(u>t1)return false;if(u>t0)t0=u}else{if(u<t0)return false;if(u<t1)t1=u}}return t0<t1};
+  const segHit=(x1,y1,x2,y2,r)=>{if((x1<x2?x2:x1)<r[0]||(x1<x2?x1:x2)>r[2]||(y1<y2?y2:y1)<r[1]||(y1<y2?y1:y2)>r[3])return false;
+    let t0=0,t1=1;const dx=x2-x1,dy=y2-y1;
+    for(let k=0;k<4;k++){const pk=k===0?-dx:k===1?dx:k===2?-dy:dy,qk=k===0?x1-r[0]:k===1?r[2]-x1:k===2?y1-r[1]:r[3]-y1;
+      if(pk===0){if(qk<0)return false;continue}const u=qk/pk;if(pk<0){if(u>t1)return false;if(u>t0)t0=u}else{if(u<t0)return false;if(u<t1)t1=u}}return t0<t1};
   let ph=0;
-  function lay(){measure();const Q=[{},{},{}],F=[[],[],[]];const set=(st,id,x,y,o,s,c)=>{Q[st][id]={x,y,o,s,c}};
+  /* full: busca completa do estado Hoje (roda uma vez, ociosa, com as fontes carregadas); sem full, só a disposição inicial */
+  function lay(full){measure();const Q=[{},{},{}],F=[[],[],[]];const set=(st,id,x,y,o,s,c)=>{Q[st][id]={x,y,o,s,c}};
     const rows=ps.map(p=>({p,L:svcs.filter(o=>o.to===p.code).sort(bySt)}));if(outs.length)rows.push({out:outs});
     const sideW=L=>L.length?Math.max(...L.map(o=>NODES["s:"+o.id].w)):0;
     /* largura ocupada à esquerda e à direita da espinha; f = lado do serviço único da linha (alterna) e deslocamento do nó do produto */
@@ -148,10 +162,11 @@ document.querySelectorAll(".pp").forEach(host=>{
       const[Lf,Rt]=split(r.L,f);Lf.forEach((o,j)=>put(o,-1,j,Lf.length,hw));Rt.forEach((o,j)=>put(o,1,j,Rt.length,hw))});
     /* estado 0: serviços de hoje espalhados e emaranhados em torno do pilar */
     const m=own.length,sd=[3,4,5,2,7].find(s=>s<m&&gcd(s,m)===1)||1;const slots=[...Array(m)].map((_,k)=>own[(k*sd)%m]);slots.splice(Math.floor(m/2),0,"H0");inn.forEach(o=>slots.push(o));
-    const sh=(VHz-2*PAD)/slots.length;
-    slots.forEach((o,k)=>{const cy=PAD+sh*(k+.5);if(o==="H0"){set(0,"h0",X0+(n%2?-24:24),cy,1,1,"h0");return}
-      const id="s:"+o.id,w=NODES[id].w,amp=(VWz-w)/2-10,fo=o.p!==n,sg=k%2?1:-1;
-      set(0,id,fo?VWz-12-w/2:X0+sg*amp*(.25+.75*rnd(k+n*11)),cy,fo?.8:1,1,"sv m"+(fo?" fx":""))});
+    /* caixa da nuvem de hoje: com poucos serviços (P4) fica mais compacta e centrada, sem quadrantes vazios */
+    const sm=svcs.length<=5,BW=VWz*(sm?.66:1),BX=(VWz-BW)/2,BH=(VHz-2*PAD)*(sm?.8:1),BY=(VHz-BH)/2,sh=BH/slots.length;
+    slots.forEach((o,k)=>{const cy=BY+sh*(k+.5);if(o==="H0"){set(0,"h0",X0+(n%2?-24:24),cy,1,1,"h0");return}
+      const id="s:"+o.id,w=NODES[id].w,amp=(BW-w)/2-10,fo=o.p!==n,sg=k%2?1:-1;
+      set(0,id,fo?BX+BW-12-w/2:X0+sg*amp*(.25+.75*rnd(k+n*11)),cy,fo?.8:1,1,"sv m"+(fo?" fx":""))});
     /* nenhuma ligação passa por baixo de um nó sem relação com ela (sugeriria vínculo que não existe).
        Busca local determinística: desliza cada serviço na horizontal e troca nós de linha enquanto reduzir os cruzamentos;
        várias partidas (sementes) para escapar de mínimos locais. Cruzar um nó do mesmo grupo de sobreposição pesa menos. */
@@ -159,12 +174,12 @@ document.querySelectorAll(".pp").forEach(host=>{
     const L0=own.map(o=>["h0","s:"+o.id]);overl.forEach(g=>{for(let a=0;a<g.length;a++)for(let b=a+1;b<g.length;b++)L0.push(["s:"+g[a].id,"s:"+g[b].id])});
     const gOf={};overl.forEach(g=>g.forEach(o=>gOf["s:"+o.id]=o.to));
     const box=id=>{const q=Q[0][id],nd=NODES[id];return[q.x-nd.w/2-6,q.y-nd.h/2-4,q.x+nd.w/2+6,q.y+nd.h/2+4]};
-    const cost=()=>{let c=0;L0.forEach(([a,b])=>{const A=Q[0][a],B=Q[0][b];ids0.forEach(id=>{if(id!==a&&id!==b&&segHit(A.x,A.y,B.x,B.y,box(id)))c+=gOf[id]&&gOf[id]===gOf[b]?1:3})});return c};
-    const lim=id=>{const w=NODES[id].w;return[w/2+10,VWz-w/2-10]};
+    const cost=()=>{const BB=ids0.map(box);let c=0;for(const[a,b]of L0){const A=Q[0][a],B=Q[0][b];for(let j=0;j<ids0.length;j++){const id=ids0[j];if(id!==a&&id!==b&&segHit(A.x,A.y,B.x,B.y,BB[j]))c+=gOf[id]&&gOf[id]===gOf[b]?2:3}}return c};
+    const lim=id=>{const w=NODES[id].w;return[BX+w/2+10,BX+BW-w/2-10]};
     const SW=own.map(o=>"s:"+o.id).concat("h0"),snap=()=>SW.map(id=>[Q[0][id].x,Q[0][id].y]);
     const midOK=y=>y>VHz*.3&&y<VHz*.7;
     let bestC=1e9,bestS=null;
-    for(let seed=0;seed<12&&bestC>0;seed++){
+    for(let seed=0;full&&seed<24&&bestC>0;seed++){
       if(seed){const ys=own.map(o=>Q[0]["s:"+o.id].y);for(let j=ys.length-1;j>0;j--){const r=Math.floor(rnd(j*5+seed*17+n)*(j+1)),t=ys[j];ys[j]=ys[r];ys[r]=t}
         own.forEach((o,j)=>{const q=Q[0]["s:"+o.id],[lo,hi]=lim("s:"+o.id);q.y=ys[j];q.x=lo+(hi-lo)*rnd(j*7+seed*13+n)})}
       let c0=cost();
@@ -177,7 +192,7 @@ document.querySelectorAll(".pp").forEach(host=>{
           if(c<c0)c0=c;else{A.y=ya;B.y=yb;A.x=xa;B.x=xb}}
         if(c0>=before)break}
       if(c0<bestC){bestC=c0;bestS=snap()}}
-    SW.forEach((id,j)=>{Q[0][id].x=bestS[j][0];Q[0][id].y=bestS[j][1]});
+    if(bestS)SW.forEach((id,j)=>{Q[0][id].x=bestS[j][0];Q[0][id].y=bestS[j][1]});
     const h0=Q[0].h0;[1,2].forEach(st=>set(st,"h0",h0.x,h0.y,0,.6,"h0"));
     ps.forEach(p=>set(0,"p:"+p.code,h0.x,h0.y,0,.4,"hub"));
     Object.keys(NODES).filter(k=>k.startsWith("x:")).forEach(k=>set(0,k,Q[1][k].x,Q[1][k].y,0,.6,"xn"));
@@ -198,7 +213,7 @@ document.querySelectorAll(".pp").forEach(host=>{
   let cur=-1,raf=0,tm=0;
   function to(st,inst){cancelAnimationFrame(raf);raf=0;const F0={},FE={};Object.keys(D).forEach(k=>F0[k]={...D[k]});ekeys.forEach(k=>FE[k]=ED[k]);
     const TE=new Set(E[st].map(e=>e.join("|")));seg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",+b.dataset.s===st));segSync(seg);host.dataset.st=st;
-    if(cap.textContent!==CAP[st]){cap.classList.remove("in");void cap.offsetWidth;cap.textContent=CAP[st];cap.classList.add("in")}
+    if(cap.dataset.s!==String(st)){cap.classList.remove("in");void cap.offsetWidth;cap.innerHTML=`<span>${CAP[st]}</span>`;cap.dataset.s=st;cap.classList.add("in")}
     const dur=inst||REDMO?1:1300,t0=performance.now();let sw=false;cur=st;
     (function step(now){const k=Math.min(1,(now-t0)/dur),e=ease.inOut(k);
       Object.keys(D).forEach(id=>{const p=P[st][id];D[id].x=F0[id].x+(p.x-F0[id].x)*e;D[id].y=F0[id].y+(p.y-F0[id].y)*e;D[id].o=F0[id].o+(p.o-F0[id].o)*e;D[id].s=F0[id].s+(p.s-F0[id].s)*e});
@@ -207,7 +222,7 @@ document.querySelectorAll(".pp").forEach(host=>{
       render();if(k<1)raf=requestAnimationFrame(step);else raf=0})(inst?t0+dur:t0)}
   /* foco: card ↔ produto no grafo */
   const cards=[...host.querySelectorAll(".pp-c")];
-  function focus(code){host.classList.toggle("foc",!!code);svg.classList.toggle("focus",!!code);
+  function focus(code){host.classList.toggle("foc",!!code&&cards.some(c=>c.dataset.code===code));svg.classList.toggle("focus",!!code);
     Object.entries(NODES).forEach(([id,nd])=>{const hot=!!code&&(id==="p:"+code||id==="x:"+code||(nd.o&&nd.o.to===code));if(hot)nd.g.setAttribute("data-hot","");else nd.g.removeAttribute("data-hot")});
     ekeys.forEach(k=>{const[a,b]=k.split("|");if(code&&NODES[a].g.hasAttribute("data-hot")&&NODES[b].g.hasAttribute("data-hot"))EL[k].setAttribute("data-hot","");else EL[k].removeAttribute("data-hot")});
     cards.forEach(c=>c.classList.toggle("hot",c.dataset.code===code))}
@@ -216,18 +231,23 @@ document.querySelectorAll(".pp").forEach(host=>{
   seg.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{clearTimeout(tm);to(+b.dataset.s)}));
   to(0,true);
   /* a largura real dos rótulos depende da fonte carregada: refaz o layout quando ela chega */
-  const relay=()=>{lay();edges();if(!raf&&cur>=0)to(cur,true)};
-  if(document.fonts&&document.fonts.load)Promise.all(Object.values(FONT).map(f=>document.fonts.load(f))).then(relay,()=>{});
-  const G=PPG[n]={to,seg,focus,get cur(){return cur},stop(){clearTimeout(tm)},
-    enter(){clearTimeout(tm);if(REDMO){to(1,true);return}to(0,true);tm=setTimeout(()=>to(1),1500)}};
+  /* a busca completa roda uma vez, fora do carregamento (ocioso), com as larguras finais; só se repete se alguma largura mudar */
+  const wk=()=>Object.values(NODES).map(nd=>nd.w).join();let fullK="";
+  const relay=()=>{fillGet();measure();const k=wk();if(k===fullK)return;fullK=k;lay(true);edges();if(!raf&&cur>=0)to(cur,true)};
+  const idle=f=>window.requestIdleCallback?requestIdleCallback(f,{timeout:1500}):setTimeout(f,120);
+  (document.fonts&&document.fonts.load?Promise.all(Object.values(FONT).concat(GETF).map(f=>document.fonts.load(f))):Promise.resolve()).then(()=>idle(relay),()=>idle(relay));
+  const G=PPG[n]={to,seg,focus,fill:fillGet,get cur(){return cur},stop(){clearTimeout(tm)},
+    enter(){clearTimeout(tm);fillGet();if(REDMO){to(1,true);return}to(0,true);tm=setTimeout(()=>to(1),1500)}};
 
   /* ---- duas vistas: entrada, passos e demo do divisor quando a vista 2 aparece ---- */
   const panes=[...sec.querySelectorAll(":scope > .body.pane")],v2=panes[1],B=BAPX[n];let lastDemo=-1e9;
   /* chip de efeito no rodapé: fx 29 na vista 1, fx 37 na vista 2 (troca por CSS, vale também na impressão) */
   const fxc=sec.querySelector(".foot .fxchip");if(fxc&&fxc.firstElementChild){fxc.firstElementChild.innerHTML='<span class="fx-a">fx 29 · Morphing Shapes</span><span class="fx-b">fx 37 · Before / After Slider</span>';fxc.title="Efeitos do Guia de Design DTS: vista 1 · Morphing Shapes (fx 29) · vista 2 · Before / After Slider (fx 37) · dose moderada"}
   const demo=()=>{if(!B)return;const now=performance.now();if(now-lastDemo<700)return;lastDemo=now;segSync(B.sg);B.ba.demo();setTimeout(()=>segSync(B.sg),2700)};
-  const mo=new MutationObserver(ms=>ms.forEach(m=>{const el=m.target,was=(m.oldValue||"").split(/\s+/).includes("on");if(!el.classList.contains("on")||was||!sec.classList.contains("active"))return;
-    if(el===v2){G.stop();demo()}else segSync(seg)}));
+  const FX=[sec.dataset.fx,"37|Before / After Slider|moderada"];
+  const syncFx=()=>{const fx=FX[v2&&v2.classList.contains("on")?1:0];if(sec.dataset.fx===fx)return;sec.dataset.fx=fx;if(sec.classList.contains("active")&&infoP.classList.contains("on"))fillInfo()};
+  const mo=new MutationObserver(ms=>{syncFx();ms.forEach(m=>{const el=m.target,was=(m.oldValue||"").split(/\s+/).includes("on");if(!el.classList.contains("on")||was||!sec.classList.contains("active"))return;
+    if(el===v2){G.stop();demo()}else segSync(seg)})});
   panes.forEach(p=>mo.observe(p,{attributes:true,attributeFilter:["class"],attributeOldValue:true}));
   ENTER[t]=()=>{const Pn=PANE[t];if(!Pn||Pn.k===0){G.enter();return}G.stop();G.to(2,true);demo()};
   /* → avança Hoje → Produtos → Com IA e depois troca de vista; ← na vista 1 volta de Com IA para Produtos e então sai */
