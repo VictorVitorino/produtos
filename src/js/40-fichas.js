@@ -1,47 +1,141 @@
-/* Arquivo carregado depois de engine.js, data.js, core.js e slides.js (ver build.py). */
+/* Arquivo carregado depois de engine.js, data.js, core.js, slides.js e 05-icons.js (ver build.py). */
 /* =====================================================================
-   FICHA DE PRODUTO (fx 03 · card hologram · hiperlink #p=<id>)
+   FICHA DE PRODUTO · modelo "Tech M&A Playbook" da apresentação DTS Tech M&A
+   (fx 03 · Hologram 3D Cards · hiperlink #p=<id>)
+   À esquerda: card hologram (status + pulso, rótulo mono, nome, subtítulo laranja,
+   frase, público, formato, origem) e a caixa "Por que A&M".
+   À direita: o problema, o que o cliente recebe, como funciona (ponto correndo),
+   o produto em números, papel da IA, como vira produto, ferramentas e dados,
+   skills e a fonte da ficha. Rodapé: links para os outros produtos do pilar.
+   Densidade: pdFit escolhe, por coluna, o tamanho mais folgado que cabe no palco
+   (o resultado fica em PDFIT; a impressão mede as 24 fichas antes de gerar as páginas).
    ===================================================================== */
 const pd=H("div",{id:"pd",class:"stage"},stage);let pdOpen=null,pdFrom=0;
 const evb=t=>t.replace(/\s*\[E · ([^\]]+)\]/g,' <span class="srcx">Fonte: $1</span>').replace(/\s*\[E\]/g,"");
-function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);
-  const steps=P.steps.map((s,i)=>`<div class="pd-step"><div class="w">${pad(i+1)}</div><div class="wl">${s[0]}</div><b>${s[1]}</b><span>${s[2]}</span></div>`).join("");
-  const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+
+/* ícones de linha com pathLength embutido: desenham na tela e saem inteiros na impressão */
+const pdIco=(n,d)=>icoSvg(n,d).replace(/<(path|circle|rect|line|polyline|polygon|ellipse)\b/g,'<$1 pathLength="1"');
+/* ícone por palavra-chave (só ilustração; o texto é o do data.js) */
+const PDKW=[
+  [/scorecard|índice|score|maturidade|health|rating|prontidão|readiness/i,"gauge"],
+  [/roadmap|plano|cronograma|trilha|jornada|ondas|rollout|transição|sucessão|passar o bastão/i,"route"],
+  [/painel|dashboard|radar|telemetria|medição|benchmark|comparaç|alavanca/i,"chart"],
+  [/contrato|cláusula|tsa|rfp|term sheet|negocia|fornecedor|sourcing/i,"contract"],
+  [/risco|segurança|cyber|resili|continuidade|crise|red flag|alerta|guardrail|assurance|fiscaliza|defesa|bia\b|dr\b/i,"shield"],
+  [/r\$|economia|custo|sinergia|business case|preço|caixa|incentivo|benefício|valor em jogo|capex|tco|finops|captura|valuation|equity/i,"coin"],
+  [/decis|go\/no-go|aprova|recomenda|top-\d|prioriz|classifica|certifica|comitê|go-live/i,"check"],
+  [/mapa|arquitetura|inventário|repositório|catálogo|modelo operacional|organograma|desenho|blueprint|taxonomia|cubo|disposição|fit-gap/i,"layers"],
+  [/\bia\b|agente|copiloto|llm|genai|automati|pilotos/i,"ai"],
+  [/time|pessoas|equipe|capacita|trilhas|talento|lideran|executivo|campeões|personas|entrevista|workshop|match|fluency|conselho/i,"people"],
+  [/dados|data room|vdr|coleta|ingest|base(line)?\b|linha de base|onboarding/i,"db"],
+  [/código|software|aplicaç|sistema|erp|integra|migra|cutover|refactor/i,"code"],
+  [/nuvem|cloud|infra|vmware|capacidade/i,"cloud"],
+  [/relatório|dossiê|parecer|playbook|kit|política|documenta|regras/i,"doc"],
+  [/dia 1|dia 100|100 dias|semana|prazo|mensal|anual|trimestral|ciclo|marco/i,"calendar"],
+  [/diagnóstico|análise|avalia|raio-x|forense|varredura|triagem|descobr|lacunas|escopo|necessidade|mercado|oportunidades|cenários/i,"search"],
+  [/escala|estabiliza|lança|ativação|entregar|operar|operação|comandar|transformar/i,"rocket"],
+  [/meta|alvo|tese|ambição|princípios|estratégia|enquadramento/i,"target"]
+];
+/* escolhe o ícone pelo texto (nome antes da descrição), sem repetir na mesma linha */
+const pdKw=(texts,i,def,used)=>{const hits=[];texts.forEach(t=>{const s=strip(String(t));PDKW.forEach(([re,n])=>{if(re.test(s)&&!hits.includes(n))hits.push(n)})});
+  const n=hits.find(x=>!used.has(x))||def.map((_,k)=>def[(i+k)%def.length]).find(x=>!used.has(x))||hits[0]||def[i%def.length];used.add(n);return n};
+const DEF_GET=["doc","check","layers","chart","route"],DEF_STEP=["search","people","chart","target","flag"];
+
+/* densidade contínua: cada medida vai do valor folgado (t=0) ao compacto (t=1);
+   pdFit procura, por coluna, o menor t em que tudo cabe (nome em até 2 linhas, nada estourando).
+   esquerda: nome, subtítulo, frase, público, gap, padding, caixa A&M, chips, respiro do card
+   direita : frase do problema, texto, valor dos números, bloco de ícone, gap mínimo, padding    */
+const PDL={nm:[44,32],tg:[19,14.5],pt:[15.5,12.5],wl:[14,12],cg:[16,7],cp:[28,16],wy:[14,11.5],cf:[12.5,11.5],mg:[26,4]};
+const PDR={st:[28,20],b:[14.5,12],kv:[34,24],ic:[46,36],sg:[22,8],cpd:[14,9]};
+const PDFIT={};
+const pdLerp=(T,t)=>Object.entries(T).map(([k,[a,b]])=>[k,Math.round((a+(b-a)*t)*4)/4]);
+function pdVars(f){const L=pdLerp(PDL,f.tl),R=pdLerp(PDR,f.tr);if(f.nm)L[0][1]=f.nm;return L.concat(R).map(([k,v])=>`--${k}:${v}px`).join(";")}
+
+function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);const f=PDFIT[P.id]||{tl:.5,tr:.6,nm:0};
+  const li=a=>a.map(x=>`<li>${x}</li>`).join("");
+  const who2=P.who.length>=3&&Math.max(...P.who.map(x=>strip(x).length))<=30;
+  const from=P.from.split(/\s+\+\s+/).map(x=>`<b>${x}</b>`).join("<i>+</i>");
+  const pains=P.pain.map(x=>{const t=x.trim();return /[.!?]$/.test(t)?t:t+"."});
+  const ug=new Set(),us=new Set();
+  const get=P.deliv.map((d,i)=>`<div style="--k:${i}"><span class="r">${pdIco(pdKw([d],i,DEF_GET,ug),i+3)}<em>${pad(i+1)}</em></span><span class="t">${d}</span></div>`).join("");
+  const flow=P.steps.map((s,i)=>`<div class="s" style="--k:${i}"><i>${pdIco(pdKw([s[1],s[2]],i,DEF_STEP,us),i+5)}</i><em>${s[0]}</em><b>${s[1]}</b><span>${s[2]}</span></div>`).join("");
+  const kpis=P.kpis.map((k,i)=>`<div style="--k:${i}"><b>${k[0]}</b><span>${evb(k[1])}</span></div>`).join("");
+  const rel=PRODUCTS.filter(x=>x.pillar===P.pillar&&x.id!==P.id).map(x=>`<a href="#p=${x.id}" data-pd="${x.id}" class="plink sm dk ${x.st}" title="Abrir ficha: ${x.name}">${x.code} ${x.name}</a>`).join("");
   return `<div class="top">${brand(true)}<div class="top-title"><span>Ficha de produto · Pilar ${pl.n} · ${pl.name}</span><b>${P.code} · ${P.name}</b></div><div class="top-right"><span class="pg"><b>${pad(num)}</b> / ${pad(PRODUCTS.length)}</span></div></div>
-  <div class="body"><div class="pd-wrap">
-    <div class="pd-holo">
-      <div class="hd"><div class="tags">${stTag(P.st)}${P.sig?'<span class="st new">★ A&amp;M Signature</span>':""}</div><span class="pulse"></span></div>
-      <div class="pd-ph">Pilar ${pl.n} · ${pl.name}</div>
-      <div class="pd-name">${P.name}<small>${P.tagline}</small></div>
-      <div class="pd-pitch">${P.pitch}</div>
-      <div class="pd-meta">${P.meta.map(m=>`<span>${m}</span>`).join("")}</div>
-      <div class="pd-rel"><span class="label">Outros produtos do pilar</span><div>${PRODUCTS.filter(x=>x.pillar===P.pillar&&x.id!==P.id).map(x=>`<a href="#p=${x.id}" data-pd="${x.id}" class="plink sm dk ${x.st}">${x.code} ${x.name}</a>`).join("")}</div></div>
-      <div class="pd-kpis">${P.kpis.map(k=>`<div class="pd-kpi"><b>${k[0]}</b><span>${evb(k[1])}</span></div>`).join("")}</div>
-      <div class="pd-from">Nasce de: <b>${P.from}</b></div>
+  <div class="body pd-body"><div class="pd-wrap" style="${pdVars(f)}">
+    <div class="pd-hero">
+      <div class="pd-scene" data-a="zoom" style="--d:1">
+        <div class="pd-holo">
+          <div class="pd-hd pz" style="--z:4"><div class="tags">${stTag(P.st)}${P.sig?'<span class="st new sig">★ A&amp;M Signature</span>':""}</div><span class="pd-ic">${pdIco(PICO[P.code]||"spark",1)}<span class="pulse"></span></span></div>
+          <div class="pd-ttl pz" style="--z:9"><div class="pd-ph">Produto ${P.code} · Pilar ${pl.n} · ${pl.name}</div><div class="pd-name">${P.name}<small>${P.tagline}</small></div></div>
+          <p class="pd-pitch pz" style="--z:6">${P.pitch}</p>
+          <div class="pd-who pz${who2?" two":""}" style="--z:4"><span class="label">Para quem é</span><ul>${li(P.who)}</ul></div>
+          <div class="pd-fmt pz" style="--z:3"><span class="label">Formato do produto</span><div class="chips">${P.meta.map(m=>`<span>${m}</span>`).join("")}</div></div>
+          <div class="pd-from pz" style="--z:2"><span>Nasce de</span>${from}</div>
+        </div>
+      </div>
+      <div class="pd-why" data-a="fade" style="--d:9"><span class="label">${pdIco("hand",8)}Por que A&amp;M · mercado e diferencial</span><p>${P.bench.replace(/\s*<span class="ev">Evidência<\/span>/g,"")}</p></div>
     </div>
     <div class="pd-right">
-      <div class="pd-grid">
-        <div class="pd-box"><div class="h"><i>1</i>Público-alvo</div>${li(P.who)}</div>
-        <div class="pd-box"><div class="h"><i>2</i>Problema resolvido</div>${li(P.pain)}</div>
-        <div class="pd-box"><div class="h"><i>3</i>Entregáveis</div>${li(P.deliv)}</div>
+      <section class="pd-sec pd-prob" data-a="up" style="--d:2"><span class="label">O problema</span><p class="stmt"><b>${pains[0]}</b>${pains.slice(1).map(x=>` <span>${x}</span>`).join("")}</p></section>
+      <section class="pd-sec" data-a="up" style="--d:3"><span class="label">O que o cliente recebe</span><div class="pd-get">${get}</div></section>
+      <section class="pd-sec" data-a="up" style="--d:5"><span class="label">Como funciona · método e etapas</span><div class="pd-flow" style="--n:${P.steps.length}"><div class="pd-track"><i></i></div>${flow}</div></section>
+      <section class="pd-sec" data-a="up" style="--d:6"><span class="label">O produto em números</span><div class="pd-out">${kpis}</div></section>
+      <div class="pd-trio" data-a="fade" style="--d:7">
+        <section class="pd-card ai"><span class="label">${SPARK}Papel da IA</span><ul>${li(P.ai)}</ul></section>
+        <section class="pd-card"><span class="label">Como vira produto</span><ul>${li(P.prodz)}</ul></section>
+        <section class="pd-card tl"><span class="label">Ferramentas e dados</span><p><b>Ferramentas:</b> ${P.tools}</p><p><b>Dados:</b> ${P.data}</p></section>
       </div>
-      <div class="pd-sec"><div class="label"><i>4</i>Método e etapas</div><div class="pd-steps">${steps}</div></div>
-      <div class="pd-grid">
-        <div class="pd-box"><div class="h"><i>5</i>Ferramentas e dados</div><p><b>Ferramentas:</b> ${P.tools}</p><p style="margin-top:6px"><b>Dados:</b> ${P.data}</p></div>
-        <div class="pd-box ai"><div class="h"><i>6</i>Papel da IA</div>${li(P.ai)}</div>
-        <div class="pd-box"><div class="h"><i>7</i>Do serviço ao produto</div>${li(P.prodz)}</div>
-      </div>
-      <div class="pd-sec"><div class="label"><i>S</i>Skills aplicadas</div><div class="pd-skills">${P.skills.map(s=>`<span class="pd-skill">${s}</span>`).join("")}</div></div>
-      <div class="pd-bench">${P.bench}</div>
+      <div class="pd-tech" data-a="mask" style="--d:9"><span class="label">Skills aplicadas</span>${P.skills.map(x=>`<span class="pd-chip">${x}</span>`).join("")}</div>
+      ${P.ev?`<p class="pd-src" data-a="fade" style="--d:10"><b>FONTE</b>${P.ev}</p>`:""}
     </div>
-  </div></div>`}
-function renderPD(id){const k=PRODUCTS.findIndex(x=>x.id===id);if(k<0)return false;const P=PRODUCTS[k];pd.innerHTML=pdHTML(P,k+1);
-  const ft=H("div",{class:"pd-foot"},pd);H("div",{class:"rel",html:`<span>→ e ← navegam entre as 24 fichas · Esc volta à apresentação</span>`},ft);
-  const nav=H("div",{class:"pd-nav"},ft);const bk=H("button",{class:"bk"},nav,"← Voltar à apresentação");bk.onclick=()=>closePD();
-  const bp=H("button",null,nav,"‹ Anterior");bp.onclick=()=>pdStep(-1);const bn=H("button",null,nav,"Próxima ›");bn.onclick=()=>pdStep(1);
-  const op=H("button",null,nav,"One-page");op.onclick=()=>{closePD(true);go(ONEPAGE-1,true)};
-  plainBadges(pd);tilt(pd.querySelector(".pd-holo"));pd.classList.remove("play");void pd.offsetWidth;pd.classList.add("play");return true}
-function openPD(id){if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${pad(PRODUCTS.findIndex(x=>x.id===id)+1)} / ${PRODUCTS.length}`;if(infoP.classList.contains("on"))fillInfo()}
+  </div></div>
+  <div class="pd-foot"><div class="rel"><span class="label">Outros do Pilar ${pl.n}</span>${rel}</div></div>`}
+
+/* --- ajuste ao palco: o valor mais folgado que cabe, por coluna (busca binária em t) --- */
+function pdOver(box){if(!box)return false;const lim=box.clientHeight-parseFloat(getComputedStyle(box).paddingBottom)+1;let m=0;for(const c of box.children){if(getComputedStyle(c).position==="absolute")continue;m=Math.max(m,c.offsetTop+c.offsetHeight)}return m>lim}
+function pdLines(nm){const t=nm&&nm.firstChild;if(!t||t.nodeType!==3)return 1;const rg=document.createRange();rg.selectNodeContents(t);const tops=[];[...rg.getClientRects()].forEach(r=>{if(r.width>0&&!tops.some(y=>Math.abs(y-r.top)<4))tops.push(r.top)});return tops.length||1}
+function pdFit(root){const w=root.querySelector(".pd-wrap");if(!w||!w.offsetHeight)return null;
+  const hero=w.querySelector(".pd-hero"),card=w.querySelector(".pd-holo"),R=w.querySelector(".pd-right"),nm=w.querySelector(".pd-name");const f={tl:0,tr:0,nm:0};
+  const okL=()=>!pdOver(card)&&!pdOver(hero),okR=()=>!pdOver(R);
+  const fitName=()=>{let n=parseFloat(getComputedStyle(w).getPropertyValue("--nm"));
+    if(pdLines(nm)>2){let lo=26,hi=n;while(hi-lo>.5){const m=Math.round(lo+hi)/2;w.style.setProperty("--nm",m+"px");if(pdLines(nm)>2)hi=m;else lo=m}n=lo;w.style.setProperty("--nm",n+"px")}return n};
+  /* fase 1: as duas colunas são independentes, então a busca das duas usa a mesma passada de layout */
+  const set1=(tl,tr)=>{f.tl=tl;f.tr=tr;f.nm=0;w.style.cssText=pdVars(f);f.nm=fitName();return [okL(),okR()]};
+  const A={lo:0,hi:0,done:false},B={lo:0,hi:0,done:false};let r=set1(0,0);A.done=r[0];B.done=r[1];
+  if(!A.done||!B.done){A.hi=A.done?0:1;B.hi=B.done?0:1;r=set1(A.hi,B.hi);if(!r[0])A.done=true;if(!r[1])B.done=true;
+    for(let k=0;k<6&&!(A.done&&B.done);k++){const mA=A.done?A.hi:(A.lo+A.hi)/2,mB=B.done?B.hi:(B.lo+B.hi)/2;r=set1(mA,mB);
+      if(!A.done){if(r[0])A.hi=mA;else A.lo=mA}if(!B.done){if(r[1])B.hi=mB;else B.lo=mB}}}
+  set1(A.hi,B.hi);const n=f.nm;
+  /* fase 2: com o nome já definido (ex.: coube em 1 linha), o resto da coluna esquerda cresce se houver espaço */
+  if(A.hi>0){const set2=t=>{f.tl=t;f.nm=n;w.style.cssText=pdVars(f);return okL()};
+    if(set2(0))A.hi=0;else{let lo=0,hi=A.hi;for(let k=0;k<6;k++){const m=(lo+hi)/2;if(set2(m))hi=m;else lo=m}A.hi=hi}}
+  f.tl=A.hi;f.tr=B.hi;f.nm=n;w.style.cssText=pdVars(f);return {tl:f.tl,tr:f.tr,nm:f.nm}}
+/* impressão: mede as 24 fichas fora da tela antes de buildPrint gerar as páginas */
+function pdMeasureAll(){const box=H("div",{class:"stage pd-measure"},stage);
+  const ok=document.fonts&&document.fonts.status==="loaded";
+  PRODUCTS.forEach((P,k)=>{box.innerHTML=pdHTML(P,k+1);plainBadges(box);const f=pdFit(box);if(f)PDFIT[P.id]=ok?Object.assign(f,{v:1}):f});box.remove()}
+PRINT.push(pdMeasureAll);
+
+/* --- card hologram: inclinação 3D com brilho e paralaxe que seguem o cursor (fx 03) --- */
+function pdHolo(el,max){max=max||8;if(REDMO||!el)return;
+  el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;el.classList.remove("out");el.classList.add("hover");
+    el.style.transform=`rotateX(${(.5-py)*max}deg) rotateY(${(px-.5)*max}deg)`;el.style.setProperty("--mx",px*100+"%");el.style.setProperty("--my",py*100+"%");el.style.setProperty("--px",(px-.5).toFixed(3));el.style.setProperty("--py",(py-.5).toFixed(3))});
+  el.addEventListener("pointerleave",()=>{el.classList.add("out");el.classList.remove("hover");el.style.transform="";el.style.setProperty("--px",0);el.style.setProperty("--py",0)})}
+
+function renderPD(id){const k=PRODUCTS.findIndex(x=>x.id===id);if(k<0)return false;const P=PRODUCTS[k];
+  pd.classList.remove("play");pd.innerHTML=pdHTML(P,k+1);
+  const nav=H("div",{class:"pd-nav"});pd.querySelector(".top-right").prepend(nav);
+  const bk=H("button",{class:"bk",title:"Voltar à apresentação (Esc)"},nav,"← Voltar à apresentação");bk.onclick=()=>closePD();
+  const bp=H("button",{title:"Ficha anterior (←)"},nav,"‹ Anterior");bp.onclick=()=>pdStep(-1);const bn=H("button",{title:"Próxima ficha (→) · → e ← navegam entre as 24 fichas"},nav,"Próxima ›");bn.onclick=()=>pdStep(1);
+  const op=H("button",{title:"Voltar ao mapa do novo portfólio (One-page)"},nav,"One-page");op.onclick=()=>{closePD(true);go(ONEPAGE-1,true)};
+  plainBadges(pd);fixPaths(pd);return true}
+function openPD(id){if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");
+  const ok=document.fonts&&document.fonts.status==="loaded",c=PDFIT[id];
+  const cached=ok&&c&&c.v===1&&!pdOver(pd.querySelector(".pd-holo"))&&!pdOver(pd.querySelector(".pd-hero"))&&!pdOver(pd.querySelector(".pd-right"));
+  if(!cached){const f=pdFit(pd);if(ok){if(f)PDFIT[id]=Object.assign(f,{v:1})}
+    else if(document.fonts)document.fonts.ready.then(()=>{if(pdOpen===id){const g=pdFit(pd);if(g)PDFIT[id]=Object.assign(g,{v:1})}})}
+  pdHolo(pd.querySelector(".pd-holo"));void pd.offsetWidth;pd.classList.add("play");
+  history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${pad(PRODUCTS.findIndex(x=>x.id===id)+1)} / ${PRODUCTS.length}`;if(infoP.classList.contains("on"))fillInfo()}
 function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");if(!silent){activate(pdFrom,true)}else{$("cnt").textContent=`${pad(cur+1)} / ${pad(N)}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;history.replaceState(null,"","#"+(cur+1))}}
 function pdStep(d){const k=PRODUCTS.findIndex(x=>x.id===pdOpen);const n=(k+d+PRODUCTS.length)%PRODUCTS.length;openPD(PRODUCTS[n].id)}
-
