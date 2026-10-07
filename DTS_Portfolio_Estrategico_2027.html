@@ -2149,52 +2149,6 @@ document.addEventListener("pointerdown",e=>{if(REDMO)return;const el=e.target.cl
 stage.addEventListener("click",e=>{const a=e.target.closest("[data-pd]");if(!a)return;e.preventDefault();if(chapOn)hideChapter(true);openPD(a.dataset.pd)});
 stage.addEventListener("click",e=>{const a=e.target.closest("[data-go]");if(!a)return;e.preventDefault();closePD(true);go(+a.dataset.go-1)});
 
-/* =====================================================================
-   FICHA DE PRODUTO (fx 03 · card hologram · hiperlink #p=<id>)
-   ===================================================================== */
-const pd=H("div",{id:"pd",class:"stage"},stage);let pdOpen=null,pdFrom=0;
-const evb=t=>t.replace(/\s*\[E · ([^\]]+)\]/g,' <span class="srcx">Fonte: $1</span>').replace(/\s*\[E\]/g,"");
-function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);
-  const steps=P.steps.map((s,i)=>`<div class="pd-step"><div class="w">${pad(i+1)}</div><div class="wl">${s[0]}</div><b>${s[1]}</b><span>${s[2]}</span></div>`).join("");
-  const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
-  return `<div class="top">${brand(true)}<div class="top-title"><span>Ficha de produto · Pilar ${pl.n} · ${pl.name}</span><b>${P.code} · ${P.name}</b></div><div class="top-right"><span class="pg"><b>${pad(num)}</b> / ${pad(PRODUCTS.length)}</span></div></div>
-  <div class="body"><div class="pd-wrap">
-    <div class="pd-holo">
-      <div class="hd"><div class="tags">${stTag(P.st)}${P.sig?'<span class="st new">★ A&amp;M Signature</span>':""}</div><span class="pulse"></span></div>
-      <div class="pd-ph">Pilar ${pl.n} · ${pl.name}</div>
-      <div class="pd-name">${P.name}<small>${P.tagline}</small></div>
-      <div class="pd-pitch">${P.pitch}</div>
-      <div class="pd-meta">${P.meta.map(m=>`<span>${m}</span>`).join("")}</div>
-      <div class="pd-rel"><span class="label">Outros produtos do pilar</span><div>${PRODUCTS.filter(x=>x.pillar===P.pillar&&x.id!==P.id).map(x=>`<a href="#p=${x.id}" data-pd="${x.id}" class="plink sm dk ${x.st}">${x.code} ${x.name}</a>`).join("")}</div></div>
-      <div class="pd-kpis">${P.kpis.map(k=>`<div class="pd-kpi"><b>${k[0]}</b><span>${evb(k[1])}</span></div>`).join("")}</div>
-      <div class="pd-from">Nasce de: <b>${P.from}</b></div>
-    </div>
-    <div class="pd-right">
-      <div class="pd-grid">
-        <div class="pd-box"><div class="h"><i>1</i>Público-alvo</div>${li(P.who)}</div>
-        <div class="pd-box"><div class="h"><i>2</i>Problema resolvido</div>${li(P.pain)}</div>
-        <div class="pd-box"><div class="h"><i>3</i>Entregáveis</div>${li(P.deliv)}</div>
-      </div>
-      <div class="pd-sec"><div class="label"><i>4</i>Método e etapas</div><div class="pd-steps">${steps}</div></div>
-      <div class="pd-grid">
-        <div class="pd-box"><div class="h"><i>5</i>Ferramentas e dados</div><p><b>Ferramentas:</b> ${P.tools}</p><p style="margin-top:6px"><b>Dados:</b> ${P.data}</p></div>
-        <div class="pd-box ai"><div class="h"><i>6</i>Papel da IA</div>${li(P.ai)}</div>
-        <div class="pd-box"><div class="h"><i>7</i>Do serviço ao produto</div>${li(P.prodz)}</div>
-      </div>
-      <div class="pd-sec"><div class="label"><i>S</i>Skills aplicadas</div><div class="pd-skills">${P.skills.map(s=>`<span class="pd-skill">${s}</span>`).join("")}</div></div>
-      <div class="pd-bench">${P.bench}</div>
-    </div>
-  </div></div>`}
-function renderPD(id){const k=PRODUCTS.findIndex(x=>x.id===id);if(k<0)return false;const P=PRODUCTS[k];pd.innerHTML=pdHTML(P,k+1);
-  const ft=H("div",{class:"pd-foot"},pd);H("div",{class:"rel",html:`<span>→ e ← navegam entre as 24 fichas · Esc volta à apresentação</span>`},ft);
-  const nav=H("div",{class:"pd-nav"},ft);const bk=H("button",{class:"bk"},nav,"← Voltar à apresentação");bk.onclick=()=>closePD();
-  const bp=H("button",null,nav,"‹ Anterior");bp.onclick=()=>pdStep(-1);const bn=H("button",null,nav,"Próxima ›");bn.onclick=()=>pdStep(1);
-  const op=H("button",null,nav,"One-page");op.onclick=()=>{closePD(true);go(ONEPAGE-1,true)};
-  plainBadges(pd);tilt(pd.querySelector(".pd-holo"));pd.classList.remove("play");void pd.offsetWidth;pd.classList.add("play");return true}
-function openPD(id){if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${pad(PRODUCTS.findIndex(x=>x.id===id)+1)} / ${PRODUCTS.length}`;if(infoP.classList.contains("on"))fillInfo()}
-function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");if(!silent){activate(pdFrom,true)}else{$("cnt").textContent=`${pad(cur+1)} / ${pad(N)}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;history.replaceState(null,"","#"+(cur+1))}}
-function pdStep(d){const k=PRODUCTS.findIndex(x=>x.id===pdOpen);const n=(k+d+PRODUCTS.length)%PRODUCTS.length;openPD(PRODUCTS[n].id)}
-
 /* versão de impressão: vistas extras e fichas como páginas */
 const PRINT=[];
 function buildPrint(){PRINT.forEach(f=>{try{f()}catch(e){}});if(stage.querySelector(".pd-print"))return;
@@ -2317,26 +2271,6 @@ function MorphScene(svg,cfg){const W=640,cx=320,cy=300,R=170;svg.innerHTML="";co
   ENTER["Portfólio atual"]=()=>{sp.set(-1);segSync($("asSeg"))};
   STEP["Portfólio atual"]=d=>{if(d>0){if(sp.cur<st.length-1){sp.set(sp.cur+1);return true}sp.set(-1);return false}if(sp.cur>=0){sp.set(sp.cur-1);return true}return false}})();
 
-/* ---------- origem de cada produto (nome de hoje) ---------- */
-const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strategy & Roadmapping","1.3":"de Interim CIO/CTO + Embedded Leadership + C-Level","1.4":"de Operating Model Design & Tech Org Restructuring","1.5":"de Tech Spend Optimization","1.6":"de Strategic Tech Tax + Innovation Tax Incentives","1.7":"novo · produto com IA",
- "2.1":"de IT Sourcing (Software & Vendor) Selection","2.2":"de ERP Readiness & Gap Analysis","2.3":"de TMO + Modelo de Implantação e Governança","2.4":"de Project Remediation","2.5":"de Gestão de Mudanças Tech","2.6":"novo · produto com IA",
- "3.1":"de IT Due Diligence (Buy Side + Sell Side)","3.2":"de Integration & Separation Planning + Separation Design","3.3":"de IT Integration MO + IT Separation MO","3.4":"de IT Synergies & Value Creation","3.5":"novo · absorve o IT M&A Playbook",
- "4.1":"de Strategy Architecture","4.2":"de Strategy Application","4.3":"de Infrastructure Management","4.4":"de Complex Migrations Support","4.5":"de IT Resilience & BCP (vem do Pilar 1)","4.6":"novo · produto com IA"};
-
-/* ---------- one-page TO-BE + spotlight ---------- */
-(function(){const g=$("opGrid");PILLARS.forEach(pl=>{const col=H("div",{class:"op-col",id:"opc"+pl.n,"data-a":"up",style:`--d:${3+pl.n}`},g);
-  col.innerHTML=`<div class="op-hd"><div class="n">PILAR ${pl.n}</div><h3>${pl.name}</h3><p>${pl.short}</p><span class="cnt">${pl.was} → ${pl.now}</span></div>`;
-  const list=H("div",{class:"op-list"},col);PRODUCTS.filter(p=>p.pillar===pl.n).forEach((p,k)=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}${p.st==="new"?" holo":""}`,title:"Abrir ficha: "+p.name,style:`--hd:${(k*.6).toFixed(1)}s`},list);
-    a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig" title="A&M Signature">★</span>':""}</span><span class="ds"><span class="v1">${p.tagline}</span><span class="v2">${ORG[p.code]}</span></span></span><span class="go">›</span>`});
-  col.querySelector(".op-hd p").innerHTML=`<span class="v1">${pl.short}</span><span class="v2">hoje: ${pl.official}</span>`});
-  const om=$("opMode");om.querySelectorAll("button").forEach(b=>b.onclick=()=>{om.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(om);$("opGrid").classList.toggle("org",b.dataset.m==="o")});
-  const st=PILLARS.map(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg=ps.filter(p=>p.sig),ai=ps.filter(p=>p.st!=="keep").length;
-    return{sel:"#opc"+pl.n,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pl.was} serviços de hoje viram ${pl.now} produtos; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span>`}});
-  st.push({sel:"#opAI",btn:"Plataforma",title:"Plataforma de Dados e AI",text:`<span class="sl"><b>O que é</b>Ativos compartilhados por todos os produtos: diagnóstico padrão, radar de gastos, benchmark Brasil, biblioteca de agentes e LLM corporativo seguro.</span><span class="sl"><b>Por que importa</b>É o que torna o serviço replicável de um cliente para o outro e sustenta a receita recorrente.</span>`,capY:330});
-  const sp=Spotlight($("opHost"),st,$("opSeg"));segSync($("opSeg"));
-  ENTER["One-page · novo portfólio"]=()=>{sp.set(-1);segSync($("opSeg"));segSync($("opMode"))};
-  STEP["One-page · novo portfólio"]=d=>{if(d>0){if(sp.cur<st.length-1){sp.set(sp.cur+1);return true}sp.set(-1);return false}if(sp.cur>=0){sp.set(sp.cur-1);return true}return false}})();
-
 /* ---------- 50/50 · de serviços a produtos ---------- */
 const BAS={};
 (function(){const asis=$("hbAsis"),tobe=$("hbTobe");PILLARS.forEach(pl=>{const c1=H("div",{class:"op-col"},asis);c1.innerHTML=`<div class="op-hd"><div class="n">HOJE · PILAR ${pl.n}</div><h3>${pl.official}</h3><span class="cnt">${pl.was}</span></div>`;const l1=H("div",{class:"op-list"},c1);OLD.filter(o=>o.p===pl.n).forEach(o=>{H("div",{class:"svc",html:`<i></i><span>${o.n}</span>`},l1)});H("div",{class:"op-when",html:`<b>Quando nos contratam</b>${pl.when}`},l1);
@@ -2346,15 +2280,6 @@ const BAS={};
   let lastOn="";const ba=BeforeAfter($("hb"),{rest:50,l:"HOJE · 29 SERVIÇOS",r:"PROPOSTA · 24 PRODUTOS",onMove:x=>{let k="";$("hbSeg").querySelectorAll("button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync($("hbSeg"))}}});BAS.hb=ba;
   $("hbSeg").querySelectorAll("button").forEach(b=>b.onclick=()=>{ba.tween(+b.dataset.v,800)});
   ENTER["De serviços a produtos"]=()=>{segSync($("hbSeg"));ba.demo();setTimeout(()=>segSync($("hbSeg")),2700)}})();
-
-/* ---------- forças de mercado ---------- */
-(function(){const F=[["spark","IA: uso amplo, retorno raro","Quase todas as grandes empresas usam IA, mas poucas saem do piloto e provam resultado no caixa.","56%","dos CEOs ainda sem retorno financeiro com IA","PwC, 29ª CEO Survey · jan/2026","Vender valor medido e governança de IA, não estratégia genérica."],
-   ["doc","Reforma Tributária e fim do SAP ECC","Dois prazos com data marcada obrigam a mexer em ERP, fiscal e dados ao mesmo tempo.","01/01/27","CBS plena; manutenção padrão do SAP ECC termina em 2027","LC 214/2025 · Baguete","Produtos com prazo e preço fixos: prontidão e resgate de projetos."],
-   ["deal","Deals liderados por private equity","Menos transações, tickets maiores e fundos em metade dos deals; tecnologia é o setor mais negociado.","50%","das transações de 2025 com fundos de PE ou VC","KPMG, Fusões e Aquisições 2025 · mar/2026","Diligência rápida, Dia 1 garantido e sinergias que viram EBITDA."],
-   ["coin","Custo de tecnologia sob escrutínio","O orçamento de TI desacelera, licenças sobem e contratos em dólar pesam no caixa.","8–15×","alta de licenças VMware após a compra pela Broadcom","Baguete · ABES/IDC (TI +5,3% em 2026)","Otimização de gastos com economia certificada e radar contínuo."],
-   ["shield","Risco operacional e regulação","Ataques à cadeia do Pix e novas regras do Banco Central elevam a exigência sobre terceiros de TI.","R$ 800 mi","desviados no ataque à C&M Software (jul/2025)","Finsiders · Res. CMN 5.274/2025","Resiliência, recuperação e avaliação de risco de terceiros."],
-   ["people","Talento e liderança escassos","Metade das empresas não tem o talento necessário para IA; transações e reestruturações pedem liderança imediata.","53%","das empresas sem o talento necessário para IA","KPMG Global Tech Report 2026","Liderança interina e modelo operacional para a era dos agentes."]];
-  F.forEach(([ic,t,x,v,vl,src,imp],i)=>{const d=H("div",{class:"f2","data-a":"mask",style:`--d:${4+i*1.5}`},$("forces"));d.innerHTML=`<div class="hd"><div class="ic">${ico(ic)}</div><h4>${t}</h4></div><div class="th">${x}</div><div class="v">${v}<small>${vl}</small></div><div class="src">Fonte: ${src}</div><div class="imp"><b>Para o DTS</b>${imp}</div>`})})();
 
 /* ---------- benchmark · timeline 2026 ---------- */
 (function(){const host=$("tlMarket");let tl=null;
@@ -2448,40 +2373,6 @@ document.querySelectorAll(".ws").forEach(h=>{const w=WS[h.dataset.pillar];h.inne
 [["MBRF","Marfrig + BRF, concluída em set/2025; sinergias anunciadas de R$ 485 mi/ano","Integração"],["Petz + Cobasi","Cade aprovou em dez/2025, com venda de 26 lojas","Integração"],["Braskem","Controle passa à IG4 (abr/2026)","Troca de controle"],["Raízen","Separação em Energia e Combustíveis até o fim de 2027","Carve-out"],["Motiva","Venda de participações em aeroportos por R$ 5,2 bi","Desinvestimento"]].forEach(([n,x,t])=>{const d=H("div",{class:"kpi-t"},$("p3cases"));d.innerHTML=`<span class="st ${t==="Carve-out"?"new":t==="Integração"?"ai":"keep"}">${t}</span><div class="nm">${n}</div><div class="l">${x}</div>`});
 (function(){const st=[["2026","Alíquota-teste de 1% (CBS 0,9% + IBS 0,1%)"],["01/01/2027","CBS plena; PIS/Cofins extintos"],["2027","Fim da manutenção padrão do SAP ECC (extensível a 2030)"],["2029–32","ICMS/ISS caem 10 p.p. ao ano"],["2033","ICMS e ISS extintos"]];const h=$("p2time");h.innerHTML=`<div class="rt">${st.map(([d,t],i)=>`<div class="rt-i${i===1?" hot":""}"><i></i><b>${d}</b><span>${t}</span></div>`).join("")}</div>`})();
 
-/* ---------- before / after por pilar ---------- */
-
-document.querySelectorAll(".bap").forEach(host=>{const n=+host.dataset.pillar,pl=PILLARS[n-1],ps=PRODUCTS.filter(p=>p.pillar===n);
-  const rows=ps.map(p=>({p,olds:OLD.filter(o=>o.to===p.code)}));const out=OLD.filter(o=>o.p===n&&!ps.some(p=>p.code===o.to));const R=rows.length+out.length;
-  const DN={keep:"Manter",ai:"Remodelar",merge:"Fundir",cut:"Retirar"};
-  const asisRow=r=>{if(!r.olds.length)return`<div class="c a"><div class="asis-none">não existe hoje</div></div><div class="c b"><div class="why"><b>Lacuna:</b> ${strip(r.p.pain[0])}.</div></div>`;
-    const prim=r.olds.find(o=>o.d!=="merge"&&o.d!=="cut")||r.olds[0];
-    return`<div class="c a">${r.olds.map(o=>`<span class="asis-chip ${o.d}">${o.n}${o.p!==n?` <i>(Pilar ${o.p})</i>`:""}</span>`).join("")}</div><div class="c b"><div class="why">${r.olds.length>1?`<b>Sobreposição:</b> ${r.olds.length} serviços para o mesmo comprador. `:""}${prim.w}</div><span class="dec">${[...new Set(r.olds.map(o=>DN[o.d]))].join(" + ")}</span></div>`};
-  const tobeRow=r=>{const p=r.p;return`<div class="c a"><div class="tb-code">${p.code}</div>${stTag(p.st)}${p.sig?'<span class="sig2">★ Signature</span>':""}</div><a class="c b tb" href="#p=${p.id}" data-pd="${p.id}"><div class="tb-nm">${p.name}<span class="more">ficha ›</span></div><div class="tb-tl">${p.tagline}</div><div class="tb-ai"><b>IA</b> ${strip(p.ai[0])}</div></a>`};
-  const outAsis=o=>`<div class="c a"><span class="asis-chip ${o.d}">${o.n}</span></div><div class="c b"><div class="why">${o.w}</div><span class="dec">${o.d==="cut"?"Retirar":"Transferir"}</span></div>`;
-  const outTobe=o=>{const d=PBY(o.to);return`<div class="c a"><span class="st ${o.d==="cut"?"cut":"merge"}">${o.d==="cut"?"Retirado":"Transferido"}</span></div><a class="c b tb" href="#p=${d.id}" data-pd="${d.id}"><div class="tb-nm" style="font-size:13px;color:var(--steel-200)">→ ${o.d==="cut"?"Absorvido por":"Agora no Pilar "+d.pillar+":"} ${d.code} ${d.name}</div><div class="tb-tl">${o.n} ${o.d==="cut"?"deixa de ser vendido isolado.":"muda de pilar."}</div></a>`};
-  const head=(a,b)=>`<div class="c hd a">${a}</div><div class="c hd b">${b}</div>`;
-  const grid=`grid-template-rows:30px repeat(${R},1fr)`;
-  host.innerHTML=`<div class="ba" data-a="fade" style="--d:3;height:100%">
-     <div class="ba-layer ba-tobe"><div class="ba-grid" style="${grid}">${head("Status","Produto proposto · papel da IA")}${rows.map(tobeRow).join("")}${out.map(outTobe).join("")}</div></div>
-     <div class="ba-layer ba-asis"><div class="ba-grid" style="${grid}">${head("Serviço atual","Diagnóstico · por que mudar")}${rows.map(asisRow).join("")}${out.map(outAsis).join("")}</div></div>
-   </div>
-   <div class="ba-side" data-a="right" style="--d:5">
-     <div class="seg ba-seg"><button data-v="100">Hoje</button><button data-v="38.5" class="on">Lado a lado</button><button data-v="0">Proposta</button></div>
-     <div class="card nv count"><span class="label">Pilar ${n} · ${pl.name}</span><div class="big">${pl.was} → ${pl.now}</div><span class="small">serviços → produtos</span></div>
-     <div class="card">${["keep","ai","new"].map(k=>{const c=ps.filter(p=>p.st===k).length;return`<div class="bar-r"><span>${STATUS[k][0]}</span><i><b class="${k}" style="width:${c/ps.length*100}%"></b></i><em>${c}</em></div>`}).join("")}</div>
-     <div class="card soft chg"><span class="label">O que muda</span><ul>${pillarNotes(n).map(x=>`<li>${x}</li>`).join("")}</ul></div>
-     ${ps.filter(p=>p.st==="new").map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="nw holo"><span class="label">★ Novo com IA · ${p.code}</span><h4>${p.name}</h4><p>${p.kpis[0][0]} ${strip(p.kpis[0][1]).replace(/\s*\[E[^\]]*\]/g,"")}</p></a>`).join("")}
-   </div>`;
-  let lastOn="";const ba=BeforeAfter(host.querySelector(".ba"),{rest:38.5,onMove:x=>{let k="";host.querySelectorAll(".ba-seg button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync(host.querySelector(".ba-seg"))}}});BAS[n]=ba;
-  const sg=host.querySelector(".ba-seg");sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{ba.tween(+b.dataset.v,800);sg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(sg)});
-  ENTER[host.closest(".slide").dataset.t]=()=>{segSync(sg);ba.demo();setTimeout(()=>segSync(sg),2700)}});
-
-PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?50:38.5)));
-function pillarNotes(n){return{1:["3 ofertas de liderança viram 1 (Interim & Embedded)","Tax + incentivos viram 1 produto com A&M Tax","Resiliência migra para o Pilar 4","Novo: AI Value & Governance Office"],
- 2:["TMO + Modelo de Implantação viram o Predictive Transformation Office","ERP Readiness incorpora a Reforma Tributária","IT Business Partner sai (vai para 1.3)","Novo: AI-Native IT Productivity"],
- 3:["8 fases viram 4 produtos + 1 assinatura","DD buy + sell = 1 produto, 3 níveis","IMO + SMO = 1 escritório","Playbook vira motor do PE Tech Value Radar"],
- 4:["Nomes pelo que entregam (‘Strategy Application’ → Portfolio Rationalization)","Infra deixa de soar como serviço gerenciado","Resiliência chega do Pilar 1","Novo: Legacy X-Ray & AI Modernization"]}[n]}
-
 /* ---------- fábrica: card stack + anatomia ---------- */
 (function(){const C=[["01","Codificar o método","Etapas, entregáveis, templates e critérios de qualidade iguais em todo cliente.",["Ficha padrão (8 blocos)","Kit: data request, roteiros, modelos","Definição de ‘pronto’ por etapa"]],
   ["02","Nomear pelo que entrega","Nomes em inglês, no vocabulário que o comprador usa em RFP e compras, e que dizem o resultado, não o método.",["Mercado: CIO Advisory · Separation & Carve-out · Trusted AI","Um nome por produto; buy-side, sell-side e níveis são edições","Strategy Application → Application Portfolio Rationalization"]],
@@ -2526,6 +2417,124 @@ const POS={1:"Para <b>CEOs, CFOs, conselhos e fundos</b> que precisam de resulta
  3:"Para <b>fundos de PE e compradores estratégicos</b>, o DTS é <em>o operador de tecnologia do signing à saída</em>: DD com IA em dias, Dia 1 sem susto e sinergias que viram EBITDA. Diferente de quem só diligencia, <b>executamos o que recomendamos</b>.",
  4:"Para <b>CIOs e CFOs</b> presos a legado caro e arriscado, o DTS é <em>quem escolhe a rota e garante a modernização</em>, usando IA para ler o legado, neutro em fornecedor. Diferente de hyperscalers e fábricas, <b>não revendemos ferramenta</b>: respondemos pelo business case."};
 document.querySelectorAll(".pos").forEach(h=>{h.innerHTML=`<div class="t">Posicionamento proposto</div><p>${POS[h.dataset.pos]} <span class="hy">Hipótese</span></p>`});
+
+
+/* Arquivo carregado depois de engine.js, data.js, core.js e slides.js (ver build.py). */
+/* ---------- forças de mercado ---------- */
+(function(){const F=[["spark","IA: uso amplo, retorno raro","Quase todas as grandes empresas usam IA, mas poucas saem do piloto e provam resultado no caixa.","56%","dos CEOs ainda sem retorno financeiro com IA","PwC, 29ª CEO Survey · jan/2026","Vender valor medido e governança de IA, não estratégia genérica."],
+   ["doc","Reforma Tributária e fim do SAP ECC","Dois prazos com data marcada obrigam a mexer em ERP, fiscal e dados ao mesmo tempo.","01/01/27","CBS plena; manutenção padrão do SAP ECC termina em 2027","LC 214/2025 · Baguete","Produtos com prazo e preço fixos: prontidão e resgate de projetos."],
+   ["deal","Deals liderados por private equity","Menos transações, tickets maiores e fundos em metade dos deals; tecnologia é o setor mais negociado.","50%","das transações de 2025 com fundos de PE ou VC","KPMG, Fusões e Aquisições 2025 · mar/2026","Diligência rápida, Dia 1 garantido e sinergias que viram EBITDA."],
+   ["coin","Custo de tecnologia sob escrutínio","O orçamento de TI desacelera, licenças sobem e contratos em dólar pesam no caixa.","8–15×","alta de licenças VMware após a compra pela Broadcom","Baguete · ABES/IDC (TI +5,3% em 2026)","Otimização de gastos com economia certificada e radar contínuo."],
+   ["shield","Risco operacional e regulação","Ataques à cadeia do Pix e novas regras do Banco Central elevam a exigência sobre terceiros de TI.","R$ 800 mi","desviados no ataque à C&M Software (jul/2025)","Finsiders · Res. CMN 5.274/2025","Resiliência, recuperação e avaliação de risco de terceiros."],
+   ["people","Talento e liderança escassos","Metade das empresas não tem o talento necessário para IA; transações e reestruturações pedem liderança imediata.","53%","das empresas sem o talento necessário para IA","KPMG Global Tech Report 2026","Liderança interina e modelo operacional para a era dos agentes."]];
+  F.forEach(([ic,t,x,v,vl,src,imp],i)=>{const d=H("div",{class:"f2","data-a":"mask",style:`--d:${4+i*1.5}`},$("forces"));d.innerHTML=`<div class="hd"><div class="ic">${ico(ic)}</div><h4>${t}</h4></div><div class="th">${x}</div><div class="v">${v}<small>${vl}</small></div><div class="src">Fonte: ${src}</div><div class="imp"><b>Para o DTS</b>${imp}</div>`})})();
+
+
+/* Arquivo carregado depois de engine.js, data.js, core.js e slides.js (ver build.py). */
+/* ---------- origem de cada produto (nome de hoje) ---------- */
+const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strategy & Roadmapping","1.3":"de Interim CIO/CTO + Embedded Leadership + C-Level","1.4":"de Operating Model Design & Tech Org Restructuring","1.5":"de Tech Spend Optimization","1.6":"de Strategic Tech Tax + Innovation Tax Incentives","1.7":"novo · produto com IA",
+ "2.1":"de IT Sourcing (Software & Vendor) Selection","2.2":"de ERP Readiness & Gap Analysis","2.3":"de TMO + Modelo de Implantação e Governança","2.4":"de Project Remediation","2.5":"de Gestão de Mudanças Tech","2.6":"novo · produto com IA",
+ "3.1":"de IT Due Diligence (Buy Side + Sell Side)","3.2":"de Integration & Separation Planning + Separation Design","3.3":"de IT Integration MO + IT Separation MO","3.4":"de IT Synergies & Value Creation","3.5":"novo · absorve o IT M&A Playbook",
+ "4.1":"de Strategy Architecture","4.2":"de Strategy Application","4.3":"de Infrastructure Management","4.4":"de Complex Migrations Support","4.5":"de IT Resilience & BCP (vem do Pilar 1)","4.6":"novo · produto com IA"};
+
+/* ---------- one-page TO-BE + spotlight ---------- */
+(function(){const g=$("opGrid");PILLARS.forEach(pl=>{const col=H("div",{class:"op-col",id:"opc"+pl.n,"data-a":"up",style:`--d:${3+pl.n}`},g);
+  col.innerHTML=`<div class="op-hd"><div class="n">PILAR ${pl.n}</div><h3>${pl.name}</h3><p>${pl.short}</p><span class="cnt">${pl.was} → ${pl.now}</span></div>`;
+  const list=H("div",{class:"op-list"},col);PRODUCTS.filter(p=>p.pillar===pl.n).forEach((p,k)=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}${p.st==="new"?" holo":""}`,title:"Abrir ficha: "+p.name,style:`--hd:${(k*.6).toFixed(1)}s`},list);
+    a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig" title="A&M Signature">★</span>':""}</span><span class="ds"><span class="v1">${p.tagline}</span><span class="v2">${ORG[p.code]}</span></span></span><span class="go">›</span>`});
+  col.querySelector(".op-hd p").innerHTML=`<span class="v1">${pl.short}</span><span class="v2">hoje: ${pl.official}</span>`});
+  const om=$("opMode");om.querySelectorAll("button").forEach(b=>b.onclick=()=>{om.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(om);$("opGrid").classList.toggle("org",b.dataset.m==="o")});
+  const st=PILLARS.map(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg=ps.filter(p=>p.sig),ai=ps.filter(p=>p.st!=="keep").length;
+    return{sel:"#opc"+pl.n,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pl.was} serviços de hoje viram ${pl.now} produtos; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span>`}});
+  st.push({sel:"#opAI",btn:"Plataforma",title:"Plataforma de Dados e AI",text:`<span class="sl"><b>O que é</b>Ativos compartilhados por todos os produtos: diagnóstico padrão, radar de gastos, benchmark Brasil, biblioteca de agentes e LLM corporativo seguro.</span><span class="sl"><b>Por que importa</b>É o que torna o serviço replicável de um cliente para o outro e sustenta a receita recorrente.</span>`,capY:330});
+  const sp=Spotlight($("opHost"),st,$("opSeg"));segSync($("opSeg"));
+  ENTER["One-page · novo portfólio"]=()=>{sp.set(-1);segSync($("opSeg"));segSync($("opMode"))};
+  STEP["One-page · novo portfólio"]=d=>{if(d>0){if(sp.cur<st.length-1){sp.set(sp.cur+1);return true}sp.set(-1);return false}if(sp.cur>=0){sp.set(sp.cur-1);return true}return false}})();
+
+
+/* Arquivo carregado depois de engine.js, data.js, core.js e slides.js (ver build.py). */
+/* ---------- before / after por pilar ---------- */
+
+document.querySelectorAll(".bap").forEach(host=>{const n=+host.dataset.pillar,pl=PILLARS[n-1],ps=PRODUCTS.filter(p=>p.pillar===n);
+  const rows=ps.map(p=>({p,olds:OLD.filter(o=>o.to===p.code)}));const out=OLD.filter(o=>o.p===n&&!ps.some(p=>p.code===o.to));const R=rows.length+out.length;
+  const DN={keep:"Manter",ai:"Remodelar",merge:"Fundir",cut:"Retirar"};
+  const asisRow=r=>{if(!r.olds.length)return`<div class="c a"><div class="asis-none">não existe hoje</div></div><div class="c b"><div class="why"><b>Lacuna:</b> ${strip(r.p.pain[0])}.</div></div>`;
+    const prim=r.olds.find(o=>o.d!=="merge"&&o.d!=="cut")||r.olds[0];
+    return`<div class="c a">${r.olds.map(o=>`<span class="asis-chip ${o.d}">${o.n}${o.p!==n?` <i>(Pilar ${o.p})</i>`:""}</span>`).join("")}</div><div class="c b"><div class="why">${r.olds.length>1?`<b>Sobreposição:</b> ${r.olds.length} serviços para o mesmo comprador. `:""}${prim.w}</div><span class="dec">${[...new Set(r.olds.map(o=>DN[o.d]))].join(" + ")}</span></div>`};
+  const tobeRow=r=>{const p=r.p;return`<div class="c a"><div class="tb-code">${p.code}</div>${stTag(p.st)}${p.sig?'<span class="sig2">★ Signature</span>':""}</div><a class="c b tb" href="#p=${p.id}" data-pd="${p.id}"><div class="tb-nm">${p.name}<span class="more">ficha ›</span></div><div class="tb-tl">${p.tagline}</div><div class="tb-ai"><b>IA</b> ${strip(p.ai[0])}</div></a>`};
+  const outAsis=o=>`<div class="c a"><span class="asis-chip ${o.d}">${o.n}</span></div><div class="c b"><div class="why">${o.w}</div><span class="dec">${o.d==="cut"?"Retirar":"Transferir"}</span></div>`;
+  const outTobe=o=>{const d=PBY(o.to);return`<div class="c a"><span class="st ${o.d==="cut"?"cut":"merge"}">${o.d==="cut"?"Retirado":"Transferido"}</span></div><a class="c b tb" href="#p=${d.id}" data-pd="${d.id}"><div class="tb-nm" style="font-size:13px;color:var(--steel-200)">→ ${o.d==="cut"?"Absorvido por":"Agora no Pilar "+d.pillar+":"} ${d.code} ${d.name}</div><div class="tb-tl">${o.n} ${o.d==="cut"?"deixa de ser vendido isolado.":"muda de pilar."}</div></a>`};
+  const head=(a,b)=>`<div class="c hd a">${a}</div><div class="c hd b">${b}</div>`;
+  const grid=`grid-template-rows:30px repeat(${R},1fr)`;
+  host.innerHTML=`<div class="ba" data-a="fade" style="--d:3;height:100%">
+     <div class="ba-layer ba-tobe"><div class="ba-grid" style="${grid}">${head("Status","Produto proposto · papel da IA")}${rows.map(tobeRow).join("")}${out.map(outTobe).join("")}</div></div>
+     <div class="ba-layer ba-asis"><div class="ba-grid" style="${grid}">${head("Serviço atual","Diagnóstico · por que mudar")}${rows.map(asisRow).join("")}${out.map(outAsis).join("")}</div></div>
+   </div>
+   <div class="ba-side" data-a="right" style="--d:5">
+     <div class="seg ba-seg"><button data-v="100">Hoje</button><button data-v="38.5" class="on">Lado a lado</button><button data-v="0">Proposta</button></div>
+     <div class="card nv count"><span class="label">Pilar ${n} · ${pl.name}</span><div class="big">${pl.was} → ${pl.now}</div><span class="small">serviços → produtos</span></div>
+     <div class="card">${["keep","ai","new"].map(k=>{const c=ps.filter(p=>p.st===k).length;return`<div class="bar-r"><span>${STATUS[k][0]}</span><i><b class="${k}" style="width:${c/ps.length*100}%"></b></i><em>${c}</em></div>`}).join("")}</div>
+     <div class="card soft chg"><span class="label">O que muda</span><ul>${pillarNotes(n).map(x=>`<li>${x}</li>`).join("")}</ul></div>
+     ${ps.filter(p=>p.st==="new").map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="nw holo"><span class="label">★ Novo com IA · ${p.code}</span><h4>${p.name}</h4><p>${p.kpis[0][0]} ${strip(p.kpis[0][1]).replace(/\s*\[E[^\]]*\]/g,"")}</p></a>`).join("")}
+   </div>`;
+  let lastOn="";const ba=BeforeAfter(host.querySelector(".ba"),{rest:38.5,onMove:x=>{let k="";host.querySelectorAll(".ba-seg button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync(host.querySelector(".ba-seg"))}}});BAS[n]=ba;
+  const sg=host.querySelector(".ba-seg");sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{ba.tween(+b.dataset.v,800);sg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(sg)});
+  ENTER[host.closest(".slide").dataset.t]=()=>{segSync(sg);ba.demo();setTimeout(()=>segSync(sg),2700)}});
+
+PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?50:38.5)));
+function pillarNotes(n){return{1:["3 ofertas de liderança viram 1 (Interim & Embedded)","Tax + incentivos viram 1 produto com A&M Tax","Resiliência migra para o Pilar 4","Novo: AI Value & Governance Office"],
+ 2:["TMO + Modelo de Implantação viram o Predictive Transformation Office","ERP Readiness incorpora a Reforma Tributária","IT Business Partner sai (vai para 1.3)","Novo: AI-Native IT Productivity"],
+ 3:["8 fases viram 4 produtos + 1 assinatura","DD buy + sell = 1 produto, 3 níveis","IMO + SMO = 1 escritório","Playbook vira motor do PE Tech Value Radar"],
+ 4:["Nomes pelo que entregam (‘Strategy Application’ → Portfolio Rationalization)","Infra deixa de soar como serviço gerenciado","Resiliência chega do Pilar 1","Novo: Legacy X-Ray & AI Modernization"]}[n]}
+
+
+/* Arquivo carregado depois de engine.js, data.js, core.js e slides.js (ver build.py). */
+/* =====================================================================
+   FICHA DE PRODUTO (fx 03 · card hologram · hiperlink #p=<id>)
+   ===================================================================== */
+const pd=H("div",{id:"pd",class:"stage"},stage);let pdOpen=null,pdFrom=0;
+const evb=t=>t.replace(/\s*\[E · ([^\]]+)\]/g,' <span class="srcx">Fonte: $1</span>').replace(/\s*\[E\]/g,"");
+function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);
+  const steps=P.steps.map((s,i)=>`<div class="pd-step"><div class="w">${pad(i+1)}</div><div class="wl">${s[0]}</div><b>${s[1]}</b><span>${s[2]}</span></div>`).join("");
+  const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  return `<div class="top">${brand(true)}<div class="top-title"><span>Ficha de produto · Pilar ${pl.n} · ${pl.name}</span><b>${P.code} · ${P.name}</b></div><div class="top-right"><span class="pg"><b>${pad(num)}</b> / ${pad(PRODUCTS.length)}</span></div></div>
+  <div class="body"><div class="pd-wrap">
+    <div class="pd-holo">
+      <div class="hd"><div class="tags">${stTag(P.st)}${P.sig?'<span class="st new">★ A&amp;M Signature</span>':""}</div><span class="pulse"></span></div>
+      <div class="pd-ph">Pilar ${pl.n} · ${pl.name}</div>
+      <div class="pd-name">${P.name}<small>${P.tagline}</small></div>
+      <div class="pd-pitch">${P.pitch}</div>
+      <div class="pd-meta">${P.meta.map(m=>`<span>${m}</span>`).join("")}</div>
+      <div class="pd-rel"><span class="label">Outros produtos do pilar</span><div>${PRODUCTS.filter(x=>x.pillar===P.pillar&&x.id!==P.id).map(x=>`<a href="#p=${x.id}" data-pd="${x.id}" class="plink sm dk ${x.st}">${x.code} ${x.name}</a>`).join("")}</div></div>
+      <div class="pd-kpis">${P.kpis.map(k=>`<div class="pd-kpi"><b>${k[0]}</b><span>${evb(k[1])}</span></div>`).join("")}</div>
+      <div class="pd-from">Nasce de: <b>${P.from}</b></div>
+    </div>
+    <div class="pd-right">
+      <div class="pd-grid">
+        <div class="pd-box"><div class="h"><i>1</i>Público-alvo</div>${li(P.who)}</div>
+        <div class="pd-box"><div class="h"><i>2</i>Problema resolvido</div>${li(P.pain)}</div>
+        <div class="pd-box"><div class="h"><i>3</i>Entregáveis</div>${li(P.deliv)}</div>
+      </div>
+      <div class="pd-sec"><div class="label"><i>4</i>Método e etapas</div><div class="pd-steps">${steps}</div></div>
+      <div class="pd-grid">
+        <div class="pd-box"><div class="h"><i>5</i>Ferramentas e dados</div><p><b>Ferramentas:</b> ${P.tools}</p><p style="margin-top:6px"><b>Dados:</b> ${P.data}</p></div>
+        <div class="pd-box ai"><div class="h"><i>6</i>Papel da IA</div>${li(P.ai)}</div>
+        <div class="pd-box"><div class="h"><i>7</i>Do serviço ao produto</div>${li(P.prodz)}</div>
+      </div>
+      <div class="pd-sec"><div class="label"><i>S</i>Skills aplicadas</div><div class="pd-skills">${P.skills.map(s=>`<span class="pd-skill">${s}</span>`).join("")}</div></div>
+      <div class="pd-bench">${P.bench}</div>
+    </div>
+  </div></div>`}
+function renderPD(id){const k=PRODUCTS.findIndex(x=>x.id===id);if(k<0)return false;const P=PRODUCTS[k];pd.innerHTML=pdHTML(P,k+1);
+  const ft=H("div",{class:"pd-foot"},pd);H("div",{class:"rel",html:`<span>→ e ← navegam entre as 24 fichas · Esc volta à apresentação</span>`},ft);
+  const nav=H("div",{class:"pd-nav"},ft);const bk=H("button",{class:"bk"},nav,"← Voltar à apresentação");bk.onclick=()=>closePD();
+  const bp=H("button",null,nav,"‹ Anterior");bp.onclick=()=>pdStep(-1);const bn=H("button",null,nav,"Próxima ›");bn.onclick=()=>pdStep(1);
+  const op=H("button",null,nav,"One-page");op.onclick=()=>{closePD(true);go(ONEPAGE-1,true)};
+  plainBadges(pd);tilt(pd.querySelector(".pd-holo"));pd.classList.remove("play");void pd.offsetWidth;pd.classList.add("play");return true}
+function openPD(id){if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${pad(PRODUCTS.findIndex(x=>x.id===id)+1)} / ${PRODUCTS.length}`;if(infoP.classList.contains("on"))fillInfo()}
+function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");if(!silent){activate(pdFrom,true)}else{$("cnt").textContent=`${pad(cur+1)} / ${pad(N)}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;history.replaceState(null,"","#"+(cur+1))}}
+function pdStep(d){const k=PRODUCTS.findIndex(x=>x.id===pdOpen);const n=(k+d+PRODUCTS.length)%PRODUCTS.length;openPD(PRODUCTS[n].id)}
+
 
 /* hash externo (#p=...) */
 addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h.startsWith("p=")&&h.slice(2)!==pdOpen)openPD(h.slice(2))});

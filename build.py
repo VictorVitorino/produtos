@@ -1,21 +1,33 @@
 #!/usr/bin/env python3
-"""Gera o HTML único da apresentação a partir de src/ (logos embutidos em base64)."""
-import base64, pathlib
+"""Gera o HTML único da apresentação a partir de src/ (logos embutidos em base64).
+
+Ordem de montagem:
+  CSS  : src/styles.css + src/css/*.css (ordem alfabética)
+  HTML : src/slides/*.html (um arquivo por slide, ordem alfabética)
+  JS   : engine.js, data.js, core.js, slides.js + src/js/*.js (ordem alfabética; 99-boot.js inicia)
+Uso: python3 build.py [--out caminho.html]
+"""
+import base64, pathlib, sys
 ROOT = pathlib.Path(__file__).resolve().parent
 SRC = ROOT / "src"
 OUT = ROOT / "DTS_Portfolio_Estrategico_2027.html"
+if "--out" in sys.argv:
+    OUT = pathlib.Path(sys.argv[sys.argv.index("--out") + 1]).resolve()
 
 def b64(name):
     return "data:image/png;base64," + base64.b64encode((SRC / "assets" / name).read_bytes()).decode()
 
-css = (SRC / "styles.css").read_text(encoding="utf-8")
-slides = (SRC / "slides.html").read_text(encoding="utf-8")
+def read_all(paths):
+    return "\n".join(p.read_text(encoding="utf-8") for p in paths)
+
+css = read_all([SRC / "styles.css"] + sorted((SRC / "css").glob("*.css")))
+slides = read_all(sorted((SRC / "slides").glob("*.html")))
 logos = (
     f'const LOGO_DTS="{b64("dts-logo-white.png")}";\n'
     f'const LOGO_DTS_NAVY="{b64("dts-logo-navy.png")}";\n'
 )
 am = b64("am-performance-white.png")
-js = "\n".join((SRC / f).read_text(encoding="utf-8") for f in ["engine.js", "data.js", "core.js", "slides.js"])
+js = read_all([SRC / f for f in ["engine.js", "data.js", "core.js", "slides.js"]] + sorted((SRC / "js").glob("*.js")))
 
 html = f"""<!doctype html>
 <html lang="pt-BR">
