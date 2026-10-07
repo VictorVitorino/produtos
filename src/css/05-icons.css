@@ -1,0 +1,7 @@
+/* ícones de linha que se desenham na entrada (fx 02) */
+.ico{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ico path,.ico circle,.ico rect,.ico line,.ico polyline,.ico polygon,.ico ellipse{stroke-dasharray:1;stroke-dashoffset:1}
+.play .ico path,.play .ico circle,.play .ico rect,.play .ico line,.play .ico polyline,.play .ico polygon,.play .ico ellipse{animation:icoDraw 1.1s var(--ease) forwards;animation-delay:calc(var(--d,0)*90ms + 300ms)}
+@keyframes icoDraw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.ico *{stroke-dashoffset:0!important;animation:none!important}}
+@media print{.ico *{stroke-dashoffset:0!important;animation:none!important}}
