@@ -44,16 +44,16 @@ PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?50:38.5)));
 const PPG={};
 /* frase-resumo por estado: Hoje · Produtos (o terceiro, Com IA, é calculado dos dados) */
 const PP_CAP={
- 1:["10 serviços com sobreposição: três ofertas de liderança disputam o mesmo comprador e duas tratam de impostos e incentivos.",
-    "Os serviços se agrupam por produto: liderança vira 1 (Interim & Embedded), Tax + incentivos vira 1 com A&M Tax e a resiliência migra para o Pilar 4."],
+ 1:["10 serviços e duas sobreposições: três ofertas de liderança (Interim CIO/CTO, Embedded e C-Level Enablement) e duas de impostos e incentivos.",
+    "3 ofertas de liderança viram 1 (Interim & Embedded), Tax + incentivos viram 1 produto com A&M Tax e a resiliência migra para o Pilar 4."],
  2:["7 serviços: TMO e Modelo de Implantação e Governança têm o mesmo comprador e o mesmo método, e o IT Business Partner tem baixa diferenciação.",
     "TMO + Modelo de Implantação viram o Predictive Transformation Office; o IT Business Partner é retirado e absorvido pela liderança embarcada (1.3)."],
  3:["8 serviços que são fases de um mesmo ciclo, em pares que se sobrepõem: DD buy e sell, integração e separação, IMO e SMO.",
     "Os pares viram produtos: DD buy + sell = 1 produto, IMO + SMO = 1 escritório; o IT M&A Playbook deixa de ser vendido isolado."],
- 4:["4 serviços com nomes que não dizem o que entregam, e a resiliência ainda no Pilar 1.",
+ 4:["Três dos 4 serviços têm nomes que não dizem o que entregam, e a resiliência ainda está no Pilar 1.",
     "Cada serviço ganha o nome do que entrega e vira produto; a resiliência chega do Pilar 1 como IT Resilience & Recovery."]};
 function ppCapAI(n){const ps=PRODUCTS.filter(p=>p.pillar===n),pl=PILLARS[n-1],a=ps.filter(p=>p.st==="ai").length,k=ps.filter(p=>p.st==="keep").length,nw=ps.filter(p=>p.st==="new");
-  return`${a} produtos ganham IA no método, ${k} ${k>1?"se mantêm":"se mantém"} e ${nw.length>1?"nascem":"nasce"} ${nw.map(p=>"o "+p.name).join(" e ")}: de ${pl.was} serviços para ${pl.now} produtos.`}
+  return`${a} ${a>1?"produtos são aprimorados":"produto é aprimorado"} com IA, ${k} ${k>1?"se mantêm":"se mantém"} e ${nw.length>1?"nascem":"nasce"} ${nw.map(p=>"o "+p.name).join(" e ")}: de ${pl.was} serviços para ${pl.now} produtos.`}
 
 document.querySelectorAll(".pp").forEach(host=>{
   const n=+host.dataset.pillar,pl=PILLARS[n-1],sec=host.closest(".slide"),t=sec.dataset.t;
@@ -72,13 +72,15 @@ document.querySelectorAll(".pp").forEach(host=>{
         <span class="pp-h"><b class="pp-code">${p.code}</b><b class="pp-nm">${p.name}</b><span class="pp-tags">${p.sig?'<span class="sig2">★ Signature</span>':""}${stTag(p.st)}</span></span>
         <span class="pp-from">${p.st==="new"?p.from:"Evolui de "+p.from}</span>
         <span class="pp-tl">${p.tagline}</span>
+        ${ps.length<=5?`<span class="pp-get" aria-label="Entregas">${p.deliv.slice(0,2).map(x=>`<span>${icoSvg("check",5+i)}${strip(x)}</span>`).join("")}</span>`:""}
         <span class="pp-ai"><b>IA:</b> ${strip(p.ai[0])}</span>
       </span></a>`;
-  const leg=[["s","Serviço"],overl.length?["o","Sobreposição"]:null,["p","Produto"],["n","Com IA"],svcs.some(o=>o.d==="cut")?["c","Retirado"]:null,(outs.length||inn.length)?["t","Muda de pilar"]:null].filter(Boolean);
+  /* legenda em grade de 2 linhas: coluna 1 = serviços, 2 = produtos, 3 = mudanças (cada item em uma linha) */
+  const leg=[[["s","Serviço"],overl.length?["o","Sobreposição"]:null],[["p","Produto"],["n","Aprimorar / criar com IA"]],[svcs.some(o=>o.d==="cut")?["c","Retirado"]:null,(outs.length||inn.length)?["t","Muda de pilar"]:null]].map(c=>c.filter(Boolean)).filter(c=>c.length);
   const notes=pillarNotes(n);
   host.innerHTML=`<div class="pp-wrap">
       <div class="pp-panel" data-a="zoom" style="--d:2">
-        <div class="pp-bar"><div class="seg pp-seg"><button class="on" data-s="0">Hoje</button><button data-s="1">Produtos</button><button data-s="2">Com IA</button></div><div class="pp-leg">${leg.map(([k,l])=>`<span><i class="lg-${k}"></i>${l}</span>`).join("")}</div></div>
+        <div class="pp-bar"><div class="seg pp-seg"><button class="on" data-s="0">Hoje</button><button data-s="1">Produtos</button><button data-s="2">Com IA</button></div><div class="pp-leg">${leg.map((c,ci)=>c.map(([k,l],ri)=>`<span style="grid-area:${ri+1}/${ci+1}"><i class="lg-${k}"></i>${l}</span>`).join("")).join("")}</div></div>
         <svg class="pp-svg" aria-label="Serviços do Pilar ${n} mudando de forma: hoje, agrupados em produtos e com IA"></svg>
         <div class="pp-capw"><p class="pp-cap"></p><div class="pp-stat"><b>${pl.was} → ${pl.now}</b><span>serviços → produtos</span></div></div>
       </div>
@@ -95,8 +97,10 @@ document.querySelectorAll(".pp").forEach(host=>{
   const FONT={sv:"600 11.5px Inter, sans-serif",hub:"800 15px Inter, sans-serif",h0:"800 13px Inter, sans-serif",xn:"700 11.5px Inter, sans-serif"};
   const NH={sv:26,hub:34,h0:34,xn:28};
   const NODES={};
-  function node(id,kind,lab,o,tv,th,pd){const a={class:"pn "+kind};const g=S("g",a,gN);if(kind==="hub")S("circle",{class:"halo",r:26},g);const r=S("rect",{rx:kind==="sv"||kind==="xn"?8:10},g);const tx=S("text",{"text-anchor":"middle","dominant-baseline":"central"},g);tx.textContent=lab;
-    g.setAttribute("data-tv",tv);g.setAttribute("data-th",th);if(pd)g.setAttribute("data-pd",pd);NODES[id]={g,r,tx,lab,kind,o,w:60,h:NH[kind],code:o?o.to:(id.split(":")[1]||"")};return NODES[id]}
+  function node(id,kind,lab,o,tv,th,pd){const a={class:"pn "+kind};const g=S("g",a,gN);const r=S("rect",{rx:kind==="sv"||kind==="xn"?8:10},g);const tx=S("text",{"text-anchor":"middle","dominant-baseline":"central"},g);tx.textContent=lab;
+    /* halo do produto novo: anel externo (fica fora da caixa, por isso pode vir depois do rótulo) */
+    const hl=kind==="hub"?S("rect",{class:"halo",rx:14},g):null;
+    g.setAttribute("data-tv",tv);g.setAttribute("data-th",th);if(pd)g.setAttribute("data-pd",pd);NODES[id]={g,r,hl,tx,lab,kind,o,w:60,h:NH[kind],code:o?o.to:(id.split(":")[1]||"")};return NODES[id]}
   const tl=(k,v)=>`<span class="tl"><b>${k}</b>${v}</span>`;
   node("h0","h0",`Pilar ${n} · hoje`,null,`Pilar ${n} · ${pl.name} hoje`,tl("Serviços",`${own.length} no portfólio atual`)+tl("Proposta",`${pl.now} produtos`),null);
   ps.forEach(p=>node("p:"+p.code,"hub",p.code,null,`${p.code} · ${p.name}`,tl("Status",STATUS[p.st][0]+(p.sig?" · ★ Signature":""))+tl("Produto",p.tagline)+tl("Ficha","clique para abrir"),p.id));
@@ -106,37 +110,74 @@ document.querySelectorAll(".pp").forEach(host=>{
   outs.forEach(o=>{const d=PBY(o.to);if(!NODES["x:"+d.code])node("x:"+d.code,"xn",`${d.code} · Pilar ${d.pillar}`,null,`${d.code} · ${d.name}`,tl("Pilar",`${d.pillar} · ${PILLARS[d.pillar-1].name}`)+tl("Ficha","clique para abrir"),d.id)});
   const ctx=document.createElement("canvas").getContext("2d");
   function measure(){Object.values(NODES).forEach(nd=>{ctx.font=FONT[nd.kind];const w=ctx.measureText(nd.lab).width;nd.w=Math.ceil(nd.kind==="sv"?w+22:nd.kind==="hub"?Math.max(56,w+26):nd.kind==="h0"?w+30:w+24);
-    nd.r.setAttribute("x",-nd.w/2);nd.r.setAttribute("y",-nd.h/2);nd.r.setAttribute("width",nd.w);nd.r.setAttribute("height",nd.h)})}
+    nd.r.setAttribute("x",-nd.w/2);nd.r.setAttribute("y",-nd.h/2);nd.r.setAttribute("width",nd.w);nd.r.setAttribute("height",nd.h);
+    /* halo do produto novo: contorno arredondado com 6px de folga em volta do nó (nunca atravessa a caixa) */
+    if(nd.hl){nd.hl.setAttribute("x",-nd.w/2-6);nd.hl.setAttribute("y",-nd.h/2-6);nd.hl.setAttribute("width",nd.w+12);nd.hl.setAttribute("height",nd.h+12)}})}
   const rnd=k=>{const a=Math.sin(k*12.9898+78.233)*43758.5453;return a-Math.floor(a)};
   const gcd=(a,b)=>b?gcd(b,a%b):a;
   const bySt=(a,b)=>((a.d==="cut")-(b.d==="cut"))||((a.p!==n)-(b.p!==n));
   let P=[{},{},{}],E=[[],[],[]],VWz=VW,VHz=VH,X0=VW/2;
   const STK=31,HH=17,ZMAX=1.15;
-  const split=(L,i)=>{if(L.length<=1)return i%2?[[],L]:[L,[]];const h=Math.ceil(L.length/2);return[L.slice(0,h),L.slice(h)]};
+  const split=(L,f)=>{if(L.length<=1)return f?[[],L]:[L,[]];const h=Math.ceil(L.length/2);return[L.slice(0,h),L.slice(h)]};
+  /* segmento × retângulo (Liang–Barsky): a ligação passa por baixo deste nó? */
+  const segHit=(x1,y1,x2,y2,r)=>{let t0=0,t1=1;const dx=x2-x1,dy=y2-y1,pp=[-dx,dx,-dy,dy],qq=[x1-r[0],r[2]-x1,y1-r[1],r[3]-y1];
+    for(let k=0;k<4;k++){if(pp[k]===0){if(qq[k]<0)return false;continue}const u=qq[k]/pp[k];if(pp[k]<0){if(u>t1)return false;if(u>t0)t0=u}else{if(u<t0)return false;if(u<t1)t1=u}}return t0<t1};
+  let ph=0;
   function lay(){measure();const Q=[{},{},{}],F=[[],[],[]];const set=(st,id,x,y,o,s,c)=>{Q[st][id]={x,y,o,s,c}};
     const rows=ps.map(p=>({p,L:svcs.filter(o=>o.to===p.code).sort(bySt)}));if(outs.length)rows.push({out:outs});
-    /* zoom: pilares com rótulos mais curtos usam a área toda (até 1,15×) */
-    const sideW=L=>L.length?Math.max(...L.map(o=>NODES["s:"+o.id].w)):0;let need=0;
-    rows.forEach((r,i)=>{if(r.out){r.out.forEach(o=>{need=Math.max(need,NODES["s:"+o.id].w+28+GAP+12,28+GAP+NODES["x:"+o.to].w+52)});return}
-      const hw=NODES["p:"+r.p.code].w/2,[Lf,Rt]=split(r.L,i),z=i%2?-12:12;need=Math.max(need,hw+GAP+sideW(Lf)-z,hw+GAP+sideW(Rt)+z)});
-    VWz=Math.max(VW/ZMAX,2*need+16);VHz=VH*VWz/VW;X0=VWz/2;svg.setAttribute("viewBox",`0 0 ${VWz.toFixed(1)} ${VHz.toFixed(1)}`);
+    const sideW=L=>L.length?Math.max(...L.map(o=>NODES["s:"+o.id].w)):0;
+    /* largura ocupada à esquerda e à direita da espinha; f = lado do serviço único da linha (alterna) e deslocamento do nó do produto */
+    const needs=ph0=>{let nL=0,nR=0;rows.forEach((r,i)=>{const f=(i+ph0)%2,z=f?-12:12;
+        if(r.out){r.out.forEach(o=>{nL=Math.max(nL,NODES["s:"+o.id].w+28+GAP-z);nR=Math.max(nR,28+GAP+NODES["x:"+o.to].w+40+z)});return}
+        const hw=NODES["p:"+r.p.code].w/2,[Lf,Rt]=split(r.L,f);nL=Math.max(nL,hw-z+(Lf.length?GAP+sideW(Lf):0));nR=Math.max(nR,hw+z+(Rt.length?GAP+sideW(Rt):0))});return[nL,nR]};
+    /* zoom: pilares com rótulos mais curtos usam a área toda (até 1,15×). A espinha não fica presa ao centro:
+       a nuvem é centralizada pela soma dos dois lados; se ainda faltar espaço, testa a alternância invertida */
+    let[nL,nR]=needs(0);ph=0;const alt=needs(1);if(nL+nR+16>VW/ZMAX&&alt[0]+alt[1]<nL+nR){[nL,nR]=alt;ph=1}
+    VWz=Math.max(VW/ZMAX,nL+nR+16);VHz=VH*VWz/VW;X0=VWz/2;const X1=(VWz-nL-nR)/2+nL;svg.setAttribute("viewBox",`0 0 ${VWz.toFixed(1)} ${VHz.toFixed(1)}`);
     /* estados 1 e 2: espinha de produtos, cada serviço ao lado do produto de destino (linhas distribuídas na altura) */
     const per=r=>r.out?r.out.length:Math.max(1,Math.ceil(r.L.length/2)),half=r=>(per(r)-1)*STK/2+HH;
     const sumH=rows.reduce((a,r)=>a+2*half(r),0),gapR=(VHz-2*PAD-sumH)/Math.max(1,rows.length-1);let y=PAD;
-    rows.forEach((r,i)=>{const cy=y+half(r);y+=2*half(r)+gapR;const hx=X0+(i%2?-12:12);
-      const cls=o=>"sv"+(o.d==="cut"?" cut":"")+(PBY(o.to).pillar!==n?" out":"");
+    rows.forEach((r,i)=>{const cy=y+half(r);y+=2*half(r)+gapR;const f=(i+ph)%2,hx=X1+(f?-12:12);
+      /* "in": chega de outro pilar; "out": sai para outro pilar (ambos com borda laranja tracejada, como na legenda) */
+      const cls=o=>"sv"+(o.d==="cut"?" cut":"")+(PBY(o.to).pillar!==n?" out":"")+(o.p!==n?" in":"");
       const put=(o,side,j,m,hw)=>{const id="s:"+o.id,w=NODES[id].w,x=side<0?hx-hw-GAP-w/2:hx+hw+GAP+w/2,yy=cy+(j-(m-1)/2)*STK;[1,2].forEach(st=>set(st,id,x,yy,o.d==="cut"?.7:1,1,cls(o)))};
       if(r.out){r.out.forEach((o,j)=>{put(o,-1,j,r.out.length,28);const xid="x:"+o.to,xw=NODES[xid].w;[1,2].forEach(st=>set(st,xid,hx+28+GAP+xw/2+40,cy+(j-(r.out.length-1)/2)*STK,1,1,"xn"))});return}
       const p=r.p,hid="p:"+p.code,hw=NODES[hid].w/2;
       set(1,hid,hx,cy,p.st==="new"?.6:1,p.st==="new"?.9:1,p.st==="new"?"hub ghost":"hub");
       set(2,hid,hx,cy,1,1,"hub "+(p.st==="keep"?"k":"n")+(p.st==="new"?" nw":""));
-      const[Lf,Rt]=split(r.L,i);Lf.forEach((o,j)=>put(o,-1,j,Lf.length,hw));Rt.forEach((o,j)=>put(o,1,j,Rt.length,hw))});
+      const[Lf,Rt]=split(r.L,f);Lf.forEach((o,j)=>put(o,-1,j,Lf.length,hw));Rt.forEach((o,j)=>put(o,1,j,Rt.length,hw))});
     /* estado 0: serviços de hoje espalhados e emaranhados em torno do pilar */
     const m=own.length,sd=[3,4,5,2,7].find(s=>s<m&&gcd(s,m)===1)||1;const slots=[...Array(m)].map((_,k)=>own[(k*sd)%m]);slots.splice(Math.floor(m/2),0,"H0");inn.forEach(o=>slots.push(o));
     const sh=(VHz-2*PAD)/slots.length;
     slots.forEach((o,k)=>{const cy=PAD+sh*(k+.5);if(o==="H0"){set(0,"h0",X0+(n%2?-24:24),cy,1,1,"h0");return}
       const id="s:"+o.id,w=NODES[id].w,amp=(VWz-w)/2-10,fo=o.p!==n,sg=k%2?1:-1;
       set(0,id,fo?VWz-12-w/2:X0+sg*amp*(.25+.75*rnd(k+n*11)),cy,fo?.8:1,1,"sv m"+(fo?" fx":""))});
+    /* nenhuma ligação passa por baixo de um nó sem relação com ela (sugeriria vínculo que não existe).
+       Busca local determinística: desliza cada serviço na horizontal e troca nós de linha enquanto reduzir os cruzamentos;
+       várias partidas (sementes) para escapar de mínimos locais. Cruzar um nó do mesmo grupo de sobreposição pesa menos. */
+    const ids0=slots.filter(o=>o!=="H0").map(o=>"s:"+o.id).concat("h0");
+    const L0=own.map(o=>["h0","s:"+o.id]);overl.forEach(g=>{for(let a=0;a<g.length;a++)for(let b=a+1;b<g.length;b++)L0.push(["s:"+g[a].id,"s:"+g[b].id])});
+    const gOf={};overl.forEach(g=>g.forEach(o=>gOf["s:"+o.id]=o.to));
+    const box=id=>{const q=Q[0][id],nd=NODES[id];return[q.x-nd.w/2-6,q.y-nd.h/2-4,q.x+nd.w/2+6,q.y+nd.h/2+4]};
+    const cost=()=>{let c=0;L0.forEach(([a,b])=>{const A=Q[0][a],B=Q[0][b];ids0.forEach(id=>{if(id!==a&&id!==b&&segHit(A.x,A.y,B.x,B.y,box(id)))c+=gOf[id]&&gOf[id]===gOf[b]?1:3})});return c};
+    const lim=id=>{const w=NODES[id].w;return[w/2+10,VWz-w/2-10]};
+    const SW=own.map(o=>"s:"+o.id).concat("h0"),snap=()=>SW.map(id=>[Q[0][id].x,Q[0][id].y]);
+    const midOK=y=>y>VHz*.3&&y<VHz*.7;
+    let bestC=1e9,bestS=null;
+    for(let seed=0;seed<12&&bestC>0;seed++){
+      if(seed){const ys=own.map(o=>Q[0]["s:"+o.id].y);for(let j=ys.length-1;j>0;j--){const r=Math.floor(rnd(j*5+seed*17+n)*(j+1)),t=ys[j];ys[j]=ys[r];ys[r]=t}
+        own.forEach((o,j)=>{const q=Q[0]["s:"+o.id],[lo,hi]=lim("s:"+o.id);q.y=ys[j];q.x=lo+(hi-lo)*rnd(j*7+seed*13+n)})}
+      let c0=cost();
+      for(let pass=0;pass<10&&c0>0;pass++){const before=c0;
+        own.forEach(o=>{const id="s:"+o.id,q=Q[0][id],[lo,hi]=lim(id);let best=q.x;
+          for(let j=0;j<=16;j++){q.x=lo+(hi-lo)*j/16;const c=cost();if(c<c0){c0=c;best=q.x}}q.x=best});
+        for(let a=0;a<SW.length&&c0>0;a++)for(let b=a+1;b<SW.length&&c0>0;b++){const ia=SW[a],ib=SW[b],A=Q[0][ia],B=Q[0][ib],ya=A.y,yb=B.y,xa=A.x,xb=B.x;
+          if(ib==="h0"&&!midOK(ya))continue;
+          A.y=yb;B.y=ya;if(ib!=="h0"){A.x=clamp(xb,...lim(ia));B.x=clamp(xa,...lim(ib))}const c=cost();
+          if(c<c0)c0=c;else{A.y=ya;B.y=yb;A.x=xa;B.x=xb}}
+        if(c0>=before)break}
+      if(c0<bestC){bestC=c0;bestS=snap()}}
+    SW.forEach((id,j)=>{Q[0][id].x=bestS[j][0];Q[0][id].y=bestS[j][1]});
     const h0=Q[0].h0;[1,2].forEach(st=>set(st,"h0",h0.x,h0.y,0,.6,"h0"));
     ps.forEach(p=>set(0,"p:"+p.code,h0.x,h0.y,0,.4,"hub"));
     Object.keys(NODES).filter(k=>k.startsWith("x:")).forEach(k=>set(0,k,Q[1][k].x,Q[1][k].y,0,.6,"xn"));
@@ -189,6 +230,7 @@ document.querySelectorAll(".pp").forEach(host=>{
     if(el===v2){G.stop();demo()}else segSync(seg)}));
   panes.forEach(p=>mo.observe(p,{attributes:true,attributeFilter:["class"],attributeOldValue:true}));
   ENTER[t]=()=>{const Pn=PANE[t];if(!Pn||Pn.k===0){G.enter();return}G.stop();G.to(2,true);demo()};
-  STEP[t]=d=>{const Pn=PANE[t];if(d>0&&(!Pn||Pn.k===0)&&G.cur<2){G.stop();G.to(G.cur+1);return true}return false};
+  /* → avança Hoje → Produtos → Com IA e depois troca de vista; ← na vista 1 volta de Com IA para Produtos e então sai */
+  STEP[t]=d=>{const Pn=PANE[t];if(Pn&&Pn.k!==0)return false;if(d>0&&G.cur<2){G.stop();G.to(G.cur+1);return true}if(d<0&&G.cur>1){G.stop();G.to(G.cur-1);return true}return false};
 });
 PRINT.push(()=>Object.values(PPG).forEach(G=>{G.stop();G.to(2,true)}));
