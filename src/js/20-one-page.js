@@ -12,14 +12,16 @@ const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strateg
   const ROWS=Math.max(...PILLARS.map(pl=>PRODUCTS.filter(p=>p.pillar===pl.n).length));
   /* legenda: etiquetas de status com contagem calculada dos dados */
   const nst=k=>PRODUCTS.filter(p=>p.st===k).length;
-  $("opLeg").innerHTML=["keep","ai","new"].map(k=>`<span>${stTag(k)}<em>${nst(k)}</em></span>`).join("")+`<span class="sy-sg" data-tv="★ A&amp;M Signature" data-tl="Maior direito de vencer (DNA operador).">★ A&amp;M Signature<em>${PRODUCTS.filter(p=>p.sig).length}</em></span>`;
+  $("opLeg").innerHTML=`<span class="hint sy-hint">Clique no produto para abrir a ficha</span>`+["keep","ai","new"].map(k=>`<span>${stTag(k)}<em>${nst(k)}</em></span>`).join("")+`<span class="sy-sg" data-tv="★ A&amp;M Signature" data-tl="Maior direito de vencer (DNA operador).">★ A&amp;M Signature<em>${PRODUCTS.filter(p=>p.sig).length}</em></span>`;
+  /* origem na dica: "Nasce de X" quando o produto vem de serviços atuais; "Origem novo · …" quando é novo */
+  const orgTip=c=>{const o=ORG[c];return o.startsWith("de ")?`<b>Nasce de</b>${o.slice(3)}`:`<b>Origem</b>${o}`};
   /* colunas por pilar: cabeçalho grande + subtítulo mono; tiles com ícone, nome, frase e etiqueta */
   PILLARS.forEach(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n);
     const col=H("div",{class:"sy-col",id:"opc"+pl.n,"data-a":"up",style:`--d:${pl.n*1.5}`},g);
     col.innerHTML=`<div class="sy-mo"><span class="sy-n"><span>Pilar ${pl.n}</span><i data-tv="Pilar ${pl.n} · ${pl.name}" data-tl="${pl.was} serviços de hoje viram ${pl.now} produtos no novo portfólio.">${pl.was} serviços → ${pl.now} produtos</i></span><b>${pl.name}</b><span class="sy-sub"><span class="v1">${pl.short}</span><span class="v2">hoje: ${pl.official}</span></span></div>`;
     const list=H("div",{class:"sy-list",style:`--rows:${ROWS}`},col);
     ps.forEach((p,k)=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,"data-pl":pl.n,class:`sy-t ${p.st}${p.st==="new"?" holo":""}`,style:`--hd:${(k*.7).toFixed(1)}s`,
-        "data-tv":`${p.code} · ${p.name}`,"data-th":`<span class="tl"><b>Proposta</b>${p.tagline}</span><span class="tl"><b>Nome de hoje</b>${ORG[p.code]}</span><span class="tl"><b>Status</b>${STATUS[p.st][0]}${p.sig?" · ★ A&amp;M Signature":""}</span><span class="tl">Clique para abrir a ficha.</span>`},list);
+        "data-tv":`${p.code} · ${p.name}`,"data-th":`<span class="tl"><b>Proposta</b>${p.tagline}</span><span class="tl">${orgTip(p.code)}</span><span class="tl"><b>Status</b>${STATUS[p.st][0]}${p.sig?" · ★ A&amp;M Signature":""}</span><span class="tl">Clique para abrir a ficha.</span>`},list);
       a.innerHTML=`${picoSvg(p.code,pl.n+k)}<span class="sy-nm"><em>${p.code}</em> · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span><span class="sy-tx"><i class="sy-fl"></i>${stTag(p.st)}<span class="v1">${p.tagline}</span><span class="v2">${ORG[p.code]}</span></span>`});
     if(ps.length<ROWS){const n=H("div",{class:"sy-note",style:`grid-row:span ${ROWS-ps.length}`},list);n.innerHTML=`<span><b class="label">Proposta</b>${pl.def}</span>${ROWS-ps.length>1?`<span><b class="label">Quando nos contratam</b>${pl.when}</span>`:""}`}});
   fixPaths(sec);
@@ -43,9 +45,10 @@ const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strateg
   const tog=(o,on)=>{if(o){o.c.classList.toggle("on",on);o.f.classList.toggle("on",on);o.dt.classList.toggle("on",on)}};
   function light(n){lit=n;PILLARS.forEach(pl=>{const on=n==="all"||pl.n===n;$("opc"+pl.n).classList.toggle("hot",on);tog(CON[pl.n],on)});tog(CON.base,n==="all")}
   const rest=()=>light(!sp||sp.cur<0?0:sp.cur<4?sp.cur+1:"all");
-  g.addEventListener("pointerover",e=>{const t=e.target.closest(".sy-t");if(t)light(+t.dataset.pl)});
+  g.addEventListener("pointerover",e=>{if(sp.cur>=0)return;const t=e.target.closest(".sy-t");if(t)light(+t.dataset.pl)});
   g.addEventListener("pointerout",e=>{const t=e.target.closest(".sy-t");if(t&&!t.contains(e.relatedTarget))rest()});
-  base.addEventListener("pointerenter",()=>light("all"));base.addEventListener("pointerleave",rest);
+  g.addEventListener("click",e=>{if(e.target.closest(".sy-t"))tipEl.classList.remove("on")},true);
+  base.addEventListener("pointerenter",()=>{if(sp.cur<0)light("all")});base.addEventListener("pointerleave",rest);
 
   /* alternância Proposta de valor | Nome de hoje */
   const om=$("opMode"),setMode=m=>{om.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.m===m));segSync(om);g.classList.toggle("org",m==="o")};
@@ -55,23 +58,27 @@ const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strateg
 
   /* spotlight: passos e legendas por pilar + plataforma */
   const st=PILLARS.map(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg=ps.filter(p=>p.sig),ai=ps.filter(p=>p.st!=="keep").length;
-    return{sel:`#opc${pl.n},#opCon${pl.n},#opDot${pl.n}`,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pl.was} serviços de hoje viram ${pl.now} produtos; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span>`}});
+    return{sel:`#opc${pl.n},#opCon${pl.n},#opDot${pl.n}`,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pl.was} serviços de hoje viram ${pl.now} produtos; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span>${ROWS-ps.length<2?`<span class="sl"><b>Quando nos contratam</b>${pl.when}</span>`:""}`}});
   const PLAT=[["O que é","Ativos compartilhados por todos os produtos: diagnóstico padrão, radar de gastos, benchmark Brasil, biblioteca de agentes e LLM corporativo seguro."],["Por que importa","É o que torna o serviço replicável de um cliente para o outro e sustenta a receita recorrente."]];
   st.push({sel:"#opAI,#opThread",btn:"Plataforma",title:"Plataforma de Dados e AI",text:PLAT.map(([k,v])=>`<span class="sl"><b>${k}</b>${v}</span>`).join(""),capY:330});
-  base.dataset.tv="Plataforma de Dados e AI";base.dataset.th=PLAT.map(([k,v])=>`<span class="tl"><b>${k}</b>${v}</span>`).join("");
+  base.dataset.tv="Plataforma de Dados e AI";base.dataset.th=`<span class="tl"><b>${PLAT[1][0]}</b>${PLAT[1][1]}</span>`;
   const sp=Spotlight(host,st,$("opSeg"));segSync($("opSeg"));
-  const spot=k=>{sp.set(k);rest()};
-  $("opSeg").querySelectorAll("button").forEach(b=>b.addEventListener("click",rest));
+  /* com o spotlight num passo, o que está na penumbra não abre dica (a dica cobriria a legenda); o clique na ficha continua */
+  const mute=()=>[...g.querySelectorAll("[data-tv],[data-tv0]"),base].forEach(t=>{const off=sp.cur>=0&&(t===base?sp.cur<4:sp.cur>3||t.closest(".sy-col").id!=="opc"+(sp.cur+1));
+    if(off&&t.dataset.tv){t.dataset.tv0=t.dataset.tv;delete t.dataset.tv}else if(!off&&t.dataset.tv0){t.dataset.tv=t.dataset.tv0;delete t.dataset.tv0}});
+  const spot=k=>{sp.set(k);rest();mute()};
+  $("opSeg").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{rest();mute()}));
   ENTER[KEY]=()=>{lit=0;draw();spot(-1);segSync($("opSeg"));segSync(om)};
   if(document.fonts)document.fonts.ready.then(()=>{if(slides[cur]===sec)draw()});
   STEP[KEY]=d=>{if(d>0){if(sp.cur<st.length-1){spot(sp.cur+1);return true}spot(-1);return false}if(sp.cur>=0){spot(sp.cur-1);return true}return false};
 
   /* impressão: estado estático (sem spotlight, conectores prontos) + página extra com "Nome de hoje" */
   PRINT.push(()=>{const d0=sec.style.display;if(!sec.offsetWidth)sec.style.display="block";
-    if(sp.cur>=0)sp.set(-1);setMode("v");lit=0;draw();segNow($("opSeg"));segNow(om);
+    if(sp.cur>=0)spot(-1);setMode("v");lit=0;draw();segNow($("opSeg"));segNow(om);
     const b2=om.querySelector('button[data-m="o"]'),ind=[b2.offsetLeft,b2.offsetWidth];sec.style.display=d0;
     if(stage.querySelector(".sy-print"))return;
     const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","sy-print");
     c.querySelector(".sy-cols").classList.add("org");
     const cm=c.querySelector("#opMode");cm.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.m==="o"));const ci=cm.querySelector(".seg-ind");Object.assign(ci.style,{left:ind[0]+"px",width:ind[1]+"px",opacity:1});
+    const cb=c.querySelector(".sy-chips");cb.className="sy-pt";cb.innerHTML=PLAT.map(([k,v])=>`<span><b class="label">${k}</b>${v}</span>`).join("");
     c.querySelectorAll("[id]").forEach(x=>x.removeAttribute("id"));sec.after(c)})})();

@@ -9,6 +9,7 @@
 .sy-leg .sy-sg{color:var(--orange-400);font-weight:700}
 .sy-leg .sy-sg em{color:var(--orange-200)}
 .sy-leg .st{height:18px}
+.sy-leg .sy-hint{margin-right:10px;font-weight:400}
 .sy-ctl{display:flex;gap:8px}
 
 .sy-host{position:relative;height:100%;display:flex;flex-direction:column}
@@ -76,6 +77,9 @@ a.sy-t{color:#fff}
 .sy-chips{display:flex;flex-wrap:nowrap;gap:6px;margin-left:auto}
 .sy-chips span{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);white-space:nowrap}
 .sy-chips span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange-400)}
+/* página extra de impressão: o texto da Plataforma no lugar dos chips (que já saem na 1ª página) */
+.sy-pt{display:flex;flex-direction:column;gap:3px;margin-left:auto;min-width:0;font-size:11.5px;line-height:15.5px;color:var(--steel-200)}
+.sy-pt .label{display:inline;margin-right:8px;font-size:9.5px;color:var(--orange-200)}
 
 @media (prefers-reduced-motion:reduce){
   .sy-thread,.sy-con{stroke-dashoffset:0!important;animation:none!important}
@@ -93,4 +97,5 @@ a.sy-t{color:#fff}
   .sy-t{transform:none!important}
   .sy-t.holo::after{display:none!important}
   .sy-print .spot,.sy-print .spot-cap{display:none!important}
+  .sy-leg .sy-hint{display:none}
 }
