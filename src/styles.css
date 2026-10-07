@@ -906,3 +906,12 @@ a.tb:hover .more{opacity:1;color:var(--orange-400)}
   .pseg button.on{background:var(--navy-800);color:#fff;border-radius:7px}
   .stage .pseg button.on{background:#fff;color:var(--navy-800)}
 }
+
+/* títulos curtos de cards sem palavra sozinha na 2ª linha */
+h4,.tl-card h4{text-wrap:balance}
+/* impressão leve: efeitos de desfoque, sombra e mistura viram imagens no PDF; desligados só na impressão */
+@media print{
+  *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;mix-blend-mode:normal!important;text-shadow:none!important}
+  *,*::before,*::after{box-shadow:none!important}
+  .holo::after,.pd-holo::after,.sh__sweep,.stage .op-ai::after,#chap .orb{display:none!important}
+}

@@ -918,6 +918,15 @@ a.tb:hover .more{opacity:1;color:var(--orange-400)}
   .stage .pseg button.on{background:#fff;color:var(--navy-800)}
 }
 
+/* títulos curtos de cards sem palavra sozinha na 2ª linha */
+h4,.tl-card h4{text-wrap:balance}
+/* impressão leve: efeitos de desfoque, sombra e mistura viram imagens no PDF; desligados só na impressão */
+@media print{
+  *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;mix-blend-mode:normal!important;text-shadow:none!important}
+  *,*::before,*::after{box-shadow:none!important}
+  .holo::after,.pd-holo::after,.sh__sweep,.stage .op-ai::after,#chap .orb{display:none!important}
+}
+
 /* ícones de linha que se desenham na entrada (fx 02) */
 .ico{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .ico path,.ico circle,.ico rect,.ico line,.ico polyline,.ico polygon,.ico ellipse{stroke-dasharray:1;stroke-dashoffset:1}
@@ -2000,7 +2009,7 @@ a.pd-xref:hover{color:var(--orange-400)}
   </div>
 </section>
 
-<section class="slide stage" data-t="One-page · novo portfólio" data-p="Novo portfólio" data-fx="18|Connector / Flow Line|moderada" data-src="Status: Manter = essência preservada · Aprimorar com IA = remodelado com IA no método · Criar com IA = produto novo. ★ A&M Signature = maior direito de vencer (DNA operador). Avaliação DTS a validar com os sócios.">
+<section class="slide stage" data-t="One-page · novo portfólio" data-p="Novo portfólio" data-fx="18|Connector / Flow Line|moderada" data-src="Status: Manter = essência preservada · Aprimorar com IA = método aprimorado com IA · Criar com IA = produto novo. ★ A&M Signature = maior direito de vencer (DNA operador). Avaliação DTS a validar com os sócios.">
   <template class="info"><p><b>Um sistema, não um catálogo:</b> os 24 produtos estão organizados nos quatro pilares. Cada pilar desce por um conector até o fio laranja, e o fio se liga à <b>Plataforma de Dados e IA</b>, a base que todos os produtos compartilham. Os conectores se desenham na entrada e passam a fluir; ao passar o mouse num produto, a linha do pilar dele acende e a dica resume proposta, origem e status.</p><p><b>Spotlight:</b> use → / ← ou os botões (Visão geral, P1 a P4, Plataforma) para percorrer os pilares com foco; o resto da tela fica em penumbra e a legenda resume o pilar (serviços → produtos, Signature, novos com IA, proposta e quando nos contratam).</p><p><b>Nome de hoje:</b> troca a frase de cada produto pela origem (de quais serviços atuais ele nasce) e mostra o nome oficial de hoje de cada pilar.</p><p>Cada produto é um hiperlink para a ficha de detalhamento (público-alvo, problema, entregáveis, método, skills, ferramentas, dados, papel da IA e como produtizar).</p></template>
   <div class="body">
     <div class="hd">
@@ -3175,7 +3184,7 @@ const BAS={};
     const c2=H("div",{class:"op-col"},tobe);c2.innerHTML=`<div class="op-hd"><div class="n">PROPOSTA · PILAR ${pl.n} · nome proposto</div><h3 title="Hoje: ${pl.official}">${pl.to}</h3><span class="cnt">${pl.now}</span></div>`;const l2=H("div",{class:"op-list"},c2);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,class:`prod ${p.st}`,title:"Abrir ficha: "+p.name},l2);a.innerHTML=`<span class="bar"></span><span style="min-width:0"><span class="nm">${p.code} · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span></span>`});H("div",{class:"op-when",html:`<b>Como fica</b>${pl.short}, com inteligência artificial no método e preço por valor.`},l2)});
   /* ponte 29 → 24: à esquerda o que acontece com os serviços de hoje, à direita a composição dos 24 produtos */
   const nst=k=>PRODUCTS.filter(p=>p.st===k).length,nwc=PRODUCTS.filter(p=>p.st==="new").map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="plink sm dk new" data-tv="${p.code} · ${p.name}" data-tl="Produto novo com IA · clique para abrir a ficha">${p.code}</a>`).join("");
-  const M=[["O que temos","29","serviços em 4 pilares, com sobreposições e sem IA no método",""],["O que fundir","13 → 6","serviços que se sobrepõem viram 6 produtos",""],["O que retirar","2","IT Business Partner e IT M&amp;A Playbook deixam de ser vendidos isolados","out"],"=",["Manter",String(nst("keep")),"produtos com a essência preservada","keep"],["Aprimorar com IA",String(nst("ai")),"produtos remodelados com IA no método",""],["Criar com IA",String(nst("new")),`produtos novos <span class="nwc">${nwc}</span>`,"new holo"]];
+  const M=[["O que temos","29","serviços em 4 pilares, com sobreposições e sem IA no método",""],["O que fundir","13 → 6","serviços que se sobrepõem viram 6 produtos",""],["O que retirar","2","IT Business Partner e IT M&amp;A Playbook deixam de ser vendidos isolados","out"],"=",["Manter",String(nst("keep")),"produtos com a essência preservada","keep"],["Aprimorar com IA",String(nst("ai")),"produtos aprimorados com IA no método",""],["Criar com IA",String(nst("new")),`produtos novos <span class="nwc">${nwc}</span>`,"new holo"]];
   M.forEach((m,i)=>{if(m==="="){const b=H("div",{class:"bridge","data-a":"fade",style:`--d:${6+i}`},$("moves"));b.innerHTML=`<span>29 − 13 + 6 − 2 + 4</span><b>= ${PRODUCTS.length}</b><span>produtos</span>`;return}
     const [k,v,d,c]=m;const b=H("div",{class:"card "+c,"data-a":"stack",style:`--d:${6+i};--r:${(i-3)*2}deg;--sx:${(3-i)*24}px`},$("moves"));b.innerHTML=`<span class="label">${k}</span><div class="big">${v}</div><p>${d}</p>`});
   let lastOn="";const ba=BeforeAfter($("hb"),{rest:50,l:"HOJE · 29 SERVIÇOS",r:"PROPOSTA · 24 PRODUTOS",onMove:x=>{let k="";$("hbSeg").querySelectorAll("button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync($("hbSeg"))}}});BAS.hb=ba;

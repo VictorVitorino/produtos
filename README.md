@@ -41,6 +41,17 @@ Segue a mesma linguagem da apresentação DTS Tech M&A, a partir do Guia de Desi
 - **Rodapé:** fonte do slide e o efeito do guia usado (número, nome e dose).
 - **Fichas de produto (modelo Playbook):** card hologram com status, nome, proposta, público, formato e encaixe, origem e "Por que A&M"; à direita, o problema, o que o cliente recebe, como funciona, o produto em números, papel da IA, como vira produto, ferramentas e dados, skills e fontes. As letras têm o mesmo tamanho em todas as fichas (dois degraus); o ajuste ao palco fica nos espaçamentos.
 
+## Modelos da apresentação DTS Tech M&A
+
+Quatro telas da apresentação de referência serviram de modelo:
+
+| Modelo de referência | Onde está no portfólio |
+|---|---|
+| "Todo risco de TI vira preço, multa ou valor perdido" (rede de nós) | Slide 4 · Forças de mercado. Cada força acende as exigências do cliente que puxa, e o painel mostra número, fonte, leitura DTS e os produtos que respondem. No PDF, uma página extra traz as seis forças completas. |
+| "Um sistema, não um catálogo" (colunas ligadas a um fio) | Slide 9 · One-page. Colunas por pilar com cards de produto, conectores até o fio laranja e a base "Plataforma de Dados e AI". O spotlight e o modo "Nome de hoje" continuam. |
+| "Tech M&A Playbook" (página de produto) | As 24 fichas de produto. |
+| "Separar sem parar" (grafo que muda de forma e cards) | Slides 11, 13, 15 e 17 · Produtos por pilar. Na 1ª vista, o grafo em três estados (Hoje → Produtos → Com IA) e os cards com "Evolui de". Na 2ª vista, o antes e depois linha a linha. |
+
 ## Novo portfólio · resumo
 
 | Pilar | Manter | Aprimorar com IA | Criar com IA |
