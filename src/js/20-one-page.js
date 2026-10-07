@@ -1,12 +1,14 @@
 /* Arquivo carregado depois de engine.js, data.js, core.js e slides.js (ver build.py). */
-/* ---------- origem de cada produto (nome de hoje) ---------- */
-const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strategy & Roadmapping","1.3":"de Interim CIO/CTO + Embedded Leadership + C-Level","1.4":"de Operating Model Design & Tech Org Restructuring","1.5":"de Tech Spend Optimization","1.6":"de Strategic Tech Tax + Innovation Tax Incentives","1.7":"novo · produto com IA",
- "2.1":"de IT Sourcing (Software & Vendor) Selection","2.2":"de ERP Readiness & Gap Analysis","2.3":"de TMO + Modelo de Implantação e Governança","2.4":"de Project Remediation","2.5":"de Gestão de Mudanças Tech","2.6":"novo · produto com IA",
- "3.1":"de IT Due Diligence (Buy Side + Sell Side)","3.2":"de Integration & Separation Planning + Separation Design","3.3":"de IT Integration MO + IT Separation MO","3.4":"de IT Synergies & Value Creation","3.5":"novo · absorve o IT M&A Playbook",
- "4.1":"de Strategy Architecture","4.2":"de Strategy Application","4.3":"de Infrastructure Management","4.4":"de Complex Migrations Support","4.5":"de IT Resilience & BCP (vem do Pilar 1)","4.6":"novo · produto com IA"};
+/* ---------- origem de cada produto (nome de hoje): gerada de OLD, com os nomes oficiais do portfólio atual ---------- */
+const ORG={};PRODUCTS.forEach(p=>{const rk=o=>o.d==="cut"?2:o.d==="merge"?1:0,os=OLD.filter(o=>o.to===p.code).sort((a,b)=>rk(a)-rk(b));
+  const nm=o=>o.n+(o.p!==p.pillar?` (Pilar ${o.p})`:"");
+  ORG[p.code]=p.st==="new"?(os.length?`novo · absorve o ${os.map(o=>o.n).join(" + ")}`:"novo · produto com IA"):`de ${os.map(nm).join(" + ")}`});
+/* frase "serviços → produtos" por pilar, calculada dos dados (quem fica, quem chega de outro pilar, quantos são novos) */
+const pillarFlow=pl=>{const n=pl.n,own=OLD.filter(o=>o.p===n),stay=own.filter(o=>PBY(o.to).pillar===n).length,inn=OLD.filter(o=>o.p!==n&&o.d!=="cut"&&PBY(o.to).pillar===n),nw=PRODUCTS.filter(p=>p.pillar===n&&p.st==="new").length;
+  return`${stay===own.length?`Os ${own.length} serviços de hoje`:`${stay} dos ${own.length} serviços de hoje`}${inn.length?`, mais ${inn.length} vindo do Pilar ${inn[0].p},`:""}${nw?` e ${nw} novo`:""} formam ${pl.now} produtos`};
 
 /* ---------- one-page TO-BE · sistema de produtos (fx 18 · Connector / Flow Line) + spotlight ----------
-   Colunas por pilar → conector de cada coluna → fio laranja → Plataforma de Dados e AI.
+   Colunas por pilar → conector de cada coluna → fio laranja → Plataforma de Dados e IA.
    Os conectores se desenham na entrada e passam a fluir; o mouse num produto acende a linha do pilar. */
 (function(){const KEY="One-page · novo portfólio",sec=slides.find(s=>s.dataset.t===KEY),host=$("opHost"),svg=$("opSvg"),g=$("opGrid"),base=$("opAI");
   const ROWS=Math.max(...PILLARS.map(pl=>PRODUCTS.filter(p=>p.pillar===pl.n).length));
@@ -18,12 +20,13 @@ const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strateg
   /* colunas por pilar: cabeçalho grande + subtítulo mono; tiles com ícone, nome, frase e etiqueta */
   PILLARS.forEach(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n);
     const col=H("div",{class:"sy-col",id:"opc"+pl.n,"data-a":"up",style:`--d:${pl.n*1.5}`},g);
-    col.innerHTML=`<div class="sy-mo"><span class="sy-n"><span>Pilar ${pl.n}</span><i data-tv="Pilar ${pl.n} · ${pl.name}" data-tl="${pl.was} serviços de hoje viram ${pl.now} produtos no novo portfólio.">${pl.was} serviços → ${pl.now} produtos</i></span><b>${pl.name}</b><span class="sy-sub"><span class="v1">${pl.short}</span><span class="v2">hoje: ${pl.official}</span></span></div>`;
+    col.innerHTML=`<div class="sy-mo"><span class="sy-n"><span>Pilar ${pl.n}</span><i data-tv="Pilar ${pl.n} · ${pl.name}" data-tl="${pillarFlow(pl)} no novo portfólio.">${pl.was} serviços → ${pl.now} produtos</i></span><b>${pl.name}</b><span class="sy-sub"><span class="v1">${pl.short}</span><span class="v2">hoje: ${pl.official}</span></span></div>`;
     const list=H("div",{class:"sy-list",style:`--rows:${ROWS}`},col);
     ps.forEach((p,k)=>{const a=H("a",{href:"#p="+p.id,"data-pd":p.id,"data-pl":pl.n,class:`sy-t ${p.st}${p.st==="new"?" holo":""}`,style:`--hd:${(k*.7).toFixed(1)}s`,
         "data-tv":`${p.code} · ${p.name}`,"data-th":`<span class="tl"><b>Proposta</b>${p.tagline}</span><span class="tl">${orgTip(p.code)}</span><span class="tl"><b>Status</b>${STATUS[p.st][0]}${p.sig?" · ★ A&amp;M Signature":""}</span><span class="tl">Clique para abrir a ficha.</span>`},list);
       a.innerHTML=`${picoSvg(p.code,pl.n+k)}<span class="sy-nm"><em>${p.code}</em> · ${p.name}${p.sig?'<span class="sig">★</span>':""}</span><span class="sy-tx"><i class="sy-fl"></i>${stTag(p.st)}<span class="v1">${p.tagline}</span><span class="v2">${ORG[p.code]}</span></span>`});
-    if(ps.length<ROWS){const n=H("div",{class:"sy-note",style:`grid-row:span ${ROWS-ps.length}`},list);n.innerHTML=`<span><b class="label">Proposta</b>${pl.def}</span>${ROWS-ps.length>1?`<span><b class="label">Quando nos contratam</b>${pl.when}</span>`:""}`}});
+    /* linhas livres da coluna: sempre o mesmo bloco (a proposta do pilar); "Quando nos contratam" fica no spotlight dos 4 pilares */
+    if(ps.length<ROWS){const n=H("div",{class:"sy-note",style:`grid-row:span ${ROWS-ps.length}`},list);n.innerHTML=`<span><b class="label">Proposta</b>${pl.def}</span>`}});
   fixPaths(sec);
 
   /* conectores: coluna → fio laranja → faixa base (coordenadas de layout, sem escala do palco) */
@@ -58,10 +61,10 @@ const ORG={"1.1":"de Tech Maturity & Value Assessment","1.2":"de Digital Strateg
 
   /* spotlight: passos e legendas por pilar + plataforma */
   const st=PILLARS.map(pl=>{const ps=PRODUCTS.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg=ps.filter(p=>p.sig),ai=ps.filter(p=>p.st!=="keep").length;
-    return{sel:`#opc${pl.n},#opCon${pl.n},#opDot${pl.n}`,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pl.was} serviços de hoje viram ${pl.now} produtos; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span>${ROWS-ps.length<2?`<span class="sl"><b>Quando nos contratam</b>${pl.when}</span>`:""}`}});
+    return{sel:`#opc${pl.n},#opCon${pl.n},#opDot${pl.n}`,btn:"P"+pl.n,title:`Pilar ${pl.n} · ${pl.name}`,text:`<span class="sl"><b>Serviços → produtos</b>${pillarFlow(pl)}; ${ai} deles com IA no método.</span>${sg.length?`<span class="sl"><b>Signature</b>${sg.map(p=>p.name).join(" · ")}</span>`:""}<span class="sl"><b>Novo com IA</b>${nw.map(p=>p.name).join(" · ")}</span><span class="sl"><b>Proposta</b>${pl.def}</span><span class="sl"><b>Quando nos contratam</b>${pl.when}</span>`}});
   const PLAT=[["O que é","Ativos compartilhados por todos os produtos: diagnóstico padrão, radar de gastos, benchmark Brasil, biblioteca de agentes e LLM corporativo seguro."],["Por que importa","É o que torna o serviço replicável de um cliente para o outro e sustenta a receita recorrente."]];
-  st.push({sel:"#opAI,#opThread",btn:"Plataforma",title:"Plataforma de Dados e AI",text:PLAT.map(([k,v])=>`<span class="sl"><b>${k}</b>${v}</span>`).join(""),capY:330});
-  base.dataset.tv="Plataforma de Dados e AI";base.dataset.th=`<span class="tl"><b>${PLAT[1][0]}</b>${PLAT[1][1]}</span>`;
+  st.push({sel:"#opAI,#opThread",btn:"Plataforma",title:"Plataforma de Dados e IA",text:PLAT.map(([k,v])=>`<span class="sl"><b>${k}</b>${v}</span>`).join(""),capY:330});
+  base.dataset.tv="Plataforma de Dados e IA";base.dataset.th=`<span class="tl"><b>${PLAT[1][0]}</b>${PLAT[1][1]}</span>`;
   const sp=Spotlight(host,st,$("opSeg"));segSync($("opSeg"));
   /* com o spotlight num passo, o que está na penumbra não abre dica (a dica cobriria a legenda); o clique na ficha continua */
   const mute=()=>[...g.querySelectorAll("[data-tv],[data-tv0]"),base].forEach(t=>{const off=sp.cur>=0&&(t===base?sp.cur<4:sp.cur>3||t.closest(".sy-col").id!=="opc"+(sp.cur+1));

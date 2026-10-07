@@ -14,7 +14,7 @@
    {ic:"doc",t:"Reforma Tributária e fim do SAP ECC",x:"Dois prazos com data marcada obrigam a mexer em ERP, fiscal e dados ao mesmo tempo.",v:"01/01/27",vl:"CBS plena; manutenção padrão do SAP ECC termina em 2027",src:"LC 214/2025 · Baguete",imp:"Produtos com prazo e preço fixos: prontidão e resgate de projetos.",ask:["prazo","cmd"],p:["2.2","2.4"]},
    {ic:"hand",t:"Deals liderados por private equity",x:"Menos transações, tickets maiores e fundos em metade dos deals; tecnologia é o setor mais negociado.",v:"50%",vl:"das transações de 2025 com fundos de PE ou VC",src:"KPMG, Fusões e Aquisições 2025 · mar/2026",imp:"Diligência rápida, Dia 1 garantido e sinergias que viram EBITDA.",ask:["prazo","res"],p:["3.1","3.2","3.4"]},
    {ic:"coin",t:"Custo de tecnologia sob escrutínio",x:"O orçamento de TI desacelera, licenças sobem e contratos em dólar pesam no caixa.",v:"8–15×",vl:"alta de licenças VMware após a compra pela Broadcom",src:"Baguete · ABES/IDC (TI +5,3% em 2026)",imp:"Otimização de gastos com economia certificada e radar contínuo.",ask:["res","ind"],p:["1.5","4.3"]},
-   {ic:"shield",t:"Risco operacional e regulação",x:"Ataques à cadeia do Pix e novas regras do Banco Central elevam a exigência sobre terceiros de TI.",v:"R$ 800 mi",vl:"desviados no ataque à C&M Software (jul/2025)",src:"Finsiders · Res. CMN 5.274/2025",imp:"Resiliência, recuperação e avaliação de risco de terceiros.",ask:["ind","cmd"],p:["4.5"]},
+   {ic:"shield",t:"Risco operacional e regulação",x:"Ataques à cadeia do Pix e novas regras do Banco Central elevam a exigência sobre terceiros de TI.",v:"~R$ 800 mi",vl:"desviados no ataque à C&M Software (jul/2025)",src:"Finsiders · Res. CMN 5.274/2025",imp:"Resiliência, recuperação e avaliação de risco de terceiros.",ask:["ind","cmd"],p:["4.5"]},
    {ic:"people",t:"Talento e liderança escassos",x:"Metade das empresas não tem o talento necessário para IA; transações e reestruturações pedem liderança imediata.",v:"53%",vl:"das empresas sem o talento necessário para IA",src:"KPMG Global Tech Report 2026",imp:"Liderança interina e modelo operacional para a era dos agentes.",ask:["cmd"],p:["1.3","1.4"]}];
   /* o que o cliente passa a exigir: critérios da Leitura DTS (prazo, preço e resultado definidos; independência de fornecedor; capacidade de assumir o comando) */
   const A={prazo:["calendar","Prazo e preço fixos"],res:["chart","Resultado medido em R$"],ind:["split","Independência de fornecedor"],cmd:["flag","Capacidade de assumir o comando"]};
@@ -77,11 +77,11 @@
   const idx=slides.indexOf(sl);let act=slides.findIndex(s=>s.classList.contains("active")),from=-1,fresh=true;
   const mo=new MutationObserver(()=>{const a=slides.findIndex(s=>s.classList.contains("active"));if(a===act)return;if(a===idx){from=act;fresh=true}act=a});
   slides.forEach(s=>mo.observe(s,{attributes:true,attributeFilter:["class"]}));
-  /* entrada nova: ← vindo de um slide posterior abre na última força (como as vistas dos outros slides); senão, na primeira.
+  /* entrada nova: aberto pelo ← (goLast, ver core.js) abre na última força, como as vistas dos outros slides; trilha, índice e links abrem na primeira.
      reentrada (fechar uma ficha aberta daqui): mantém a força e a trava, e o → continua de onde parou */
   ENTER["Forças de mercado"]=()=>{hk=null;pv=-1;clearTimeout(hv);
     if(!fresh){lock=true;requestAnimationFrame(()=>{draw();sel(fi,true)});return}
-    fresh=false;lock=false;const i=from>idx?F.length-1:0;requestAnimationFrame(()=>{draw();sel(i)})};
+    fresh=false;lock=false;const i=goLast?F.length-1:0;requestAnimationFrame(()=>{draw();sel(i)})};
   STEP["Forças de mercado"]=d=>{const n=fi+d;if(n<0||n>=F.length)return false;hk=null;pv=-1;lock=true;clearTimeout(hv);sel(n);return true};
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(sl.classList.contains("active"))draw()});
 

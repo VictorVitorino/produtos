@@ -67,13 +67,19 @@ function segSync(sg){if(!sg)return;requestAnimationFrame(()=>{let ind=sg.querySe
    ===================================================================== */
 function BeforeAfter(box,opts){const asis=box.querySelector(".ba-asis"),hd=H("div",{class:"ba-handle"},box);H("div",{class:"ba-knob"},hd,"⇔");const la=H("span",{class:"ba-lab l"},box,opts&&opts.l||"HOJE · AS-IS"),lb=H("span",{class:"ba-lab r"},box,opts&&opts.r||"PROPOSTA · TO-BE");
   let X=100,raf=0,drag=false;const W=()=>box.offsetWidth;
-  function set(p){X=clamp(p,0,100);asis.style.clipPath=`inset(0 ${100-X}% 0 0)`;hd.style.left=X+"%";la.style.opacity=X<14?0:1;lb.style.opacity=X>86?0:1;opts&&opts.onMove&&opts.onMove(X)}
+  const kb=hd.firstChild;
+  function set(p){X=clamp(p,0,100);asis.style.clipPath=`inset(0 ${100-X}% 0 0)`;hd.style.left=X+"%";la.style.opacity=X<14?0:1;lb.style.opacity=X>86?0:1;
+    /* o botão (52px) acompanha o divisor, mas fica sempre inteiro dentro do painel */
+    const w=W(),px=X/100*w,m=33;kb.style.transform=w?`translateX(${(px<m?m-px:px>w-m?w-m-px:0).toFixed(1)}px)`:"";opts&&opts.onMove&&opts.onMove(X)}
   function tween(to,d){cancelAnimationFrame(raf);if(REDMO){set(to);return}const from=X,t0=performance.now(),dd=d||900;const st=t=>{const k=clamp((t-t0)/dd,0,1);set(from+(to-from)*ease.inOut(k));if(k<1)raf=requestAnimationFrame(st)};raf=requestAnimationFrame(st)}
   const toP=e=>{const r=box.getBoundingClientRect();return (e.clientX-r.left)/r.width*100};
   hd.addEventListener("pointerdown",e=>{drag=true;hd.setPointerCapture(e.pointerId);cancelAnimationFrame(raf);e.stopPropagation()});
   hd.addEventListener("pointermove",e=>{if(drag)set(toP(e))});hd.addEventListener("pointerup",()=>drag=false);hd.addEventListener("pointercancel",()=>drag=false);
   box.addEventListener("click",e=>{if(e.target.closest(".tobe-card,.ba-handle,a,button"))return;tween(toP(e),500)});
-  box.tabIndex=0;box.addEventListener("keydown",e=>{if(e.key==="ArrowLeft"){set(X-2);e.stopPropagation();e.preventDefault()}else if(e.key==="ArrowRight"){set(X+2);e.stopPropagation();e.preventDefault()}});
+  /* teclado: Tab dá foco ao painel e as setas movem o divisor; clique ou arrasto com o mouse não prende as setas do deck,
+     e nas pontas (0% ou 100%) a seta segue para a navegação normal */
+  box.tabIndex=0;box.addEventListener("pointerup",()=>{if(document.activeElement===box)box.blur()});
+  box.addEventListener("keydown",e=>{const d=e.key==="ArrowLeft"?-1:e.key==="ArrowRight"?1:0;if(!d||(d<0&&X<=0)||(d>0&&X>=100))return;set(X+2*d);e.stopPropagation();e.preventDefault()});
   set(100);return{set,tween,get x(){return X},demo(){set(100);setTimeout(()=>tween(opts&&opts.rest!=null?opts.rest:36,1600),900)}}}
 
 /* =====================================================================
@@ -87,7 +93,7 @@ function CardStack(scene,cards,dotsHost,onChange){let order=cards.map((_,i)=>i);
   els.forEach(el=>{let sx=0,dx=0,dn=false;el.addEventListener("pointerdown",e=>{if(el.style.pointerEvents==="none")return;dn=true;sx=e.clientX;dx=0;el.setPointerCapture(e.pointerId);el.style.transition="none"});
     el.addEventListener("pointermove",e=>{if(!dn)return;dx=(e.clientX-sx)/(scene.getBoundingClientRect().width/scene.offsetWidth);el.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`});
     el.addEventListener("pointerup",()=>{if(!dn)return;dn=false;el.style.transition="";if(Math.abs(dx)>80||Math.abs(dx)<4)next();else layout()})});
-  layout();return{next,prev,reset(){order=cards.map((_,i)=>i);layout()}}}
+  layout();return{next,prev,reset(){order=cards.map((_,i)=>i);layout()},get top(){return order[0]}}}
 
 /* =====================================================================
    EFEITO · TIMELINE MOTION

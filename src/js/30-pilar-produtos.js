@@ -5,49 +5,57 @@
        estados (Hoje · Produtos · Com IA), cards dos produtos e "O que muda"
    2 · Antes e depois (fx 37 · Before / After): comparação linha a linha
    ===================================================================== */
-function pillarNotes(n){return{1:["3 ofertas de liderança viram 1 (Interim & Embedded)","Tax + incentivos viram 1 produto com A&M Tax","Resiliência migra para o Pilar 4","Novo: AI Value & Governance Office"],
- 2:["TMO + Modelo de Implantação viram o Predictive Transformation Office","ERP Readiness incorpora a Reforma Tributária","IT Business Partner sai (vai para 1.3)","Novo: AI-Native IT Productivity"],
- 3:["8 fases viram 4 produtos + 1 assinatura","DD buy + sell = 1 produto, 3 níveis","IMO + SMO = 1 escritório","Playbook vira motor do PE Tech Value Radar"],
- 4:["Nomes pelo que entregam (‘Strategy Application’ → Portfolio Rationalization)","Infra deixa de soar como serviço gerenciado","Resiliência chega do Pilar 1","Novo: Legacy X-Ray & AI Modernization"]}[n]}
+/* "O que muda": frases curtas; produtos citados pelo código (o nome completo aparece na dica e o código abre a ficha) */
+function pillarNotes(n){return{1:["3 ofertas de liderança viram o 1.3","Tax e incentivos viram o 1.6, com A&M Tax","Resiliência muda para o Pilar 4 (4.5)","Novo: AI Value & Governance Office"],
+ 2:["TMO e Modelo de Implantação e Governança → 2.3","ERP Readiness & Gap Analysis incorpora a Reforma","IT Business Partner sai para o 1.3 (Pilar 1)","Novo: AI-Native IT Productivity"],
+ 3:["8 fases viram 4 produtos + 1 assinatura","DD de compra e venda: 1 produto (3.1)","IMO e SMO: 1 escritório (3.3)","IT M&A Playbook vira o motor do 3.5"],
+ 4:["4 serviços renomeados pelo que entregam","Infra vira advisory de decisão e custo (4.3)","Resiliência chega do Pilar 1 (4.5)","Novo: Legacy X-Ray & AI Modernization"]}[n]}
+/* código de produto dentro de um texto → link para a ficha, com o nome completo na dica */
+const codeLink=x=>x.replace(/\b([1-4]\.[1-7])\b/g,(m,c)=>{const p=PBY(c);return p?`<a href="#p=${p.id}" data-pd="${p.id}" class="xr" data-tv="${p.code} · ${p.name}" data-tl="Clique para abrir a ficha.">${c}</a>`:m});
+/* sobreposição: o motivo vem do data.js (mesmo comprador no 1.3 e no 2.3; mesma disciplina em sentidos opostos no Pilar 3) */
+const OVL={"1.3":"3 ofertas de liderança para o mesmo comprador","1.6":"2 serviços de impostos e incentivos","2.3":"mesmo comprador e mesmo método","3.1":"mesmo método em direções opostas (compra × venda)","3.2":"mesmo método em direções opostas (integração × separação)","3.3":"mesma disciplina em sentidos opostos (IMO × SMO)"};
 
 /* ---------- vista 2 · before / after por pilar ---------- */
 const BAPX={};
 document.querySelectorAll(".bap").forEach(host=>{const n=+host.dataset.pillar,pl=PILLARS[n-1],ps=PRODUCTS.filter(p=>p.pillar===n);
   const rows=ps.map(p=>({p,olds:OLD.filter(o=>o.to===p.code)}));const out=OLD.filter(o=>o.p===n&&!ps.some(p=>p.code===o.to));const R=rows.length+out.length;
-  const DN={keep:"Manter",ai:"Remodelar",merge:"Fundir",cut:"Retirar"};
-  const asisRow=r=>{if(!r.olds.length)return`<div class="c a"><div class="asis-none">não existe hoje</div></div><div class="c b"><div class="why"><b>Lacuna:</b> ${strip(r.p.pain[0])}.</div></div>`;
-    const prim=r.olds.find(o=>o.d!=="merge"&&o.d!=="cut")||r.olds[0];
-    return`<div class="c a">${r.olds.map(o=>`<span class="asis-chip ${o.d}">${o.n}${o.p!==n?` <i>(Pilar ${o.p})</i>`:""}</span>`).join("")}</div><div class="c b"><div class="why">${r.olds.length>1?`<b>Sobreposição:</b> ${r.olds.length} serviços para o mesmo comprador. `:""}${prim.w}</div><span class="dec">${[...new Set(r.olds.map(o=>DN[o.d]))].join(" + ")}</span></div>`};
+  const DN={keep:"Manter",ai:"Aprimorar com IA",merge:"Fundir",cut:"Retirar"};
+  /* terceira coluna (só na impressão): o produto proposto da linha, para a página ler "hoje · diagnóstico · proposta" sem o divisor */
+  const prop=p=>`<div class="c p"><span class="tb-code">${p.code}</span><b>${p.name}</b>${stTag(p.st)}</div>`;
+  const asisRow=r=>{if(!r.olds.length)return`<div class="c a"><div class="asis-none">não existe hoje</div></div><div class="c b"><div class="why"><b>Lacuna:</b> ${strip(r.p.pain[0])}.</div></div>${prop(r.p)}`;
+    const prim=r.olds.find(o=>o.d!=="merge"&&o.d!=="cut")||r.olds[0],own=r.olds.filter(o=>o.p===n&&o.d!=="cut");
+    return`<div class="c a">${r.olds.map(o=>`<span class="asis-chip ${o.d}">${o.n}${o.p!==n?` <i>(Pilar ${o.p})</i>`:""}</span>`).join("")}</div><div class="c b"><div class="why">${own.length>1&&OVL[r.p.code]?`<b>Sobreposição:</b> ${OVL[r.p.code]}. `:""}${prim.w}</div><span class="dec">${[...new Set(r.olds.map(o=>DN[o.d]))].join(" + ")}${r.olds.some(o=>o.p!==n&&o.d!=="cut")?` · vem do Pilar ${r.olds.find(o=>o.p!==n).p}`:""}</span></div>${prop(r.p)}`};
   const tobeRow=r=>{const p=r.p;return`<div class="c a"><div class="tb-code">${p.code}</div>${stTag(p.st)}${p.sig?'<span class="sig2">★ Signature</span>':""}</div><a class="c b tb" href="#p=${p.id}" data-pd="${p.id}"><div class="tb-nm">${p.name}<span class="more">ficha ›</span></div><div class="tb-tl">${p.tagline}</div><div class="tb-ai"><b>IA</b> ${strip(p.ai[0])}</div></a>`};
-  const outAsis=o=>`<div class="c a"><span class="asis-chip ${o.d}">${o.n}</span></div><div class="c b"><div class="why">${o.w}</div><span class="dec">${o.d==="cut"?"Retirar":"Transferir"}</span></div>`;
-  const outTobe=o=>{const d=PBY(o.to);return`<div class="c a"><span class="st ${o.d==="cut"?"cut":"merge"}">${o.d==="cut"?"Retirado":"Transferido"}</span></div><a class="c b tb" href="#p=${d.id}" data-pd="${d.id}"><div class="tb-nm" style="font-size:13px;color:var(--steel-200)">→ ${o.d==="cut"?"Absorvido por":"Agora no Pilar "+d.pillar+":"} ${d.code} ${d.name}</div><div class="tb-tl">${o.n} ${o.d==="cut"?"deixa de ser vendido isolado.":"muda de pilar."}</div></a>`};
-  const head=(a,b)=>`<div class="c hd a">${a}</div><div class="c hd b">${b}</div>`;
+  const outAsis=o=>{const d=PBY(o.to);return`<div class="c a"><span class="asis-chip ${o.d}">${o.n}</span></div><div class="c b"><div class="why">${o.w}</div><span class="dec">${o.d==="cut"?"Retirar":`${DN[o.d]} · muda para o Pilar ${d.pillar}`}</span></div><div class="c p"><span class="tb-code">${d.code}</span><b>${d.name}</b><i>${o.d==="cut"?"absorvido":"Pilar "+d.pillar}</i></div>`};
+  const outTobe=o=>{const d=PBY(o.to);return`<div class="c a"><span class="st ${o.d==="cut"?"cut":"merge"}">${o.d==="cut"?"Retirar":"Muda de pilar"}</span></div><a class="c b tb" href="#p=${d.id}" data-pd="${d.id}"><div class="tb-nm" style="font-size:13px;color:var(--steel-200)">→ ${o.d==="cut"?"Absorvido por":"Agora no Pilar "+d.pillar+":"} ${d.code} ${d.name}</div><div class="tb-tl">${o.n} ${o.d==="cut"?"deixa de ser vendido isolado.":"muda de pilar."}</div></a>`};
+  const head=(a,b,c)=>`<div class="c hd a">${a}</div><div class="c hd b">${b}</div>${c?`<div class="c hd p">${c}</div>`:""}`;
   const grid=`grid-template-rows:30px repeat(${R},1fr)`;
   host.innerHTML=`<div class="ba" data-a="fade" style="--d:3;height:100%">
      <div class="ba-layer ba-tobe"><div class="ba-grid" style="${grid}">${head("Status","Produto proposto · papel da IA")}${rows.map(tobeRow).join("")}${out.map(outTobe).join("")}</div></div>
-     <div class="ba-layer ba-asis"><div class="ba-grid" style="${grid}">${head("Serviço atual","Diagnóstico · por que mudar")}${rows.map(asisRow).join("")}${out.map(outAsis).join("")}</div></div>
+     <div class="ba-layer ba-asis"><div class="ba-grid" style="${grid}">${head("Serviço atual","Diagnóstico · por que mudar","Produto proposto")}${rows.map(asisRow).join("")}${out.map(outAsis).join("")}</div></div>
    </div>
    <div class="ba-side" data-a="right" style="--d:5">
      <div class="seg ba-seg"><button data-v="100">Hoje</button><button data-v="38.5" class="on">Lado a lado</button><button data-v="0">Proposta</button></div>
      <div class="card nv count"><span class="label">Pilar ${n} · ${pl.name}</span><div class="big">${pl.was} → ${pl.now}</div><span class="small">serviços → produtos</span></div>
      <div class="card">${["keep","ai","new"].map(k=>{const c=ps.filter(p=>p.st===k).length;return`<div class="bar-r"><span>${STATUS[k][0]}</span><i><b class="${k}" style="width:${c/ps.length*100}%"></b></i><em>${c}</em></div>`}).join("")}</div>
-     <div class="card soft chg"><span class="label">O que muda</span><ul>${pillarNotes(n).map(x=>`<li>${x}</li>`).join("")}</ul></div>
-     ${ps.filter(p=>p.st==="new").map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="nw holo"><span class="label">★ Novo com IA · ${p.code}</span><h4>${p.name}</h4><p>${p.kpis[0][0]} ${strip(p.kpis[0][1]).replace(/\s*\[E[^\]]*\]/g,"")}</p></a>`).join("")}
+     <div class="card soft chg"><span class="label">O que muda</span><ul>${pillarNotes(n).map(x=>`<li>${codeLink(x)}</li>`).join("")}</ul></div>
+     ${ps.filter(p=>p.st==="new").map(p=>`<a href="#p=${p.id}" data-pd="${p.id}" class="nw holo"><span class="label">✦ Novo com IA · ${p.code}</span><h4>${p.name}</h4><p>${p.kpis[0][0]} ${strip(p.kpis[0][1]).replace(/\s*\[E[^\]]*\]/g,"")}</p></a>`).join("")}
    </div>`;
   let lastOn="";const ba=BeforeAfter(host.querySelector(".ba"),{rest:38.5,onMove:x=>{let k="";host.querySelectorAll(".ba-seg button").forEach(b=>{const on=Math.abs(+b.dataset.v-x)<3;b.classList.toggle("on",on);if(on)k=b.dataset.v});if(k!==lastOn){lastOn=k;segSync(host.querySelector(".ba-seg"))}}});BAS[n]=ba;
   const sg=host.querySelector(".ba-seg");sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{ba.tween(+b.dataset.v,800);sg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));segSync(sg)});
   BAPX[n]={ba,sg}});
 
-/* impressão: o antes/depois dos pilares sai com o divisor em "Hoje" (serviço + diagnóstico por linha);
-   a proposta (produto, status, tagline e IA) já está impressa na vista 1 */
-PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?50:BAPX[k]?100:38.5)));
+/* impressão: o antes/depois dos pilares vira uma tabela "serviço · diagnóstico · produto proposto" (camada "Hoje" sem divisor,
+   com a coluna de produto que só aparece no papel); o slide 8 sai na "Proposta" (o "Hoje" completo está no slide 3).
+   A camada que não aparece sai do papel, para o texto do PDF não misturar as duas */
+PRINT.push(()=>Object.entries(BAS).forEach(([k,b])=>b.set(k==="hb"?0:100)));
 
 /* ---------- vista 1 · grafo que muda de forma + cards de produto ---------- */
 const PPG={};
 /* frase-resumo por estado: Hoje · Produtos narram o movimento do grafo (o terceiro, Com IA, é calculado dos dados).
    Nomes compostos ficam inteiros na mesma linha (span.nw) */
 const PP_CAP={
- 1:["10 serviços e 2 sobreposições: 3 ofertas de liderança (Interim CIO/CTO, Embedded e <span class='nw'>C-Level Enablement</span>) e 2 de impostos e incentivos.",
+ 1:["10 serviços e 2 sobreposições: 3 ofertas de liderança (<span class='nw'>Interim CIO / CTO Leadership</span>, <span class='nw'>Embedded Tech Leadership</span> e <span class='nw'>C-Level Tech Enablement</span>) e 2 de impostos e incentivos.",
     "As 3 ofertas de liderança e o IT Business Partner (Pilar 2) formam o 1.3, os 2 serviços de impostos formam o 1.6 e a resiliência sai para o 4.5, no Pilar 4."],
  2:["7 serviços: TMO e Modelo de Implantação e Governança têm o mesmo comprador e o mesmo método, e o IT Business Partner tem baixa diferenciação.",
     "TMO e Modelo de Implantação se fundem no 2.3; o IT Business Partner sai para a liderança embarcada (1.3, Pilar 1) e o 2.6 nasce no lugar tracejado."],
@@ -66,7 +74,7 @@ document.querySelectorAll(".pp").forEach(host=>{
   const own=OLD.filter(o=>o.p===n),inn=OLD.filter(o=>o.p!==n&&PBY(o.to)&&PBY(o.to).pillar===n),svcs=own.concat(inn);
   const outs=own.filter(o=>PBY(o.to).pillar!==n);
   const grp={};own.forEach(o=>(grp[o.to]=grp[o.to]||[]).push(o));const overl=Object.values(grp).filter(g=>g.length>1);
-  const DN={keep:"Manter",ai:"Remodelar",merge:"Fundir",cut:"Retirar"};
+  const DN={keep:"Manter",ai:"Aprimorar com IA",merge:"Fundir",cut:"Retirar"};
   const CAP=[...PP_CAP[n],ppCapAI(n)];
   const lead=sec.querySelector(".pp-lead");if(lead)lead.textContent=pl.def;
 
@@ -91,7 +99,7 @@ document.querySelectorAll(".pp").forEach(host=>{
       </div>
       <div class="pp-prods n${ps.length}">${ps.map(card).join("")}</div>
     </div>
-    <div class="pp-out" data-a="up" style="--d:${4+ps.length}"><span class="label">O que muda</span><div>${notes.map(x=>{const p=ps.find(q=>q.st==="new"&&x.includes(q.name));return p?`<a href="#p=${p.id}" data-pd="${p.id}">${x}</a>`:`<span>${x}</span>`}).join("")}</div></div>`;
+    <div class="pp-out" data-a="up" style="--d:${4+ps.length}"><span class="label">O que muda</span><div>${notes.map(x=>{const p=ps.find(q=>q.st==="new"&&x.includes(q.name));return p?`<a href="#p=${p.id}" data-pd="${p.id}">${x}</a>`:`<span>${codeLink(x)}</span>`}).join("")}</div></div>`;
   fixPaths(host);
 
   /* ---- grafo ---- */
@@ -110,7 +118,7 @@ document.querySelectorAll(".pp").forEach(host=>{
   node("h0","h0",`Pilar ${n} · hoje`,null,`Pilar ${n} · ${pl.name} · hoje`,tl("Serviços",`${own.length} no portfólio atual`)+tl("Proposta",`${pl.now} produtos`),null);
   ps.forEach(p=>node("p:"+p.code,"hub",p.code,null,`${p.code} · ${p.name}`,tl("Status",STATUS[p.st][0]+(p.sig?" · ★ Signature":""))+tl("Produto",p.tagline)+tl("IA",strip(p.ai[0]))+tl("Ficha","clique para abrir"),p.id));
   svcs.forEach(o=>{const d=PBY(o.to),fo=o.p!==n,mv=d.pillar!==o.p;
-    const dec=fo?(o.d==="cut"?`Retirar no Pilar ${o.p} e absorver aqui`:`Transferir do Pilar ${o.p} para cá`):(d.pillar!==n?(o.d==="cut"?`Retirar · absorvido no Pilar ${d.pillar}`:`Transferir para o Pilar ${d.pillar}`):DN[o.d]);
+    const dec=fo?(o.d==="cut"?`Retirar no Pilar ${o.p} e absorver aqui`:`${DN[o.d]} · vem do Pilar ${o.p}`):(d.pillar!==n?(o.d==="cut"?`Retirar · absorvido no Pilar ${d.pillar}`:`${DN[o.d]} · muda para o Pilar ${d.pillar}`):DN[o.d]);
     node("s:"+o.id,"sv",o.n+(fo?` · Pilar ${o.p}`:""),o,o.n+(fo?` (Pilar ${o.p})`:""),tl("Decisão",dec)+tl("Destino",`${d.code} ${d.name}${mv?` · Pilar ${d.pillar}`:""}`)+tl("Por quê",o.w),d.id)});
   outs.forEach(o=>{const d=PBY(o.to);if(!NODES["x:"+d.code])node("x:"+d.code,"xn",`${d.code} · Pilar ${d.pillar}`,null,`${d.code} · ${d.name}`,tl("Pilar",`${d.pillar} · ${PILLARS[d.pillar-1].name}`)+tl("Ficha","clique para abrir"),d.id)});
   const ctx=document.createElement("canvas").getContext("2d");
@@ -237,7 +245,7 @@ document.querySelectorAll(".pp").forEach(host=>{
   const idle=f=>window.requestIdleCallback?requestIdleCallback(f,{timeout:1500}):setTimeout(f,120);
   (document.fonts&&document.fonts.load?Promise.all(Object.values(FONT).concat(GETF).map(f=>document.fonts.load(f))):Promise.resolve()).then(()=>idle(relay),()=>idle(relay));
   const G=PPG[n]={to,seg,focus,fill:fillGet,get cur(){return cur},stop(){clearTimeout(tm)},
-    enter(){clearTimeout(tm);fillGet();if(REDMO){to(1,true);return}to(0,true);tm=setTimeout(()=>to(1),1500)}};
+    enter(){clearTimeout(tm);fillGet();to(0,true)}};
 
   /* ---- duas vistas: entrada, passos e demo do divisor quando a vista 2 aparece ---- */
   const panes=[...sec.querySelectorAll(":scope > .body.pane")],v2=panes[1],B=BAPX[n];let lastDemo=-1e9;
@@ -250,7 +258,7 @@ document.querySelectorAll(".pp").forEach(host=>{
     if(el===v2){G.stop();demo()}else segSync(seg)})});
   panes.forEach(p=>mo.observe(p,{attributes:true,attributeFilter:["class"],attributeOldValue:true}));
   ENTER[t]=()=>{const Pn=PANE[t];if(!Pn||Pn.k===0){G.enter();return}G.stop();G.to(2,true);demo()};
-  /* → avança Hoje → Produtos → Com IA e depois troca de vista; ← na vista 1 volta de Com IA para Produtos e então sai */
-  STEP[t]=d=>{const Pn=PANE[t];if(Pn&&Pn.k!==0)return false;if(d>0&&G.cur<2){G.stop();G.to(G.cur+1);return true}if(d<0&&G.cur>1){G.stop();G.to(G.cur-1);return true}return false};
+  /* → avança Hoje → Produtos → Com IA e depois troca de vista; ← na vista 1 volta Com IA → Produtos → Hoje e então sai */
+  STEP[t]=d=>{const Pn=PANE[t];if(Pn&&Pn.k!==0)return false;if(d>0&&G.cur<2){G.stop();G.to(G.cur+1);return true}if(d<0&&G.cur>0){G.stop();G.to(G.cur-1);return true}return false};
 });
 PRINT.push(()=>Object.values(PPG).forEach(G=>{G.stop();G.to(2,true)}));
