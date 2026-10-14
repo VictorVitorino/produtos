@@ -200,6 +200,106 @@ body.print .slide{border-radius:0;box-shadow:none} body.print *{animation:none!i
 .cat.on{background:#fff;color:var(--navy)}
 .rres a{color:var(--peach);font:700 17px var(--serif);text-decoration:none}
 .rres a:hover{text-decoration:underline}
+/* ---------- v3: delegar ---------- */
+.pdx{border-radius:12px;padding:12px 16px;background:#fff;border:1px solid var(--soft-gray)}
+.pdx h4{font:700 19px var(--serif);display:flex;align-items:center;gap:8px;color:var(--navy)}
+.pdx p{font-size:14px;line-height:1.42;margin-top:6px}
+.pdx.d{background:var(--navy);border-color:var(--navy);color:#fff} .pdx.d h4{color:var(--peach)} .pdx.d p{color:#d2dfea}
+.pdx.k{background:var(--peach);border-color:#F3BD84}
+.kick2{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.kick2 span{font:700 11.5px var(--mono);background:var(--navy);color:#fff;border-radius:6px;padding:5px 8px}
+.why2{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1}
+.why2>div{display:grid;grid-template-columns:38px 1fr;grid-template-rows:auto 1fr;column-gap:10px;background:var(--paper-hi);border-radius:10px;padding:12px;border:1px solid var(--soft-gray)}
+.why2 i{grid-row:span 2;font-style:normal;font-size:22px;width:38px;height:38px;border-radius:10px;background:#fff;display:grid;place-items:center;border:1px solid var(--soft-gray)}
+.why2 b{font:700 16.5px var(--serif);color:var(--navy)}
+.why2 span{font-size:13px;line-height:1.38;color:var(--ink)}
+.why2 .hl{background:var(--navy);border-color:var(--navy)} .why2 .hl b{color:var(--peach)} .why2 .hl span{color:#d2dfea} .why2 .hl i{background:var(--orange);border-color:var(--orange)}
+.pm{margin-bottom:12px}
+.pm .h{display:flex;justify-content:space-between;font:700 14px var(--serif);color:var(--navy);margin-bottom:5px}
+.pm .h small{font:400 11px var(--sans);color:var(--muted)}
+.pm .r{display:grid;grid-template-columns:1fr 54px;gap:8px;align-items:center;margin-bottom:4px}
+.pm .r div{height:16px;border-radius:4px;animation:grow .9s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
+.pm .r b{font:700 13px var(--mono);text-align:right}
+.legend2{display:flex;gap:14px;font:400 12px var(--sans);color:var(--muted);letter-spacing:0;text-transform:none;margin-top:4px}
+.legend2 i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+/* ---------- v3: hiper performance ---------- */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:none}
+.plan{text-align:left;border:2px solid var(--soft-gray);background:#fff;border-radius:12px;padding:10px 14px;cursor:pointer;display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;transition:.2s;font-family:var(--sans)}
+.plan:hover{border-color:var(--steel)}
+.plan .pn{font:700 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--orange-dk)}
+.plan .pt2{font:700 20px var(--serif);color:var(--navy)}
+.plan .pp{grid-row:span 3;font:700 26px var(--serif);color:var(--navy);text-align:right}
+.plan .pp small{display:block;font:400 11px var(--sans);color:var(--muted)}
+.plan .pd2{font-size:12px;color:var(--muted)}
+.plan.on{background:var(--navy);border-color:var(--orange);box-shadow:0 8px 20px rgba(0,43,73,.25)}
+.plan.on .pt2,.plan.on .pp{color:#fff} .plan.on .pd2,.plan.on .pp small{color:#aec2d4}
+.cr{display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:center}
+.cr>span{font-size:13px;font-weight:600;color:var(--navy);line-height:1.2}
+.cr>span small{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.cb{display:flex;flex-direction:column;gap:3px}
+.cb div{display:grid;grid-template-columns:1fr 46px;gap:8px;align-items:center}
+.cb div i{display:block;height:9px;border-radius:3px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.cb div b{font:700 11.5px var(--mono);text-align:right}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kp{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:10px 12px}
+.kp b{display:block;font:700 30px/1 var(--serif);color:var(--navy)}
+.kp span{font-size:11.5px;color:var(--muted);line-height:1.25;display:block;margin-top:4px}
+.kp.hot{background:var(--orange);border-color:var(--orange)} .kp.hot b{color:var(--navy)} .kp.hot span{color:var(--navy)}
+.inp{font:400 11px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
+.inp input{width:58px;font:700 12px var(--mono);border:1px solid var(--soft-gray);border-radius:5px;padding:2px 4px;color:var(--navy)}
+.rg2{margin-bottom:10px}
+.rg2 .h{display:flex;justify-content:space-between;font:700 14px var(--serif);color:var(--navy);margin-bottom:4px}
+.rg2 .h em{font-style:normal;font:700 13px var(--mono);color:var(--green)}
+.rg2 .r{display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;font-size:12px;margin-bottom:3px}
+.rg2 .r i{display:block;height:14px;border-radius:3px;transition:width .6s}
+.rg2 .r b{font:700 12px var(--mono);text-align:right}
+.cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cmp div{background:var(--paper-hi);border:1px solid var(--soft-gray);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
+.cmp div.on{background:var(--navy);border-color:var(--orange)} .cmp div.on *{color:#fff}
+.cmp span{font:700 12px var(--serif);color:var(--navy)} .cmp b{font:700 18px var(--serif);color:var(--navy);margin-top:4px} .cmp div.on b{color:var(--orange)} .cmp small{font-size:10.5px;color:var(--muted)}
+.prof{flex:none;display:grid;grid-template-columns:200px 1.4fr 1fr;gap:18px;align-items:center;background:var(--navy);border-radius:12px;padding:12px 18px;color:#fff}
+.prof .pt b{display:block;font:700 11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--light-blue)}
+.prof .pt span{font:700 19px/1.15 var(--serif)} .prof .pt em{font-style:normal;color:var(--orange)}
+.pbars{display:flex;flex-direction:column;gap:6px}
+.pb{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:center;font-size:12px;color:#aec2d4}
+.pb div{display:flex;height:22px;border-radius:5px;overflow:hidden}
+.pb i{font-style:normal;font:700 10.5px var(--sans);color:var(--navy);display:flex;align-items:center;padding-left:6px;white-space:nowrap;overflow:hidden}
+.ptr{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#d2dfea}
+.ptr b{color:var(--peach)}
+/* ---------- v3: ferramentas ---------- */
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:none}
+.tl{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border-top:5px solid var(--navy)}
+.tl.gpt{border-top-color:#10735B}
+.tl .th2{display:flex;align-items:center;gap:10px}
+.tl .th2 i{font-style:normal;font-size:20px;width:36px;height:36px;border-radius:9px;background:var(--ice);display:grid;place-items:center}
+.tl .th2 b{font:700 18px/1.05 var(--serif);color:var(--navy)}
+.tl .th2 span{display:block;font-size:11.5px;color:var(--muted)}
+.tl ul{list-style:none;font-size:12.8px;line-height:1.35;display:flex;flex-direction:column;gap:3px}
+.tl li:before{content:"→ ";color:var(--orange);font-weight:700}
+.tl .ft2{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px;border-top:1px dotted var(--soft-gray);font-size:11.5px;color:var(--muted)}
+.tok{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px}
+.tok.p{background:#D6EFE5;color:#1d6b50} .tok.m{background:var(--peach);color:#8a4b0c} .tok.h{background:var(--red-soft);color:#9a3a26}
+.mt2{width:100%;border-collapse:separate;border-spacing:0 5px;font-size:13px}
+.mt2 th{font:700 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--steel-dark);text-align:left;padding:0 10px}
+.mt2 td{background:var(--paper-hi);padding:7px 10px;vertical-align:middle;line-height:1.3}
+.mt2 td:first-child{border-radius:8px 0 0 8px;font-weight:700;color:var(--navy);white-space:nowrap}
+.mt2 td:first-child small{display:block;font:400 10.5px var(--mono);color:var(--muted)}
+.mt2 td:last-child{border-radius:0 8px 8px 0;width:150px}
+.mt2 tr.gpt td:first-child{color:#10735B}
+.mt2 tr.sep td{background:none;padding:2px}
+.meter{display:flex;gap:3px;align-items:center}
+.meter i{width:18px;height:8px;border-radius:2px;background:var(--soft-gray)}
+.meter span{margin-left:6px}
+.tk{display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center;margin-bottom:8px;font-size:13px;line-height:1.35}
+.tips{list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13.2px;line-height:1.38}
+.tips li{padding-left:16px;position:relative}
+.tips li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700}
+.tips b{color:var(--navy)}
+/* ---------- v3: trilha ---------- */
+.sug{display:flex;gap:16px;align-items:center;flex:none;background:#fff;border:1px solid var(--soft-gray);border-radius:10px;padding:9px 14px;font-size:13px}
+.sug b{font:700 15px var(--serif);color:var(--navy)}
+.sug i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+
 /* ---------- capa (caderno) ---------- */
 .cover{flex-direction:row!important;background:var(--navy)!important}
 .cover .l{width:50%;background:linear-gradient(160deg,var(--navy),var(--navy-deep));color:#fff;padding:70px 64px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
@@ -286,7 +386,7 @@ body.print *{animation:none!important}
 
 <!-- ================= 01 RESULTADOS ================= -->
 <section class="slide" data-sec="Resultados" data-about="<b>Índice consolidado:</b> combina o que cada pessoa disse fazer com o que ela demonstrou nas 6 brincadeiras do caderno. As brincadeiras pesam mais. <br><br><b>Adoção:</b> considera os 33 convidados da lista do encontro. <br><br><b>Faixas:</b> Ponto de partida (0–20), Exploração (21–40), Evolução (41–60), Autonomia (61–80) e Multiplicação (81–100).">
-  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Resultados</b><span>Parte 1 · Onde DTS está hoje</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">1/5</span></div></header>
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Resultados</b><span>Parte 1 · Onde DTS está hoje</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">1/6</span></div></header>
   <div class="sb"><b>Resultado do caderno · <em>onde estamos</em></b><span>25 cadernos concluídos · 33 convidados</span></div>
   <div class="body">
     <div class="grid" style="grid-template-columns:1.25fr 1fr;flex:none">
@@ -342,98 +442,119 @@ body.print *{animation:none!important}
       </div>
     </div>
   </div>
-  <div class="ft"><span><b>Fonte:</b> Caderno de Nivelamento DTS (25 concluídos) · lista de convidados do encontro DTS (33)</span><span>1/5</span></div>
+  <div class="ft"><span><b>Fonte:</b> Caderno de Nivelamento DTS (25 concluídos) · lista de convidados do encontro DTS (33)</span><span>1/6</span></div>
 </section>
 
 <!-- ================= 02 DELEGAR ================= -->
-<section class="slide" data-sec="Delegar" data-about="<b>Maturidade agêntica</b> foi a dimensão mais baixa do caderno (52). Na página 04 do caderno, 72% seguiram o caminho “FLOWS → verificar → adaptar” e só 1 pessoa encadeou Método → Skill → Agente. <br><br>O exemplo do status report é ilustrativo e pode ser trocado por qualquer entrega recorrente do seu projeto.">
-  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Do pedido à delegação</b><span>Parte 2 · O que falta para o próximo degrau</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">2/5</span></div></header>
+<section class="slide" data-sec="Delegar" data-about="<b>Maturidade agêntica</b> foi a dimensão mais baixa do caderno (52). Na página 04, 72% seguiram o caminho “FLOWS → verificar → adaptar” e só 1 pessoa encadeou Método → Skill → Agente. <br><br><b>Exemplo:</b> a proposta comercial é ilustrativa. Os nomes do Método e da Skill são sugestões de como organizar no FLOWS. <br><br><b>Gráfico:</b> estimativa ilustrativa para uma proposta média de DTS. O ponto central é que IA sem Método ganha tempo, mas perde padrão.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Do pedido à delegação</b><span>Parte 2 · O que falta para o próximo degrau</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">2/6</span></div></header>
   <div class="sb"><b>Sabemos pedir · <em>ainda não sabemos delegar</em></b><span>Maturidade agêntica: 52 · a dimensão mais baixa do caderno</span></div>
-  <div class="body">
-    <div class="pd">
-      <div class="c"><h4>🗨️ Pedir <span class="chip">como fazemos hoje</span></h4><ul>
-        <li>Uma pergunta por vez. A IA responde e <b>você faz todo o resto</b>: copia, cola, formata e confere.</li>
-        <li>Toda semana começa do zero, com o mesmo pedido escrito de um jeito diferente.</li>
-        <li>O conhecimento fica na sua cabeça (ou no seu chat), não no time.</li></ul></div>
-      <div class="c d"><h4>🤝 Delegar <span class="chip o">para onde vamos</span></h4><ul>
-        <li>Você entrega <b>objetivo, contexto, regras e critério de pronto</b>. O agente executa várias etapas sozinho.</li>
-        <li>Ele usa um <b>Método</b> (o como) e <b>Skills</b> (o padrão A&amp;M) que já existem no FLOWS.</li>
-        <li>Você deixa de digitar e passa a <b>revisar e aprovar</b>.</li></ul></div>
-    </div>
-    <div class="headline" style="font-size:24px">Exemplo · status report semanal do projeto <small>de 2h toda sexta para 15 minutos de revisão</small></div>
-    <div class="flow">
-      <div class="fx"><div class="n">1 · Método (FLOWS)</div><b>O como</b><p>O passo a passo DTS para o status report: fontes, seções, régua de semáforo e quem aprova.</p><code>FLOWS › PMO › Status Report Semanal</code></div>
-      <div class="fx"><div class="n">2 · Skill</div><b>O padrão</b><p>Template A&amp;M, tom executivo e regras como “risco vermelho sempre com plano de ação”.</p><code>skill: status-report-am</code></div>
-      <div class="fx"><div class="n">3 · Agente</div><b>A delegação</b><p>“Toda sexta, leia as atas da semana e a planilha de riscos, gere o status no padrão e me mostre antes de enviar.”</p><code>atas + riscos → rascunho pronto</code></div>
-      <div class="fx"><div class="n">4 · Você</div><b>Revisa e aprova</b><p>Ajusta o que precisa de julgamento: mensagem para o cliente, prioridades e riscos sensíveis.</p><code>15 min · e não 2h</code></div>
-    </div>
-    <div class="lab" style="margin:4px 0 -4px">Por que usar Métodos? <span class="tiny" style="letter-spacing:0;text-transform:none;font-family:var(--sans)">13 de 25 pessoas usam pouco ou nada (o item de menor uso do caderno)</span></div>
-    <div class="why">
-      <div class="wy"><b>Não reinventa a roda</b>Alguém de DTS já resolveu esse problema. O Método do FLOWS é o atalho para começar do melhor ponto.</div>
-      <div class="wy"><b>Qualidade padrão A&amp;M</b>Mesma estrutura, mesmos critérios e a mesma régua em todo projeto, seja quem for o consultor.</div>
-      <div class="wy" style="border-color:var(--orange)"><b>Sem Método, sem agente</b>Não dá para delegar o que não está escrito. O Método é o manual que o agente segue.</div>
-      <div class="wy"><b>Onboarding em horas</b>Quem chega no projeto aprende o jeito DTS lendo o Método, e não perguntando para cada pessoa.</div>
-    </div>
-    <div class="rnd" style="grid-template-columns:auto 1fr 1fr 1fr;margin-top:auto">
-      <b style="font:700 18px var(--serif);color:var(--peach)">Comece amanhã →</b>
-      <span style="font-size:14px"><b style="color:var(--orange);font-family:var(--mono)">01</b> Escolha 1 entrega que se repete toda semana</span>
-      <span style="font-size:14px"><b style="color:var(--orange);font-family:var(--mono)">02</b> Procure o Método dela no FLOWS (ou crie o rascunho)</span>
-      <span style="font-size:14px"><b style="color:var(--orange);font-family:var(--mono)">03</b> Escreva a delegação com as 5 peças do prompt</span>
-    </div>
-  </div>
-  <div class="ft"><span><b>Fonte:</b> Caderno DTS · página 04 (caminho de trabalho) e dimensão de maturidade agêntica · exemplo ilustrativo</span><span>2/5</span></div>
-</section>
-
-<!-- ================= 03 PROMPT + MODELOS ================= -->
-<section class="slide" data-sec="Prompt e modelos" data-about="<b>Prompt:</b> na página 07 do caderno, as 17 pessoas que reescreveram o prompt subiram a estrutura de 63 para 87 pontos. Faltavam principalmente contexto e resultado esperado. <br><br><b>Modelos:</b> esta é a linha de outubro de 2026. Os nomes mudam rápido. No ChatGPT, escolha pelo modo no seletor (Instant, Thinking ou Pro). Dados de cliente só nas ferramentas homologadas pela A&amp;M.">
-  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Prompt certo, modelo certo</b><span>Parte 2 · Como pedir melhor e com qual IA</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">3/5</span></div></header>
-  <div class="sb"><b>Como melhorar os prompts · <em>e qual IA usar para cada trabalho</em></b><span>Quem reescreveu o prompt no caderno subiu de 63 para 87 pontos</span></div>
-  <div class="body">
-    <div class="grid" style="grid-template-columns:.9fr 1.5fr;flex:1">
-      <div class="card" style="display:flex;flex-direction:column">
-        <div class="lab">As 5 peças de um bom prompt</div>
-        <div class="pf">
-          <div class="pi"><span class="k">1</span><b>Objetivo</b><span>o que você quer e para quê</span></div>
-          <div class="pi"><span class="k">2</span><b>Contexto</b><span>cliente, projeto, momento, restrições</span></div>
-          <div class="pi"><span class="k">3</span><b>Público</b><span>quem vai ler (C-level, time, cliente)</span></div>
-          <div class="pi"><span class="k">4</span><b>Formato</b><span>tamanho, estrutura, tom, entregável</span></div>
-          <div class="pi"><span class="k" style="background:var(--orange);color:var(--navy)">5</span><b>Referências</b><span>exemplos, template, Método do FLOWS</span></div>
-        </div>
-        <div class="ba">
-          <div class="bf"><span>✗ Pedido</span>“Faz um resumo dessa reunião.”</div>
-          <div class="af"><span>✓ Delegação</span>“Resuma a ata em anexo para o <b>sponsor do cliente</b> (público), destacando <b>decisões e riscos</b> (objetivo), em <b>5 bullets</b> (formato), no padrão do Método <b>Ata DTS</b> (referência).”</div>
-        </div>
-        <div class="lab" style="margin:16px 0 6px">Checklist antes de enviar</div>
-        <div style="display:flex;flex-direction:column;gap:7px;font-size:14px">
-          <span>☐ Disse <b>para quem</b> é e <b>para que</b> serve?</span>
-          <span>☐ Deu um <b>exemplo</b> ou o <b>Método</b> de referência?</span>
-          <span>☐ Disse <b>como saber que ficou pronto</b> (formato, tamanho, critério)?</span>
-        </div>
-        <div class="note" style="margin-top:auto;font-size:14.5px">Dica: termine pedindo <b>“antes de responder, me faça as perguntas que faltam”</b>.</div>
-      </div>
-      <div class="card" style="padding-bottom:8px">
-        <div class="lab">Qual IA para qual trabalho <span class="chip">linha de out/2026</span></div>
-        <table class="mt">
-          <thead><tr><th>Frente de trabalho</th><th style="color:#B4561E">Claude</th><th style="color:#10735B">ChatGPT</th></tr></thead>
-          <tbody id="models"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="ft"><span><b>Fonte:</b> Caderno DTS · páginas 06 e 07 · linha de modelos Anthropic e OpenAI em out/2026 (confirme sempre no seletor da ferramenta)</span><span>3/5</span></div>
-</section>
-
-<!-- ================= 04 PARA ONDE VAMOS ================= -->
-<section class="slide" data-sec="Para onde vamos" data-about="<b>Direcionador:</b> três compromissos simples, sem regras novas. <br><br><b>Trilha de estudos:</b> os vídeos são gratuitos, em português, e foram escolhidos em canais reconhecidos (Akita, Full Cycle, Deborah Folloni, Rodrigo do Carmo, Mário Trentim, Hashtag). Comece pelo nível da sua faixa. <br><br><b>Aleatório:</b> sorteia conteúdos de design, sistemas, jogos, dados e automação para ampliar o repertório.">
-  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Para onde vamos</b><span>Parte 3 · Direcionador e trilha de estudos</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">4/5</span></div></header>
-  <div class="sb"><b>Direcionador · <em>FLOWS e Skills no início de todo projeto</em></b><span>Sem regras novas: hábito, estudo e compartilhamento</span></div>
   <div class="body" style="gap:12px">
-    <div class="dir">
-      <div class="dr main"><span class="n">1</span><b>Todo projeto começa pelo FLOWS</b><p>No kick-off, antes do primeiro entregável:</p>
-        <div class="kick"><span><b>01</b> buscar o Método</span><span><b>02</b> ativar as Skills</span><span><b>03</b> adaptar ao cliente</span><span><b>04</b> registrar o que é novo</span></div></div>
-      <div class="dr"><span class="n">2</span><b>Cada um estuda no seu nível</b><p>Evolução → níveis 1 e 2 · Autonomia → níveis 2 e 3 · Multiplicação → níveis 3 e 4. Dois vídeos por mês e uma aplicação no projeto.</p></div>
-      <div class="dr"><span class="n">3</span><b>O que funcionou vira ativo</b><p>Um prompt que deu certo vira Skill. Um jeito de fazer que deu certo vira Método no FLOWS. Os 10 multiplicadores ajudam a publicar.</p></div>
+    <div class="grid" style="grid-template-columns:1fr 1fr 1.05fr;flex:none">
+      <div class="pdx"><h4>🗨️ Pedir <span class="chip">hoje</span></h4><p>Uma pergunta por vez. A IA responde e <b>você faz o resto</b>: copia, cola, formata e confere. Toda vez começa do zero.</p></div>
+      <div class="pdx d"><h4>🤝 Delegar <span class="chip o">próximo degrau</span></h4><p>Você entrega <b>objetivo, contexto e critério de pronto</b>. O Claude segue um <b>Método</b> e uma <b>Skill</b>, executa as etapas e você <b>audita</b>.</p></div>
+      <div class="pdx k"><h4>🚀 Regra do kick-off</h4><p>Todo projeto começa com <b>FLOWS + Skills</b>:</p><div class="kick2"><span>01 achar o Método</span><span>02 ativar Skills</span><span>03 adaptar</span><span>04 registrar o novo</span></div></div>
     </div>
+    <div class="headline" style="font-size:24px">Exemplo · proposta comercial com a Skill <span style="font-family:var(--mono);font-size:20px;color:var(--orange-dk)">proposta-am</span> <small>de 3 dias para meio dia, no padrão A&amp;M</small></div>
+    <div class="flow">
+      <div class="fx"><div class="n">1 · Método (FLOWS)</div><b>A estrutura</b><p>Contexto do cliente → diagnóstico → abordagem → fases e cronograma → equipe → honorários → próximos passos.</p><code>FLOWS › Comercial › Proposta DTS</code></div>
+      <div class="fx"><div class="n">2 · Skill</div><b>O padrão A&amp;M</b><p>Template visual, tom executivo, cases parecidos, tabela de perfis e regra “sempre 3 opções de escopo”.</p><code>skill: proposta-am</code></div>
+      <div class="fx"><div class="n">3 · Delegação</div><b>O pedido certo</b><p>“Use a skill <span style="font-family:var(--mono);color:var(--orange-dk)">proposta-am</span>. A partir da transcrição da reunião e do RFP em anexo, monte a proposta para o CFO com 3 opções de escopo e me liste as dúvidas antes de precificar.”</p></div>
+      <div class="fx"><div class="n">4 · Você</div><b>Audita e decide</b><p>Revisa preço, escopo, riscos e a mensagem para o cliente. O julgamento continua sendo seu.</p><code>4h de revisão · e não 3 dias</code></div>
+    </div>
+    <div class="grid" style="grid-template-columns:1fr 1.15fr;flex:1">
+      <div class="card" style="display:flex;flex-direction:column">
+        <div class="lab">Por que usar Métodos <span class="tiny" style="letter-spacing:0;text-transform:none;font-family:var(--sans)">13 de 25 usam pouco ou nada</span></div>
+        <div class="why2">
+          <div><i>♻️</i><b>Não reinventa</b><span>Alguém de DTS já resolveu esse problema. O Método é o atalho para começar do melhor ponto.</span></div>
+          <div><i>📐</i><b>Padrão A&amp;M</b><span>Mesma estrutura e a mesma régua em todo projeto, seja quem for o consultor.</span></div>
+          <div class="hl"><i>🤖</i><b>Sem Método, sem agente</b><span>Não dá para delegar o que não está escrito. O Método é o manual que o Claude segue.</span></div>
+          <div><i>⏱️</i><b>Onboarding em horas</b><span>Quem chega aprende o jeito DTS lendo o Método, sem precisar perguntar para cada pessoa.</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="lab">Performance operacional · 1 proposta <span class="legend2" style="margin:0"><span><i style="background:var(--light-blue)"></i>Sem IA</span><span><i style="background:var(--steel)"></i>IA sem Método</span><span><i style="background:var(--orange)"></i>IA + Método + Skill</span><span class="chip">ilustrativo</span></span></div>
+        <div id="perf"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ft"><span><b>Fonte:</b> Caderno DTS · página 04 e maturidade agêntica · exemplo e números ilustrativos</span><span>2/6</span></div>
+</section>
+
+<!-- ================= 03 HIPER PERFORMANCE ================= -->
+<section class="slide" data-sec="Hiper performance" data-about="<b>Planos:</b> preços de tabela da Anthropic em out/2026 (Pro US$ 20, Max 5x US$ 100, Max 20x US$ 200 por mês). Confirme em claude.com/pricing. <br><br><b>Premissas do simulador:</b> 96h/mês de produção por consultor. Ganho de tempo nas tarefas cobertas pelo plano: 35% com IA solta e 60% com Métodos e Skills. É conservador frente ao estudo da Anthropic (≈80% por tarefa) e próximo do estudo Harvard/BCG com consultores (25% mais rápido e 40% mais qualidade, ainda sem Métodos). <br><br><b>Cobertura:</b> o Pro cobre bem texto e análise, mas tem pouco fôlego para construir sistemas, jogos e dashboards no Claude Code. O Max 20x cobre tudo. <br><br><b>ROI:</b> considera adoção gradual (50% no 1º mês e 75% no 2º). O custo/hora e o câmbio são editáveis.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Hiper performance</b><span>Parte 2 · Quanto rende o Claude com Métodos e Skills</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">3/6</span></div></header>
+  <div class="sb"><b>Capacidade do consultor · <em>escolha o plano e veja o cenário</em></b><span>Simulador por consultor · entregáveis por mês</span></div>
+  <div class="body" style="gap:12px">
+    <div class="plans" id="plans"></div>
+    <div class="grid" style="grid-template-columns:1.32fr 1fr;flex:1">
+      <div class="card" style="display:flex;flex-direction:column">
+        <div class="lab">Entregáveis por mês · mesmo consultor, mesmas 96h <span class="legend2" style="margin:0"><span><i style="background:var(--light-blue)"></i>Sem IA</span><span><i style="background:var(--steel)"></i>Claude solto</span><span><i style="background:var(--orange)"></i>Claude + Métodos + Skills</span></span></div>
+        <div id="cap" style="flex:1;display:flex;flex-direction:column;justify-content:space-around"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
+        <div class="kpis" id="kpis"></div>
+        <div class="card" style="flex:1">
+          <div class="lab">Custo × retorno <span class="inp">custo/hora R$ <input id="rate" type="number" value="150" step="10"> · câmbio <input id="fx" type="number" value="5.5" step="0.1"></span></div>
+          <div id="roi"></div>
+          <div class="tiny" id="roiNote" style="margin-top:6px"></div>
+          <div id="cmp" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="prof">
+      <div class="pt"><b>O novo perfil</b><span>de produtor para<br><em>auditor e analista</em></span></div>
+      <div class="pbars">
+        <div class="pb"><span>Antes</span><div><i style="width:70%;background:var(--light-blue)">Produzir 70%</i><i style="width:20%;background:var(--steel)">Revisar 20%</i><i style="width:10%;background:#8FB0CF">10%</i></div></div>
+        <div class="pb"><span>Com Claude</span><div><i style="width:20%;background:var(--light-blue)">Delegar 20%</i><i style="width:35%;background:var(--steel)">Auditar 35%</i><i style="width:45%;background:var(--orange);color:var(--navy)">Analisar e decidir 45%</i></div></div>
+      </div>
+      <div class="ptr"><span><b>Audita</b> fatos, números e riscos</span><span><b>Analisa</b> dados e gera insight</span><span><b>Orquestra</b> Métodos, Skills e agentes</span></div>
+    </div>
+  </div>
+  <div class="ft"><span><b>Fontes:</b> preços Anthropic (out/2026) · Anthropic, “Estimating AI productivity gains” (nov/2025) · Harvard/BCG, “Navigating the Jagged Technological Frontier” (2023) · simulação ilustrativa DTS</span><span>3/6</span></div>
+</section>
+
+<!-- ================= 04 FERRAMENTAS E MODELOS ================= -->
+<section class="slide" data-sec="Ferramentas e modelos" data-about="<b>Consumo de tokens:</b> é uma régua relativa para escolher bem, não uma medição. Modelos maiores e tarefas longas (arquivos grandes, Claude Code, agentes, pesquisa profunda) consomem muito mais do limite do seu plano. <br><br><b>Linha de modelos:</b> out/2026. No ChatGPT os nomes mudam com frequência, então escolha pelo modo no seletor. <br><br>Dados de cliente só nas ferramentas e contas homologadas pela A&amp;M.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Ferramentas e modelos</b><span>Parte 2 · Qual usar, quando e quanto consome</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">4/6</span></div></header>
+  <div class="sb"><b>Ferramenta certa, modelo certo · <em>gastando o token certo</em></b><span>Régua de consumo: Pouco · Médio · Muito</span></div>
+  <div class="body" style="gap:12px">
+    <div class="tools" id="tools"></div>
+    <div class="grid" style="grid-template-columns:1.55fr 1fr;flex:1">
+      <div class="card" style="padding-bottom:8px">
+        <div class="lab">Modelos · para que e quando usar</div>
+        <table class="mt2"><thead><tr><th>Modelo</th><th>Para quê</th><th>Quando usar</th><th>Consumo</th></tr></thead><tbody id="mods"></tbody></table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
+        <div class="card">
+          <div class="lab">A régua de consumo</div>
+          <div class="tk"><span class="tok p">Pouco</span><p>Perguntas rápidas, resumos curtos, revisão de texto, e-mail.</p></div>
+          <div class="tk"><span class="tok m">Médio</span><p>Documentos e planilhas anexados, análises, decks e propostas.</p></div>
+          <div class="tk"><span class="tok h">Muito</span><p>Claude Code, agentes, pesquisa profunda, contexto gigante, conversas muito longas.</p></div>
+        </div>
+        <div class="card" style="flex:1">
+          <div class="lab">Como usar melhor</div>
+          <ul class="tips">
+            <li><b>Comece pequeno:</b> Sonnet ou Instant. Suba para Opus ou Thinking só se precisar.</li>
+            <li><b>Um assunto por conversa.</b> Chat longo relê tudo e gasta mais.</li>
+            <li><b>Use Projects:</b> o contexto fica salvo e você não cola os mesmos arquivos de novo.</li>
+            <li><b>Prompt com 5 peças:</b> objetivo · contexto · público · formato · referência.</li>
+            <li><b>Arquivo grande?</b> Peça um resumo uma vez e trabalhe sobre o resumo.</li>
+            <li><b>No Claude Code:</b> Opus para planejar e Sonnet para executar a rotina.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ft"><span><b>Fonte:</b> linha de modelos Anthropic e OpenAI em out/2026 · régua de consumo relativa (confirme limites no seu plano)</span><span>4/6</span></div>
+</section>
+
+<!-- ================= 05 TRILHA LIVRE ================= -->
+<section class="slide" data-sec="Trilha livre" data-about="<b>Trilha livre:</b> não é obrigatória e não tem regra. É uma biblioteca para estudar, consultar e explorar no seu ritmo. <br><br>Os vídeos são gratuitos, em português, de canais reconhecidos (Akita, Full Cycle, Deborah Folloni, Rodrigo do Carmo, Mário Trentim, Hashtag). <br><br><b>Aleatório:</b> sorteia conteúdos de design, sistemas, jogos, dados e automação para ampliar o repertório.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Trilha livre</b><span>Parte 3 · Estude, consulte e explore</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">5/6</span></div></header>
+  <div class="sb"><b>Trilha livre de estudos · <em>no seu ritmo</em></b><span>Gratuito · em português · do básico à consultoria</span></div>
+  <div class="body" style="gap:12px">
+    <div class="sug"><b>Por onde começar?</b><span><i style="background:var(--light-blue)"></i>Evolução → níveis 1 e 2</span><span><i style="background:var(--navy)"></i>Autonomia → níveis 2 e 3</span><span><i style="background:var(--orange)"></i>Multiplicação → níveis 3 e 4</span><span class="tiny" style="margin-left:auto">Clique em qualquer vídeo para abrir no YouTube</span></div>
     <div class="lv" id="lv"></div>
     <div class="rnd">
       <button class="dice" id="dice"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#002B49"/><circle cx="8" cy="8" r="2" fill="#fff"/><circle cx="16" cy="16" r="2" fill="#fff"/><circle cx="16" cy="8" r="2" fill="#fff"/><circle cx="8" cy="16" r="2" fill="#fff"/><circle cx="12" cy="12" r="2" fill="#F78C16"/></svg>Aleatório</button>
@@ -441,12 +562,12 @@ body.print *{animation:none!important}
       <span class="tiny" style="color:#9fb3c8;max-width:240px;text-align:right" id="rmeta">Para ampliar o repertório: design, sistemas, jogos, dados e automação</span>
     </div>
   </div>
-  <div class="ft"><span><b>Curadoria:</b> vídeos gratuitos em PT-BR no YouTube · links verificados em out/2026</span><span>4/5</span></div>
+  <div class="ft"><span><b>Curadoria:</b> vídeos gratuitos em PT-BR no YouTube · links verificados em out/2026</span><span>5/6</span></div>
 </section>
 
 <!-- ================= 05 MURAL ================= -->
 <section class="slide" data-sec="Mural" data-about="Página 07 do caderno, o Retrato Falado. 23 pessoas escreveram um prompt de caricatura e só 14 marcaram quem retrataram. As outras 11 foram identificadas pelas características descritas, com indicação de certeza, provável ou palpite. Passe o mouse em cada caricatura para ver quem desenhou.">
-  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Mural do Retrato Falado</b><span>Bônus · Página 07 do caderno</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">5/5</span></div></header>
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Mural do Retrato Falado</b><span>Bônus · Página 07 do caderno</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">6/6</span></div></header>
   <div class="sb"><b>Retrato falado DTS · <em>quem desenhou quem</em></b><span>Passe o mouse em cada caricatura</span></div>
   <div class="body" style="gap:10px">
     <div class="mural" id="mural" style="display:grid;gap:12px;flex:1;min-height:0"></div>
@@ -455,7 +576,7 @@ body.print *{animation:none!important}
       <div class="who" id="who"></div>
     </div>
   </div>
-  <div class="ft"><span><b>Fonte:</b> prompts da página 07 do caderno · caricaturas geradas a partir das descrições do time</span><span>5/5</span></div>
+  <div class="ft"><span><b>Fonte:</b> prompts da página 07 do caderno · caricaturas geradas a partir das descrições do time</span><span>6/6</span></div>
 </section>
 
 </div></main>
@@ -479,15 +600,45 @@ document.getElementById('thermo').innerHTML='<div class="rail"></div>'+SC.map((v
 const ST=[['Ponto de partida','0–20',0],['Exploração','21–40',0],['Evolução','41–60',1],['Autonomia','61–80',14],['Multiplicação','81–100',10]];
 document.getElementById('stairs').innerHTML=ST.map(([n,r,c],i)=>`<div class="st ${i===3?'on':''} ${i===4?'next':''}" style="height:${28+i*18}%;animation-delay:${i*.07}s">${i===3?'<span class="pin">DTS · 78,6</span>':''}${i===4?'<span class="pin" style="background:#fff;color:var(--navy)">Próximo degrau</span>':''}<b>${c}</b><span>${n}</span><i>${r}</i></div>`).join('');
 
-/* ---------- P3: modelos ---------- */
-const MODELS=[
- ['🧠','Pensar','estratégia, diagnóstico, decisões difíceis','Opus 5.5','Fable 5.1 para o problema mais difícil','Thinking','Pro para análise crítica de alto risco'],
- ['✍️','Criar','textos, decks, narrativa, propostas','Sonnet 5.5','com Artifacts para páginas e apresentações','Instant + imagens','geração de imagem nativa no chat'],
- ['🔎','Pesquisar','mercado, benchmark, fontes','Research','pesquisa com fontes citadas','Deep Research','relatório longo com fontes'],
- ['💻','Desenvolver','código, protótipos, dashboards','Claude Code','com Sonnet 5.5 (dia a dia) ou Opus 5.5','Codex','agente de código da OpenAI'],
- ['🧩','Construir','agentes, automações, Skills','Cowork + Skills + MCP','delegação de tarefas com ferramentas','Agent + GPTs','modo agente e assistentes customizados'],
- ['⚡','Velocidade','triagem, resumos, volume','Haiku 5.5','rápido e barato para tarefas simples','Instant','resposta imediata']];
-document.getElementById('models').innerHTML=MODELS.map(([ic,f,d,c,cs,g,gs])=>`<tr><td><div class="fr"><i>${ic}</i>${f}</div><span class="s">${d}</span></td><td><span class="m c">${c}</span><span class="s">${cs}</span></td><td><span class="m g">${g}</span><span class="s">${gs}</span></td></tr>`).join('');
+/* ---------- P2: performance proposta ---------- */
+const PERF=[['Horas por proposta',[24,12,4],'h','menos é melhor'],['Rodadas de revisão',[4,3,1],'','menos é melhor'],['Aderência ao padrão A&M',[60,45,95],'%','mais é melhor']];
+const PC=['var(--light-blue)','var(--steel)','var(--orange)'];
+document.getElementById('perf').innerHTML=PERF.map(([n,v,u,h])=>{const mx=Math.max(...v);return `<div class="pm"><div class="h">${n}<small>${h}</small></div>${v.map((x,i)=>`<div class="r"><div style="width:${x/mx*100}%;background:${PC[i]};animation-delay:${i*.1}s"></div><b style="color:${i===2?'var(--orange-dk)':'var(--navy)'}">${x}${u}</b></div>`).join('')}</div>`}).join('');
+
+/* ---------- P3: simulador de capacidade ---------- */
+const PLANS=[{n:'Plano 1',t:'Claude Pro',usd:20,cov:{l:.6,h:.2},d:'Texto, análise e protótipos leves'},{n:'Plano 2',t:'Claude Max 5x',usd:100,cov:{l:.9,h:.6},d:'Uso diário intenso + Claude Code'},{n:'Plano 3',t:'Claude Max 20x',usd:200,cov:{l:1,h:1},d:'Construção pesada: sistemas, jogos, agentes'}];
+const TYPES=[['Apresentações executivas',4,6,'l'],['Propostas comerciais',2,8,'l'],['Análises de redução de custos',1,12,'l'],['Gestão de projetos',4,2,'l','status, riscos, cronograma'],['Indicadores e dashboards',2,10,'h'],['Sistemas e protótipos',.5,24,'h'],['Jogos e dinâmicas',.25,16,'h']];
+const RA=.35,RM=.6,HB=TYPES.reduce((t,x)=>t+x[1]*x[2],0);
+let plan=2;const fmt=(x,d=1)=>x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});const brl=x=>'R$ '+Math.round(x).toLocaleString('pt-BR');
+document.getElementById('plans').innerHTML=PLANS.map((p,i)=>`<button class="plan" data-i="${i}"><span class="pn">${p.n}</span><span class="pp">US$ ${p.usd}<small>por mês</small></span><span class="pt2">${p.t}</span><span class="pd2">${p.d}</span></button>`).join('');
+document.getElementById('plans').onclick=e=>{const b=e.target.closest('.plan');if(b){plan=+b.dataset.i;sim()}};
+['rate','fx'].forEach(id=>document.getElementById(id).oninput=()=>sim());
+function sim(){const p=PLANS[plan];[...document.querySelectorAll('.plan')].forEach((b,i)=>b.classList.toggle('on',i===plan));
+ let ha=0,hm=0;
+ document.getElementById('cap').innerHTML=TYPES.map(([n,b,h,k,sub])=>{const c=p.cov[k],ma=1/(1-c*RA),mm=1/(1-c*RM);ha+=b*h*(1-c*RA);hm+=b*h*(1-c*RM);const mx=b*2.5;
+  return `<div class="cr"><span>${n}<small>${sub||(k==='h'?'exige Claude Code':'texto e análise')} · base ${fmt(b,b<1?2:0)}/mês</small></span><div class="cb">${[b,b*ma,b*mm].map((v,i)=>`<div><i style="width:${v/mx*100}%;background:${PC[i]}"></i><b style="color:${i===2?'var(--orange-dk)':'var(--navy)'}">${fmt(v,v<1?2:1)}</b></div>`).join('')}</div></div>`}).join('');
+ const rate=+document.getElementById('rate').value||0,fx=+document.getElementById('fx').value||0,cost=p.usd*fx;
+ const sa=HB-ha,sm=HB-hm,va=sa*rate,vm=sm*rate;
+ const R=[['6 meses',5.25,6],['1 ano',11.25,12]];const mx=vm*11.25;
+ document.getElementById('kpis').innerHTML=`<div class="kp hot"><b>${fmt(HB/hm)}x</b><span>capacidade com Métodos + Skills</span></div><div class="kp"><b>${fmt(HB/ha)}x</b><span>capacidade com Claude solto</span></div><div class="kp"><b>${Math.round(sm)}h</b><span>liberadas por mês para auditar e analisar</span></div><div class="kp"><b>${brl(cost)}</b><span>custo do plano por mês</span></div>`;
+ document.getElementById('roi').innerHTML=R.map(([n,f,m])=>`<div class="rg2"><div class="h">${n}<em>retorno ${fmt(vm*f/(cost*m))}x o custo</em></div>
+  <div class="r"><span>Custo do plano</span><i style="width:${cost*m/mx*100}%;background:var(--red)"></i><b>${brl(cost*m)}</b></div>
+  <div class="r"><span>Claude solto</span><i style="width:${va*f/mx*100}%;background:var(--steel)"></i><b>${brl(va*f)}</b></div>
+  <div class="r"><span>+ Métodos e Skills</span><i style="width:${vm*f/mx*100}%;background:var(--orange)"></i><b>${brl(vm*f)}</b></div></div>`).join('');
+ document.getElementById('cmp').innerHTML='<div class="lab" style="margin-bottom:6px">Os 3 planos lado a lado · 1 ano</div><div class="cmp">'+PLANS.map((q,i)=>{let h=0;TYPES.forEach(([n,b,hh,k])=>h+=b*hh*(1-q.cov[k]*RM));const c=q.usd*fx*12,v=(HB-h)*rate*11.25;return `<div class="${i===plan?'on':''}"><span>${q.t}</span><b>${fmt(HB/h)}x</b><small>capacidade</small><b>${brl(v-c)}</b><small>retorno líquido</small></div>`}).join('')+'</div>';
+ document.getElementById('roiNote').innerHTML=`Retorno líquido em 1 ano: <b>${brl(vm*11.25-cost*12)}</b> por consultor · para os 25 do caderno: <b>${brl((vm*11.25-cost*12)*25)}</b>. Métodos e Skills somam <b>${brl((vm-va)*11.25)}</b> por pessoa/ano.`;}
+sim();
+
+/* ---------- P4: ferramentas e modelos ---------- */
+const TOOLS=[['🌐','Claude Web','claude.ai · conversar e criar',['Rascunhos, análises e propostas','Projects com contexto salvo','Artifacts: páginas, decks, dashboards','Research com fontes'],'Sonnet 5.5','m',''],
+ ['🖥️','Claude Desktop','app · trabalhar com seu computador',['Arquivos e pastas locais','Conectores e MCP (e-mail, drive)','Cowork: tarefas longas delegadas','Skills sem programar'],'Sonnet / Opus 5.5','m',''],
+ ['⌨️','Claude Code','terminal · web · construir',['Sistemas, dashboards e jogos','Automações e agentes','Engenharia reversa de sistemas','Criar e testar Skills'],'Opus 5.5 · Sonnet 5.5','h',''],
+ ['💬','ChatGPT','segunda opinião e mídia',['Imagens e edição visual','Deep Research longo','Modo Agent e GPTs','Codex para código'],'Instant · Thinking · Pro','m','gpt']];
+document.getElementById('tools').innerHTML=TOOLS.map(([ic,t,s,l,m,k,c])=>`<div class="tl ${c}"><div class="th2"><i>${ic}</i><div><b>${t}</b><span>${s}</span></div></div><ul>${l.map(x=>`<li>${x}</li>`).join('')}</ul><div class="ft2"><span>${m}</span><span class="tok ${k}">${{p:'Pouco',m:'Médio',h:'Muito'}[k]}</span></div></div>`).join('');
+const MODS=[['Haiku 5.5','Claude','Velocidade','Triagem, classificar e resumir em volume','p'],['Sonnet 5.5','Claude','O dia a dia','Textos, decks, análises e código do dia a dia','m'],['Opus 5.5','Claude','Pensar e construir','Estratégia, problema complexo, Claude Code pesado','h'],['Fable 5.1','Claude','O mais potente','Só para o problema mais difícil (se o plano tiver)','h'],
+ null,['Instant','ChatGPT','Rápido','Perguntas, e-mails e textos curtos','p',1],['Thinking','ChatGPT','Raciocínio','Análise em etapas, planilhas e lógica','m',1],['Pro · Deep Research · Agent','ChatGPT','Pesado','Pesquisa longa e tarefas autônomas','h',1]];
+const LV3={p:1,m:2,h:3},LC={p:'#2E8B6A',m:'#F78C16',h:'#C8553D'};
+document.getElementById('mods').innerHTML=MODS.map(r=>!r?'<tr class="sep"><td colspan="4"></td></tr>':`<tr class="${r[5]?'gpt':''}"><td>${r[0]}<small>${r[1]}</small></td><td><b>${r[2]}</b></td><td>${r[3]}</td><td><div class="meter">${[1,2,3].map(i=>`<i style="${i<=LV3[r[4]]?'background:'+LC[r[4]]:''}"></i>`).join('')}<span class="tok ${r[4]}">${{p:'Pouco',m:'Médio',h:'Muito'}[r[4]]}</span></div></td></tr>`).join('');
 
 /* ---------- P4: trilha ---------- */
 const yt=id=>'https://www.youtube.com/watch?v='+id;
@@ -496,22 +647,26 @@ const LV=[
   ['Lucas Moreira','Engenharia de Prompt: o guia completo','Prompts consistentes, tokens e versionamento',yt('1VDcke66TRE')],
   ['Sandeco','Curso ChatGPT: Engenharia de Prompts','Formação de prompts e aplicações práticas',yt('M0buLwTSHq0')],
   ['Rodrigo do Carmo','Claude Cowork: curso completo para iniciantes','Skills, MCP e plugins sem programar',yt('pyb3G0z1m7c')],
-  ['Prof. Mendes','Engenharia de Prompt na prática (aula 01)','Exercícios guiados, do zero',yt('XcY8fJDNyBY')]],'Use em: atas, e-mails, resumos executivos e primeiras versões de entregáveis.'],
+  ['Prof. Mendes','Engenharia de Prompt na prática (aula 01)','Exercícios guiados, do zero',yt('XcY8fJDNyBY')],
+  ['Deborah Folloni','Claude Code explicado para pessoas normais','Sem jargão técnico, para não-devs',yt('561e_hRXci8')]],'Use em: atas, e-mails, resumos executivos e primeiras versões de entregáveis.'],
  ['2','Construir','Claude Code, Skills e RAG','var(--steel-dark)',[
   ['Rodrigo do Carmo','Claude Code: curso completo para iniciantes','Contexto, Skills, MCP e subagentes · 1h27',yt('I5RLz75eKU4')],
   ['Deborah Folloni','Vibe Coding não funciona (novo workflow)','Especificar, planejar e dividir tarefas',yt('Ea5yaWGqoHQ')],
   ['Full Cycle','Claude Code: guia completo','O que todo dev precisa saber',yt('NH_NtrN2BEs')],
-  ['Deborah Folloni','Agora eu só uso Skills','Por que Skills substituem agentes soltos',yt('h_l8wCr7M2Q')]],'Use em: transformar entregas recorrentes em Skills e protótipos para o cliente.'],
+  ['Deborah Folloni','Agora eu só uso Skills','Por que Skills substituem agentes soltos',yt('h_l8wCr7M2Q')],
+  ['Deborah Folloni','Como eu uso o Claude Code (anti-vibe coding)','O workflow dela, passo a passo',yt('BcLtqQ3JlMU')]],'Use em: transformar entregas recorrentes em Skills e protótipos para o cliente.'],
  ['3','Orquestrar','Agentes em produção','var(--navy)',[
   ['Fabio Akita','Minha experiência com Agile Vibe Coding','37 dias com agentes em produção · 58 min',yt('U3bZavG8qQY')],
   ['Full Cycle','Criando agentes de IA com LangChain','Chains, ferramentas e agentes ReAct',yt('jnEmWGmXx8Y')],
   ['Full Cycle','Subagentes no Claude Code na prática','Raio-X de arquitetura e dependências',yt('YtFNz1DtDdo')],
-  ['Full Cycle','Agentes na prática: analisa logs e abre issues','Agente com ferramentas reais',yt('hnTX9W0YGAE')]],'Use em: engenharia reversa de sistemas, modernização e agentes internos.'],
+  ['Full Cycle','Agentes na prática: analisa logs e abre issues','Agente com ferramentas reais',yt('hnTX9W0YGAE')],
+  ['Deborah Folloni','O dev que criou a Skill mais baixada do Claude Code','Como uma Skill de verdade é construída',yt('rQ61RGI3DFk')]],'Use em: engenharia reversa de sistemas, modernização e agentes internos.'],
  ['4','Consultoria','PMO, processos e sistemas','var(--orange)',[
   ['Mário Trentim','Workshop: gestão de projetos usando IA','Escopo, riscos e cronograma com IA',yt('9648l3d4HFc')],
   ['Curso em Vídeo','Planejamento e gestão de projetos com IA','PMO operacional apoiado por IA',yt('YGa4elddiug')],
   ['Hashtag Programação','Agente de IA com RAG (LangChain)','Consultar contratos e PDFs: base para due diligence',yt('0M8iO5ykY-E')],
-  ['Afonso Lopes','Agentes e automação para empresas (canal)','Levantamento, proposta e implantação no cliente','https://www.youtube.com/@afonsoautomacoes_ia/videos']],'Use em: PMO, relatórios de status, riscos, processos e diligências.']];
+  ['Afonso Lopes','Agentes e automação para empresas (canal)','Levantamento, proposta e implantação no cliente','https://www.youtube.com/@afonsoautomacoes_ia/videos'],
+  ['Mário Trentim','Gestão de projetos & tecnologia (canal)','Riscos, cronograma e PMO com IA','https://www.youtube.com/channel/UCW4md7iNrIj46mZuO7RyFGw/videos']],'Use em: PMO, relatórios de status, riscos, processos e diligências.']];
 document.getElementById('lv').innerHTML=LV.map(([n,t,s,c,v,ap])=>`<div class="lvl"><div class="lh"><div class="bd" style="background:${c};${n==='4'?'color:var(--navy)':''}">${n}</div><div><h4>Nível ${n} · ${t}</h4><p>${s}</p></div></div>
 ${v.map(([a,vt,vc,u])=>`<a class="vid" href="${u}" target="_blank" rel="noopener"><div class="th"></div><div><div class="au">${a}</div><div class="vt">${vt}</div><div class="vc">${vc}</div></div></a>`).join('')}<div class="ap">${ap}</div></div>`).join('');
 const RANDOM={
@@ -634,7 +789,7 @@ document.getElementById('who').innerHTML=WHO.map(([a,b,c,k])=>`<div><span>${a}</
 /* ---------- navegação (modelo Axon) ---------- */
 const slides=[...document.querySelectorAll('.slide')],secs=document.getElementById('secs');
 secs.innerHTML=slides.map((s,i)=>`<button class="sec">${s.dataset.sec}</button>`).join('');
-document.getElementById('toc').innerHTML=slides.slice(1).map((s,i)=>`<div data-i="${i+1}"><b>0${i+1}</b>${s.dataset.sec}<i>${['onde estamos','pedir × delegar','5 peças + modelos','direcionador + trilha','retrato falado'][i]}</i></div>`).join('');
+document.getElementById('toc').innerHTML=slides.slice(1).map((s,i)=>`<div data-i="${i+1}"><b>0${i+1}</b>${s.dataset.sec}<i>${['onde estamos','pedir × delegar','capacidade e ROI','qual usar e quanto consome','estude no seu ritmo','retrato falado'][i]}</i></div>`).join('');
 document.getElementById('toc').onclick=e=>{const d=e.target.closest('[data-i]');if(d)go(+d.dataset.i)};
 const qs=new URLSearchParams(location.search);let cur=Math.max(0,Math.min(slides.length-1,(+qs.get('p')||1)-1));
 if(qs.has('print'))document.body.classList.add('print');
