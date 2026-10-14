@@ -8,147 +8,221 @@
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Kalam:wght@400;700&family=Libre+Franklin:wght@400;500;600;700;800&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#002B49; --navy-deep:#001D33; --steel:#5E8AB4; --steel-dark:#33556D; --light-blue:#BFD0E1;
+  --navy:#002B49; --navy-deep:#001D33; --navy-2:#0B3A5E; --steel:#5E8AB4; --steel-dark:#33556D; --light-blue:#BFD0E1;
   --ice:#DFE8F0; --paper:#E9EEF3; --paper-hi:#F5F7F9; --orange:#F78C16; --orange-dk:#D9700A;
-  --peach:#FCD1A2; --soft-gray:#D7DDE2; --ink:#002B49; --muted:#5B6B7C; --green:#2E8B6A; --red:#C8553D;
+  --peach:#FCD1A2; --soft-gray:#D7DDE2; --ink:#002B49; --muted:#5B6B7C; --green:#2E8B6A; --red:#C8553D; --red-soft:#F7DCD5;
   --grid-line:rgba(94,138,180,.16);
   --serif:'Zilla Slab',Georgia,serif; --sans:'Libre Franklin',system-ui,sans-serif; --hand:'Kalam',cursive; --mono:'Courier Prime',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--navy-deep);color:var(--ink);font-family:var(--sans);overflow:hidden}
-/* ---------- stage ---------- */
-.topbar{position:fixed;inset:0 0 auto 0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.08);z-index:5;color:#fff}
-.brand{font-family:var(--mono);font-size:12px;letter-spacing:.25em;text-transform:uppercase;opacity:.9}
-.brand b{letter-spacing:.3em}
-.tabs{display:flex;gap:6px}
-.tab{font-family:var(--mono);font-size:12px;color:#9fb3c8;border:1px dashed rgba(191,208,225,.35);border-bottom:none;border-radius:8px 8px 0 0;padding:9px 13px 8px;background:transparent;cursor:pointer;transition:.2s}
-.tab:hover{color:#fff}
-.tab.on{background:var(--orange);color:var(--navy);border-color:var(--orange);font-weight:700}
-.navbtns{display:flex;gap:8px}
-.nb{font:600 13px var(--sans);color:#fff;border:1px solid rgba(255,255,255,.25);background:transparent;border-radius:999px;padding:7px 14px;cursor:pointer}
-.nb:hover{background:rgba(255,255,255,.08)}
-.stage{position:fixed;inset:52px 0 0 0;display:grid;place-items:center}
+html,body{height:100%;background:#0A2236;color:var(--ink);font-family:var(--sans);overflow:hidden}
+body{background:radial-gradient(1200px 700px at 30% 20%,#0F3352 0%,#071A2B 70%)}
+/* ---------- stage (modelo Axon) ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--orange);z-index:9;transition:width .4s}
+.stage{position:fixed;inset:0 0 58px 0;display:grid;place-items:center}
 .deck{width:1600px;height:900px;position:relative;transform-origin:center center}
-.slide{position:absolute;inset:0;display:none;border-radius:6px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.04)}
-.slide.on{display:grid;grid-template-columns:380px 1fr;animation:pagein .5s cubic-bezier(.2,.8,.2,1)}
-@keyframes pagein{from{opacity:0;transform:translateY(14px) rotate(-.2deg)}to{opacity:1;transform:none}}
-body.print .topbar{display:none} body.print .stage{inset:0}
-body.print .slide{box-shadow:none;border-radius:0}
-/* ---------- left page ---------- */
-.lp{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);color:#fff;padding:46px 38px 34px;display:flex;flex-direction:column;position:relative;overflow:hidden}
-.lp:after{content:"";position:absolute;right:-120px;top:0;bottom:0;width:240px;background:linear-gradient(100deg,transparent 0 45%,rgba(94,138,180,.12) 45% 100%);transform:skewX(-8deg)}
-.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--light-blue)}
-.pnum{font-family:var(--serif);font-size:120px;line-height:.9;color:var(--orange);margin:18px 0 6px;font-weight:700}
-.lp h1{font-family:var(--serif);font-size:44px;line-height:1.02;font-weight:700;letter-spacing:-.01em}
-.lp h1 em{font-style:normal;color:var(--peach)}
-.lp .lead{margin-top:18px;font-size:16px;line-height:1.5;color:#d5e1ec}
-.lp .hand{font-family:var(--hand);color:var(--peach);font-size:19px;line-height:1.35;margin-top:auto;position:relative;z-index:1}
-.lp .sig{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#7f9ab3;margin-top:16px;position:relative;z-index:1}
-/* ---------- right page (grid paper) ---------- */
-.rp{background-color:var(--paper-hi);background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:24px 24px;padding:34px 40px 28px;position:relative;display:flex;flex-direction:column;gap:18px;overflow:hidden}
-.rp:before{content:"";position:absolute;left:0;top:0;bottom:0;width:18px;background:linear-gradient(90deg,rgba(0,43,73,.16),transparent)}
-.sect{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--steel-dark);display:flex;align-items:center;gap:10px}
-.sect:after{content:"";flex:1;border-bottom:1px dotted var(--steel)}
-.headline{font-family:var(--serif);font-size:32px;line-height:1.1;font-weight:700;color:var(--navy);max-width:1050px}
+.slide{position:absolute;inset:0;display:none;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);flex-direction:column;
+  background-color:var(--paper-hi);background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:24px 24px}
+.slide.on{display:flex;animation:pagein .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes pagein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.bottombar{position:fixed;left:0;right:0;bottom:0;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;z-index:6}
+.secs{display:flex;gap:2px}
+.sec{font:700 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#7f9ab3;background:none;border:none;padding:8px 10px;cursor:pointer;position:relative}
+.sec:after{content:"";position:absolute;left:10px;right:10px;bottom:2px;height:2px;background:transparent}
+.sec.done{color:#c6d4e1} .sec.done:after{background:var(--steel)}
+.sec.on{color:#fff} .sec.on:after{background:var(--orange)}
+.ctrls{display:flex;gap:8px;align-items:center}
+.btn{font:600 13px var(--sans);border-radius:8px;padding:9px 14px;cursor:pointer;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;display:flex;gap:6px;align-items:center}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.light{background:#fff;color:var(--navy);border-color:#fff}
+.btn.go{background:var(--orange);border-color:var(--orange);color:var(--navy);font-weight:800}
+.pg{font:700 13px var(--mono);color:#fff;background:var(--navy);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:9px 12px}
+.about{position:fixed;right:22px;bottom:70px;width:400px;background:#fff;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.4);padding:18px 20px;z-index:8;display:none;font-size:14px;line-height:1.5;color:var(--ink)}
+.about.on{display:block;animation:pagein .25s}
+.about h4{font:700 11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+body.print .bottombar,body.print .progress,body.print .about{display:none} body.print .stage{inset:0}
+body.print .slide{border-radius:0;box-shadow:none} body.print *{animation:none!important}
+/* ---------- header band (Axon) ---------- */
+.hb{height:74px;background:linear-gradient(100deg,var(--navy) 0%,var(--navy) 62%,var(--navy-2) 100%);display:flex;align-items:center;padding:0 28px;gap:22px;color:#fff;position:relative;flex:none}
+.hb:after{content:"";position:absolute;right:240px;top:0;bottom:0;width:120px;background:linear-gradient(100deg,transparent 40%,rgba(94,138,180,.14) 40% 60%,transparent 60%)}
+.logo{display:flex;flex-direction:column;line-height:1.05;padding-right:22px;border-right:1px solid rgba(255,255,255,.18)}
+.logo b{font:700 15px var(--serif);letter-spacing:.06em}
+.logo b i{font-style:normal;color:var(--orange)}
+.logo span{font:400 10px var(--mono);letter-spacing:.2em;color:#9fb3c8;margin-top:3px}
+.hb .ttl{display:flex;flex-direction:column}
+.hb .ttl b{font:700 22px var(--serif);letter-spacing:.04em;text-transform:uppercase}
+.hb .ttl span{font:400 12px var(--sans);color:#aec2d4}
+.hb .rt{margin-left:auto;display:flex;align-items:center;gap:12px;z-index:1}
+.hb .tag{font:600 12px var(--sans);display:flex;align-items:center;gap:8px;color:#d7e3ee}
+.hb .tag:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.hb .no{font:700 12px var(--mono);background:rgba(255,255,255,.12);padding:6px 9px;border-radius:6px}
+.sb{margin:14px 28px 0;background:var(--navy-deep);color:#fff;border-radius:6px;padding:9px 16px;display:flex;justify-content:space-between;align-items:center;flex:none}
+.sb b{font:700 15px var(--serif);letter-spacing:.06em;text-transform:uppercase}
+.sb b:before{content:"› ";color:var(--orange)}
+.sb b em{font-style:normal;color:var(--peach)}
+.sb span{font-size:12px;color:#aec2d4}
+.body{flex:1;min-height:0;padding:14px 28px 8px;display:flex;flex-direction:column;gap:14px}
+.ft{flex:none;display:flex;justify-content:space-between;padding:8px 28px 12px;font-size:11.5px;color:var(--muted);border-top:1px dotted var(--soft-gray);margin:0 28px}
+.ft b{color:var(--navy)}
+.headline{font-family:var(--serif);font-size:30px;line-height:1.1;font-weight:700;color:var(--navy)}
 .headline mark{background:linear-gradient(transparent 58%,var(--peach) 58%);color:inherit;padding:0 2px}
-.row{display:flex;gap:16px}
-.card{background:#fff;border:1px solid var(--soft-gray);border-radius:10px;padding:16px 18px;box-shadow:0 2px 0 rgba(0,43,73,.04)}
-.card h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--steel-dark);font-weight:700;margin-bottom:10px}
-.kpi{flex:1;position:relative}
-.kpi .v{font-family:var(--serif);font-size:46px;font-weight:700;line-height:1;color:var(--navy)}
-.kpi .v small{font-size:22px;color:var(--steel-dark)}
-.kpi .l{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
-.kpi.hot{background:var(--navy);border-color:var(--navy)} .kpi.hot .v{color:var(--orange)} .kpi.hot .l{color:#cfdbe6} .kpi.hot h3{color:var(--light-blue)}
-.note{background:var(--peach);font-family:var(--hand);color:var(--navy);padding:14px 16px 12px;box-shadow:0 8px 18px rgba(0,43,73,.16);transform:rotate(-1.4deg);font-size:17px;line-height:1.3;border-radius:2px}
-.note b{font-weight:700}
-.chip{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--ice);color:var(--steel-dark)}
-.chip.o{background:var(--orange);color:var(--navy)} .chip.n{background:var(--navy);color:#fff} .chip.g{background:#D6EFE5;color:#1d6b50} .chip.r{background:#F7DCD5;color:#9a3a26}
-.bar{height:10px;background:var(--ice);border-radius:99px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--steel);border-radius:99px;transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}
-@keyframes grow{from{transform:scaleX(0)}}
-.muted{color:var(--muted)}
+.headline small{font:italic 400 20px var(--hand);color:var(--steel-dark);margin-left:6px}
+/* ---------- primitives ---------- */
+.grid{display:grid;gap:14px;min-height:0}
+.card{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:16px 18px;position:relative;min-height:0}
+.lab{font:700 11px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--steel-dark);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.note{background:var(--peach);font-family:var(--hand);color:var(--navy);padding:12px 14px 10px;box-shadow:0 8px 18px rgba(0,43,73,.14);transform:rotate(-1.2deg);font-size:16px;line-height:1.3;border-radius:2px}
+.chip{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--ice);color:var(--steel-dark)}
+.chip.o{background:var(--orange);color:var(--navy)} .chip.n{background:var(--navy);color:#fff} .chip.g{background:#D6EFE5;color:#1d6b50} .chip.r{background:var(--red-soft);color:#9a3a26}
 .tiny{font-size:12px;color:var(--muted)}
-/* funnel */
-.funnel{display:flex;flex-direction:column;gap:8px}
-.fstep{display:grid;grid-template-columns:130px 1fr 60px;align-items:center;gap:12px;font-size:13.5px}
-.fstep .fb{height:30px;border-radius:6px;background:var(--steel);display:flex;align-items:center;padding-left:10px;color:#fff;font:700 14px var(--mono);animation:grow 1s cubic-bezier(.2,.8,.2,1) both}
-.fstep .pct{font:700 15px var(--mono);color:var(--navy);text-align:right}
-/* band ladder */
-.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:end;height:220px;padding-top:10px}
-.rung{display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
-.cols{display:flex;gap:6px;align-items:flex-end;height:150px}
-.col{width:34px;border-radius:6px 6px 0 0;position:relative;animation:rise 1s cubic-bezier(.2,.8,.2,1) both;transform-origin:bottom}
-.col span{position:absolute;top:-20px;left:0;right:0;text-align:center;font:700 13px var(--mono)}
+.big{font:700 64px/1 var(--serif);color:var(--navy)}
+@keyframes grow{from{transform:scaleX(0)}}
 @keyframes rise{from{transform:scaleY(0)}}
-.col.d{background:var(--light-blue)} .col.c{background:var(--navy)} .col.c.top{background:var(--orange)}
-.rung .nm{font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--steel-dark);text-align:center}
-.rung .rg{font-size:11px;color:var(--muted)}
-.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);align-items:center}
-.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px}
-/* dumbbell */
-.dumb{display:flex;flex-direction:column;gap:14px}
-.drow{display:grid;grid-template-columns:205px 1fr 52px;align-items:center;gap:12px;font-size:13.5px}
-.track{position:relative;height:18px;background:linear-gradient(90deg,transparent 0 calc(20% - 1px),var(--soft-gray) calc(20% - 1px) 20%,transparent 20% calc(40% - 1px),var(--soft-gray) calc(40% - 1px) 40%,transparent 40% calc(60% - 1px),var(--soft-gray) calc(60% - 1px) 60%,transparent 60% calc(80% - 1px),var(--soft-gray) calc(80% - 1px) 80%,transparent 80%)}
-.track .seg{position:absolute;top:8px;height:3px;background:var(--steel)}
-.track .dot{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;margin-left:-7px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-.dot.dec{background:var(--light-blue)} .dot.dem{background:var(--navy)} .dot.dem.low{background:var(--orange)}
-.drow .val{font:700 14px var(--mono);text-align:right}
-/* heatmap */
-.heat{display:grid;grid-template-columns:150px repeat(4,1fr) 56px;gap:4px;font-size:12.5px;align-items:center}
-.heat .h{font:700 10.5px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--steel-dark);text-align:center}
-.heat .c{height:38px;border-radius:5px;display:grid;place-items:center;font:700 14px var(--mono)}
-.heat .s{font:700 13px var(--mono);text-align:right}
-/* insights */
-.ins{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.in{border-left:4px solid var(--orange);background:#fff;padding:12px 14px;border-radius:0 8px 8px 0;font-size:13.5px;line-height:1.4}
-.in b{display:block;font-family:var(--serif);font-size:18px;color:var(--navy);margin-bottom:3px}
-/* roadmap */
-.goal{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.gm{background:#fff;border:1px solid var(--soft-gray);border-radius:10px;padding:12px 14px}
-.gm .t{font:700 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--steel-dark)}
-.gm .ft{display:flex;align-items:baseline;gap:8px;margin-top:6px;font-family:var(--serif);font-weight:700}
-.gm .ft .a{font-size:24px;color:var(--steel)} .gm .ft .arr{color:var(--orange);font-size:22px} .gm .ft .b{font-size:34px;color:var(--navy)}
-.gm .s{font-size:12px;color:var(--muted);margin-top:4px}
-.waves{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;position:relative}
-.wave{background:#fff;border-radius:10px;border:1px solid var(--soft-gray);padding:14px 16px;position:relative}
-.wave .wt{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.wave h4{font-family:var(--serif);font-size:21px;color:var(--navy)}
-.wave ul{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.35}
-.wave li{padding-left:18px;position:relative}
-.wave li:before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:700}
-.trn{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.tr{background:var(--navy);color:#fff;border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
-.tr:after{content:attr(data-n);position:absolute;right:10px;top:4px;font:700 40px var(--serif);color:rgba(255,255,255,.08)}
-.tr .tt{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff}
-.tr .td{font-size:12px;color:#c3d3e2;margin-top:4px;line-height:1.35}
-.tr .tm{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.tr .tm span{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.12);color:#fff}
-.tr .tm span.o{background:var(--orange);color:var(--navy)}
-/* videos */
-.lvls{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;min-height:0}
-.lvl{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.lvl .lh{display:flex;align-items:center;gap:10px}
-.lvl .badge{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;font:700 22px var(--serif);color:#fff;background:var(--steel)}
-.lvl:nth-child(2) .badge{background:var(--navy)} .lvl:nth-child(3) .badge{background:var(--orange);color:var(--navy)}
-.lvl h4{font-family:var(--serif);font-size:20px;color:var(--navy);line-height:1}
-.lvl .lh p{font-size:12px;color:var(--muted)}
-.vid{display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;text-decoration:none;color:inherit;padding:8px;border-radius:8px;border:1px dashed transparent;transition:.2s}
-.vid:hover{border-color:var(--steel);background:var(--paper-hi);transform:translateX(3px)}
-.vid .th{width:54px;height:38px;border-radius:6px;background:linear-gradient(135deg,var(--navy),var(--steel-dark));display:grid;place-items:center;position:relative}
-.vid .th:before{content:"";border-left:12px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
-.vid .vt{font-size:13.5px;font-weight:600;line-height:1.25;color:var(--navy)}
-.vid .vc{font:400 11px var(--mono);color:var(--muted);margin-top:2px}
-.rnd{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--navy);color:#fff;border-radius:12px;padding:14px 18px}
-.dice{font:800 15px var(--sans);background:var(--orange);color:var(--navy);border:none;border-radius:999px;padding:14px 22px;cursor:pointer;display:flex;gap:10px;align-items:center;box-shadow:0 6px 0 var(--orange-dk);transition:.15s}
-.dice:active{transform:translateY(4px);box-shadow:0 2px 0 var(--orange-dk)}
-.dice svg{transition:transform .6s}
-.dice.roll svg{transform:rotate(720deg)}
-.rres{display:flex;flex-direction:column;gap:6px}
-.rres .cats{display:flex;gap:6px;flex-wrap:wrap}
-.cat{font:700 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:#fff;background:transparent;cursor:pointer}
+@keyframes pop{from{transform:scale(0);opacity:0}}
+/* ---------- P1 ---------- */
+.idx{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.idx .big{font-size:92px;color:var(--navy)} .idx .big small{font-size:40px;color:var(--orange)}
+.idx .mean>b{font:700 24px var(--serif);color:var(--navy);display:block}
+.idx .mean p{font-size:14.5px;line-height:1.45;color:var(--ink);margin-top:4px}
+.thermo{position:relative;height:46px;margin-top:16px}
+.thermo .rail{position:absolute;left:0;right:0;top:16px;height:10px;border-radius:99px;background:linear-gradient(90deg,#E6ECF2 0 20%,#D5E0EB 20% 40%,#BFD0E1 40% 60%,#8FB0CF 60% 80%,var(--peach) 80%)}
+.thermo .d{position:absolute;top:14px;width:8px;height:14px;margin-left:-4px;border-radius:3px;background:var(--navy);opacity:.75;animation:pop .5s both}
+.thermo .d.m{background:var(--orange);opacity:1}
+.thermo .avg{position:absolute;top:2px;bottom:12px;border-left:2px solid var(--orange)}
+.thermo .avg span{position:absolute;top:-6px;left:5px;font:700 11px var(--mono);color:var(--orange);white-space:nowrap}
+.thermo .ax{position:absolute;bottom:0;font:400 10.5px var(--mono);color:var(--muted);transform:translateX(-50%)}
+.funnel{display:flex;flex-direction:column;gap:10px}
+.fs{display:grid;grid-template-columns:118px 1fr 74px;gap:12px;align-items:center;font-size:14px}
+.fs .fb{height:34px;border-radius:6px;display:flex;align-items:center;padding-left:12px;color:#fff;font:700 16px var(--mono);animation:grow .9s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
+.fs .pc{font:700 16px var(--mono);text-align:right}
+.alerts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.al{border-radius:10px;padding:10px 12px;background:var(--red-soft);color:#7d2f1f}
+.al b{font:700 30px/1 var(--serif);display:block;color:var(--red)}
+.al span{font-size:12.5px;font-weight:600}
+.al.ok{background:#E3F2EC;color:#1d6b50} .al.ok b{color:var(--green)}
+.stairs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:end;height:200px;margin-top:4px}
+.st{border-radius:8px 8px 0 0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:10px 6px;background:var(--ice);position:relative;animation:rise .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:bottom}
+.st b{font:700 26px var(--serif);color:var(--navy)}
+.st span{font:700 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--steel-dark);text-align:center}
+.st i{font-style:normal;font-size:11px;color:var(--muted)}
+.st.on{background:var(--navy)} .st.on b,.st.on span{color:#fff} .st.on i{color:#aec2d4}
+.st.next{background:var(--peach)}
+.st .pin{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:var(--orange);color:var(--navy);font:800 12px var(--sans);padding:5px 10px;border-radius:99px;white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,.18)}
+.st .pin:after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-top-color:var(--orange);border-bottom:none}
+.ach{background:var(--navy);color:#fff;border:none;display:grid;grid-template-columns:1.05fr 1fr;gap:20px}
+.ach .lab{color:var(--peach)}
+.ach h3{font:700 30px/1.08 var(--serif)}
+.ach h3 em{font-style:normal;color:var(--orange)}
+.ach p{font-size:14px;line-height:1.5;color:#d2dfea;margin-top:10px}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-top:4px}
+.vs .b{background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-align:center}
+.vs .b b{font:700 40px/1 var(--serif);display:block}
+.vs .b span{font:700 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#aec2d4}
+.vs .ar{font:700 16px var(--mono);color:var(--orange);text-align:center}
+.gaps{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.gp{display:grid;grid-template-columns:150px 1fr 54px;gap:10px;align-items:center;font-size:12.5px;color:#d2dfea}
+.gp .tr{position:relative;height:8px;background:rgba(255,255,255,.1);border-radius:99px}
+.gp .tr i{position:absolute;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,var(--light-blue),var(--orange));animation:grow .9s both;transform-origin:left}
+.gp b{font:700 13px var(--mono);color:var(--orange);text-align:right}
+/* ---------- P2 ---------- */
+.pd{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pd .c{border-radius:12px;padding:14px 16px;border:1px solid var(--soft-gray);background:#fff}
+.pd .c.d{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pd h4{font:700 22px var(--serif);display:flex;align-items:center;gap:10px}
+.pd .c.d h4{color:var(--peach)}
+.pd ul{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:9px;font-size:15px;line-height:1.35}
+.pd li{padding-left:18px;position:relative}
+.pd li:before{content:"–";position:absolute;left:2px;color:var(--steel)}
+.pd .c.d li:before{content:"→";color:var(--orange)}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;align-items:stretch;position:relative}
+.fx{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:16px 16px;position:relative;margin-right:26px}
+.fx:not(:last-child):after{content:"";position:absolute;right:-22px;top:50%;width:18px;height:18px;margin-top:-9px;background:var(--orange);clip-path:polygon(0 20%,55% 20%,55% 0,100% 50%,55% 100%,55% 80%,0 80%)}
+.fx:last-child{margin-right:0;background:#E3F2EC;border-color:#BFE3D4}
+.fx .n{font:700 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--orange)}
+.fx b{display:block;font:700 19px var(--serif);color:var(--navy);margin:3px 0 4px}
+.fx p{font-size:14px;line-height:1.38;color:var(--ink)}
+.fx code{display:block;margin-top:6px;font:400 11.5px/1.4 var(--mono);background:var(--paper-hi);border:1px dashed var(--light-blue);border-radius:6px;padding:6px 8px;color:var(--steel-dark)}
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.wy{border-top:4px solid var(--navy);background:#fff;border-radius:0 0 10px 10px;padding:14px 14px;font-size:14px;line-height:1.38}
+.wy b{display:block;font:700 16px var(--serif);color:var(--navy);margin-bottom:2px}
+/* ---------- P3 ---------- */
+.pf{display:flex;flex-direction:column;gap:11px}
+.pi{display:grid;grid-template-columns:32px 120px 1fr;gap:10px;align-items:center;font-size:14px}
+.pi .k{width:30px;height:30px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font:700 14px var(--serif)}
+.pi b{font:700 15px var(--serif);color:var(--navy)}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.ba div{border-radius:10px;padding:12px 14px;font:400 13px/1.5 var(--mono)}
+.ba .bf{background:var(--red-soft);color:#7d2f1f} .ba .af{background:#E3F2EC;color:#18573f}
+.ba span{display:block;font:700 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.mt{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:13px}
+.mt th{font:700 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--steel-dark);text-align:left;padding:0 10px}
+.mt td{background:#fff;padding:9px 10px;border-top:1px solid var(--soft-gray);border-bottom:1px solid var(--soft-gray);vertical-align:middle;line-height:1.3}
+.mt td:first-child{border-left:1px solid var(--soft-gray);border-radius:10px 0 0 10px;width:150px}
+.mt td:last-child{border-right:1px solid var(--soft-gray);border-radius:0 10px 10px 0}
+.mt .fr{display:flex;align-items:center;gap:8px;font:700 16px var(--serif);color:var(--navy)}
+.mt .fr i{font-style:normal;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--ice);font-size:15px}
+.mt .m{font-weight:700;color:var(--navy)}
+.mt .m.c{color:#B4561E} .mt .m.g{color:#10735B}
+.mt .s{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+/* ---------- P4 ---------- */
+.dir{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:12px}
+.dr{border-radius:12px;padding:12px 14px;background:#fff;border:1px solid var(--soft-gray);position:relative}
+.dr.main{background:var(--navy);color:#fff;border-color:var(--navy)}
+.dr .n{font:700 34px/1 var(--serif);color:var(--orange);position:absolute;right:12px;top:8px;opacity:.9}
+.dr b{display:block;font:700 18px var(--serif);color:var(--navy);padding-right:30px}
+.dr.main b{color:#fff}
+.dr p{font-size:12.5px;line-height:1.4;margin-top:4px;color:var(--ink)}
+.dr.main p{color:#d2dfea}
+.kick{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.kick span{font:700 11px var(--sans);background:rgba(255,255,255,.12);border-radius:6px;padding:5px 8px;color:#fff}
+.kick span b{display:inline;font:700 11px var(--mono);color:var(--orange);padding:0}
+.lv{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-height:0}
+.lvl{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px;min-height:0}
+.lvl .lh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.lvl .bd{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;font:700 19px var(--serif);color:#fff;background:var(--steel);flex:none}
+.lvl h4{font:700 17px/1.05 var(--serif);color:var(--navy)}
+.lvl .lh p{font-size:11.5px;color:var(--muted)}
+.vid{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;text-decoration:none;color:inherit;padding:9px 6px;border-radius:8px;border:1px dashed transparent;transition:.2s}
+.lvl .ap{margin-top:auto;font-size:13px!important;background:var(--paper-hi);border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:8px 10px;font-size:12px;line-height:1.35;color:var(--steel-dark)}
+.vid:hover{border-color:var(--steel);background:var(--paper-hi)}
+.vid .th{width:34px;height:24px;border-radius:5px;background:var(--navy);display:grid;place-items:center;margin-top:2px}
+.vid .th:before{content:"";border-left:8px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+.vid .au{font:700 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--orange-dk)}
+.vid .vt{font-size:14px;font-weight:600;line-height:1.22;color:var(--navy)}
+.vid .vc{font-size:12px;color:var(--muted);line-height:1.25;margin-top:1px}
+.rnd{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:var(--navy);color:#fff;border-radius:12px;padding:10px 16px;flex:none}
+.dice{font:800 14px var(--sans);background:var(--orange);color:var(--navy);border:none;border-radius:999px;padding:11px 18px;cursor:pointer;display:flex;gap:8px;align-items:center;box-shadow:0 5px 0 var(--orange-dk)}
+.dice:active{transform:translateY(3px);box-shadow:0 2px 0 var(--orange-dk)}
+.dice svg{transition:transform .6s} .dice.roll svg{transform:rotate(720deg)}
+.rres{display:flex;flex-direction:column;gap:5px}
+.cats{display:flex;gap:6px;flex-wrap:wrap}
+.cat{font:700 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:#fff;background:transparent;cursor:pointer}
 .cat.on{background:#fff;color:var(--navy)}
-.rres a{color:var(--peach);font-family:var(--serif);font-size:20px;font-weight:700;text-decoration:none}
+.rres a{color:var(--peach);font:700 17px var(--serif);text-decoration:none}
 .rres a:hover{text-decoration:underline}
+/* ---------- capa (caderno) ---------- */
+.cover{flex-direction:row!important;background:var(--navy)!important}
+.cover .l{width:50%;background:linear-gradient(160deg,var(--navy),var(--navy-deep));color:#fff;padding:70px 64px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.cover .l:after{content:"";position:absolute;right:-160px;top:0;bottom:0;width:320px;background:rgba(94,138,180,.12);transform:skewX(-10deg)}
+.cover .k{font:400 13px var(--mono);letter-spacing:.3em;color:var(--light-blue)}
+.cover h1{font:700 76px/1 var(--serif);margin:18px 0 0}
+.cover h1 em{font-style:normal;color:var(--peach)}
+.cover .bar{width:56px;height:4px;background:var(--orange);margin:26px 0 18px}
+.cover .sub{font:600 24px var(--sans);color:var(--orange)}
+.cover .lead{font-size:17px;line-height:1.55;color:#cfdbe6;margin-top:16px;max-width:600px}
+.cover .lg{position:absolute;left:64px;bottom:48px;display:flex;gap:22px;align-items:center}
+.cover .lg b{font:700 18px var(--serif);letter-spacing:.08em} .cover .lg b i{font-style:normal;color:var(--orange)}
+.cover .lg span{font:400 11px var(--mono);letter-spacing:.2em;color:#9fb3c8;border-left:1px solid rgba(255,255,255,.2);padding-left:22px}
+.cover .r{width:50%;background-color:var(--paper);background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:24px 24px;padding:90px 80px;display:flex;flex-direction:column;justify-content:center;gap:34px;position:relative}
+.cover .r:before{content:"";position:absolute;left:0;top:0;bottom:0;width:22px;background:linear-gradient(90deg,rgba(0,43,73,.18),transparent)}
+.cover .note{font-size:19px;max-width:520px;transform:rotate(-1.6deg)}
+.toc{display:flex;flex-direction:column;gap:12px}
+.toc div{display:flex;align-items:baseline;gap:14px;font-size:19px;color:var(--navy);cursor:pointer}
+.toc div b{font:700 15px var(--mono);color:var(--steel-dark)}
+.toc div i{font:400 15px var(--hand);color:var(--steel-dark);font-style:normal}
+.toc div:after{content:"";flex:1;border-bottom:2px dotted var(--light-blue);margin-left:6px}
+.toc div:hover{color:var(--orange-dk)}
+.cover .doc{position:absolute;right:40px;bottom:30px;font:400 11px var(--mono);letter-spacing:.24em;color:var(--steel-dark)}
 /* mural */
 .mural{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;flex:1;min-height:0}
 .cari{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:8px 8px 10px;display:flex;flex-direction:column;align-items:center;position:relative;transition:transform .3s;cursor:pointer}
@@ -182,271 +256,276 @@ body.print *{animation:none!important}
 .who{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 22px;font-size:12.5px}
 .who div{display:grid;grid-template-columns:170px 18px 1fr auto;gap:6px;align-items:center;border-bottom:1px dotted var(--soft-gray);padding:3px 0}
 .who .ar{color:var(--orange);font-weight:700}
+
+.mural{grid-template-columns:repeat(5,1fr)!important;grid-template-rows:repeat(2,minmax(0,1fr))}
+.mural .cari{min-height:0;overflow:visible;justify-content:flex-start}
+.mural .cari svg{max-height:168px;flex:1;min-height:0}
+.mural .cari .gag{min-height:0;font-size:13px}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand"><b>DTS</b> · Diagnóstico de Nivelamento IA</div>
-  <nav class="tabs" id="tabs"></nav>
-  <div class="navbtns"><button class="nb" id="prev">← Anterior</button><button class="nb" id="next">Próxima →</button></div>
-</header>
+<div class="progress" id="progress"></div>
 <main class="stage"><div class="deck" id="deck">
 
-<!-- ================= 01 · ONDE ESTAMOS ================= -->
-<section class="slide" data-title="Onde estamos" data-notes="33 convidados, 29 iniciaram e 25 concluíram o caderno. Índice consolidado médio de 78,6 (faixa Autonomia), com 10 pessoas já em Multiplicação. O time declarou 64,7 mas demonstrou 84,6: 21 de 25 se subestimam.">
-  <aside class="lp">
-    <div class="kicker">Digital &amp; Technology Services</div>
-    <div class="pnum">01</div>
-    <h1>Onde <em>estamos</em></h1>
-    <p class="lead">O Caderno de Nivelamento cruzou o que cada pessoa <b>diz</b> fazer com IA com o que ela <b>demonstra</b> em 7 brincadeiras. Este é o retrato do time.</p>
-    <p class="hand">“O time já opera em Autonomia, mas ainda se enxerga em Evolução.”</p>
-    <div class="sig">CADERNO DTS · OUT 2026 · N = 25</div>
-  </aside>
-  <div class="rp">
-    <div class="sect">Adoção do caderno</div>
-    <div class="row">
-      <div class="card kpi"><h3>Convidados</h3><div class="v">33</div><div class="l">Encontro com a Galera · DTS</div></div>
-      <div class="card kpi"><h3>Iniciaram</h3><div class="v">29 <small>88%</small></div><div class="l">abriram e responderam ao menos 1 página</div></div>
-      <div class="card kpi hot"><h3>Concluíram</h3><div class="v">25 <small style="color:#fff">76%</small></div><div class="l">fizeram as 7 páginas (86% de quem começou)</div></div>
-      <div class="card kpi"><h3>Tempo mediano</h3><div class="v">12 <small>min</small></div><div class="l">entre quem fez de uma vez (previsto: 6 min)</div></div>
-      <div class="card kpi"><h3>Índice consolidado</h3><div class="v">78,6</div><div class="l">30% declarado + 70% demonstrado · faixa <b>Autonomia</b></div></div>
-    </div>
-    <div class="row">
-      <div class="card" style="flex:1.05;display:flex;flex-direction:column;gap:14px">
-        <h3>Funil de adoção</h3>
+<!-- ================= CAPA ================= -->
+<section class="slide cover" data-sec="Capa" data-about="Capa da devolutiva do Caderno de Nivelamento DTS. O visual segue o caderno que o time respondeu: página azul à esquerda e papel quadriculado à direita. Clique em um item do sumário para ir direto à página.">
+  <div class="l">
+    <div class="k">ALVAREZ &amp; MARSAL · DTS · NIVELAMENTO IA</div>
+    <h1>Caderno de Nivelamento <em>DTS</em></h1>
+    <div class="bar"></div>
+    <div class="sub">Resultados e próximos passos</div>
+    <p class="lead">25 cadernos concluídos. O que descobrimos sobre como o time usa IA hoje, o que falta para delegar a agentes e por onde seguimos a partir de agora.</p>
+    <div class="lg"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DIGITAL &amp; TECHNOLOGY SERVICES</span></div>
+  </div>
+  <div class="r">
+    <div class="note"><b>Antes de começar:</b> isto não é um ranking. É uma fotografia do time para decidir juntos os próximos passos.</div>
+    <div class="toc" id="toc"></div>
+    <div class="doc">DOCUMENTO PARA DISCUSSÃO · OUT 2026</div>
+  </div>
+</section>
+
+<!-- ================= 01 RESULTADOS ================= -->
+<section class="slide" data-sec="Resultados" data-about="<b>Índice consolidado:</b> combina o que cada pessoa disse fazer com o que ela demonstrou nas 6 brincadeiras do caderno. As brincadeiras pesam mais. <br><br><b>Adoção:</b> considera os 33 convidados da lista do encontro. <br><br><b>Faixas:</b> Ponto de partida (0–20), Exploração (21–40), Evolução (41–60), Autonomia (61–80) e Multiplicação (81–100).">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Resultados</b><span>Parte 1 · Onde DTS está hoje</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">1/5</span></div></header>
+  <div class="sb"><b>Resultado do caderno · <em>onde estamos</em></b><span>25 cadernos concluídos · 33 convidados</span></div>
+  <div class="body">
+    <div class="grid" style="grid-template-columns:1.25fr 1fr;flex:none">
+      <div class="card">
+        <div class="lab">Índice consolidado DTS <span class="chip n">Faixa Autonomia</span></div>
+        <div class="idx">
+          <div class="big">78,6<small>%</small></div>
+          <div class="mean"><b>O time já usa IA com independência.</b><p>Usa Claude, FLOWS e Skills no dia a dia sem depender de ajuda. O próximo degrau, <b>Multiplicação (81%+)</b>, é transformar esse uso em Skills, Métodos e agentes que o time inteiro reutiliza.</p></div>
+        </div>
+        <div class="thermo" id="thermo"></div><div class="tiny" style="margin-top:6px">Termômetro do time: cada traço é uma pessoa · <b style="color:var(--orange)">laranja</b> = já em Multiplicação</div>
+      </div>
+      <div class="card">
+        <div class="lab">Adoção do caderno <span class="chip r">8 pessoas fora</span></div>
         <div class="funnel">
-          <div class="fstep"><span>Convidados</span><div class="fb" style="width:100%">33</div><span class="pct">100%</span></div>
-          <div class="fstep"><span>Aceitaram convite</span><div class="fb" style="width:54.5%;background:var(--light-blue);color:var(--navy)">18</div><span class="pct">55%</span></div>
-          <div class="fstep"><span>Iniciaram caderno</span><div class="fb" style="width:87.9%;background:var(--steel-dark)">29</div><span class="pct">88%</span></div>
-          <div class="fstep"><span>Concluíram</span><div class="fb" style="width:75.8%;background:var(--navy)">25</div><span class="pct">76%</span></div>
+          <div class="fs"><span>Convidados</span><div class="fb" style="width:100%;background:var(--steel)">33</div><span class="pc">100%</span></div>
+          <div class="fs"><span>Iniciaram</span><div class="fb" style="width:87.9%;background:var(--steel-dark)">29</div><span class="pc">88%</span></div>
+          <div class="fs"><span>Concluíram</span><div class="fb" style="width:75.8%;background:var(--navy)">25</div><span class="pc">76%</span></div>
+          <div class="fs"><span style="color:var(--red);font-weight:700">Não concluíram</span><div class="fb" style="width:24.2%;background:var(--red)">8</div><span class="pc" style="color:var(--red)">24%</span></div>
         </div>
-        <div class="row" style="gap:10px;margin-top:4px">
-          <div class="card" style="flex:1;padding:10px 12px;background:var(--paper-hi)"><div style="font:700 26px var(--serif);color:var(--orange)">4</div><div class="tiny">pararam no meio<br>(2 delas na pág. 6 de 7)</div></div>
-          <div class="card" style="flex:1;padding:10px 12px;background:var(--paper-hi)"><div style="font:700 26px var(--serif);color:var(--steel-dark)">4</div><div class="tiny">ainda não abriram<br>o caderno</div></div>
-          <div class="card" style="flex:1;padding:10px 12px;background:var(--paper-hi)"><div style="font:700 26px var(--serif);color:var(--green)">11/13</div><div class="tiny">que nem responderam o convite… concluíram</div></div>
+        <div class="alerts">
+          <div class="al"><b>4</b><span>pararam no meio</span></div>
+          <div class="al"><b>4</b><span>nem abriram</span></div>
+          <div class="al ok"><b>85%</b><span>dos que ignoraram o convite concluíram</span></div>
         </div>
-      </div>
-      <div class="card" style="flex:1.25;display:flex;flex-direction:column">
-        <h3>Distribuição por faixa · como se veem × como operam</h3>
-        <div class="ladder" id="ladder"></div>
-        <div class="legend" style="margin-top:12px"><span><i style="background:var(--light-blue)"></i>Faixa declarada (autopercepção)</span><span><i style="background:var(--navy)"></i>Faixa pelo índice consolidado</span></div>
-      </div>
-      <div style="width:250px;display:flex;flex-direction:column;gap:16px;padding-top:6px">
-        <div class="note"><b>Achado nº 1</b><br>21 de 25 pessoas <b>demonstraram mais</b> do que declararam. Distância média: <b>+20 pontos</b> (64,7 → 84,6).</div>
-        <div class="note" style="transform:rotate(1.2deg);background:#fff;border:1px solid var(--soft-gray)"><b>Leitura:</b> o problema não é saber usar. É <b>confiança</b>, <b>método</b> e <b>escala</b>.</div>
       </div>
     </div>
-    <div class="card" style="flex:1;display:flex;flex-direction:column">
-      <h3>Termômetro do time · índice consolidado de cada pessoa (anônimo)</h3>
-      <div id="thermo" style="position:relative;flex:1;margin:6px 4px 0"></div>
+    <div class="grid" style="grid-template-columns:1fr 1.35fr;flex:1">
+      <div class="card">
+        <div class="lab">Onde DTS se encontra <span class="tiny" style="letter-spacing:0;text-transform:none;font-family:var(--sans)">pessoas por faixa</span></div>
+        <div style="height:30px"></div>
+        <div class="stairs" id="stairs"></div>
+        <div class="tiny" style="margin-top:10px">24 de 25 pessoas já estão em <b>Autonomia</b> ou <b>Multiplicação</b>. Ninguém ficou nas duas primeiras faixas.</div>
+      </div>
+      <div class="card ach">
+        <div>
+          <div class="lab">Achado nº 1 · o mais importante</div>
+          <h3>O time sabe <em>mais</em> do que acredita saber.</h3>
+          <p><b style="color:#fff">21 de 25 pessoas</b> demonstraram nas brincadeiras mais do que declararam no início. A distância média é de <b style="color:var(--orange)">20 pontos</b>.</p>
+          <p>Ou seja, o desafio de DTS <b style="color:#fff">não é capacidade, é confiança e hábito</b>. Quem se subestima não compartilha, não vira referência e não propõe IA para o cliente. Por isso o próximo passo é <b style="color:#fff">prática visível</b> (FLOWS e Skills em todo projeto), e não mais teoria.</p>
+        </div>
+        <div>
+          <div class="vs">
+            <div class="b"><b style="color:var(--light-blue)">64,7</b><span>Declarado</span></div><div class="ar">+20 →</div><div class="b"><b style="color:var(--orange)">84,6</b><span>Demonstrado</span></div>
+          </div>
+          <div class="lab" style="margin-top:16px;margin-bottom:4px">Onde a distância é maior</div>
+          <div class="gaps">
+            <div class="gp"><span>Skills &amp; Métodos</span><div class="tr"><i style="left:62%;width:35%"></i></div><b>+35</b></div>
+            <div class="gp"><span>Reutilização</span><div class="tr"><i style="left:68%;width:20%"></i></div><b>+20</b></div>
+            <div class="gp"><span>Criar &amp; compartilhar</span><div class="tr"><i style="left:68%;width:13%"></i></div><b>+13</b></div>
+          </div>
+          <div class="note" style="margin-top:16px;font-size:15px;transform:rotate(1deg)">Só 4 pessoas se avaliaram acima do que demonstraram.</div>
+        </div>
+      </div>
     </div>
   </div>
+  <div class="ft"><span><b>Fonte:</b> Caderno de Nivelamento DTS (25 concluídos) · lista de convidados do encontro DTS (33)</span><span>1/5</span></div>
 </section>
 
-<!-- ================= 02 · O QUE O CADERNO REVELOU ================= -->
-<section class="slide" data-title="Diagnóstico" data-notes="Por dimensão: Skills & Métodos (96,9) e reutilização (88) são os pontos fortes demonstrados. O gargalo é a maturidade agêntica (52,2). FLOWS e Métodos são os itens de menor uso declarado. No retrato falado, quem reescreveu o prompt subiu de 63 para 87 pontos.">
-  <aside class="lp">
-    <div class="kicker">Digital &amp; Technology Services</div>
-    <div class="pnum">02</div>
-    <h1>O que o caderno <em>revelou</em></h1>
-    <p class="lead">8 dimensões de maturidade, 6 perguntas de uso e 5 brincadeiras de demonstração. Os pontos fortes estão claros e há um gargalo bem definido.</p>
-    <p class="hand">“Sabemos pedir. Ainda não sabemos delegar para agentes.”</p>
-    <div class="sig">FONTE · REGISTROS DO CADERNO (25 CONCLUÍDOS)</div>
-  </aside>
-  <div class="rp">
-    <div class="headline">Forte em <mark>Skills, Prompt e reutilização</mark>. O gargalo é a <mark>maturidade agêntica (52)</mark>: o próximo salto de produtividade.</div>
-    <div class="row" style="flex:1;min-height:0">
-      <div class="card" style="flex:1.15">
-        <h3>Maturidade por dimensão (0–100)</h3>
-        <div class="dumb" id="dumb"></div>
-        <div class="legend" style="margin-top:12px"><span><i style="background:var(--light-blue);border-radius:50%"></i>Declarado</span><span><i style="background:var(--navy);border-radius:50%"></i>Demonstrado</span><span><i style="background:var(--orange);border-radius:50%"></i>Gargalo</span><span class="tiny">linhas: limites das 5 faixas</span></div>
-        <h3 style="margin-top:22px">P07 · retrato falado · estrutura do prompt (17 que reescreveram)</h3>
-        <div style="display:grid;grid-template-columns:110px 1fr 48px;gap:8px 12px;align-items:center;font-size:13px">
-          <span>1º rascunho</span><div class="bar" style="height:16px"><i style="width:63%;background:var(--light-blue)"></i></div><b style="font-family:var(--mono)">63</b>
-          <span>2º rascunho</span><div class="bar" style="height:16px"><i style="width:87%;background:var(--green)"></i></div><b style="font-family:var(--mono);color:var(--green)">87</b>
-        </div>
-        <div class="tiny" style="margin-top:6px">O que mais faltava no 1º rascunho: <b>contexto/uso</b> da imagem e <b>resultado esperado</b> (formato, enquadramento).</div>
-      </div>
-      <div class="card" style="flex:1">
-        <h3>Página 01 · uso declarado (nº de pessoas por nível)</h3>
-        <div class="heat" id="heat"></div>
-        <div class="tiny" style="margin-top:8px">0 = não uso · 1 = conheço · 2 = uso às vezes · 3 = uso com autonomia/compartilho</div>
-        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div><h3 style="margin-bottom:6px">P04 · caminho de trabalho</h3><div id="p04"></div></div>
-          <div><h3 style="margin-bottom:6px">P06 · peças do prompt mais escolhidas</h3><div id="p06"></div></div>
-        </div>
-      </div>
+<!-- ================= 02 DELEGAR ================= -->
+<section class="slide" data-sec="Delegar" data-about="<b>Maturidade agêntica</b> foi a dimensão mais baixa do caderno (52). Na página 04 do caderno, 72% seguiram o caminho “FLOWS → verificar → adaptar” e só 1 pessoa encadeou Método → Skill → Agente. <br><br>O exemplo do status report é ilustrativo e pode ser trocado por qualquer entrega recorrente do seu projeto.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Do pedido à delegação</b><span>Parte 2 · O que falta para o próximo degrau</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">2/5</span></div></header>
+  <div class="sb"><b>Sabemos pedir · <em>ainda não sabemos delegar</em></b><span>Maturidade agêntica: 52 · a dimensão mais baixa do caderno</span></div>
+  <div class="body">
+    <div class="pd">
+      <div class="c"><h4>🗨️ Pedir <span class="chip">como fazemos hoje</span></h4><ul>
+        <li>Uma pergunta por vez. A IA responde e <b>você faz todo o resto</b>: copia, cola, formata e confere.</li>
+        <li>Toda semana começa do zero, com o mesmo pedido escrito de um jeito diferente.</li>
+        <li>O conhecimento fica na sua cabeça (ou no seu chat), não no time.</li></ul></div>
+      <div class="c d"><h4>🤝 Delegar <span class="chip o">para onde vamos</span></h4><ul>
+        <li>Você entrega <b>objetivo, contexto, regras e critério de pronto</b>. O agente executa várias etapas sozinho.</li>
+        <li>Ele usa um <b>Método</b> (o como) e <b>Skills</b> (o padrão A&amp;M) que já existem no FLOWS.</li>
+        <li>Você deixa de digitar e passa a <b>revisar e aprovar</b>.</li></ul></div>
     </div>
-    <div class="ins">
-      <div class="in"><b>Métodos é o elo fraco do uso</b>13 de 25 usam pouco ou nada de Métodos (índice 49). FLOWS tem uso mediano (57). A base existe, mas o hábito ainda não.</div>
-      <div class="in"><b>72% passam pelo FLOWS antes, só 4% orquestram</b>18 pessoas verificam o FLOWS e adaptam. Só 1 encadeia Método → Skill → Agente. Ainda é reuso, não automação.</div>
-      <div class="in" style="border-color:var(--green)"><b>Aprendem no ato: +24 pontos</b>17 pessoas reescreveram o prompt do retrato falado. A estrutura subiu de 63 para 87. Basta um empurrão com feedback.</div>
+    <div class="headline" style="font-size:24px">Exemplo · status report semanal do projeto <small>de 2h toda sexta para 15 minutos de revisão</small></div>
+    <div class="flow">
+      <div class="fx"><div class="n">1 · Método (FLOWS)</div><b>O como</b><p>O passo a passo DTS para o status report: fontes, seções, régua de semáforo e quem aprova.</p><code>FLOWS › PMO › Status Report Semanal</code></div>
+      <div class="fx"><div class="n">2 · Skill</div><b>O padrão</b><p>Template A&amp;M, tom executivo e regras como “risco vermelho sempre com plano de ação”.</p><code>skill: status-report-am</code></div>
+      <div class="fx"><div class="n">3 · Agente</div><b>A delegação</b><p>“Toda sexta, leia as atas da semana e a planilha de riscos, gere o status no padrão e me mostre antes de enviar.”</p><code>atas + riscos → rascunho pronto</code></div>
+      <div class="fx"><div class="n">4 · Você</div><b>Revisa e aprova</b><p>Ajusta o que precisa de julgamento: mensagem para o cliente, prioridades e riscos sensíveis.</p><code>15 min · e não 2h</code></div>
+    </div>
+    <div class="lab" style="margin:4px 0 -4px">Por que usar Métodos? <span class="tiny" style="letter-spacing:0;text-transform:none;font-family:var(--sans)">13 de 25 pessoas usam pouco ou nada (o item de menor uso do caderno)</span></div>
+    <div class="why">
+      <div class="wy"><b>Não reinventa a roda</b>Alguém de DTS já resolveu esse problema. O Método do FLOWS é o atalho para começar do melhor ponto.</div>
+      <div class="wy"><b>Qualidade padrão A&amp;M</b>Mesma estrutura, mesmos critérios e a mesma régua em todo projeto, seja quem for o consultor.</div>
+      <div class="wy" style="border-color:var(--orange)"><b>Sem Método, sem agente</b>Não dá para delegar o que não está escrito. O Método é o manual que o agente segue.</div>
+      <div class="wy"><b>Onboarding em horas</b>Quem chega no projeto aprende o jeito DTS lendo o Método, e não perguntando para cada pessoa.</div>
+    </div>
+    <div class="rnd" style="grid-template-columns:auto 1fr 1fr 1fr;margin-top:auto">
+      <b style="font:700 18px var(--serif);color:var(--peach)">Comece amanhã →</b>
+      <span style="font-size:14px"><b style="color:var(--orange);font-family:var(--mono)">01</b> Escolha 1 entrega que se repete toda semana</span>
+      <span style="font-size:14px"><b style="color:var(--orange);font-family:var(--mono)">02</b> Procure o Método dela no FLOWS (ou crie o rascunho)</span>
+      <span style="font-size:14px"><b style="color:var(--orange);font-family:var(--mono)">03</b> Escreva a delegação com as 5 peças do prompt</span>
     </div>
   </div>
+  <div class="ft"><span><b>Fonte:</b> Caderno DTS · página 04 (caminho de trabalho) e dimensão de maturidade agêntica · exemplo ilustrativo</span><span>2/5</span></div>
 </section>
 
-<!-- ================= 03 · PARA ONDE VAMOS ================= -->
-<section class="slide" data-title="Meta e próximos passos" data-notes="Meta em 90 dias: índice consolidado de 78,6 para 85 (Multiplicação), maturidade agêntica de 52 para 70, conclusão de 76% para 100% e 10 multiplicadores formalizados. Três ondas: Ativar, Aprofundar e Multiplicar, com 6 treinamentos específicos.">
-  <aside class="lp">
-    <div class="kicker">Digital &amp; Technology Services</div>
-    <div class="pnum">03</div>
-    <h1>Para onde <em>vamos</em></h1>
-    <p class="lead">Sair de <b>Autonomia</b> para <b>Multiplicação</b> em 90 dias. Menos curso genérico e mais prática no trabalho real, com os 10 multiplicadores à frente.</p>
-    <p class="hand">“De usuários de IA para construtores de Skills e agentes.”</p>
-    <div class="sig">HORIZONTE · NOV 2026 → JAN 2027</div>
-  </aside>
-  <div class="rp" style="gap:14px">
-    <div class="sect">A meta · 90 dias</div>
-    <div class="goal">
-      <div class="gm"><div class="t">Índice consolidado</div><div class="ft"><span class="a">78,6</span><span class="arr">→</span><span class="b">85</span></div><div class="s">faixa Multiplicação na média do time</div></div>
-      <div class="gm"><div class="t">Maturidade agêntica</div><div class="ft"><span class="a">52</span><span class="arr">→</span><span class="b">70</span></div><div class="s">o gargalo vira competência</div></div>
-      <div class="gm"><div class="t">Adoção do caderno</div><div class="ft"><span class="a">76%</span><span class="arr">→</span><span class="b">100%</span></div><div class="s">8 pessoas a ativar + nova rodada em jan</div></div>
-      <div class="gm"><div class="t">Skills publicadas no FLOWS</div><div class="ft"><span class="a">—</span><span class="arr">→</span><span class="b">20</span></div><div class="s">2 por multiplicador, reutilizáveis pelo time</div></div>
-    </div>
-    <div class="sect">Por onde seguimos · 3 ondas</div>
-    <div class="waves">
-      <div class="wave"><div class="wt"><h4>1 · Ativar</h4><span class="chip">Semanas 1–3</span></div><ul>
-        <li>Fechar a adoção: convite 1:1 para quem não abriu ou parou no meio</li>
-        <li>Devolutiva individual: cada pessoa recebe seu índice e sua trilha</li>
-        <li>Formalizar os <b>10 Multiplicadores</b> (faixa ≥ 81) como guilda</li></ul></div>
-      <div class="wave"><div class="wt"><h4>2 · Aprofundar</h4><span class="chip n">Semanas 4–8</span></div><ul>
-        <li>Trilhas por faixa (abaixo), com 1 caso real de projeto por pessoa</li>
-        <li>“Clínica de Prompt” quinzenal com feedback ao vivo (o +24 pts)</li>
-        <li>Sprint agêntica: 1 agente/MCP por frente de DTS</li></ul></div>
-      <div class="wave"><div class="wt"><h4>3 · Multiplicar</h4><span class="chip o">Semanas 9–12</span></div><ul>
-        <li><b>Skill da Semana</b>: publicar e demonstrar no FLOWS</li>
-        <li>Ranking gamificado: reuso de Skills e Métodos no time</li>
-        <li>Nova rodada do caderno para medir a evolução</li></ul></div>
-    </div>
-    <div class="sect">Treinamentos específicos de IA e ferramentas</div>
-    <div class="trn">
-      <div class="tr" data-n="01"><div class="tt">Métodos na Prática</div><div class="td">Do “arquivo antigo” ao Método do FLOWS: achar, adaptar e registrar.</div><div class="tm"><span>Evolução → Autonomia</span><span>FLOWS</span><span>2h</span></div></div>
-      <div class="tr" data-n="02"><div class="tt">Prompt de Contexto</div><div class="td">Objetivo, contexto, público, formato e referências. Clínica com casos reais.</div><div class="tm"><span>Todos</span><span>Claude</span><span>1h30</span></div></div>
-      <div class="tr" data-n="03"><div class="tt">Claude Desktop Power User</div><div class="td">Projects, Artifacts, arquivos, conectores e memória no dia a dia.</div><div class="tm"><span>Evolução → Autonomia</span><span>Claude</span><span>2h</span></div></div>
-      <div class="tr" data-n="04"><div class="tt">Skill Lab</div><div class="td">Construir, testar e publicar uma Skill autoral reutilizável pelo time.</div><div class="tm"><span>Autonomia</span><span>Skills</span><span>3h</span></div></div>
-      <div class="tr" data-n="05"><div class="tt">Agentes &amp; MCP</div><div class="td">Do prompt à orquestração: Método → Skill → Agente, com MCP e dados.</div><div class="tm"><span class="o">Gargalo</span><span>Agentes</span><span>4h</span></div></div>
-      <div class="tr" data-n="06"><div class="tt">Escola de Multiplicadores</div><div class="td">Facilitação, mentoria e como transformar entrega em ativo do time.</div><div class="tm"><span>Multiplicação</span><span>Guilda</span><span>2h</span></div></div>
-    </div>
-    <div class="sect">Quem faz o quê · trilha por faixa</div>
-    <div class="row">
-      <div class="card" style="flex:1;border-top:4px solid var(--light-blue)"><h3>Evolução · 1 pessoa</h3><div style="font-size:13px">Trilha <b>01 → 02 → 03</b> + padrinho multiplicador. Foco: hábito de Métodos e FLOWS.</div></div>
-      <div class="card" style="flex:1;border-top:4px solid var(--navy)"><h3>Autonomia · 14 pessoas</h3><div style="font-size:13px">Trilha <b>02 → 04 → 05</b>. Entrega: 1 Skill autoral e 1 agente aplicado a um projeto real.</div></div>
-      <div class="card" style="flex:1;border-top:4px solid var(--orange)"><h3>Multiplicação · 10 pessoas</h3><div style="font-size:13px">Trilha <b>05 → 06</b>. Cada um apadrinha 2 colegas e publica 2 Skills no FLOWS.</div></div>
-      <div class="note" style="width:250px;font-size:15px"><b>Regra de ouro:</b> todo treinamento termina com um <b>ativo publicado</b> no FLOWS, não com um certificado.</div>
+<!-- ================= 03 PROMPT + MODELOS ================= -->
+<section class="slide" data-sec="Prompt e modelos" data-about="<b>Prompt:</b> na página 07 do caderno, as 17 pessoas que reescreveram o prompt subiram a estrutura de 63 para 87 pontos. Faltavam principalmente contexto e resultado esperado. <br><br><b>Modelos:</b> esta é a linha de outubro de 2026. Os nomes mudam rápido. No ChatGPT, escolha pelo modo no seletor (Instant, Thinking ou Pro). Dados de cliente só nas ferramentas homologadas pela A&amp;M.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Prompt certo, modelo certo</b><span>Parte 2 · Como pedir melhor e com qual IA</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">3/5</span></div></header>
+  <div class="sb"><b>Como melhorar os prompts · <em>e qual IA usar para cada trabalho</em></b><span>Quem reescreveu o prompt no caderno subiu de 63 para 87 pontos</span></div>
+  <div class="body">
+    <div class="grid" style="grid-template-columns:.9fr 1.5fr;flex:1">
+      <div class="card" style="display:flex;flex-direction:column">
+        <div class="lab">As 5 peças de um bom prompt</div>
+        <div class="pf">
+          <div class="pi"><span class="k">1</span><b>Objetivo</b><span>o que você quer e para quê</span></div>
+          <div class="pi"><span class="k">2</span><b>Contexto</b><span>cliente, projeto, momento, restrições</span></div>
+          <div class="pi"><span class="k">3</span><b>Público</b><span>quem vai ler (C-level, time, cliente)</span></div>
+          <div class="pi"><span class="k">4</span><b>Formato</b><span>tamanho, estrutura, tom, entregável</span></div>
+          <div class="pi"><span class="k" style="background:var(--orange);color:var(--navy)">5</span><b>Referências</b><span>exemplos, template, Método do FLOWS</span></div>
+        </div>
+        <div class="ba">
+          <div class="bf"><span>✗ Pedido</span>“Faz um resumo dessa reunião.”</div>
+          <div class="af"><span>✓ Delegação</span>“Resuma a ata em anexo para o <b>sponsor do cliente</b> (público), destacando <b>decisões e riscos</b> (objetivo), em <b>5 bullets</b> (formato), no padrão do Método <b>Ata DTS</b> (referência).”</div>
+        </div>
+        <div class="lab" style="margin:16px 0 6px">Checklist antes de enviar</div>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:14px">
+          <span>☐ Disse <b>para quem</b> é e <b>para que</b> serve?</span>
+          <span>☐ Deu um <b>exemplo</b> ou o <b>Método</b> de referência?</span>
+          <span>☐ Disse <b>como saber que ficou pronto</b> (formato, tamanho, critério)?</span>
+        </div>
+        <div class="note" style="margin-top:auto;font-size:14.5px">Dica: termine pedindo <b>“antes de responder, me faça as perguntas que faltam”</b>.</div>
+      </div>
+      <div class="card" style="padding-bottom:8px">
+        <div class="lab">Qual IA para qual trabalho <span class="chip">linha de out/2026</span></div>
+        <table class="mt">
+          <thead><tr><th>Frente de trabalho</th><th style="color:#B4561E">Claude</th><th style="color:#10735B">ChatGPT</th></tr></thead>
+          <tbody id="models"></tbody>
+        </table>
+      </div>
     </div>
   </div>
+  <div class="ft"><span><b>Fonte:</b> Caderno DTS · páginas 06 e 07 · linha de modelos Anthropic e OpenAI em out/2026 (confirme sempre no seletor da ferramenta)</span><span>3/5</span></div>
 </section>
 
-<!-- ================= 04 · CATEQUIZAÇÃO EXTERNA ================= -->
-<section class="slide" data-title="Trilha externa" data-notes="Trilha gratuita no YouTube, em português, em 3 níveis. Os links abrem buscas em PT-BR em canais educativos conhecidos. O botão de vídeo aleatório sugere conteúdo de design, sistemas, jogos e dados.">
-  <aside class="lp">
-    <div class="kicker">Bônus · catequização externa</div>
-    <div class="pnum">04</div>
-    <h1>Trilha <em>aberta</em> no YouTube</h1>
-    <p class="lead">Conteúdo gratuito e em português para estudar no próprio ritmo, do básico ao intermediário. Cada link abre uma busca no YouTube em canais educativos de confiança.</p>
-    <p class="hand">“10 minutos por dia &gt; 1 curso por ano.”</p>
-    <div class="sig">CURADORIA · CONTEÚDO PÚBLICO E GRATUITO · PT-BR</div>
-  </aside>
-  <div class="rp">
-    <div class="sect">3 níveis · do zero ao agente</div>
-    <div class="lvls" id="lvls"></div>
+<!-- ================= 04 PARA ONDE VAMOS ================= -->
+<section class="slide" data-sec="Para onde vamos" data-about="<b>Direcionador:</b> três compromissos simples, sem regras novas. <br><br><b>Trilha de estudos:</b> os vídeos são gratuitos, em português, e foram escolhidos em canais reconhecidos (Akita, Full Cycle, Deborah Folloni, Rodrigo do Carmo, Mário Trentim, Hashtag). Comece pelo nível da sua faixa. <br><br><b>Aleatório:</b> sorteia conteúdos de design, sistemas, jogos, dados e automação para ampliar o repertório.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Para onde vamos</b><span>Parte 3 · Direcionador e trilha de estudos</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">4/5</span></div></header>
+  <div class="sb"><b>Direcionador · <em>FLOWS e Skills no início de todo projeto</em></b><span>Sem regras novas: hábito, estudo e compartilhamento</span></div>
+  <div class="body" style="gap:12px">
+    <div class="dir">
+      <div class="dr main"><span class="n">1</span><b>Todo projeto começa pelo FLOWS</b><p>No kick-off, antes do primeiro entregável:</p>
+        <div class="kick"><span><b>01</b> buscar o Método</span><span><b>02</b> ativar as Skills</span><span><b>03</b> adaptar ao cliente</span><span><b>04</b> registrar o que é novo</span></div></div>
+      <div class="dr"><span class="n">2</span><b>Cada um estuda no seu nível</b><p>Evolução → níveis 1 e 2 · Autonomia → níveis 2 e 3 · Multiplicação → níveis 3 e 4. Dois vídeos por mês e uma aplicação no projeto.</p></div>
+      <div class="dr"><span class="n">3</span><b>O que funcionou vira ativo</b><p>Um prompt que deu certo vira Skill. Um jeito de fazer que deu certo vira Método no FLOWS. Os 10 multiplicadores ajudam a publicar.</p></div>
+    </div>
+    <div class="lv" id="lv"></div>
     <div class="rnd">
-      <button class="dice" id="dice"><svg width="22" height="22" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#002B49"/><circle cx="8" cy="8" r="2" fill="#fff"/><circle cx="16" cy="16" r="2" fill="#fff"/><circle cx="16" cy="8" r="2" fill="#fff"/><circle cx="8" cy="16" r="2" fill="#fff"/><circle cx="12" cy="12" r="2" fill="#F78C16"/></svg>Vídeo aleatório</button>
-      <div class="rres"><div class="cats" id="cats"></div><a id="rlink" href="#" target="_blank" rel="noopener">Escolha uma categoria e role o dado 🎲</a><span class="tiny" style="color:#9fb3c8" id="rmeta">Design · Sistemas · Jogos · Dados · Produtividade</span></div>
+      <button class="dice" id="dice"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#002B49"/><circle cx="8" cy="8" r="2" fill="#fff"/><circle cx="16" cy="16" r="2" fill="#fff"/><circle cx="16" cy="8" r="2" fill="#fff"/><circle cx="8" cy="16" r="2" fill="#fff"/><circle cx="12" cy="12" r="2" fill="#F78C16"/></svg>Aleatório</button>
+      <div class="rres"><div class="cats" id="cats"></div><a id="rlink" href="#" target="_blank" rel="noopener">Escolha uma categoria e role o dado</a></div>
+      <span class="tiny" style="color:#9fb3c8;max-width:240px;text-align:right" id="rmeta">Para ampliar o repertório: design, sistemas, jogos, dados e automação</span>
     </div>
   </div>
+  <div class="ft"><span><b>Curadoria:</b> vídeos gratuitos em PT-BR no YouTube · links verificados em out/2026</span><span>4/5</span></div>
 </section>
 
-<!-- ================= 05 · MURAL ================= -->
-<section class="slide" data-title="Mural Retrato Falado" data-notes="Página 7 do caderno: retrato falado. 23 pessoas escreveram um prompt e só 14 marcaram quem retrataram. As outras 11 foram identificadas pelas características descritas. Ana Paula foi a mais retratada (5 vezes).">
-  <aside class="lp">
-    <div class="kicker">Página 07 · Retrato falado DTS</div>
-    <div class="pnum">05</div>
-    <h1>Mural do <em>Retrato Falado</em></h1>
-    <p class="lead">23 pessoas escreveram um prompt de caricatura e só 14 marcaram quem era. Fizemos o trabalho de detetive e as outras 11 foram identificadas pelas pistas que cada um deu.</p>
-    <p class="hand">“Passe o mouse para descobrir quem desenhou quem.”</p>
-    <div class="sig">CARICATURAS GERADAS A PARTIR DOS PROMPTS DO TIME</div>
-  </aside>
-  <div class="rp" style="gap:12px">
-    <div class="mural" id="mural"></div>
-    <div class="card" style="padding:10px 14px">
-      <h3 style="margin-bottom:6px">Investigação · quem não marcou e desenhou quem</h3>
+<!-- ================= 05 MURAL ================= -->
+<section class="slide" data-sec="Mural" data-about="Página 07 do caderno, o Retrato Falado. 23 pessoas escreveram um prompt de caricatura e só 14 marcaram quem retrataram. As outras 11 foram identificadas pelas características descritas, com indicação de certeza, provável ou palpite. Passe o mouse em cada caricatura para ver quem desenhou.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Mural do Retrato Falado</b><span>Bônus · Página 07 do caderno</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">5/5</span></div></header>
+  <div class="sb"><b>Retrato falado DTS · <em>quem desenhou quem</em></b><span>Passe o mouse em cada caricatura</span></div>
+  <div class="body" style="gap:10px">
+    <div class="mural" id="mural" style="display:grid;gap:12px;flex:1;min-height:0"></div>
+    <div class="card" style="padding:8px 14px;flex:none">
+      <div class="lab" style="margin-bottom:4px">Investigação · quem não marcou e desenhou quem</div>
       <div class="who" id="who"></div>
     </div>
   </div>
+  <div class="ft"><span><b>Fonte:</b> prompts da página 07 do caderno · caricaturas geradas a partir das descrições do time</span><span>5/5</span></div>
 </section>
 
 </div></main>
 
+<div class="about" id="about"><h4>Sobre este slide</h4><div id="aboutTxt"></div></div>
+<footer class="bottombar">
+  <nav class="secs" id="secs"></nav>
+  <div class="ctrls">
+    <button class="btn light" id="aboutBtn">ⓘ Sobre este slide</button>
+    <button class="btn" id="prev">← Voltar</button>
+    <span class="pg" id="pg">1 / 6</span>
+    <button class="btn go" id="next">Avançar →</button>
+  </div>
+</footer>
+
 <script>
-/* ---------------- data ---------------- */
-const BANDS=[['Ponto de partida','0–20',0,0],['Exploração','21–40',4,0],['Evolução','41–60',7,1],['Autonomia','61–80',7,14],['Multiplicação','81–100',7,10]];
-const DIMS=[['Skills & Métodos',62.0,96.9],['Reutilização',68.0,88.0],['Prompt & Contexto',null,87.2],['Fluxo de trabalho',null,81.9],['Criação & compartilhamento',68.0,81.2],['Compreensão semântica',null,78.3],['Uso do ecossistema',72.7,null],['Maturidade agêntica',null,52.2]];
-const P01=[['Claude Desktop',[0,1,7,17]],['Skills',[1,5,6,13]],['Reutilização',[0,5,14,6]],['Compartilhamento',[4,4,4,13]],['FLOWS',[2,5,16,2]],['Métodos',[6,7,6,6]]];
-const P04=[['C · FLOWS → verificar → adaptar',18],['A · Claude direto → ajustes',5],['B · arquivo antigo → adaptar',1],['D · Método → Skill → Agente',1]];
-const P06=[['Contexto',21],['Objetivo',16],['Público',14],['Formato de saída',11],['Referências',11]];
-
-/* ---------------- slide 1: ladder ---------------- */
-document.getElementById('ladder').innerHTML=BANDS.map(([n,r,d,c],i)=>`<div class="rung"><div class="cols">
-<div class="col d" style="height:${d/14*150}px;animation-delay:${i*.08}s"><span>${d}</span></div>
-<div class="col c ${n==='Autonomia'?'top':''}" style="height:${c/14*150}px;animation-delay:${i*.08+.2}s"><span>${c}</span></div></div>
-<div class="nm">${n}</div><div class="rg">${r}</div></div>`).join('');
-
+/* ---------- P1 ---------- */
 const SC=[50,64,64,64,69,73,76,77,77,77,78,79,79,80,80,81,84,86,87,87,88,90,91,92,94];
-(()=>{const t=document.getElementById('thermo');const zones=[[0,20,'#F5F7F9'],[20,40,'#EAF0F6'],[40,60,'#DFE8F0'],[60,80,'#C9D8E7'],[80,100,'#FDE3C6']];
-let h=zones.map(([a,b,c],i)=>`<div style="position:absolute;left:${a}%;width:${b-a}%;top:0;bottom:22px;background:${c};border-right:1px dashed #BFD0E1"><span style="position:absolute;bottom:4px;left:6px;font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--steel-dark)">${BANDS[i][0]}</span></div>`).join('');
-const cnt={};SC.forEach((v,i)=>{const k=v;cnt[k]=(cnt[k]||0)+1;h+=`<div style="position:absolute;left:${v}%;top:${28+(cnt[k]-1)*16}px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:${v>80?'var(--orange)':'var(--navy)'};border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25);animation:rise .6s ${i*.03}s both"></div>`});
-h+=`<div style="position:absolute;left:78.6%;top:0;bottom:22px;border-left:2px solid var(--orange)"><span style="position:absolute;top:-2px;left:6px;font:700 12px var(--mono);color:var(--orange);white-space:nowrap">média 78,6</span></div><div style="position:absolute;left:85%;top:0;bottom:22px;border-left:2px dashed var(--navy)"><span style="position:absolute;top:-2px;left:6px;font:700 12px var(--mono);color:var(--navy);white-space:nowrap">meta 85</span></div>`;
-h+=[0,20,40,60,80,100].map(x=>`<span style="position:absolute;bottom:0;left:${x}%;transform:translateX(-50%);font:400 11px var(--mono);color:var(--muted)">${x}</span>`).join('');t.innerHTML=h})();
-/* ---------------- slide 2 ---------------- */
-document.getElementById('dumb').innerHTML=DIMS.map(([n,d,m],i)=>{
-  const lo=d!=null&&m!=null?Math.min(d,m):null, hi=d!=null&&m!=null?Math.max(d,m):null;
-  return `<div class="drow"><span>${n}</span><div class="track">
-  ${lo!=null?`<div class="seg" style="left:${lo}%;width:${hi-lo}%"></div>`:''}
-  ${d!=null?`<div class="dot dec" style="left:${d}%"></div>`:''}
-  ${m!=null?`<div class="dot dem ${m<60?'low':''}" style="left:${m}%"></div>`:''}
-  </div><span class="val" style="color:${(m??d)<60?'var(--orange)':'var(--navy)'}">${(m??d).toFixed(1).replace('.',',')}</span></div>`}).join('');
-const hc=v=>{const a=v/25;return `background:rgba(0,43,73,${.06+a*1.05});color:${a>.4?'#fff':'#002B49'}`};
-document.getElementById('heat').innerHTML='<span></span>'+['0','1','2','3'].map(x=>`<span class="h">nível ${x}</span>`).join('')+'<span class="h">índice</span>'+
- P01.map(([n,a])=>{const s=Math.round(a.reduce((t,v,i)=>t+v*i,0)/75*100);return `<span>${n}</span>`+a.map(v=>`<div class="c" style="${hc(v)}">${v}</div>`).join('')+`<span class="s" style="color:${s<60?'var(--orange)':'var(--navy)'}">${s}</span>`}).join('');
-const mini=(id,arr,max,col)=>document.getElementById(id).innerHTML=arr.map(([n,v])=>`<div style="font-size:12px;margin-bottom:5px"><div style="display:flex;justify-content:space-between"><span>${n}</span><b style="font-family:var(--mono)">${v}</b></div><div class="bar"><i style="width:${v/max*100}%;background:${col(n)}"></i></div></div>`).join('');
-mini('p04',P04,25,n=>n.startsWith('D')?'var(--orange)':n.startsWith('C')?'var(--navy)':'var(--steel)');
-mini('p06',P06,25,()=> 'var(--steel-dark)');
+document.getElementById('thermo').innerHTML='<div class="rail"></div>'+SC.map((v,i)=>`<div class="d ${v>80?'m':''}" style="left:${v}%;animation-delay:${i*.03}s" title="${v}"></div>`).join('')+
+ '<div class="avg" style="left:78.6%"><span>DTS 78,6</span></div>'+[0,20,40,60,80,100].map(x=>`<span class="ax" style="left:${x}%">${x}</span>`).join('');
+const ST=[['Ponto de partida','0–20',0],['Exploração','21–40',0],['Evolução','41–60',1],['Autonomia','61–80',14],['Multiplicação','81–100',10]];
+document.getElementById('stairs').innerHTML=ST.map(([n,r,c],i)=>`<div class="st ${i===3?'on':''} ${i===4?'next':''}" style="height:${28+i*18}%;animation-delay:${i*.07}s">${i===3?'<span class="pin">DTS · 78,6</span>':''}${i===4?'<span class="pin" style="background:#fff;color:var(--navy)">Próximo degrau</span>':''}<b>${c}</b><span>${n}</span><i>${r}</i></div>`).join('');
 
-/* ---------------- slide 4: videos ---------------- */
-const yt=q=>'https://www.youtube.com/results?search_query='+encodeURIComponent(q);
-const LVLS=[
- ['1','Básico','Entender e começar a usar',[
-  ['O que é IA generativa, explicado sem jargão','Canal Nerdologia · busca','Nerdologia inteligência artificial'],
-  ['Como escrever bons prompts','Hashtag Treinamentos · busca','Hashtag Treinamentos como escrever prompts inteligência artificial'],
-  ['Claude: primeiros passos em português','tutoriais PT-BR · busca','Claude IA Anthropic tutorial português iniciantes'],
-  ['IA para produtividade no trabalho','Sebrae · busca','Sebrae inteligência artificial produtividade']]],
- ['2','Intermediário','Contexto, reuso e automação',[
-  ['Engenharia de prompt: técnicas e exemplos','Filipe Deschamps · busca','Filipe Deschamps engenharia de prompt'],
-  ['Claude Projects e Artifacts na prática','tutoriais PT-BR · busca','Claude Projects Artifacts tutorial português'],
-  ['RAG explicado: IA com seus documentos','Código Fonte TV · busca','Código Fonte TV RAG inteligência artificial'],
-  ['Automação com IA e n8n do zero','tutoriais PT-BR · busca','n8n automação inteligência artificial tutorial português']]],
- ['3','Agentes','Orquestrar Método → Skill → Agente',[
-  ['Agentes de IA: o que são e como funcionam','Código Fonte TV · busca','Código Fonte TV agentes de IA'],
-  ['MCP (Model Context Protocol) explicado','tutoriais PT-BR · busca','MCP Model Context Protocol explicado português'],
-  ['Claude Code na prática','tutoriais PT-BR · busca','Claude Code tutorial português'],
-  ['Sistemas multiagentes com CrewAI','DIO · busca','CrewAI agentes tutorial português']]]];
-const CH={'1':'refaça um pedido da sua semana usando objetivo + contexto + formato e compare os resultados.','2':'transforme uma entrega recorrente em um Projeto do Claude com instruções e arquivos de referência.','3':'desenhe no papel um agente Método → Skill → Agente para uma tarefa do seu projeto e leve à Clínica.'};
-document.getElementById('lvls').innerHTML=LVLS.map(([n,t,s,v])=>`<div class="lvl"><div class="lh"><div class="badge">${n}</div><div><h4>Nível ${n} · ${t}</h4><p>${s}</p></div></div>
-${v.map(([vt,vc,q])=>`<a class="vid" data-link="${yt(q)}" href="${yt(q)}" target="_blank" rel="noopener"><div class="th"></div><div><div class="vt">${vt}</div><div class="vc">${vc}</div></div></a>`).join('')}<div class="note" style="margin-top:auto;transform:rotate(-.8deg);font-size:15px"><b>Desafio prático:</b> ${CH[n]}</div></div>`).join('');
+/* ---------- P3: modelos ---------- */
+const MODELS=[
+ ['🧠','Pensar','estratégia, diagnóstico, decisões difíceis','Opus 5.5','Fable 5.1 para o problema mais difícil','Thinking','Pro para análise crítica de alto risco'],
+ ['✍️','Criar','textos, decks, narrativa, propostas','Sonnet 5.5','com Artifacts para páginas e apresentações','Instant + imagens','geração de imagem nativa no chat'],
+ ['🔎','Pesquisar','mercado, benchmark, fontes','Research','pesquisa com fontes citadas','Deep Research','relatório longo com fontes'],
+ ['💻','Desenvolver','código, protótipos, dashboards','Claude Code','com Sonnet 5.5 (dia a dia) ou Opus 5.5','Codex','agente de código da OpenAI'],
+ ['🧩','Construir','agentes, automações, Skills','Cowork + Skills + MCP','delegação de tarefas com ferramentas','Agent + GPTs','modo agente e assistentes customizados'],
+ ['⚡','Velocidade','triagem, resumos, volume','Haiku 5.5','rápido e barato para tarefas simples','Instant','resposta imediata']];
+document.getElementById('models').innerHTML=MODELS.map(([ic,f,d,c,cs,g,gs])=>`<tr><td><div class="fr"><i>${ic}</i>${f}</div><span class="s">${d}</span></td><td><span class="m c">${c}</span><span class="s">${cs}</span></td><td><span class="m g">${g}</span><span class="s">${gs}</span></td></tr>`).join('');
+
+/* ---------- P4: trilha ---------- */
+const yt=id=>'https://www.youtube.com/watch?v='+id;
+const LV=[
+ ['1','Compreender','Prompt e primeiros passos','var(--steel)',[
+  ['Lucas Moreira','Engenharia de Prompt: o guia completo','Prompts consistentes, tokens e versionamento',yt('1VDcke66TRE')],
+  ['Sandeco','Curso ChatGPT: Engenharia de Prompts','Formação de prompts e aplicações práticas',yt('M0buLwTSHq0')],
+  ['Rodrigo do Carmo','Claude Cowork: curso completo para iniciantes','Skills, MCP e plugins sem programar',yt('pyb3G0z1m7c')],
+  ['Prof. Mendes','Engenharia de Prompt na prática (aula 01)','Exercícios guiados, do zero',yt('XcY8fJDNyBY')]],'Use em: atas, e-mails, resumos executivos e primeiras versões de entregáveis.'],
+ ['2','Construir','Claude Code, Skills e RAG','var(--steel-dark)',[
+  ['Rodrigo do Carmo','Claude Code: curso completo para iniciantes','Contexto, Skills, MCP e subagentes · 1h27',yt('I5RLz75eKU4')],
+  ['Deborah Folloni','Vibe Coding não funciona (novo workflow)','Especificar, planejar e dividir tarefas',yt('Ea5yaWGqoHQ')],
+  ['Full Cycle','Claude Code: guia completo','O que todo dev precisa saber',yt('NH_NtrN2BEs')],
+  ['Deborah Folloni','Agora eu só uso Skills','Por que Skills substituem agentes soltos',yt('h_l8wCr7M2Q')]],'Use em: transformar entregas recorrentes em Skills e protótipos para o cliente.'],
+ ['3','Orquestrar','Agentes em produção','var(--navy)',[
+  ['Fabio Akita','Minha experiência com Agile Vibe Coding','37 dias com agentes em produção · 58 min',yt('U3bZavG8qQY')],
+  ['Full Cycle','Criando agentes de IA com LangChain','Chains, ferramentas e agentes ReAct',yt('jnEmWGmXx8Y')],
+  ['Full Cycle','Subagentes no Claude Code na prática','Raio-X de arquitetura e dependências',yt('YtFNz1DtDdo')],
+  ['Full Cycle','Agentes na prática: analisa logs e abre issues','Agente com ferramentas reais',yt('hnTX9W0YGAE')]],'Use em: engenharia reversa de sistemas, modernização e agentes internos.'],
+ ['4','Consultoria','PMO, processos e sistemas','var(--orange)',[
+  ['Mário Trentim','Workshop: gestão de projetos usando IA','Escopo, riscos e cronograma com IA',yt('9648l3d4HFc')],
+  ['Curso em Vídeo','Planejamento e gestão de projetos com IA','PMO operacional apoiado por IA',yt('YGa4elddiug')],
+  ['Hashtag Programação','Agente de IA com RAG (LangChain)','Consultar contratos e PDFs: base para due diligence',yt('0M8iO5ykY-E')],
+  ['Afonso Lopes','Agentes e automação para empresas (canal)','Levantamento, proposta e implantação no cliente','https://www.youtube.com/@afonsoautomacoes_ia/videos']],'Use em: PMO, relatórios de status, riscos, processos e diligências.']];
+document.getElementById('lv').innerHTML=LV.map(([n,t,s,c,v,ap])=>`<div class="lvl"><div class="lh"><div class="bd" style="background:${c};${n==='4'?'color:var(--navy)':''}">${n}</div><div><h4>Nível ${n} · ${t}</h4><p>${s}</p></div></div>
+${v.map(([a,vt,vc,u])=>`<a class="vid" href="${u}" target="_blank" rel="noopener"><div class="th"></div><div><div class="au">${a}</div><div class="vt">${vt}</div><div class="vc">${vc}</div></div></a>`).join('')}<div class="ap">${ap}</div></div>`).join('');
 const RANDOM={
- 'Design':['Curso em Vídeo design','UX design para iniciantes português','Figma do zero tutorial português','Design System explicado português','Aela UX UI design'],
- 'Sistemas':['Código Fonte TV arquitetura de software','System design explicado português','Fabio Akita arquitetura','Curso em Vídeo lógica de programação','Filipe Deschamps como funciona a internet'],
- 'Jogos':['como criar um jogo na Godot português','game design curso gratuito português','Unity para iniciantes português','criar jogo 2D do zero português','pixel art tutorial português'],
- 'Dados':['Hashtag Treinamentos Power BI do zero','Hashtag Treinamentos Python para dados','Curso em Vídeo Python','SQL do zero português','visualização de dados storytelling português'],
- 'Produtividade':['Notion tutorial português','Excel com IA Hashtag Treinamentos','apresentações com IA português','Miro tutorial português','gestão do tempo produtividade TED português']};
-let cat='Design';
-const cats=document.getElementById('cats');
+ 'Design':[['Figma: aulão gratuito + protótipo interativo',yt('1a8P6Qyie30')],['Curso de Design de Interfaces: UI com foco em UX',yt('4crxi0Y8QLE')],['Curso completo de Figma: UX/UI do básico ao avançado',yt('XCIeljTsCVI')]],
+ 'Sistemas':[['Akitando · engenharia de software (canal)','https://www.youtube.com/@Akitando'],['Full Cycle · agentes analisando logs e abrindo issues',yt('hnTX9W0YGAE')],['Full Cycle · desenvolvimento profissional (canal)','https://www.youtube.com/@FullCycle']],
+ 'Jogos':[['Godot do Zero 2026: criando um jogo 2D',yt('Mhb0euzt098')],['Aprenda Godot: minicurso completo (playlist)','https://www.youtube.com/playlist?list=PLXiMbAkZF_BlKDfPoIOwFmmzC4dHX1eQt'],['Uma IA consegue criar um jogo sozinha na Godot?',yt('n2SvJavgPRo')]],
+ 'Dados':[['Hashtag · Inteligência Artificial no Python (playlist)','https://www.youtube.com/playlist?list=PLpdAy0tYrnKyVQDckS5IDB24QrSap2u8y'],['Hashtag · Agente de IA com RAG',yt('0M8iO5ykY-E')]],
+ 'Automação':[['Curso gratuito de n8n: do zero ao agente de IA',yt('grm-bzUJ1is')],['Afonso Lopes · agentes e automação (canal)','https://www.youtube.com/@afonsoautomacoes_ia/videos'],['Deborah Folloni · Claude Code (canal)','https://www.youtube.com/@deborahfolloni']]};
+let cat='Design';const cats=document.getElementById('cats');
 cats.innerHTML=Object.keys(RANDOM).map(c=>`<button class="cat ${c===cat?'on':''}" data-c="${c}">${c}</button>`).join('');
 cats.onclick=e=>{const b=e.target.closest('.cat');if(!b)return;cat=b.dataset.c;[...cats.children].forEach(x=>x.classList.toggle('on',x===b));roll()};
 function roll(){const d=document.getElementById('dice');d.classList.remove('roll');void d.offsetWidth;d.classList.add('roll');
- const l=RANDOM[cat],q=l[Math.floor(Math.random()*l.length)],a=document.getElementById('rlink');a.textContent='▶ '+q;a.href=yt(q);
- document.getElementById('rmeta').textContent='Categoria: '+cat+' · abre a busca no YouTube';}
+ const l=RANDOM[cat],[t,u]=l[Math.floor(Math.random()*l.length)],a=document.getElementById('rlink');a.textContent='▶ '+t;a.href=u;
+ document.getElementById('rmeta').textContent='Categoria '+cat+' · role de novo para outra sugestão';}
 document.getElementById('dice').onclick=roll;
 
 /* ---------------- slide 5: caricatures ---------------- */
@@ -550,18 +629,26 @@ const WHO=[
 const conf={g:'certeza',o:'provável',n:'palpite'};
 document.getElementById('who').innerHTML=WHO.map(([a,b,c,k])=>`<div><span>${a}</span><span class="ar">→</span><span><b>${b}</b> <span class="tiny">· ${c}</span></span><span class="chip ${k==='g'?'g':k==='o'?'o':''}">${conf[k]}</span></div>`).join('');
 
-/* ---------------- navigation ---------------- */
-const slides=[...document.querySelectorAll('.slide')], tabs=document.getElementById('tabs');
-tabs.innerHTML=slides.map((s,i)=>`<button class="tab" title="${s.dataset.title}">0${i+1}</button>`).join('');
-const qs=new URLSearchParams(location.search);
-let cur=Math.max(0,Math.min(slides.length-1,(+qs.get('p')||1)-1));
+
+
+/* ---------- navegação (modelo Axon) ---------- */
+const slides=[...document.querySelectorAll('.slide')],secs=document.getElementById('secs');
+secs.innerHTML=slides.map((s,i)=>`<button class="sec">${s.dataset.sec}</button>`).join('');
+document.getElementById('toc').innerHTML=slides.slice(1).map((s,i)=>`<div data-i="${i+1}"><b>0${i+1}</b>${s.dataset.sec}<i>${['onde estamos','pedir × delegar','5 peças + modelos','direcionador + trilha','retrato falado'][i]}</i></div>`).join('');
+document.getElementById('toc').onclick=e=>{const d=e.target.closest('[data-i]');if(d)go(+d.dataset.i)};
+const qs=new URLSearchParams(location.search);let cur=Math.max(0,Math.min(slides.length-1,(+qs.get('p')||1)-1));
 if(qs.has('print'))document.body.classList.add('print');
-function go(i){cur=(i+slides.length)%slides.length;slides.forEach((s,j)=>s.classList.toggle('on',j===cur));[...tabs.children].forEach((t,j)=>t.classList.toggle('on',j===cur));
- slides[cur].querySelectorAll('.bar i,.col,.fb').forEach(el=>{el.style.animation='none';void el.offsetWidth;el.style.animation=''});}
-tabs.onclick=e=>{const b=e.target.closest('.tab');if(b)go([...tabs.children].indexOf(b))};
+const about=document.getElementById('about');
+function go(i){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,j)=>s.classList.toggle('on',j===cur));
+ [...secs.children].forEach((t,j)=>{t.classList.toggle('on',j===cur);t.classList.toggle('done',j<cur)});
+ document.getElementById('pg').textContent=(cur+1)+' / '+slides.length;document.getElementById('progress').style.width=((cur+1)/slides.length*100)+'%';
+ document.getElementById('aboutTxt').innerHTML=slides[cur].dataset.about||'';
+ slides[cur].querySelectorAll('.fb,.st,.d,.gp i').forEach(el=>{el.style.animation='none';void el.offsetWidth;el.style.animation=''});}
+secs.onclick=e=>{const b=e.target.closest('.sec');if(b)go([...secs.children].indexOf(b))};
 document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);
-addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
-function fit(){const d=document.getElementById('deck'),pr=document.body.classList.contains('print');const W=innerWidth-(pr?0:48),H=innerHeight-(pr?0:52+40);d.style.transform=`scale(${Math.min(W/1600,H/900)})`}
+document.getElementById('aboutBtn').onclick=()=>about.classList.toggle('on');
+addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')go(cur+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(cur-1);if(e.key==='Escape')about.classList.remove('on')});
+function fit(){const d=document.getElementById('deck'),pr=document.body.classList.contains('print');const W=innerWidth-(pr?0:40),H=innerHeight-(pr?0:58+24);d.style.transform=`scale(${Math.min(W/1600,H/900)})`}
 addEventListener('resize',fit);fit();go(cur);roll();
 </script>
 </body>
