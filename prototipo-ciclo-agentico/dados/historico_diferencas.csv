@@ -1,0 +1,4 @@
+chave,ciclo_origem,valor,situacao,observacao
+ALFA|capacidade|residuo,2026-06,-0.41,aberta,arredondamento no ERP; passou sem decisão
+GAMA|capacidade_extraordinaria|fonte,2026-08,-36200.00,aberta,arquivo do portal não anexado
+BETA|movimentacao|quantidade,2026-08,3120.55,resolvida,nota de crédito emitida

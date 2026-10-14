@@ -1,0 +1,71 @@
+[
+  {
+    "id": "medicao_provisoria",
+    "nome": "Medição provisória diária",
+    "fonte": "Medição e centro de controle (exportação OT)",
+    "responsavel": "Área de Medição",
+    "arquivo": "medicao_provisoria.csv",
+    "obrigatoria": true,
+    "bloqueia_calculo": true
+  },
+  {
+    "id": "medicao_final",
+    "nome": "Medição final certificada",
+    "fonte": "Medição e centro de controle (exportação OT)",
+    "responsavel": "Área de Medição",
+    "arquivo": "medicao_final.csv",
+    "obrigatoria": false,
+    "cobre_carregadores": true
+  },
+  {
+    "id": "consumo_gus",
+    "nome": "Consumo de gás de uso do sistema",
+    "fonte": "Medição e centro de controle (exportação OT)",
+    "responsavel": "Área de Medição",
+    "arquivo": "consumo_gas_sistema.csv",
+    "obrigatoria": true,
+    "bloqueia_calculo": true
+  },
+  {
+    "id": "contratos",
+    "nome": "Contratos de transporte vigentes",
+    "fonte": "Planilha da área comercial",
+    "responsavel": "Operações Comerciais",
+    "arquivo": "contratos.xlsx",
+    "obrigatoria": true,
+    "bloqueia_calculo": true
+  },
+  {
+    "id": "capacidade_extra",
+    "nome": "Capacidade extraordinária do mês",
+    "fonte": "Portal de capacidade (login pessoal: a pessoa baixa)",
+    "responsavel": "Operações Comerciais",
+    "arquivo": "capacidade_extraordinaria.csv",
+    "obrigatoria": true
+  },
+  {
+    "id": "indice_preco",
+    "nome": "Índice público de preço do gás",
+    "fonte": "Fonte pública de índices",
+    "responsavel": "Suprimento de Gás e Energia",
+    "arquivo": "indice_preco_gas.csv",
+    "obrigatoria": true,
+    "bloqueia_calculo": true
+  },
+  {
+    "id": "pre_fatura_erp",
+    "nome": "Pré-faturamento do mês",
+    "fonte": "ERP (exportação, só leitura)",
+    "responsavel": "Faturamento e Controladoria",
+    "arquivo": "pre_fatura_erp.csv",
+    "obrigatoria": true
+  },
+  {
+    "id": "emails",
+    "nome": "E-mails de carregadores e fornecedor",
+    "fonte": "Caixa de e-mail nomeada",
+    "responsavel": "Operações Comerciais",
+    "arquivo": "emails/*.eml",
+    "obrigatoria": false
+  }
+]

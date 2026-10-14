@@ -1,0 +1,14 @@
+documento,carregador,componente,quantidade,unidade,tarifa,valor
+PF-2026-09-001,ALFA,capacidade,5000,mil m³/dia,1150.00,5750000.37
+PF-2026-09-001,ALFA,movimentacao,134828.377,mil m³,41.20,5554929.13
+PF-2026-09-001,ALFA,gas_uso_sistema,1078.260,mil m³,2082.00,2244937.32
+PF-2026-09-002,BETA,capacidade,3500,mil m³/dia,1150.00,4025000.00
+PF-2026-09-002,BETA,movimentacao,95910.070,mil m³,41.20,3951494.88
+PF-2026-09-002,BETA,gas_uso_sistema,767.020,mil m³,2082.00,1596935.64
+PF-2026-09-003,GAMA,capacidade,2400,mil m³/dia,1180.00,2832000.00
+PF-2026-09-003,GAMA,movimentacao,62845.141,mil m³,42.10,2645780.44
+PF-2026-09-003,GAMA,gas_uso_sistema,502.590,mil m³,2082.00,1046392.38
+PF-2026-09-003,GAMA,capacidade_extraordinaria,50,mil m³/dia,770.00,38500.00
+PF-2026-09-004,DELTA,capacidade,1000,mil m³/dia,1210.00,1210000.00
+PF-2026-09-004,DELTA,movimentacao,27030.579,mil m³,43.00,1162314.90
+PF-2026-09-004,DELTA,gas_uso_sistema,216.171,mil m³,2082.00,450068.02

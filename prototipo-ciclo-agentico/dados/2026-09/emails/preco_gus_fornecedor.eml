@@ -1,0 +1,29 @@
+From: Rodrigo Nunes Batista <rodrigo.batista@fornecedora-exemplo.example>
+To: fechamento@transportadora-exemplo.example
+Date: Fri, 04 Sep 2026 09:02:00 -0300
+Subject: =?utf-8?q?Pre=C3=A7o_do_g=C3=A1s_de_uso_do_sistema=3A_compet=C3=AAn?=
+ =?utf-8?q?cia?= setembro/2026
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="==fronteira-exemplo-2026-09=="
+
+--==fronteira-exemplo-2026-09==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Bom dia,
+
+Informamos que o preço do gás de uso do sistema para a competência setembro/2026 é de R$ 2.082,00 por mil m³, válido a partir de 01/09/2026, conforme a fatura nº 9-2026 da Fornecedora Exemplo de Gás (CNPJ 12.345.678/0001-95).
+
+Contato para conferência: Rodrigo Nunes Batista, telefone +55 21 3456-7890, rodrigo.batista@fornecedora-exemplo.example.
+
+Att.,
+Rodrigo Nunes Batista
+
+--==fronteira-exemplo-2026-09==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+
+<html><body><p>Bom dia,</p><p>Informamos que o preço do gás de uso do sistema para a competência setembro/2026 é de R$ 2.082,00 por mil m³, válido a partir de 01/09/2026, conforme a fatura nº 9-2026 da Fornecedora Exemplo de Gás (CNPJ 12.345.678/0001-95).</p><p>Contato para conferência: Rodrigo Nunes Batista, telefone +55 21 3456-7890, rodrigo.batista@fornecedora-exemplo.example.</p><p>Att.,<br>Rodrigo Nunes Batista<br></p></body></html>
+
+--==fronteira-exemplo-2026-09==--

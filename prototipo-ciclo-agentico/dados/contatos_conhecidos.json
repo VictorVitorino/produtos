@@ -1,0 +1,13 @@
+{
+  "dominios": {
+    "carregador-alfa.example": "ALFA",
+    "carregador-beta.example": "BETA",
+    "carregador-gama.example": "GAMA",
+    "carregador-delta.example": "DELTA",
+    "fornecedora-exemplo.example": "SISTEMA"
+  },
+  "nomes": [
+    "Mariana Teixeira Lopes",
+    "Rodrigo Nunes Batista"
+  ]
+}

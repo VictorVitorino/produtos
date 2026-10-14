@@ -1,0 +1,30 @@
+{
+  "versao": "faixas-2026.09-v2",
+  "definida_por": "Controladoria da Transportadora Exemplo (fictício)",
+  "modo": "release1",
+  "nota_modo": "release1: sinaliza e registra tudo e só bloqueia o fechamento acima da linha de materialidade. estrito: bloqueia também o que estiver acima da faixa sem permissão.",
+  "materialidade_brl": "150000.00",
+  "classes": {
+    "ajuste provisória→final": {
+      "faixa_brl": null,
+      "alerta_pct": "2.00",
+      "regra": "Ajuste esperado entre medição provisória e final: classe própria, registrado, nunca bloqueia. Acima de 2% sobre a provisória, sai sinalizado como anomalia para conferir a medição final."
+    },
+    "diferença de cálculo": {
+      "faixa_brl": "500.00",
+      "regra": "Até R$ 500,00 por linha passa com regra registrada (arredondamento e aritmética)."
+    },
+    "preço acima do esperado": {
+      "faixa_brl": "5000.00",
+      "regra": "Até R$ 5.000,00 no mês passa com regra registrada."
+    },
+    "fonte faltante": {
+      "faixa_brl": "0.00",
+      "regra": "Toda cobrança sem fonte que a sustente exige permissão por escrito."
+    }
+  },
+  "quem_pode_permitir": {
+    "acima da faixa": ["Analista sênior", "Controladoria"],
+    "acima da materialidade": ["Controladoria"]
+  }
+}

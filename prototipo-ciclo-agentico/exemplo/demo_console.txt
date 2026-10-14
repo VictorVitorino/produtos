@@ -1,0 +1,63 @@
+
+=== 1. O agente reúne: fontes do mês e e-mails ===
+Fontes do mês (agente coletor):
+  OK Medição provisória diária                  recebida  Área de Medição              
+  ~~ Medição final certificada                  parcial   Área de Medição              falta: DELTA (usa a provisória)
+  OK Consumo de gás de uso do sistema           recebida  Área de Medição              
+  OK Contratos de transporte vigentes           recebida  Operações Comerciais         
+  -- Capacidade extraordinária do mês           faltante  Operações Comerciais         obrigatória: cobrar o responsável
+  OK Índice público de preço do gás             recebida  Suprimento de Gás e Energia  
+  OK Pré-faturamento do mês                     recebida  Faturamento e Controladoria  
+  OK E-mails de carregadores e fornecedor       recebida  Operações Comerciais         
+  Cobrar de Operações Comerciais: capacidade_extraordinaria.csv
+Parâmetros propostos (pendentes até uma pessoa aceitar):
+  P1 Carregador Beta    tarifa_movimentacao        R$ 41,20 -> R$ 43,85     desde 2026-09-01 [pendente; agente offline; valor e vigência no texto: sim]
+  P2 Sistema (rateado)  preco_gas_uso_sistema   R$ 2.050,00 -> R$ 2.082,00  desde 2026-09-01 [pendente; agente offline; valor e vigência no texto: sim]
+  Gateway: modo offline (SDK 'anthropic' não instalado); cortes {'email': 1, 'cpf': 1, 'telefone': 1, 'nome': 2}
+  Trechos do que sairia para o modelo (já redigidos):
+    | Pedimos que a pré-fatura de setembro já reflita o novo valor. Para o cadastro do signatário do aditivo: [NOME REMOVIDO], CPF [CPF REMOVIDO].
+    | Qualquer dúvida, falar comigo no [TELEFONE REMOVIDO] ou em [EMAIL REMOVIDO].
+    | [NOME REMOVIDO]
+
+=== 2. A pessoa aceita os parâmetros ===
+  P1 Carregador Beta    tarifa_movimentacao        R$ 41,20 -> R$ 43,85     desde 2026-09-01 [aceito; agente offline; valor e vigência no texto: sim]
+  P2 Sistema (rateado)  preco_gas_uso_sistema   R$ 2.050,00 -> R$ 2.082,00  desde 2026-09-01 [aceito; agente offline; valor e vigência no texto: sim]
+
+=== 3. O código calcula e compara ===
+  versão b212c8f67b7d1bb1 · saídas 2a9ecc5cad267bd8
+  Carregador Alfa    ferramenta   R$ 13.537.480,95  ERP   R$ 13.549.866,82  dif  -R$ 12.385,87
+  Carregador Beta    ferramenta    R$ 9.836.091,95  ERP    R$ 9.573.430,52  dif  R$ 262.661,43
+  Carregador Gama    ferramenta    R$ 6.515.571,35  ERP    R$ 6.562.672,82  dif  -R$ 47.101,47
+  Carregador Delta   ferramenta    R$ 2.762.299,32  ERP    R$ 2.822.382,92  dif  -R$ 60.083,60  (base PROVISÓRIA)
+  D01 acima da materialidade  diferença de cálculo      R$ 254.469,13  idade 0  BETA|movimentacao|tarifa
+  D02 acima da faixa          preço acima do esperado    R$ 82.049,31  idade 0  SISTEMA|gas_uso_sistema|preco
+  D03 acima da faixa          diferença de cálculo      -R$ 60.500,00  idade 0  DELTA|capacidade|quantidade
+  D04 acima da faixa          fonte faltante            -R$ 38.500,00  idade 1  GAMA|capacidade_extraordinaria|fonte
+  D05 dentro da faixa         diferença de cálculo           -R$ 0,37  idade 3  ALFA|capacidade|residuo
+  D06 classe própria          ajuste provisória→final   -R$ 10.299,34  idade 0  ALFA|movimentacao|quantidade
+  D07 classe própria          ajuste provisória→final    -R$ 6.856,75  idade 0  GAMA|movimentacao|quantidade
+  D08 classe própria          ajuste provisória→final     R$ 4.779,90  idade 0  BETA|movimentacao|quantidade
+  D09 classe própria          ajuste provisória→final     R$ 3.412,40  idade 0  BETA|gas_uso_sistema|quantidade
+  D10 classe própria          ajuste provisória→final    -R$ 2.086,16  idade 0  ALFA|gas_uso_sistema|quantidade
+  D11 classe própria          ajuste provisória→final    -R$ 1.744,72  idade 0  GAMA|gas_uso_sistema|quantidade
+  D12 classe própria          ajuste provisória→final       R$ 416,40  idade 0  DELTA|gas_uso_sistema|quantidade
+
+=== 4. O agente explica o que está acima da faixa ===
+  D01 (offline): [offline] Carregador Beta, Movimentação: a tarifa do ERP (R$ 41,20) difere da usada no cálculo (R$ 43,85; origem: parâmetro aceito, e-mail aditivo_tarifa_beta.eml de 2026-09-02), o que gera R$ 254.469,13. Conferir o documento que sustenta a tarifa e o cadastro de tarifas do ERP antes de emitir a cobrança.
+  D02 (offline): [offline] Gás de uso do sistema: preço usado de R$ 2.082,00/mil m³, 1,56% acima do índice público (R$ 2.050,00); impacto de R$ 82.049,31 no mês, rateado entre os carregadores. Conferir a fatura do fornecedor e a cláusula de preço do contrato de suprimento.
+  D03 (offline): [offline] Carregador Delta, Capacidade: a quantidade no ERP (1.000 mil m³/dia) difere da ferramenta (950 mil m³/dia; origem: contrato TR-DELTA-001-A2), efeito de -R$ 60.500,00. Conferir o contrato vigente no mês e o cadastro do ERP.
+  D04 (offline): [offline] Carregador Gama, Capacidade extraordinária: o ERP cobra R$ 38.500,00 sem a fonte que sustenta a cobrança (capacidade_extraordinaria.csv; responsável: Operações Comerciais). Pedir o arquivo ao responsável, ou anexar o termo assinado, antes de permitir. Em aberto há 1 ciclo(s).
+
+=== 5. A pessoa aprova: primeiro pedido de fechamento ===
+  Fechamento recusado: 1 item(ns) bloqueante(s) sem permissão: D01 (acima da materialidade)
+  D01 permitida por Paula Ramos (Controladoria): R$ 254.469,13 · Aditivo nº 3 confere com a tarifa aceita; ERP emite cobrança complementar
+  D02 permitida por Paula Ramos (Controladoria): R$ 82.049,31 · Preço confere com a fatura do fornecedor; repasse previsto no contrato de suprimento
+  D04 devolvida por Carlos Mendes (Analista sênior): -R$ 38.500,00 · Devolvida ao Comercial: anexar o arquivo do portal de capacidade antes de cobrar
+  (Delta, capacidade: fica sem decisão de propósito, para mostrar o que o release 1 sinaliza)
+
+=== 6. Fechamento ===
+  Ciclo 2026-09 FECHADO por Paula Ramos (Controladoria) · versão b212c8f67b7d1bb1
+  Seguem ao próximo ciclo sem permissão (sinalizados): D03, D04
+
+=== 7. Relatório ===
+  relatorio_2026-09.html, ciclo_2026-09.xlsx e gateway_log.jsonl copiados para exemplo/
