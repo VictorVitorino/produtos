@@ -18,10 +18,10 @@ function buildChaos() {
     ["Excel", "ajusta e refaz", "office"],
   ];
   const wire = sv("svg", { class: "wire" }, host);
-  const STEP = 141, W = 168, H = 74;
+  const STEP = 166, W = 200, H = 80;
   const pts = [];
   apps.forEach(([t, s, k], i) => {
-    const x = i * STEP, y = i % 2 ? 112 : 6;
+    const x = i * STEP, y = i % 2 ? 128 : 8;
     const a = el("div", { class: "app", style: `left:${x}px;top:${y}px` }, host);
     a.innerHTML = `<span class="n">${i + 1}</span><b><i class="type-${k}"></i>${t}</b><span>${s}</span>`;
     pts.push([x + W / 2, y + (i % 2 ? 0 : H)]);
@@ -54,9 +54,9 @@ function buildWaterfall() {
     ghosts.push(sv("rect", { x: cx - barW / 2, width: barW, rx: 4, fill: "none", stroke: "#8C9BAA", "stroke-dasharray": "4 3", "stroke-width": 1.4 }, gGhost));
     const tot = i === 0 || i === cats.length - 1;
     bars.push(sv("rect", { x: cx - barW / 2, width: barW, rx: 4 }, gBars));
-    vals.push(D.text(gVal, cx, 0, "", { head: 1, size: 15, weight: 700, anchor: "middle", fill: tot ? "#03426F" : "#34495E" }));
+    vals.push(D.text(gVal, cx, 0, "", { head: 1, size: 19, weight: 600, anchor: "middle", fill: tot ? "#03426F" : "#3A4E62" }));
     if (i < cats.length - 1) links.push(sv("line", { stroke: "#8C9BAA", "stroke-dasharray": "2 3" }, gLink));
-    D.text(svg, cx, Y1 + 22, c, { size: 12, weight: 600, fill: i === cats.length - 1 ? "#03426F" : "#34495E", anchor: "middle", lh: 15 });
+    D.text(svg, cx, Y1 + 22, c, { size: 13, weight: 600, fill: i === cats.length - 1 ? "#03426F" : "#3A4E62", anchor: "middle", lh: 16 });
   });
   const geom = (vals) => {
     let run = 0;
@@ -71,7 +71,7 @@ function buildWaterfall() {
     const g = geom(vs), go = geom(other);
     g.forEach((s, i) => {
       bars[i].setAttribute("y", y(s.b)); bars[i].setAttribute("height", Math.max(1, y(s.a) - y(s.b)));
-      bars[i].setAttribute("fill", s.kind === "tot" ? "#03426F" : s.kind === "down" ? "#FECC32" : "#A3BDD4");
+      bars[i].setAttribute("fill", s.kind === "tot" ? "#03426F" : s.kind === "down" ? "#2E8B6A" : "#AFC3D6");
       const o = go[i];
       ghosts[i].setAttribute("y", y(o.b)); ghosts[i].setAttribute("height", Math.max(1, y(o.a) - y(o.b)));
       ghosts[i].style.opacity = Math.abs(o.v - s.v) > 0.5 ? 1 : 0;
@@ -131,7 +131,7 @@ function buildPattern() {
       <div class="bc"><h4>${n + 1} · ${s.who}</h4>
         <div class="lab">Vê</div><p>${s.ve}</p>
         <div class="lab">Faz</div><div class="acts">${s.faz.map((a) => `<span class="chip">${a}</span>`).join("")}</div>
-        <div class="turn" style="color:var(--blue-700)">${icon("arrowL")}voltar</div></div></div>`;
+        <div class="turn">${icon("arrowL")}voltar</div></div></div>`;
     const tog = () => f.classList.toggle("on");
     f.addEventListener("click", tog);
     f.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); tog(); } });
@@ -142,23 +142,15 @@ function buildPattern() {
   const draw = () => {
     if (Deck.read) return;
     const cards = $$(".flip", host), off = host.offsetTop;
-    line.innerHTML = `<defs><marker id="fl-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5 0 10z" fill="#FECC32"/></marker>
-      <filter id="fl-g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter></defs>`;
-    let full = "";
+    line.innerHTML = `<defs><marker id="fl-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5 0 10z" fill="#4F7698"/></marker></defs>`;
     cards.forEach((c, i) => {
       const cx = c.offsetLeft + c.offsetWidth / 2, y = off;
-      sv("circle", { cx, cy: y - 2, r: 7, fill: "#FECC32" }, line);
-      sv("circle", { cx, cy: y - 2, r: 13, fill: "none", stroke: "#FECC32", "stroke-opacity": 0.35, "stroke-width": 2 }, line);
+      sv("circle", { cx, cy: y - 3, r: 6, fill: "#fff", stroke: "#4F7698", "stroke-width": 2 }, line);
       if (i < cards.length - 1) {
         const n = cards[i + 1], nx = n.offsetLeft + n.offsetWidth / 2;
-        const d = `M${cx + 12} ${y - 8} C${cx + 70} ${y - 48} ${nx - 70} ${y - 48} ${nx - 14} ${y - 9}`;
-        sv("path", { d, fill: "none", stroke: "#FECC32", "stroke-width": 2, "stroke-dasharray": "6 7", class: "dash", "marker-end": "url(#fl-a)" }, line);
-        full += (full ? " " : "") + (full ? d.replace(/^M/, "L") : d);
+        sv("path", { d: `M${cx + 10} ${y - 8} C${cx + 80} ${y - 46} ${nx - 80} ${y - 46} ${nx - 12} ${y - 9}`, fill: "none", stroke: "#4F7698", "stroke-width": 2, "stroke-dasharray": "6 7", class: "dash", "marker-end": "url(#fl-a)" }, line);
       }
     });
-    const dot = sv("circle", { r: 6, fill: "#fff", filter: "url(#fl-g)" }, line);
-    const dot2 = sv("circle", { r: 3.5, fill: "#fff" }, line);
-    [dot, dot2].forEach((d) => sv("animateMotion", { dur: "5s", repeatCount: "indefinite", path: full, rotate: "auto" }, d));
   };
   Deck.on("s07", () => requestAnimationFrame(draw));
   addEventListener("resize", () => requestAnimationFrame(draw));
@@ -174,14 +166,14 @@ function buildZones() {
     { t: "Provedor", lvl: ["Restrita", "r"], i: "cpu", items: ["API do modelo", "Sem treino", "Retenção zero (contrato)"], fl: [["Nuvem NTS", 0, "sem chamada de volta"]] },
   ];
   const host = $("#zones");
-  const lvlStyle = { u: "background:#EEF1F4;color:#5F7387", t: "background:var(--green-100);color:#1b7a56", r: "background:var(--navy-900);color:var(--yellow)" };
+  const lvlStyle = { u: "background:#EEF1F4;color:#5F7387", t: "background:var(--teal-l);color:#1d6a50", r: "background:var(--slate);color:#fff" };
   Z.forEach((z, n) => {
     const f = el("div", { class: "flip rv d" + (n + 1), tabindex: 0, role: "button", "aria-label": `${z.t}: ver fluxos` }, host);
     f.innerHTML = `<div class="in">
       <div class="fc"><div class="zt"><span class="zi">${icon(z.i)}</span><div><h3>${z.t}</h3><span class="tag lvl" style="${lvlStyle[z.lvl[1]]}">${z.lvl[0]}</span></div></div>
         <ul>${z.items.map((x) => `<li>${icon("check")}${x}</li>`).join("")}</ul>
-        <div class="turn" style="color:var(--blue-700)">${icon("tap")}com quem fala · ${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</div></div>
-      <div class="bc"><div class="zt"><span class="zi" style="background:#ffffff18;color:#fff">${icon(z.i)}</span><div><div class="eyebrow" style="color:var(--yellow)">De ${z.t} para</div><h3>${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</h3></div></div>
+        <div class="turn">${icon("tap")}com quem fala · ${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</div></div>
+      <div class="bc"><div class="zt"><span class="zi" style="background:#ffffff18;color:#fff">${icon(z.i)}</span><div><div class="eyebrow">De ${z.t} para</div><h3>${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</h3></div></div>
         <div class="fl">${z.fl.map(([to, ok, s]) => `<div class="${ok ? "" : "no"}"><b>${icon("arrowR", "ar")} ${to}<em>${ok ? "permitido" : "negado"}</em></b><span>${s}</span></div>`).join("")}</div>
         <div class="turn" style="color:#a9c2d9">${icon("arrowL")}voltar</div></div></div>`;
     const tog = () => f.classList.toggle("on");
@@ -195,15 +187,7 @@ function buildZones() {
 
 /* --------------------------------------------- 12 · dinheiro: contadores */
 function buildMoney() {
-  const run = () => {
-    $$("#s12 [data-count]").forEach((n) => {
-      const to = +n.dataset.count, t0 = performance.now();
-      const tick = (t) => { const k = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - k, 3); n.textContent = Math.round(to * e); if (k < 1) requestAnimationFrame(tick); };
-      if (reduceMotion || Deck.read) n.textContent = to; else requestAnimationFrame(tick);
-    });
-    $$("#gauges i[data-w]").forEach((i) => { i.style.width = "0"; requestAnimationFrame(() => requestAnimationFrame(() => (i.style.width = i.dataset.w + "%"))); });
-  };
-  Deck.on("s12", run);
+  $$("#gauges i[data-w]").forEach((i) => (i.style.width = i.dataset.w + "%"));
 }
 
 /* ---------------------------------------------------- 13 · roteiro gantt */
@@ -235,14 +219,14 @@ function buildGantt() {
   msr.innerHTML = `<div class="lab">Marcos</div><div class="trk"></div>`;
   [["Seguir ou parar", 2], ["Piloto no ar", 6], ["Aceite do piloto", 10]].forEach(([t, w]) => { el("b", { style: `left:${(w / 12) * 100}%` }, $(".trk", msr)).innerHTML = `<i></i>${t}`; });
   const lanes = el("div", { class: "g-lanes" }, g);
-  const RH = 41;
+  const RH = 48;
   GANTT.forEach((ln) => {
     const lab = el("div", { class: `g-lab lane-${ln.id}` }, lanes);
-    lab.innerHTML = `<i class="${ln.c}" style="background:${{ "c-acc": "var(--blue-200)", "c-eng": "var(--navy-800)", "c-pes": "var(--yellow)", "c-enj": "var(--blue-500)", "c-nts": "var(--blue-500)" }[ln.c]}"></i><div>${ln.t}<small>${ln.s}</small></div>`;
+    lab.innerHTML = `<i class="${ln.c}" style="background:${{ "c-acc": "var(--steel-l)", "c-eng": "var(--navy)", "c-pes": "var(--coral)", "c-enj": "var(--steel)", "c-nts": "var(--steel)" }[ln.c]}"></i><div>${ln.t}<small>${ln.s}</small></div>`;
     const row = el("div", { class: `g-row lane-${ln.id}`, style: `height:${ln.rows.length * RH + 12}px` }, lanes);
     lab.style.height = row.style.height;
     ln.rows.forEach((r, ri) => r.forEach(([t, a, b, d]) => {
-      const bar = el("button", { class: `gbar ${ln.c}`, type: "button", style: `left:calc(${((a - 1) / 12) * 100}% + 3px);width:calc(${((b - a + 1) / 12) * 100}% - 6px);top:${6 + ri * RH + 4}px` }, row, t);
+      const bar = el("button", { class: `gbar ${ln.c}`, type: "button", style: `left:calc(${((a - 1) / 12) * 100}% + 3px);width:calc(${((b - a + 1) / 12) * 100}% - 6px);top:${8 + ri * RH + 4}px` }, row, t);
       bar.onclick = () => showDetail(bar, ln, t, a, b, d);
     }));
   });
@@ -277,11 +261,16 @@ function buildGantt() {
 /* ------------------------------------------- 14 · pesquisa: linha do tempo */
 function buildField() {
   const S = [
-    { t: "Gemba Digital", w: [1, 2], wl: "semanas 1 e 2", i: "search", ve: "O chão de fábrica digital do ciclo: sistemas, formulários, templates, planilhas paralelas e atalhos, vistos e medidos no lugar (horas, diferenças que passam).", faz: ["medir", "entrevistar"], st: [["6 a 12", "entrevistas"]] },
-    { t: "Mapa de dores e atalhos", w: [3, 4], wl: "depois do Gemba", i: "map", ve: "O que o mapeamento não mostra: os atalhos, as versões paralelas, as exceções que viraram hábito e por quê.", faz: ["comparar com o mapa"], st: [] },
-    { t: "Workshop de faixas", w: [5, 5], wl: "semana 5", i: "workshop", ve: "Quem assina decide, junto, as faixas de tolerância por tipo de diferença: o que passa com regra registrada, o que exige permissão e de quem.", faz: ["decidir faixas", "nomear quem assina"], st: [["1", "workshop com quem assina"]] },
-    { t: "Protótipo em uso", w: [7, 10], wl: "semanas 7 a 10", i: "test", ve: "Duas pessoas usam a ferramenta num fechamento real, com Lunna ao lado; o que confunde muda antes da entrega.", faz: ["testar", "ajustar"], st: [["83%", "usaram um assistente"], ["23%", "no Excel"]], note: "Experimento do governo britânico com 20 mil pessoas, como analogia." },
-    { t: "Resultado medido", w: [12, 12], wl: "semana 12", i: "chart", ve: "Diferenças com decisão e dono, horas por tarefa coberta antes e depois, quem usou o quê: só quem observou e mediu o ciclo no início pode provar o fim.", faz: ["medir", "repassar"], st: [] },
+    { t: "Gemba Digital", w: [1, 2], wl: "semanas 1 e 2", i: "search", ve: "O chão de fábrica digital do ciclo: sistemas, formulários, templates, planilhas paralelas e atalhos, vistos e medidos no lugar (horas, diferenças que passam).", faz: ["medir", "entrevistar"], st: [["6 a 12", "entrevistas"]],
+      pr: [["Amostragem do trabalho num ciclo inteiro", "observação no local, com Lunna no Rio", "O que as semanas 1 e 2 medem"], ["Tempo por tarefa, à mão e pela ferramenta", "cronometrado numa fatia do ciclo", "O que as semanas 1 e 2 medem"], ["Inventário de fontes e tarefas", "quem faz, como chega, quanto por ciclo; entrevistas curtas", "O que as semanas 1 e 2 medem"], ["Diferenças levadas adiante", "quantas, quanto e com que idade, nos 12 últimos fechamentos", "O que as semanas 1 e 2 medem"]] },
+    { t: "Mapa de dores e atalhos", w: [3, 4], wl: "depois do Gemba", i: "map", ve: "O que o mapeamento não mostra: os atalhos, as versões paralelas, as exceções que viraram hábito e por quê.", faz: ["comparar com o mapa"], st: [],
+      pr: [["Testa cada regra mapeada com dado de um ciclo real", "antes de codificar: o campo acha atalhos", "Riscos · R1"], ["Conta os reprocessamentos por ciclo", "versões salvas e refeitas no SharePoint e nas planilhas", "O que as semanas 1 e 2 medem"], ["Lê os rastros sem conteúdo", "salvamentos, reuniões e volume de e-mail no Microsoft 365, sem ler o conteúdo", "O que as semanas 1 e 2 medem"], ["Separa o que muda do que fica", "o que vive em planilha, portal e e-mail muda; ConnectGas e SAP seguem como sistemas de registro", "O que muda no processo"]] },
+    { t: "Workshop de faixas", w: [5, 5], wl: "semana 5", i: "workshop", ve: "Quem assina decide, junto, as faixas de tolerância por tipo de diferença: o que passa com regra registrada, o que exige permissão e de quem.", faz: ["decidir faixas", "nomear quem assina"], st: [["1", "workshop com quem assina"]],
+      pr: [["Faixas de tolerância da controladoria", "dentro da faixa, passa com a regra registrada; acima dela, alguém com nome permite, com motivo e data", "O que muda no processo"], ["Ajustes entre medição provisória e final", "classe própria: são esperados e não disparam o bloqueio", "O que muda no processo"], ["Linha de materialidade", "o 1º release sinaliza e registra tudo; só segura o que estiver acima da linha que o controlador definir", "O que muda no processo"], ["Quem decide os padrões", "o dono do processo na NTS decide; a Antrópica (design) propõe", "Quem decide o quê"]] },
+    { t: "Protótipo em uso", w: [7, 10], wl: "semanas 7 a 10", i: "test", ve: "Duas pessoas usam a ferramenta num fechamento real, com Lunna ao lado; o que confunde muda antes da entrega.", faz: ["testar", "ajustar"], st: [["83%", "usaram um assistente"], ["23%", "no Excel"]], note: "Experimento do governo britânico com 20 mil pessoas, como analogia.",
+      pr: [["Piloto em paralelo a um fechamento real", "nenhum fechamento roda só na ferramenta", "Roteiro de 12 semanas"], ["A Enjourney valida os resultados", "na mesma janela, semanas 7 a 10", "Roteiro de 12 semanas"], ["Responde ao risco de a planilha continuar ao lado", "pesquisa com usuários, bons padrões e piloto com duas pessoas", "Riscos · R3"]] },
+    { t: "Resultado medido", w: [12, 12], wl: "semana 12", i: "chart", ve: "Diferenças com decisão e dono, horas por tarefa coberta antes e depois, quem usou o quê: só quem observou e mediu o ciclo no início pode provar o fim.", faz: ["medir", "repassar"], st: [],
+      pr: [["Compromisso por tarefa", "no limite inferior do medido nas semanas 1 e 2", "O que as semanas 1 e 2 medem"], ["Entrega e repasse ao par técnico da NTS", "código, documentação e manual", "Riscos · R6 e roteiro"], ["Marco 4 do pagamento", "rotina, ou 30 dias após a entrega, o que vier primeiro", "Investimento"], ["Garantia de 60 dias após a entrega", "até 40 horas na opção 1 e 50 horas na opção 2", "Investimento"]] },
   ];
   const host = $("#field");
   const pos = (s) => (((s.w[0] + s.w[1]) / 2 - 0.5) / 12) * 100;
@@ -307,9 +296,10 @@ function buildField() {
     $(".fill", host).style.width = `${pos(s)}%`;
     detail.innerHTML = `<div class="hd fade-swap"><span class="n">0${n + 1}</span><h3>${s.t}</h3><span class="wk">${s.wl}</span>
         <div class="nav"><button type="button" aria-label="Etapa anterior">${icon("arrowL")}</button><button type="button" aria-label="Próxima etapa">${icon("arrowR")}</button></div></div>
-      <div class="bx fade-swap"><div class="eyebrow">${icon("eye")}Vê</div><p>${s.ve}</p></div>
+      <div class="bx fade-swap"><div class="eyebrow">${icon("eye")}Vê</div><p>${s.ve}</p>
+        ${s.st.length ? `<div class="stat">${s.st.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("")}</div>${s.note ? `<p style="font-size:12.5px;color:var(--ink-4);margin-top:8px">${s.note}</p>` : ""}` : ""}</div>
       <div class="bx fade-swap"><div class="eyebrow">${icon("zap")}Faz</div><div class="acts">${s.faz.map((a) => `<span class="chip">${a}</span>`).join("")}</div>
-        ${s.st.length ? `<div class="stat">${s.st.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("")}</div>${s.note ? `<p style="font-size:12px;color:var(--ink-4);margin-top:8px">${s.note}</p>` : ""}` : `<div class="stat" style="border-top:0"></div>`}</div>`;
+        <ul>${s.pr.map(([t, d, src]) => `<li>${icon("check")}<div><b>${t}</b>${d}<small>${src}</small></div></li>`).join("")}</ul></div>`;
     const [pv, nx] = $$(".hd .nav button", detail);
     pv.onclick = () => sel((cur + S.length - 1) % S.length);
     nx.onclick = () => sel((cur + 1) % S.length);
@@ -318,28 +308,76 @@ function buildField() {
   Deck.on("s14", () => { $(".fill", host).style.width = "0"; requestAnimationFrame(() => requestAnimationFrame(() => sel(cur))); });
 }
 
-/* ------------------------------------------------------ 15 · quem decide */
+/* --------------------------------------- 15 · quem decide (RASCI editável) */
 function buildRaci() {
   const cols = [["Enjourney", ""], ["Antrópica", "engenharia"], ["Antrópica", "design"], ["NTS", "dono do processo"], ["NTS", "TI e dados"], ["NTS", "gestão"]];
-  const rows = [
+  const BASE = [
     ["Regras de negócio do ciclo", "PCCDII"], ["Ambiente: web, desktop ou híbrido", "CPICDI"], ["Acessos, identidade e dados mascarados", "IPICDI"],
     ["Prioridade das automações", "PCCDII"], ["Padrões e exceções permitidas", "CEPDIC"], ["Aceite do piloto (primeiro ciclo)", "PECCID"],
     ["Virada para operação", "PEICCD"], ["Mudança de escopo", "DPCCII"], ["Modalidade e investimento", "DPPIIC"],
-  ];
+  ].map(([t, r]) => ({ t, r: [...r] }));
+  const CYCLE = ["D", "P", "E", "C", "I", "-"];
+  let rows;
+  try { rows = JSON.parse(store.get("raci") || "null"); } catch (e) { rows = null; }
+  if (!Array.isArray(rows)) rows = BASE.map((x) => ({ t: x.t, r: [...x.r] }));
+  const save = () => store.set("raci", JSON.stringify(rows));
   const host = $("#raci");
-  const tb = el("div", { class: "raci-t" }, host);
-  tb.innerHTML = `<table><thead><tr><th>Decisão</th>${cols.map(([a, b], i) => `<th data-c="${i}" style="cursor:pointer">${a}<small>${b || "&nbsp;"}</small></th>`).join("")}</tr></thead>
-    <tbody>${rows.map(([t, r]) => `<tr><td>${t}</td>${[...r].map((x, i) => `<td data-c="${i}"><span class="rl ${x}">${x}</span></td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  const wrap = el("div", { class: "raci-t" }, host);
+  const tools = el("div", { class: "raci-tools" }, wrap);
+  tools.innerHTML = `<button class="tbtn" type="button" data-a="add">${icon("plus")}Nova decisão</button><button class="tbtn" type="button" data-a="reset">Restaurar proposta</button>
+    <span class="hint">${icon("tap")}clique: troca o papel · botão direito: volta · o nome da decisão é editável</span>`;
+  const tbl = el("table", {}, wrap);
   const side = el("div", { class: "key" }, host);
-  side.innerHTML = [["D", "Decide", "tem a palavra final"], ["P", "Propõe", "leva a proposta"], ["E", "Executa", "faz o trabalho"], ["C", "É consultado", "opina antes"], ["I", "É informado", "sabe depois"]]
-    .map(([k, t, s]) => `<div class="kk"><span class="rl ${k}">${k}</span><div><b>${t}</b><span>${s}</span></div></div>`).join("") +
-    `<div class="who"><p><b>NTS</b> decide regras e padrões; <b>TI</b> decide ambiente e acessos.</p><p><b>Enjourney</b> decide escopo e preço.</p><p><b>Antrópica</b> propõe e executa.</p><p style="color:#a9c2d9;font-size:12px">Clique no nome de um papel para destacar a coluna.</p></div>`;
-  let cur = null;
-  $$("th[data-c]", tb).forEach((th) => (th.onclick = () => {
-    cur = cur === th.dataset.c ? null : th.dataset.c;
-    $$("td[data-c]", tb).forEach((td) => (td.style.opacity = cur == null || td.dataset.c === cur ? 1 : 0.18));
-    $$("th[data-c]", tb).forEach((h) => (h.style.color = h.dataset.c === cur ? "var(--navy-900)" : ""));
-  }));
+  let colHl = null;
+  function status(r) {
+    const d = r.filter((x) => x === "D").length;
+    if (d === 1) return ["ok", "✓ um dono"];
+    if (d === 0) return ["bad", "✕ sem D · ninguém decide"];
+    return ["bad", `✕ ${d} D · sobreposição`];
+  }
+  function render() {
+    tbl.innerHTML = `<thead><tr><th>Decisão</th>${cols.map(([a, b], i) => `<th data-c="${i}" style="cursor:pointer">${a}<small>${b || "&nbsp;"}</small></th>`).join("")}<th class="stc">Status</th><th></th></tr></thead>
+      <tbody>${rows.map((row, ri) => {
+        const [k, txt] = status(row.r);
+        return `<tr data-r="${ri}"><td><span contenteditable="true" spellcheck="false">${row.t.replace(/</g, "&lt;")}</span></td>${row.r.map((x, i) => `<td class="cell" data-c="${i}"><button type="button" class="${x === "-" ? "X" : x}" aria-label="${cols[i][0]} ${cols[i][1]}: ${x}">${x === "-" ? "" : x}</button></td>`).join("")}<td class="st ${k}">${txt}</td><td class="del"><button type="button" title="Remover decisão">${icon("x")}</button></td></tr>`;
+      }).join("")}</tbody>`;
+    const ok = rows.filter((r) => status(r.r)[0] === "ok").length;
+    side.innerHTML = [["D", "Decide", "tem a palavra final · um por decisão"], ["P", "Propõe", "leva a proposta"], ["E", "Executa", "faz o trabalho"], ["C", "É consultado", "opina antes"], ["I", "É informado", "sabe depois"]]
+      .map(([k, t, s]) => `<div class="kk"><span class="rl ${k}">${k}</span><div><b>${t}</b><span>${s}</span></div></div>`).join("") +
+      `<div class="score2"><b>${ok}/${rows.length}</b><span>decisões com um único dono (um D)</span></div>
+       <div class="who"><p><b>NTS</b> decide regras e padrões; <b>TI</b> decide ambiente e acessos.</p><p><b>Enjourney</b> decide escopo e preço; <b>Antrópica</b> propõe e executa.</p><p style="color:#b7c9da;font-size:12.5px">Ajuste ao vivo com o cliente: as mudanças ficam salvas neste navegador.</p></div>`;
+    applyHl();
+  }
+  function applyHl() {
+    $$("td[data-c]", tbl).forEach((td) => (td.style.opacity = colHl == null || td.dataset.c === colHl ? 1 : 0.2));
+    $$("th[data-c]", tbl).forEach((h) => (h.style.color = h.dataset.c === colHl ? "var(--coral)" : ""));
+  }
+  tbl.addEventListener("click", (e) => {
+    const th = e.target.closest("th[data-c]");
+    if (th) { colHl = colHl === th.dataset.c ? null : th.dataset.c; applyHl(); return; }
+    const tr = e.target.closest("tr[data-r]"); if (!tr) return;
+    const ri = +tr.dataset.r;
+    if (e.target.closest("td.del button")) { rows.splice(ri, 1); save(); render(); return; }
+    const td = e.target.closest("td.cell");
+    if (td) { const ci = +td.dataset.c; const v = rows[ri].r[ci]; rows[ri].r[ci] = CYCLE[(CYCLE.indexOf(v) + 1) % CYCLE.length]; save(); render(); }
+  });
+  tbl.addEventListener("contextmenu", (e) => {
+    const td = e.target.closest("td.cell"); if (!td) return;
+    e.preventDefault();
+    const ri = +td.closest("tr").dataset.r, ci = +td.dataset.c, v = rows[ri].r[ci];
+    rows[ri].r[ci] = CYCLE[(CYCLE.indexOf(v) + CYCLE.length - 1) % CYCLE.length]; save(); render();
+  });
+  tbl.addEventListener("input", (e) => {
+    const tr = e.target.closest("tr[data-r]"); if (!tr) return;
+    rows[+tr.dataset.r].t = e.target.textContent.trim(); save();
+  });
+  tbl.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.isContentEditable) { e.preventDefault(); e.target.blur(); } });
+  tools.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-a]"); if (!b) return;
+    if (b.dataset.a === "add") { rows.push({ t: "Nova decisão", r: ["I", "I", "I", "I", "I", "I"] }); save(); render(); const last = $$("tbody tr:last-child [contenteditable]", tbl)[0]; last?.focus(); document.getSelection()?.selectAllChildren(last); }
+    else { rows = BASE.map((x) => ({ t: x.t, r: [...x.r] })); save(); render(); }
+  });
+  render();
 }
 
 /* ------------------------------------------- tabelas com filtro de tipo */
@@ -398,7 +436,7 @@ function buildMeasure() {
   t.innerHTML = `<thead><tr><th>Medida</th><th>Como</th><th>Fonte</th><th>Opção</th></tr></thead><tbody>${rows.map(([a, b, c, o]) => `<tr><td class="m">${a}</td><td>${b}</td><td class="s">${c}</td><td><span class="opt-badge"><i class="${o.includes("1") ? "" : "off"}">1</i><i>2</i></span></td></tr>`).join("")}</tbody>`;
   t.querySelectorAll("tbody td").forEach((td) => (td.style.padding = "15px 14px"));
   const side = el("div", { class: "stop" }, host);
-  side.innerHTML = `<div class="eyebrow" style="color:var(--yellow)">Regra de parada · proposta, a combinar</div>
+  side.innerHTML = `<div class="eyebrow">Regra de parada · proposta, a combinar</div>
     <h4>Ao fim da semana 2, seguir ou parar com base no medido</h4>
     <div class="cond"><b>≈ R$ 100 mil/ano</b>valor de controle da ordem de</div>
     <div class="or">OU</div>
@@ -447,8 +485,8 @@ function buildRisk() {
   ];
   const band = (s) => (s >= 16 ? ["crit", "Crítico"] : s >= 10 ? ["high", "Alto"] : s >= 5 ? ["med", "Médio"] : ["low", "Baixo"]);
   const host = $("#riskGrid");
-  const left = el("div", {}, host);
-  const hm = el("div", { class: "hm", style: "height:calc(100% - 30px)" }, left);
+  const left = el("div", { style: "display:flex;flex-direction:column;min-height:0" }, host);
+  const hm = el("div", { class: "hm", style: "flex:1;min-height:0;height:auto" }, left);
   el("div", { class: "yl" }, hm, "PROBABILIDADE →");
   const grid = el("div", { class: "grid" }, hm);
   for (let p = 5; p >= 1; p--) for (let i = 1; i <= 5; i++) {
@@ -494,8 +532,8 @@ function buildAssumptions() {
   t.innerHTML = `<thead><tr><th>Premissa</th><th>Valor</th><th>Tipo</th><th>Fonte</th></tr></thead><tbody>${rows.map(([a, v, k, s]) => `<tr data-k="${k}"><td class="m">${a}</td><td class="v" style="white-space:normal">${v}</td><td><span class="ty ${k}">${TYPE[k][0]}</span></td><td class="s">${s}</td></tr>`).join("")}</tbody>`;
   const side = el("div", { style: "display:flex;flex-direction:column;gap:10px" }, host);
   typeFilter(side, t, rows);
-  el("div", { style: "margin-top:auto;border-radius:14px;background:var(--navy-800);color:#d2e2f0;padding:16px;font-size:13px;line-height:1.5" }, side).innerHTML =
-    `<b style="color:var(--yellow);font:700 15px/1.3 Montserrat">Os assumidos viram medidos</b><br>na pesquisa de campo ou no piloto; cada número tem uma segunda assinatura no ledger.`;
+  el("div", { style: "margin-top:auto;border-radius:12px;background:var(--slate);color:#dbe4ed;padding:16px;font-size:14px;line-height:1.5" }, side).innerHTML =
+    `<b style="color:#fff;font:600 20px/1.3 'Barlow Condensed'">Os assumidos viram medidos</b><br>na pesquisa de campo ou no piloto; cada número tem uma segunda assinatura no ledger.`;
 }
 
 /* --------------------------------------------- 22 · decisões marcáveis */

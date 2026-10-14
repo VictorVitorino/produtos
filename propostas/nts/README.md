@@ -15,7 +15,18 @@ Redesenho da proposta "Do mapeamento à ferramenta" com a identidade da Enjourne
 - Em telas estreitas (celular, tablet em pé) o modo leitura entra sozinho: os slides viram uma página rolável e as grades se reorganizam em coluna. Diagramas largos rolam na horizontal.
 - `Ctrl+P` imprime um slide por página (1600 × 900).
 
-## Roteiro (23 slides, 6 capítulos)
+## Linguagem visual (v2)
+
+Segue a estrutura de páginas do modelo TMG, com a paleta da Enjourney:
+
+- Palco 1920 × 1080 (mais largura para fluxos e tabelas).
+- Cada página tem barra de cabeçalho escura (logo Enjourney, título, capítulo, logo NTS e página), faixa de seção colorida, painel de conteúdo e rodapé com a fonte.
+- Capas de capítulo são slides próprios (número grande ao fundo, sem sobreposição).
+- Títulos em Barlow Condensed, texto em Inter. Azul e amarelo Enjourney como marca, neutros como base e coral como acento de leitura.
+- Os diagramas dos slides 5 e 10 guardam a geometria de caixas e setas, e o teste confere que nenhuma seta atravessa uma caixa e que nenhum texto se sobrepõe.
+- A matriz "Quem decide o quê" é editável: clique troca o papel (D, P, E, C, I, vazio), botão direito volta, o nome da decisão é editável, dá para adicionar e remover decisões, o status avisa quando falta um D ou há mais de um, e "Restaurar proposta" volta ao original. As mudanças ficam salvas no navegador.
+
+## Roteiro (28 páginas: 23 slides e 5 capas de capítulo)
 
 | # | Slide | O que mudou |
 |---|---|---|

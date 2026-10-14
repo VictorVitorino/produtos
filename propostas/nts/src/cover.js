@@ -5,7 +5,7 @@
    símbolo e os demais se fundem a eles.
    ========================================================================= */
 const Cover = (() => {
-  const LX = 968, LY = 410, LS = 2.3;            // posição do logo no palco
+  const LX = 1208, LY = 478, LS = 2.3;            // posição do logo no palco
   const SLOT = {                                  // centro e pose de cada pássaro do logo
     big:   { cx: 46, cy: 39, scale: 1.55, ang: -8 },
     mid:   { cx: 60, cy: 21, scale: 1.15, ang: -14 },
@@ -35,7 +35,7 @@ const Cover = (() => {
     svg.innerHTML = `<defs>
         <linearGradient id="gB" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#9fd0ff"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
         <linearGradient id="gBfar" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#3d82c4"/><stop offset="1" stop-color="#8fc0ea"/></linearGradient>
-        <radialGradient id="glow"><stop offset="0" stop-color="#fecc32" stop-opacity=".55"/><stop offset="1" stop-color="#fecc32" stop-opacity="0"/></radialGradient>
+        <radialGradient id="glow"><stop offset="0" stop-color="#9fd0ff" stop-opacity=".22"/><stop offset="1" stop-color="#9fd0ff" stop-opacity="0"/></radialGradient>
       </defs>
       <circle id="logoGlow" cx="${LX + 70 * LS}" cy="${LY + 34 * LS}" r="10" fill="url(#glow)" opacity="0"/>
       <g id="logoG" transform="translate(${LX} ${LY}) scale(${LS})"></g>
@@ -61,7 +61,7 @@ const Cover = (() => {
       birds.push({
         g, far, near, lead,
         slot: lead || ORDER[i % 3],
-        x: rnd(80, 1520), y: rnd(120, 780), vx: rnd(-2, 2), vy: rnd(-1, 1),
+        x: rnd(1060, 1840), y: rnd(160, 1000), vx: rnd(-2, 2), vy: rnd(-1, 1),
         tx: 0, ty: 0, max: rnd(1.6, 2.5), size: lead ? SLOT[lead].scale * 0.82 : rnd(0.55, 1.05),
         ph: rnd(0, 6.28), fs: rnd(0.16, 0.22), glide: 0, op: 1, state: "fly", ang: 0, flip: 1,
       });
@@ -73,7 +73,7 @@ const Cover = (() => {
 
   function newTarget(b) {
     // alvos espalhados, com preferência pelas bordas para não cobrir o título por muito tempo
-    const zones = Deck.read ? [[880, 1560, 280, 700]] : [[60, 1540, 70, 170], [60, 1540, 730, 850], [880, 1540, 120, 820], [880, 1540, 120, 820]];
+    const zones = Deck.read ? [[1130, 1880, 380, 800]] : [[80, 1840, 40, 190], [80, 1840, 900, 1040], [1060, 1840, 160, 1000], [1060, 1840, 160, 1000]];
     const z = zones[Math.floor(Math.random() * zones.length)];
     b.tx = rnd(z[0], z[1]); b.ty = rnd(z[2], z[3]);
   }
@@ -81,7 +81,7 @@ const Cover = (() => {
   function setJoined(on, instant = false) {
     joined = on;
     btn.setAttribute("aria-pressed", on);
-    $(".st", btn).textContent = on ? "Bando unido à Enjourney" : "Unir o bando à Enjourney";
+    $(".st", btn).textContent = on ? "bando reunido" : "reunir o bando";
     sec.classList.toggle("joined", on);
     if (on) {
       birds.forEach((b) => { b.state = "home"; });
@@ -131,12 +131,12 @@ const Cover = (() => {
         if (d2 < 3600 && d2 > 0.01) { sx += (ox / d2) * 18; sy += (oy / d2) * 18; }
       }
       // o bloco de texto da capa fica livre: os pássaros contornam
-      if (!Deck.read && b.state === "fly" && b.x < 840 && b.y > 175 && b.y < 705) {
-        const top = b.y - 175, bot = 705 - b.y, right = 840 - b.x;
+      if (!Deck.read && b.state === "fly" && b.x < 1020 && b.y > 220 && b.y < 870) {
+        const top = b.y - 220, bot = 870 - b.y, right = 1020 - b.x;
         const m = Math.min(top, bot, right);
         if (m === right) sx += 0.08; else if (m === top) sy -= 0.08; else sy += 0.08;
       }
-      const force = b.state === "home" ? 0.09 : !Deck.read && b.x < 840 && b.y > 175 && b.y < 705 ? 0.12 : 0.035;
+      const force = b.state === "home" ? 0.09 : !Deck.read && b.x < 1020 && b.y > 220 && b.y < 870 ? 0.12 : 0.035;
       const fm = Math.hypot(sx, sy);
       if (fm > force) { sx = (sx / fm) * force; sy = (sy / fm) * force; }
       b.vx += sx * dt; b.vy += sy * dt;
@@ -175,8 +175,8 @@ const Cover = (() => {
   }
   function frame() {
     // no modo leitura (celular) o quadro do bando recorta a região do logo
-    svg.setAttribute("viewBox", Deck.read ? "870 250 730 470" : "0 0 1600 900");
-    birds.forEach((b) => { if (Deck.read && b.state === "fly" && (b.x < 860 || b.y < 250)) { b.x = rnd(900, 1550); b.y = rnd(300, 680); newTarget(b); } });
+    svg.setAttribute("viewBox", Deck.read ? "1100 340 820 500" : "0 0 1920 1080");
+    birds.forEach((b) => { if (Deck.read && b.state === "fly" && (b.x < 1110 || b.y < 350)) { b.x = rnd(1150, 1860); b.y = rnd(400, 780); newTarget(b); } });
   }
   function start() { frame(); if (running || reduceMotion) return; running = true; last = 0; raf = requestAnimationFrame(step); }
   function stop() { running = false; cancelAnimationFrame(raf); }

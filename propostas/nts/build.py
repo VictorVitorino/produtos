@@ -21,6 +21,8 @@ birds = json.dumps([{"d": b["d"]} for b in birds], ensure_ascii=False)
 css = (SRC / "deck.css").read_text(encoding="utf-8")
 css = css.replace("__FONT_MONTSERRAT__", data_uri("montserrat.woff2", "font/woff2"))
 css = css.replace("__FONT_INTER__", data_uri("inter.woff2", "font/woff2"))
+for w in (500, 600, 700):
+    css = css.replace(f"__FONT_BARLOW{w}__", data_uri(f"barlow-{w}.woff2", "font/woff2"))
 html_body = (SRC / "deck.html").read_text(encoding="utf-8")
 js = "\n".join((SRC / f).read_text(encoding="utf-8") for f in ["core.js", "diagrams.js", "cover.js", "slides.js", "boot.js"])
 nts = data_uri("nts-logo.png", "image/png")
