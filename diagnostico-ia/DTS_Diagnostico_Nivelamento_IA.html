@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico de Nivelamento IA · DTS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Kalam:wght@400;700&family=Libre+Franklin:wght@400;500;600;700;800&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#002B49; --navy-deep:#001D33; --steel:#5E8AB4; --steel-dark:#33556D; --light-blue:#BFD0E1;
+  --ice:#DFE8F0; --paper:#E9EEF3; --paper-hi:#F5F7F9; --orange:#F78C16; --orange-dk:#D9700A;
+  --peach:#FCD1A2; --soft-gray:#D7DDE2; --ink:#002B49; --muted:#5B6B7C; --green:#2E8B6A; --red:#C8553D;
+  --grid-line:rgba(94,138,180,.16);
+  --serif:'Zilla Slab',Georgia,serif; --sans:'Libre Franklin',system-ui,sans-serif; --hand:'Kalam',cursive; --mono:'Courier Prime',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--navy-deep);color:var(--ink);font-family:var(--sans);overflow:hidden}
+/* ---------- stage ---------- */
+.topbar{position:fixed;inset:0 0 auto 0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.08);z-index:5;color:#fff}
+.brand{font-family:var(--mono);font-size:12px;letter-spacing:.25em;text-transform:uppercase;opacity:.9}
+.brand b{letter-spacing:.3em}
+.tabs{display:flex;gap:6px}
+.tab{font-family:var(--mono);font-size:12px;color:#9fb3c8;border:1px dashed rgba(191,208,225,.35);border-bottom:none;border-radius:8px 8px 0 0;padding:9px 13px 8px;background:transparent;cursor:pointer;transition:.2s}
+.tab:hover{color:#fff}
+.tab.on{background:var(--orange);color:var(--navy);border-color:var(--orange);font-weight:700}
+.navbtns{display:flex;gap:8px}
+.nb{font:600 13px var(--sans);color:#fff;border:1px solid rgba(255,255,255,.25);background:transparent;border-radius:999px;padding:7px 14px;cursor:pointer}
+.nb:hover{background:rgba(255,255,255,.08)}
+.stage{position:fixed;inset:52px 0 0 0;display:grid;place-items:center}
+.deck{width:1600px;height:900px;position:relative;transform-origin:center center}
+.slide{position:absolute;inset:0;display:none;border-radius:6px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.04)}
+.slide.on{display:grid;grid-template-columns:380px 1fr;animation:pagein .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes pagein{from{opacity:0;transform:translateY(14px) rotate(-.2deg)}to{opacity:1;transform:none}}
+body.print .topbar{display:none} body.print .stage{inset:0}
+body.print .slide{box-shadow:none;border-radius:0}
+/* ---------- left page ---------- */
+.lp{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);color:#fff;padding:46px 38px 34px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.lp:after{content:"";position:absolute;right:-120px;top:0;bottom:0;width:240px;background:linear-gradient(100deg,transparent 0 45%,rgba(94,138,180,.12) 45% 100%);transform:skewX(-8deg)}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--light-blue)}
+.pnum{font-family:var(--serif);font-size:120px;line-height:.9;color:var(--orange);margin:18px 0 6px;font-weight:700}
+.lp h1{font-family:var(--serif);font-size:44px;line-height:1.02;font-weight:700;letter-spacing:-.01em}
+.lp h1 em{font-style:normal;color:var(--peach)}
+.lp .lead{margin-top:18px;font-size:16px;line-height:1.5;color:#d5e1ec}
+.lp .hand{font-family:var(--hand);color:var(--peach);font-size:19px;line-height:1.35;margin-top:auto;position:relative;z-index:1}
+.lp .sig{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#7f9ab3;margin-top:16px;position:relative;z-index:1}
+/* ---------- right page (grid paper) ---------- */
+.rp{background-color:var(--paper-hi);background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:24px 24px;padding:34px 40px 28px;position:relative;display:flex;flex-direction:column;gap:18px;overflow:hidden}
+.rp:before{content:"";position:absolute;left:0;top:0;bottom:0;width:18px;background:linear-gradient(90deg,rgba(0,43,73,.16),transparent)}
+.sect{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--steel-dark);display:flex;align-items:center;gap:10px}
+.sect:after{content:"";flex:1;border-bottom:1px dotted var(--steel)}
+.headline{font-family:var(--serif);font-size:32px;line-height:1.1;font-weight:700;color:var(--navy);max-width:1050px}
+.headline mark{background:linear-gradient(transparent 58%,var(--peach) 58%);color:inherit;padding:0 2px}
+.row{display:flex;gap:16px}
+.card{background:#fff;border:1px solid var(--soft-gray);border-radius:10px;padding:16px 18px;box-shadow:0 2px 0 rgba(0,43,73,.04)}
+.card h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--steel-dark);font-weight:700;margin-bottom:10px}
+.kpi{flex:1;position:relative}
+.kpi .v{font-family:var(--serif);font-size:46px;font-weight:700;line-height:1;color:var(--navy)}
+.kpi .v small{font-size:22px;color:var(--steel-dark)}
+.kpi .l{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
+.kpi.hot{background:var(--navy);border-color:var(--navy)} .kpi.hot .v{color:var(--orange)} .kpi.hot .l{color:#cfdbe6} .kpi.hot h3{color:var(--light-blue)}
+.note{background:var(--peach);font-family:var(--hand);color:var(--navy);padding:14px 16px 12px;box-shadow:0 8px 18px rgba(0,43,73,.16);transform:rotate(-1.4deg);font-size:17px;line-height:1.3;border-radius:2px}
+.note b{font-weight:700}
+.chip{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--ice);color:var(--steel-dark)}
+.chip.o{background:var(--orange);color:var(--navy)} .chip.n{background:var(--navy);color:#fff} .chip.g{background:#D6EFE5;color:#1d6b50} .chip.r{background:#F7DCD5;color:#9a3a26}
+.bar{height:10px;background:var(--ice);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--steel);border-radius:99px;transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}}
+.muted{color:var(--muted)}
+.tiny{font-size:12px;color:var(--muted)}
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:8px}
+.fstep{display:grid;grid-template-columns:130px 1fr 60px;align-items:center;gap:12px;font-size:13.5px}
+.fstep .fb{height:30px;border-radius:6px;background:var(--steel);display:flex;align-items:center;padding-left:10px;color:#fff;font:700 14px var(--mono);animation:grow 1s cubic-bezier(.2,.8,.2,1) both}
+.fstep .pct{font:700 15px var(--mono);color:var(--navy);text-align:right}
+/* band ladder */
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:end;height:220px;padding-top:10px}
+.rung{display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.cols{display:flex;gap:6px;align-items:flex-end;height:150px}
+.col{width:34px;border-radius:6px 6px 0 0;position:relative;animation:rise 1s cubic-bezier(.2,.8,.2,1) both;transform-origin:bottom}
+.col span{position:absolute;top:-20px;left:0;right:0;text-align:center;font:700 13px var(--mono)}
+@keyframes rise{from{transform:scaleY(0)}}
+.col.d{background:var(--light-blue)} .col.c{background:var(--navy)} .col.c.top{background:var(--orange)}
+.rung .nm{font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--steel-dark);text-align:center}
+.rung .rg{font-size:11px;color:var(--muted)}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);align-items:center}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+/* dumbbell */
+.dumb{display:flex;flex-direction:column;gap:14px}
+.drow{display:grid;grid-template-columns:205px 1fr 52px;align-items:center;gap:12px;font-size:13.5px}
+.track{position:relative;height:18px;background:linear-gradient(90deg,transparent 0 calc(20% - 1px),var(--soft-gray) calc(20% - 1px) 20%,transparent 20% calc(40% - 1px),var(--soft-gray) calc(40% - 1px) 40%,transparent 40% calc(60% - 1px),var(--soft-gray) calc(60% - 1px) 60%,transparent 60% calc(80% - 1px),var(--soft-gray) calc(80% - 1px) 80%,transparent 80%)}
+.track .seg{position:absolute;top:8px;height:3px;background:var(--steel)}
+.track .dot{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;margin-left:-7px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.dot.dec{background:var(--light-blue)} .dot.dem{background:var(--navy)} .dot.dem.low{background:var(--orange)}
+.drow .val{font:700 14px var(--mono);text-align:right}
+/* heatmap */
+.heat{display:grid;grid-template-columns:150px repeat(4,1fr) 56px;gap:4px;font-size:12.5px;align-items:center}
+.heat .h{font:700 10.5px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--steel-dark);text-align:center}
+.heat .c{height:38px;border-radius:5px;display:grid;place-items:center;font:700 14px var(--mono)}
+.heat .s{font:700 13px var(--mono);text-align:right}
+/* insights */
+.ins{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.in{border-left:4px solid var(--orange);background:#fff;padding:12px 14px;border-radius:0 8px 8px 0;font-size:13.5px;line-height:1.4}
+.in b{display:block;font-family:var(--serif);font-size:18px;color:var(--navy);margin-bottom:3px}
+/* roadmap */
+.goal{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gm{background:#fff;border:1px solid var(--soft-gray);border-radius:10px;padding:12px 14px}
+.gm .t{font:700 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--steel-dark)}
+.gm .ft{display:flex;align-items:baseline;gap:8px;margin-top:6px;font-family:var(--serif);font-weight:700}
+.gm .ft .a{font-size:24px;color:var(--steel)} .gm .ft .arr{color:var(--orange);font-size:22px} .gm .ft .b{font-size:34px;color:var(--navy)}
+.gm .s{font-size:12px;color:var(--muted);margin-top:4px}
+.waves{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;position:relative}
+.wave{background:#fff;border-radius:10px;border:1px solid var(--soft-gray);padding:14px 16px;position:relative}
+.wave .wt{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.wave h4{font-family:var(--serif);font-size:21px;color:var(--navy)}
+.wave ul{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.35}
+.wave li{padding-left:18px;position:relative}
+.wave li:before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:700}
+.trn{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tr{background:var(--navy);color:#fff;border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
+.tr:after{content:attr(data-n);position:absolute;right:10px;top:4px;font:700 40px var(--serif);color:rgba(255,255,255,.08)}
+.tr .tt{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff}
+.tr .td{font-size:12px;color:#c3d3e2;margin-top:4px;line-height:1.35}
+.tr .tm{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tr .tm span{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.12);color:#fff}
+.tr .tm span.o{background:var(--orange);color:var(--navy)}
+/* videos */
+.lvls{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;min-height:0}
+.lvl{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.lvl .lh{display:flex;align-items:center;gap:10px}
+.lvl .badge{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;font:700 22px var(--serif);color:#fff;background:var(--steel)}
+.lvl:nth-child(2) .badge{background:var(--navy)} .lvl:nth-child(3) .badge{background:var(--orange);color:var(--navy)}
+.lvl h4{font-family:var(--serif);font-size:20px;color:var(--navy);line-height:1}
+.lvl .lh p{font-size:12px;color:var(--muted)}
+.vid{display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;text-decoration:none;color:inherit;padding:8px;border-radius:8px;border:1px dashed transparent;transition:.2s}
+.vid:hover{border-color:var(--steel);background:var(--paper-hi);transform:translateX(3px)}
+.vid .th{width:54px;height:38px;border-radius:6px;background:linear-gradient(135deg,var(--navy),var(--steel-dark));display:grid;place-items:center;position:relative}
+.vid .th:before{content:"";border-left:12px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.vid .vt{font-size:13.5px;font-weight:600;line-height:1.25;color:var(--navy)}
+.vid .vc{font:400 11px var(--mono);color:var(--muted);margin-top:2px}
+.rnd{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--navy);color:#fff;border-radius:12px;padding:14px 18px}
+.dice{font:800 15px var(--sans);background:var(--orange);color:var(--navy);border:none;border-radius:999px;padding:14px 22px;cursor:pointer;display:flex;gap:10px;align-items:center;box-shadow:0 6px 0 var(--orange-dk);transition:.15s}
+.dice:active{transform:translateY(4px);box-shadow:0 2px 0 var(--orange-dk)}
+.dice svg{transition:transform .6s}
+.dice.roll svg{transform:rotate(720deg)}
+.rres{display:flex;flex-direction:column;gap:6px}
+.rres .cats{display:flex;gap:6px;flex-wrap:wrap}
+.cat{font:700 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:#fff;background:transparent;cursor:pointer}
+.cat.on{background:#fff;color:var(--navy)}
+.rres a{color:var(--peach);font-family:var(--serif);font-size:20px;font-weight:700;text-decoration:none}
+.rres a:hover{text-decoration:underline}
+/* mural */
+.mural{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;flex:1;min-height:0}
+.cari{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:8px 8px 10px;display:flex;flex-direction:column;align-items:center;position:relative;transition:transform .3s;cursor:pointer}
+.cari:nth-child(odd){transform:rotate(-1deg)} .cari:nth-child(even){transform:rotate(1deg)}
+.cari:hover{transform:rotate(0) scale(1.04);z-index:2;box-shadow:0 14px 30px rgba(0,43,73,.2)}
+.cari .pin{position:absolute;top:-7px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--orange);box-shadow:0 2px 3px rgba(0,0,0,.3)}
+.cari svg{width:100%;height:auto;max-height:200px}
+.cari .nm{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--navy);margin-top:2px}
+.cari .gag{font-family:var(--hand);font-size:14px;color:var(--steel-dark);text-align:center;line-height:1.15;min-height:32px}
+.cari .cnt{position:absolute;top:8px;right:8px;font:700 11px var(--mono);background:var(--navy);color:#fff;border-radius:99px;padding:3px 8px}
+.cari .back{position:absolute;inset:0;border-radius:12px;background:var(--navy);color:#fff;padding:14px;display:flex;flex-direction:column;gap:6px;opacity:0;transition:.25s;font-size:12px;line-height:1.35;pointer-events:none}
+.cari:hover .back{opacity:.97}
+.cari .back b{font-family:var(--serif);font-size:16px;color:var(--peach)}
+.cari .back .w{font:700 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--light-blue);margin-top:4px}
+body.print .cari .back{display:none}
+/* caricature motion */
+.cv .bob{animation:bob 3.2s ease-in-out infinite;transform-origin:100px 200px}
+.cv .head{animation:tilt 4.6s ease-in-out infinite;transform-origin:100px 150px}
+.cv .eye{animation:blink 5s infinite;transform-box:fill-box;transform-origin:center}
+.cv .float{animation:flt 2.4s ease-in-out infinite}
+.cv .wag{animation:wag .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:left center}
+.cari:hover .cv .head{animation:wobble .6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes tilt{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes wobble{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg) scale(1.03)}}
+@keyframes blink{0%,46%,50%,100%{transform:scaleY(1)}48%{transform:scaleY(.1)}}
+@keyframes flt{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(-6px);opacity:1}}
+@keyframes wag{to{transform:rotate(18deg)}}
+body.print *{animation:none!important}
+/* who drew whom */
+.who{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 22px;font-size:12.5px}
+.who div{display:grid;grid-template-columns:170px 18px 1fr auto;gap:6px;align-items:center;border-bottom:1px dotted var(--soft-gray);padding:3px 0}
+.who .ar{color:var(--orange);font-weight:700}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><b>DTS</b> · Diagnóstico de Nivelamento IA</div>
+  <nav class="tabs" id="tabs"></nav>
+  <div class="navbtns"><button class="nb" id="prev">← Anterior</button><button class="nb" id="next">Próxima →</button></div>
+</header>
+<main class="stage"><div class="deck" id="deck">
+
+<!-- ================= 01 · ONDE ESTAMOS ================= -->
+<section class="slide" data-title="Onde estamos" data-notes="33 convidados, 29 iniciaram e 25 concluíram o caderno. Índice consolidado médio de 78,6 (faixa Autonomia), com 10 pessoas já em Multiplicação. O time declarou 64,7 mas demonstrou 84,6: 21 de 25 se subestimam.">
+  <aside class="lp">
+    <div class="kicker">Digital &amp; Technology Services</div>
+    <div class="pnum">01</div>
+    <h1>Onde <em>estamos</em></h1>
+    <p class="lead">O Caderno de Nivelamento cruzou o que cada pessoa <b>diz</b> fazer com IA com o que ela <b>demonstra</b> em 7 brincadeiras. Este é o retrato do time.</p>
+    <p class="hand">“O time já opera em Autonomia, mas ainda se enxerga em Evolução.”</p>
+    <div class="sig">CADERNO DTS · OUT 2026 · N = 25</div>
+  </aside>
+  <div class="rp">
+    <div class="sect">Adoção do caderno</div>
+    <div class="row">
+      <div class="card kpi"><h3>Convidados</h3><div class="v">33</div><div class="l">Encontro com a Galera · DTS</div></div>
+      <div class="card kpi"><h3>Iniciaram</h3><div class="v">29 <small>88%</small></div><div class="l">abriram e responderam ao menos 1 página</div></div>
+      <div class="card kpi hot"><h3>Concluíram</h3><div class="v">25 <small style="color:#fff">76%</small></div><div class="l">fizeram as 7 páginas (86% de quem começou)</div></div>
+      <div class="card kpi"><h3>Tempo mediano</h3><div class="v">12 <small>min</small></div><div class="l">entre quem fez de uma vez (previsto: 6 min)</div></div>
+      <div class="card kpi"><h3>Índice consolidado</h3><div class="v">78,6</div><div class="l">30% declarado + 70% demonstrado · faixa <b>Autonomia</b></div></div>
+    </div>
+    <div class="row">
+      <div class="card" style="flex:1.05;display:flex;flex-direction:column;gap:14px">
+        <h3>Funil de adoção</h3>
+        <div class="funnel">
+          <div class="fstep"><span>Convidados</span><div class="fb" style="width:100%">33</div><span class="pct">100%</span></div>
+          <div class="fstep"><span>Aceitaram convite</span><div class="fb" style="width:54.5%;background:var(--light-blue);color:var(--navy)">18</div><span class="pct">55%</span></div>
+          <div class="fstep"><span>Iniciaram caderno</span><div class="fb" style="width:87.9%;background:var(--steel-dark)">29</div><span class="pct">88%</span></div>
+          <div class="fstep"><span>Concluíram</span><div class="fb" style="width:75.8%;background:var(--navy)">25</div><span class="pct">76%</span></div>
+        </div>
+        <div class="row" style="gap:10px;margin-top:4px">
+          <div class="card" style="flex:1;padding:10px 12px;background:var(--paper-hi)"><div style="font:700 26px var(--serif);color:var(--orange)">4</div><div class="tiny">pararam no meio<br>(2 delas na pág. 6 de 7)</div></div>
+          <div class="card" style="flex:1;padding:10px 12px;background:var(--paper-hi)"><div style="font:700 26px var(--serif);color:var(--steel-dark)">4</div><div class="tiny">ainda não abriram<br>o caderno</div></div>
+          <div class="card" style="flex:1;padding:10px 12px;background:var(--paper-hi)"><div style="font:700 26px var(--serif);color:var(--green)">11/13</div><div class="tiny">que nem responderam o convite… concluíram</div></div>
+        </div>
+      </div>
+      <div class="card" style="flex:1.25;display:flex;flex-direction:column">
+        <h3>Distribuição por faixa · como se veem × como operam</h3>
+        <div class="ladder" id="ladder"></div>
+        <div class="legend" style="margin-top:12px"><span><i style="background:var(--light-blue)"></i>Faixa declarada (autopercepção)</span><span><i style="background:var(--navy)"></i>Faixa pelo índice consolidado</span></div>
+      </div>
+      <div style="width:250px;display:flex;flex-direction:column;gap:16px;padding-top:6px">
+        <div class="note"><b>Achado nº 1</b><br>21 de 25 pessoas <b>demonstraram mais</b> do que declararam. Distância média: <b>+20 pontos</b> (64,7 → 84,6).</div>
+        <div class="note" style="transform:rotate(1.2deg);background:#fff;border:1px solid var(--soft-gray)"><b>Leitura:</b> o problema não é saber usar. É <b>confiança</b>, <b>método</b> e <b>escala</b>.</div>
+      </div>
+    </div>
+    <div class="card" style="flex:1;display:flex;flex-direction:column">
+      <h3>Termômetro do time · índice consolidado de cada pessoa (anônimo)</h3>
+      <div id="thermo" style="position:relative;flex:1;margin:6px 4px 0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 · O QUE O CADERNO REVELOU ================= -->
+<section class="slide" data-title="Diagnóstico" data-notes="Por dimensão: Skills & Métodos (96,9) e reutilização (88) são os pontos fortes demonstrados. O gargalo é a maturidade agêntica (52,2). FLOWS e Métodos são os itens de menor uso declarado. No retrato falado, quem reescreveu o prompt subiu de 63 para 87 pontos.">
+  <aside class="lp">
+    <div class="kicker">Digital &amp; Technology Services</div>
+    <div class="pnum">02</div>
+    <h1>O que o caderno <em>revelou</em></h1>
+    <p class="lead">8 dimensões de maturidade, 6 perguntas de uso e 5 brincadeiras de demonstração. Os pontos fortes estão claros e há um gargalo bem definido.</p>
+    <p class="hand">“Sabemos pedir. Ainda não sabemos delegar para agentes.”</p>
+    <div class="sig">FONTE · REGISTROS DO CADERNO (25 CONCLUÍDOS)</div>
+  </aside>
+  <div class="rp">
+    <div class="headline">Forte em <mark>Skills, Prompt e reutilização</mark>. O gargalo é a <mark>maturidade agêntica (52)</mark>: o próximo salto de produtividade.</div>
+    <div class="row" style="flex:1;min-height:0">
+      <div class="card" style="flex:1.15">
+        <h3>Maturidade por dimensão (0–100)</h3>
+        <div class="dumb" id="dumb"></div>
+        <div class="legend" style="margin-top:12px"><span><i style="background:var(--light-blue);border-radius:50%"></i>Declarado</span><span><i style="background:var(--navy);border-radius:50%"></i>Demonstrado</span><span><i style="background:var(--orange);border-radius:50%"></i>Gargalo</span><span class="tiny">linhas: limites das 5 faixas</span></div>
+        <h3 style="margin-top:22px">P07 · retrato falado · estrutura do prompt (17 que reescreveram)</h3>
+        <div style="display:grid;grid-template-columns:110px 1fr 48px;gap:8px 12px;align-items:center;font-size:13px">
+          <span>1º rascunho</span><div class="bar" style="height:16px"><i style="width:63%;background:var(--light-blue)"></i></div><b style="font-family:var(--mono)">63</b>
+          <span>2º rascunho</span><div class="bar" style="height:16px"><i style="width:87%;background:var(--green)"></i></div><b style="font-family:var(--mono);color:var(--green)">87</b>
+        </div>
+        <div class="tiny" style="margin-top:6px">O que mais faltava no 1º rascunho: <b>contexto/uso</b> da imagem e <b>resultado esperado</b> (formato, enquadramento).</div>
+      </div>
+      <div class="card" style="flex:1">
+        <h3>Página 01 · uso declarado (nº de pessoas por nível)</h3>
+        <div class="heat" id="heat"></div>
+        <div class="tiny" style="margin-top:8px">0 = não uso · 1 = conheço · 2 = uso às vezes · 3 = uso com autonomia/compartilho</div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><h3 style="margin-bottom:6px">P04 · caminho de trabalho</h3><div id="p04"></div></div>
+          <div><h3 style="margin-bottom:6px">P06 · peças do prompt mais escolhidas</h3><div id="p06"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ins">
+      <div class="in"><b>Métodos é o elo fraco do uso</b>13 de 25 usam pouco ou nada de Métodos (índice 49). FLOWS tem uso mediano (57). A base existe, mas o hábito ainda não.</div>
+      <div class="in"><b>72% passam pelo FLOWS antes, só 4% orquestram</b>18 pessoas verificam o FLOWS e adaptam. Só 1 encadeia Método → Skill → Agente. Ainda é reuso, não automação.</div>
+      <div class="in" style="border-color:var(--green)"><b>Aprendem no ato: +24 pontos</b>17 pessoas reescreveram o prompt do retrato falado. A estrutura subiu de 63 para 87. Basta um empurrão com feedback.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 · PARA ONDE VAMOS ================= -->
+<section class="slide" data-title="Meta e próximos passos" data-notes="Meta em 90 dias: índice consolidado de 78,6 para 85 (Multiplicação), maturidade agêntica de 52 para 70, conclusão de 76% para 100% e 10 multiplicadores formalizados. Três ondas: Ativar, Aprofundar e Multiplicar, com 6 treinamentos específicos.">
+  <aside class="lp">
+    <div class="kicker">Digital &amp; Technology Services</div>
+    <div class="pnum">03</div>
+    <h1>Para onde <em>vamos</em></h1>
+    <p class="lead">Sair de <b>Autonomia</b> para <b>Multiplicação</b> em 90 dias. Menos curso genérico e mais prática no trabalho real, com os 10 multiplicadores à frente.</p>
+    <p class="hand">“De usuários de IA para construtores de Skills e agentes.”</p>
+    <div class="sig">HORIZONTE · NOV 2026 → JAN 2027</div>
+  </aside>
+  <div class="rp" style="gap:14px">
+    <div class="sect">A meta · 90 dias</div>
+    <div class="goal">
+      <div class="gm"><div class="t">Índice consolidado</div><div class="ft"><span class="a">78,6</span><span class="arr">→</span><span class="b">85</span></div><div class="s">faixa Multiplicação na média do time</div></div>
+      <div class="gm"><div class="t">Maturidade agêntica</div><div class="ft"><span class="a">52</span><span class="arr">→</span><span class="b">70</span></div><div class="s">o gargalo vira competência</div></div>
+      <div class="gm"><div class="t">Adoção do caderno</div><div class="ft"><span class="a">76%</span><span class="arr">→</span><span class="b">100%</span></div><div class="s">8 pessoas a ativar + nova rodada em jan</div></div>
+      <div class="gm"><div class="t">Skills publicadas no FLOWS</div><div class="ft"><span class="a">—</span><span class="arr">→</span><span class="b">20</span></div><div class="s">2 por multiplicador, reutilizáveis pelo time</div></div>
+    </div>
+    <div class="sect">Por onde seguimos · 3 ondas</div>
+    <div class="waves">
+      <div class="wave"><div class="wt"><h4>1 · Ativar</h4><span class="chip">Semanas 1–3</span></div><ul>
+        <li>Fechar a adoção: convite 1:1 para quem não abriu ou parou no meio</li>
+        <li>Devolutiva individual: cada pessoa recebe seu índice e sua trilha</li>
+        <li>Formalizar os <b>10 Multiplicadores</b> (faixa ≥ 81) como guilda</li></ul></div>
+      <div class="wave"><div class="wt"><h4>2 · Aprofundar</h4><span class="chip n">Semanas 4–8</span></div><ul>
+        <li>Trilhas por faixa (abaixo), com 1 caso real de projeto por pessoa</li>
+        <li>“Clínica de Prompt” quinzenal com feedback ao vivo (o +24 pts)</li>
+        <li>Sprint agêntica: 1 agente/MCP por frente de DTS</li></ul></div>
+      <div class="wave"><div class="wt"><h4>3 · Multiplicar</h4><span class="chip o">Semanas 9–12</span></div><ul>
+        <li><b>Skill da Semana</b>: publicar e demonstrar no FLOWS</li>
+        <li>Ranking gamificado: reuso de Skills e Métodos no time</li>
+        <li>Nova rodada do caderno para medir a evolução</li></ul></div>
+    </div>
+    <div class="sect">Treinamentos específicos de IA e ferramentas</div>
+    <div class="trn">
+      <div class="tr" data-n="01"><div class="tt">Métodos na Prática</div><div class="td">Do “arquivo antigo” ao Método do FLOWS: achar, adaptar e registrar.</div><div class="tm"><span>Evolução → Autonomia</span><span>FLOWS</span><span>2h</span></div></div>
+      <div class="tr" data-n="02"><div class="tt">Prompt de Contexto</div><div class="td">Objetivo, contexto, público, formato e referências. Clínica com casos reais.</div><div class="tm"><span>Todos</span><span>Claude</span><span>1h30</span></div></div>
+      <div class="tr" data-n="03"><div class="tt">Claude Desktop Power User</div><div class="td">Projects, Artifacts, arquivos, conectores e memória no dia a dia.</div><div class="tm"><span>Evolução → Autonomia</span><span>Claude</span><span>2h</span></div></div>
+      <div class="tr" data-n="04"><div class="tt">Skill Lab</div><div class="td">Construir, testar e publicar uma Skill autoral reutilizável pelo time.</div><div class="tm"><span>Autonomia</span><span>Skills</span><span>3h</span></div></div>
+      <div class="tr" data-n="05"><div class="tt">Agentes &amp; MCP</div><div class="td">Do prompt à orquestração: Método → Skill → Agente, com MCP e dados.</div><div class="tm"><span class="o">Gargalo</span><span>Agentes</span><span>4h</span></div></div>
+      <div class="tr" data-n="06"><div class="tt">Escola de Multiplicadores</div><div class="td">Facilitação, mentoria e como transformar entrega em ativo do time.</div><div class="tm"><span>Multiplicação</span><span>Guilda</span><span>2h</span></div></div>
+    </div>
+    <div class="sect">Quem faz o quê · trilha por faixa</div>
+    <div class="row">
+      <div class="card" style="flex:1;border-top:4px solid var(--light-blue)"><h3>Evolução · 1 pessoa</h3><div style="font-size:13px">Trilha <b>01 → 02 → 03</b> + padrinho multiplicador. Foco: hábito de Métodos e FLOWS.</div></div>
+      <div class="card" style="flex:1;border-top:4px solid var(--navy)"><h3>Autonomia · 14 pessoas</h3><div style="font-size:13px">Trilha <b>02 → 04 → 05</b>. Entrega: 1 Skill autoral e 1 agente aplicado a um projeto real.</div></div>
+      <div class="card" style="flex:1;border-top:4px solid var(--orange)"><h3>Multiplicação · 10 pessoas</h3><div style="font-size:13px">Trilha <b>05 → 06</b>. Cada um apadrinha 2 colegas e publica 2 Skills no FLOWS.</div></div>
+      <div class="note" style="width:250px;font-size:15px"><b>Regra de ouro:</b> todo treinamento termina com um <b>ativo publicado</b> no FLOWS, não com um certificado.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 · CATEQUIZAÇÃO EXTERNA ================= -->
+<section class="slide" data-title="Trilha externa" data-notes="Trilha gratuita no YouTube, em português, em 3 níveis. Os links abrem buscas em PT-BR em canais educativos conhecidos. O botão de vídeo aleatório sugere conteúdo de design, sistemas, jogos e dados.">
+  <aside class="lp">
+    <div class="kicker">Bônus · catequização externa</div>
+    <div class="pnum">04</div>
+    <h1>Trilha <em>aberta</em> no YouTube</h1>
+    <p class="lead">Conteúdo gratuito e em português para estudar no próprio ritmo, do básico ao intermediário. Cada link abre uma busca no YouTube em canais educativos de confiança.</p>
+    <p class="hand">“10 minutos por dia &gt; 1 curso por ano.”</p>
+    <div class="sig">CURADORIA · CONTEÚDO PÚBLICO E GRATUITO · PT-BR</div>
+  </aside>
+  <div class="rp">
+    <div class="sect">3 níveis · do zero ao agente</div>
+    <div class="lvls" id="lvls"></div>
+    <div class="rnd">
+      <button class="dice" id="dice"><svg width="22" height="22" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#002B49"/><circle cx="8" cy="8" r="2" fill="#fff"/><circle cx="16" cy="16" r="2" fill="#fff"/><circle cx="16" cy="8" r="2" fill="#fff"/><circle cx="8" cy="16" r="2" fill="#fff"/><circle cx="12" cy="12" r="2" fill="#F78C16"/></svg>Vídeo aleatório</button>
+      <div class="rres"><div class="cats" id="cats"></div><a id="rlink" href="#" target="_blank" rel="noopener">Escolha uma categoria e role o dado 🎲</a><span class="tiny" style="color:#9fb3c8" id="rmeta">Design · Sistemas · Jogos · Dados · Produtividade</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 · MURAL ================= -->
+<section class="slide" data-title="Mural Retrato Falado" data-notes="Página 7 do caderno: retrato falado. 23 pessoas escreveram um prompt e só 14 marcaram quem retrataram. As outras 11 foram identificadas pelas características descritas. Ana Paula foi a mais retratada (5 vezes).">
+  <aside class="lp">
+    <div class="kicker">Página 07 · Retrato falado DTS</div>
+    <div class="pnum">05</div>
+    <h1>Mural do <em>Retrato Falado</em></h1>
+    <p class="lead">23 pessoas escreveram um prompt de caricatura e só 14 marcaram quem era. Fizemos o trabalho de detetive e as outras 11 foram identificadas pelas pistas que cada um deu.</p>
+    <p class="hand">“Passe o mouse para descobrir quem desenhou quem.”</p>
+    <div class="sig">CARICATURAS GERADAS A PARTIR DOS PROMPTS DO TIME</div>
+  </aside>
+  <div class="rp" style="gap:12px">
+    <div class="mural" id="mural"></div>
+    <div class="card" style="padding:10px 14px">
+      <h3 style="margin-bottom:6px">Investigação · quem não marcou e desenhou quem</h3>
+      <div class="who" id="who"></div>
+    </div>
+  </div>
+</section>
+
+</div></main>
+
+<script>
+/* ---------------- data ---------------- */
+const BANDS=[['Ponto de partida','0–20',0,0],['Exploração','21–40',4,0],['Evolução','41–60',7,1],['Autonomia','61–80',7,14],['Multiplicação','81–100',7,10]];
+const DIMS=[['Skills & Métodos',62.0,96.9],['Reutilização',68.0,88.0],['Prompt & Contexto',null,87.2],['Fluxo de trabalho',null,81.9],['Criação & compartilhamento',68.0,81.2],['Compreensão semântica',null,78.3],['Uso do ecossistema',72.7,null],['Maturidade agêntica',null,52.2]];
+const P01=[['Claude Desktop',[0,1,7,17]],['Skills',[1,5,6,13]],['Reutilização',[0,5,14,6]],['Compartilhamento',[4,4,4,13]],['FLOWS',[2,5,16,2]],['Métodos',[6,7,6,6]]];
+const P04=[['C · FLOWS → verificar → adaptar',18],['A · Claude direto → ajustes',5],['B · arquivo antigo → adaptar',1],['D · Método → Skill → Agente',1]];
+const P06=[['Contexto',21],['Objetivo',16],['Público',14],['Formato de saída',11],['Referências',11]];
+
+/* ---------------- slide 1: ladder ---------------- */
+document.getElementById('ladder').innerHTML=BANDS.map(([n,r,d,c],i)=>`<div class="rung"><div class="cols">
+<div class="col d" style="height:${d/14*150}px;animation-delay:${i*.08}s"><span>${d}</span></div>
+<div class="col c ${n==='Autonomia'?'top':''}" style="height:${c/14*150}px;animation-delay:${i*.08+.2}s"><span>${c}</span></div></div>
+<div class="nm">${n}</div><div class="rg">${r}</div></div>`).join('');
+
+const SC=[50,64,64,64,69,73,76,77,77,77,78,79,79,80,80,81,84,86,87,87,88,90,91,92,94];
+(()=>{const t=document.getElementById('thermo');const zones=[[0,20,'#F5F7F9'],[20,40,'#EAF0F6'],[40,60,'#DFE8F0'],[60,80,'#C9D8E7'],[80,100,'#FDE3C6']];
+let h=zones.map(([a,b,c],i)=>`<div style="position:absolute;left:${a}%;width:${b-a}%;top:0;bottom:22px;background:${c};border-right:1px dashed #BFD0E1"><span style="position:absolute;bottom:4px;left:6px;font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--steel-dark)">${BANDS[i][0]}</span></div>`).join('');
+const cnt={};SC.forEach((v,i)=>{const k=v;cnt[k]=(cnt[k]||0)+1;h+=`<div style="position:absolute;left:${v}%;top:${28+(cnt[k]-1)*16}px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:${v>80?'var(--orange)':'var(--navy)'};border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25);animation:rise .6s ${i*.03}s both"></div>`});
+h+=`<div style="position:absolute;left:78.6%;top:0;bottom:22px;border-left:2px solid var(--orange)"><span style="position:absolute;top:-2px;left:6px;font:700 12px var(--mono);color:var(--orange);white-space:nowrap">média 78,6</span></div><div style="position:absolute;left:85%;top:0;bottom:22px;border-left:2px dashed var(--navy)"><span style="position:absolute;top:-2px;left:6px;font:700 12px var(--mono);color:var(--navy);white-space:nowrap">meta 85</span></div>`;
+h+=[0,20,40,60,80,100].map(x=>`<span style="position:absolute;bottom:0;left:${x}%;transform:translateX(-50%);font:400 11px var(--mono);color:var(--muted)">${x}</span>`).join('');t.innerHTML=h})();
+/* ---------------- slide 2 ---------------- */
+document.getElementById('dumb').innerHTML=DIMS.map(([n,d,m],i)=>{
+  const lo=d!=null&&m!=null?Math.min(d,m):null, hi=d!=null&&m!=null?Math.max(d,m):null;
+  return `<div class="drow"><span>${n}</span><div class="track">
+  ${lo!=null?`<div class="seg" style="left:${lo}%;width:${hi-lo}%"></div>`:''}
+  ${d!=null?`<div class="dot dec" style="left:${d}%"></div>`:''}
+  ${m!=null?`<div class="dot dem ${m<60?'low':''}" style="left:${m}%"></div>`:''}
+  </div><span class="val" style="color:${(m??d)<60?'var(--orange)':'var(--navy)'}">${(m??d).toFixed(1).replace('.',',')}</span></div>`}).join('');
+const hc=v=>{const a=v/25;return `background:rgba(0,43,73,${.06+a*1.05});color:${a>.4?'#fff':'#002B49'}`};
+document.getElementById('heat').innerHTML='<span></span>'+['0','1','2','3'].map(x=>`<span class="h">nível ${x}</span>`).join('')+'<span class="h">índice</span>'+
+ P01.map(([n,a])=>{const s=Math.round(a.reduce((t,v,i)=>t+v*i,0)/75*100);return `<span>${n}</span>`+a.map(v=>`<div class="c" style="${hc(v)}">${v}</div>`).join('')+`<span class="s" style="color:${s<60?'var(--orange)':'var(--navy)'}">${s}</span>`}).join('');
+const mini=(id,arr,max,col)=>document.getElementById(id).innerHTML=arr.map(([n,v])=>`<div style="font-size:12px;margin-bottom:5px"><div style="display:flex;justify-content:space-between"><span>${n}</span><b style="font-family:var(--mono)">${v}</b></div><div class="bar"><i style="width:${v/max*100}%;background:${col(n)}"></i></div></div>`).join('');
+mini('p04',P04,25,n=>n.startsWith('D')?'var(--orange)':n.startsWith('C')?'var(--navy)':'var(--steel)');
+mini('p06',P06,25,()=> 'var(--steel-dark)');
+
+/* ---------------- slide 4: videos ---------------- */
+const yt=q=>'https://www.youtube.com/results?search_query='+encodeURIComponent(q);
+const LVLS=[
+ ['1','Básico','Entender e começar a usar',[
+  ['O que é IA generativa, explicado sem jargão','Canal Nerdologia · busca','Nerdologia inteligência artificial'],
+  ['Como escrever bons prompts','Hashtag Treinamentos · busca','Hashtag Treinamentos como escrever prompts inteligência artificial'],
+  ['Claude: primeiros passos em português','tutoriais PT-BR · busca','Claude IA Anthropic tutorial português iniciantes'],
+  ['IA para produtividade no trabalho','Sebrae · busca','Sebrae inteligência artificial produtividade']]],
+ ['2','Intermediário','Contexto, reuso e automação',[
+  ['Engenharia de prompt: técnicas e exemplos','Filipe Deschamps · busca','Filipe Deschamps engenharia de prompt'],
+  ['Claude Projects e Artifacts na prática','tutoriais PT-BR · busca','Claude Projects Artifacts tutorial português'],
+  ['RAG explicado: IA com seus documentos','Código Fonte TV · busca','Código Fonte TV RAG inteligência artificial'],
+  ['Automação com IA e n8n do zero','tutoriais PT-BR · busca','n8n automação inteligência artificial tutorial português']]],
+ ['3','Agentes','Orquestrar Método → Skill → Agente',[
+  ['Agentes de IA: o que são e como funcionam','Código Fonte TV · busca','Código Fonte TV agentes de IA'],
+  ['MCP (Model Context Protocol) explicado','tutoriais PT-BR · busca','MCP Model Context Protocol explicado português'],
+  ['Claude Code na prática','tutoriais PT-BR · busca','Claude Code tutorial português'],
+  ['Sistemas multiagentes com CrewAI','DIO · busca','CrewAI agentes tutorial português']]]];
+const CH={'1':'refaça um pedido da sua semana usando objetivo + contexto + formato e compare os resultados.','2':'transforme uma entrega recorrente em um Projeto do Claude com instruções e arquivos de referência.','3':'desenhe no papel um agente Método → Skill → Agente para uma tarefa do seu projeto e leve à Clínica.'};
+document.getElementById('lvls').innerHTML=LVLS.map(([n,t,s,v])=>`<div class="lvl"><div class="lh"><div class="badge">${n}</div><div><h4>Nível ${n} · ${t}</h4><p>${s}</p></div></div>
+${v.map(([vt,vc,q])=>`<a class="vid" data-link="${yt(q)}" href="${yt(q)}" target="_blank" rel="noopener"><div class="th"></div><div><div class="vt">${vt}</div><div class="vc">${vc}</div></div></a>`).join('')}<div class="note" style="margin-top:auto;transform:rotate(-.8deg);font-size:15px"><b>Desafio prático:</b> ${CH[n]}</div></div>`).join('');
+const RANDOM={
+ 'Design':['Curso em Vídeo design','UX design para iniciantes português','Figma do zero tutorial português','Design System explicado português','Aela UX UI design'],
+ 'Sistemas':['Código Fonte TV arquitetura de software','System design explicado português','Fabio Akita arquitetura','Curso em Vídeo lógica de programação','Filipe Deschamps como funciona a internet'],
+ 'Jogos':['como criar um jogo na Godot português','game design curso gratuito português','Unity para iniciantes português','criar jogo 2D do zero português','pixel art tutorial português'],
+ 'Dados':['Hashtag Treinamentos Power BI do zero','Hashtag Treinamentos Python para dados','Curso em Vídeo Python','SQL do zero português','visualização de dados storytelling português'],
+ 'Produtividade':['Notion tutorial português','Excel com IA Hashtag Treinamentos','apresentações com IA português','Miro tutorial português','gestão do tempo produtividade TED português']};
+let cat='Design';
+const cats=document.getElementById('cats');
+cats.innerHTML=Object.keys(RANDOM).map(c=>`<button class="cat ${c===cat?'on':''}" data-c="${c}">${c}</button>`).join('');
+cats.onclick=e=>{const b=e.target.closest('.cat');if(!b)return;cat=b.dataset.c;[...cats.children].forEach(x=>x.classList.toggle('on',x===b));roll()};
+function roll(){const d=document.getElementById('dice');d.classList.remove('roll');void d.offsetWidth;d.classList.add('roll');
+ const l=RANDOM[cat],q=l[Math.floor(Math.random()*l.length)],a=document.getElementById('rlink');a.textContent='▶ '+q;a.href=yt(q);
+ document.getElementById('rmeta').textContent='Categoria: '+cat+' · abre a busca no YouTube';}
+document.getElementById('dice').onclick=roll;
+
+/* ---------------- slide 5: caricatures ---------------- */
+const SK={light:'#F2C9A5',mid:'#E3AE84',tan:'#C98E62'};
+function cari(o){
+ const id='c'+Math.random().toString(36).slice(2,7), s=SK[o.skin]||o.skin, hc=o.hair, cy=92, rx=o.rx||50, ry=o.ry||56;
+ let back='',front='',beard='',acc='',prop='',body='';
+ // body: A&M social attire
+ body=`<path d="M22 232 C24 192 54 176 100 174 C146 176 176 192 178 232Z" fill="#002B49"/>
+ <path d="M84 174 L100 206 L116 174Z" fill="#fff"/>
+ ${o.f?`<path d="M88 176 L100 200 L112 176" fill="none" stroke="#F78C16" stroke-width="3"/>`:o.vest?`<path d="M70 182 L100 214 L130 182 L130 232 L70 232Z" fill="#33556D"/><path d="M96 180 L104 180 L107 212 L100 220 L93 212Z" fill="#F78C16"/>`:`<path d="M96 180 L104 180 L107 214 L100 222 L93 214Z" fill="#F78C16"/><path d="M96 180 L104 180 L102 186 L98 186Z" fill="#D9700A"/>`}
+ <path d="M84 174 L72 198 L92 214" fill="none" stroke="#0E3D63" stroke-width="2.4"/><path d="M116 174 L128 198 L108 214" fill="none" stroke="#0E3D63" stroke-width="2.4"/>
+ <rect x="62" y="200" width="14" height="3" rx="1.5" fill="#BFD0E1"/>`;
+ // hair styles
+ const H={
+  bald:`<ellipse cx="${100-rx*.35}" cy="${cy-ry*.7}" rx="12" ry="6" fill="#fff" opacity=".55" transform="rotate(-20 ${100-rx*.35} ${cy-ry*.7})"/>`,
+  short:`<path d="M${100-rx-2} ${cy+2} C${100-rx-8} ${cy-ry-14} ${100+rx+8} ${cy-ry-14} ${100+rx+2} ${cy+2} C${100+rx-4} ${cy-ry*.45} ${120} ${cy-ry*.75} ${92} ${cy-ry*.62} C${78} ${cy-ry*.55} ${100-rx+6} ${cy-ry*.35} ${100-rx-2} ${cy+2}Z" fill="${hc}"/>`,
+  bravo:`<path d="M${100-rx-2} ${cy+4} C${100-rx-14} ${cy-ry-40} ${100+rx+30} ${cy-ry-62} ${100+rx+16} ${cy-ry-10} C${100+rx+10} ${cy-ry+18} ${100+rx+4} ${cy-14} ${100+rx+2} ${cy+4} C${100+rx-8} ${cy-ry*.5} ${110} ${cy-ry*.62} ${84} ${cy-ry*.55} C${70} ${cy-ry*.5} ${100-rx+4} ${cy-ry*.3} ${100-rx-2} ${cy+4}Z" fill="${hc}"/><path d="M80 ${cy-ry-18} C100 ${cy-ry-40} 130 ${cy-ry-44} 150 ${cy-ry-20}" fill="none" stroke="#fff" stroke-width="3" opacity=".35"/>`,
+  topete:`<path d="M${100-rx-2} ${cy+4} C${100-rx-6} ${cy-ry-6} ${100+rx+6} ${cy-ry-6} ${100+rx+2} ${cy+4} C${100+rx-6} ${cy-ry*.4} ${100+rx-16} ${cy-ry*.6} ${100} ${cy-ry*.55} C${100-rx+16} ${cy-ry*.6} ${100-rx+6} ${cy-ry*.4} ${100-rx-2} ${cy+4}Z" fill="${hc}"/><path d="M70 ${cy-ry+4} C68 ${cy-ry-34} 128 ${cy-ry-40} 132 ${cy-ry-6} C120 ${cy-ry-18} 96 ${cy-ry-18} 70 ${cy-ry+4}Z" fill="${hc}" stroke="#8E959C" stroke-width="1.5"/>`,
+  longback:`<path d="M${100-rx-8} ${cy-10} C${100-rx-14} ${cy+60} ${100-rx-8} ${cy+110} ${100-rx+4} ${cy+118} L${100+rx-4} ${cy+118} C${100+rx+8} ${cy+110} ${100+rx+14} ${cy+60} ${100+rx+8} ${cy-10}Z" fill="${hc}"/>`,
+  longfront:`<path d="M${100-rx-4} ${cy+30} C${100-rx-10} ${cy-ry-16} ${100+rx+10} ${cy-ry-16} ${100+rx+4} ${cy+30} C${100+rx-4} ${cy-ry*.3} ${104} ${cy-ry*.7} ${100} ${cy-ry*.72} C${96} ${cy-ry*.7} ${100-rx+4} ${cy-ry*.3} ${100-rx-4} ${cy+30}Z" fill="${hc}"/>`,
+  wavyback:`<path d="M${100-rx-14} ${cy-20} C${100-rx-40} ${cy+30} ${100-rx-10} ${cy+70} ${100-rx-30} ${cy+100} C${100-rx-12} ${cy+124} ${100-rx+16} ${cy+112} ${100-rx+18} ${cy+104} L${100+rx-18} ${cy+104} C${100+rx-16} ${cy+112} ${100+rx+12} ${cy+124} ${100+rx+30} ${cy+100} C${100+rx+10} ${cy+70} ${100+rx+40} ${cy+30} ${100+rx+14} ${cy-20}Z" fill="url(#${id}hg)"/>`,
+  wavyfront:`<path d="M${100-rx-10} ${cy+24} C${100-rx-18} ${cy-ry-24} ${100+rx+18} ${cy-ry-24} ${100+rx+10} ${cy+24} C${100+rx} ${cy-ry*.2} ${100+rx-20} ${cy-ry*.6} ${92} ${cy-ry*.66} C${100-rx+14} ${cy-ry*.5} ${100-rx} ${cy-ry*.1} ${100-rx-10} ${cy+24}Z" fill="url(#${id}hg)"/>`,
+  curly:Array.from({length:22},(_,i)=>{const a=Math.PI*(1.02+i/21*.96)+(-.0);const r=rx+10+(i%3)*4;return `<circle cx="${100+Math.cos(a)*r*1.05}" cy="${cy-6+Math.sin(a)*(ry+6)}" r="${15+(i%4)*2}" fill="${hc}"/>`}).join('')+`<circle cx="${100-rx-12}" cy="${cy+20}" r="16" fill="${hc}"/><circle cx="${100+rx+12}" cy="${cy+20}" r="16" fill="${hc}"/><circle cx="${100-rx-8}" cy="${cy+44}" r="13" fill="${hc}"/><circle cx="${100+rx+8}" cy="${cy+44}" r="13" fill="${hc}"/>`
+ };
+ if(o.back) back=H[o.back]; if(o.front) front=H[o.front];
+ if(o.beard) beard=`<path d="M${100-rx+1} ${cy+4} C${100-rx+2} ${cy+ry+12} ${100+rx-2} ${cy+ry+12} ${100+rx-1} ${cy+4} C${100+rx-6} ${cy+30} 122 ${cy+28} 100 ${cy+26} C78 ${cy+28} ${100-rx+6} ${cy+30} ${100-rx+1} ${cy+4}Z" fill="${o.beard}"/><path d="M82 ${cy+25} C90 ${cy+17} 110 ${cy+17} 118 ${cy+25} C110 ${cy+22} 90 ${cy+22} 82 ${cy+25}Z" fill="${o.beard}"/>`;
+ const ey=cy-2, ex=o.ex||19;
+ const eyes=[100-ex,100+ex].map(x=>`<g class="eye"><ellipse cx="${x}" cy="${ey}" rx="${o.big?9:7.5}" ry="${o.big?10.5:8.5}" fill="#fff" stroke="#002B49" stroke-width="1.6"/><circle cx="${x+1}" cy="${ey+1.5}" r="${o.big?4.8:3.8}" fill="#3B2615"/><circle cx="${x+2.4}" cy="${ey-.4}" r="1.3" fill="#fff"/></g>`).join('');
+ const brow=o.serious?[`M${100-ex-10} ${ey-14} L${100-ex+9} ${ey-11}`,`M${100+ex+10} ${ey-14} L${100+ex-9} ${ey-11}`]:[`M${100-ex-10} ${ey-12} Q${100-ex} ${ey-20} ${100-ex+9} ${ey-14}`,`M${100+ex+10} ${ey-12} Q${100+ex} ${ey-20} ${100+ex-9} ${ey-14}`];
+ const brows=brow.map(d=>`<path d="${d}" fill="none" stroke="${o.brow||hc}" stroke-width="${o.thick?5:3.6}" stroke-linecap="round"/>`).join('');
+ const glasses=o.glasses==='round'?[100-ex,100+ex].map(x=>`<circle cx="${x}" cy="${ey}" r="12.5" fill="rgba(255,255,255,.18)" stroke="${o.gc||'#1b1b1b'}" stroke-width="3"/>`).join('')+`<path d="M${100-ex+12} ${ey} Q100 ${ey-4} ${100+ex-12} ${ey}" stroke="${o.gc||'#1b1b1b'}" stroke-width="3" fill="none"/>`
+  :o.glasses?[100-ex,100+ex].map(x=>`<rect x="${x-14}" y="${ey-10}" width="28" height="20" rx="5" fill="rgba(255,255,255,.18)" stroke="${o.gc||'#1b1b1b'}" stroke-width="3.2"/>`).join('')+`<path d="M${100-ex+14} ${ey-2} L${100+ex-14} ${ey-2}" stroke="${o.gc||'#1b1b1b'}" stroke-width="3"/>`:'';
+ const my=cy+30;
+ const mouth=o.mouth==='grin'?`<path d="M78 ${my-4} Q100 ${my+22} 122 ${my-4}Z" fill="#7A1E1E" stroke="#002B49" stroke-width="1.8" stroke-linejoin="round"/><path d="M81 ${my-3} L119 ${my-3} L117 ${my+3} L83 ${my+3}Z" fill="#fff"/><path d="M90 ${my+11} Q100 ${my+6} 110 ${my+11} Q100 ${my+16} 90 ${my+11}Z" fill="#E86A6A"/>`
+  :o.mouth==='flat'?`<path d="M88 ${my+1} Q100 ${my+4} 112 ${my+1}" stroke="#7A3A2A" stroke-width="3" fill="none" stroke-linecap="round"/>`
+  :o.mouth==='sing'?`<ellipse cx="100" cy="${my+4}" rx="10" ry="12" fill="#7A1E1E" stroke="#002B49" stroke-width="1.8"/><path d="M92 ${my-3} L108 ${my-3}" stroke="#fff" stroke-width="4"/>`
+  :`<path d="M84 ${my-2} Q100 ${my+12} 116 ${my-2}" stroke="#7A3A2A" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
+ const lips=o.lips?`<path d="M80 ${my-4} Q100 ${my+24} 120 ${my-4}" fill="none" stroke="${o.lips}" stroke-width="3"/>`:'';
+ const ear=`<ellipse cx="${100-rx+1}" cy="${cy+6}" rx="8" ry="11" fill="${s}" stroke="#002B49" stroke-width="1.6"/><ellipse cx="${100+rx-1}" cy="${cy+6}" rx="8" ry="11" fill="${s}" stroke="#002B49" stroke-width="1.6"/>`;
+ const earring=o.ear?`<circle cx="${100-rx+1}" cy="${cy+22}" r="5" fill="none" stroke="#F78C16" stroke-width="2.4"/><circle cx="${100+rx-1}" cy="${cy+22}" r="5" fill="none" stroke="#F78C16" stroke-width="2.4"/>`:'';
+ return `<svg class="cv" viewBox="0 0 200 232" role="img" aria-label="Caricatura de ${o.name}">
+ <defs><linearGradient id="${id}hg" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="${hc}"/><stop offset="1" stop-color="${o.tips||hc}"/></linearGradient>
+ <clipPath id="${id}cl"><circle cx="100" cy="116" r="96"/></clipPath></defs>
+ <circle cx="100" cy="116" r="96" fill="#DFE8F0"/><circle cx="100" cy="116" r="96" fill="none" stroke="#BFD0E1" stroke-width="2" stroke-dasharray="4 6"/>
+ <g clip-path="url(#${id}cl)"><g class="bob">${back}${body}<rect x="88" y="${cy+40}" width="24" height="${180-cy-40}" fill="${s}"/></g></g>
+ <g class="bob"><g class="head">${ear}<ellipse cx="100" cy="${cy}" rx="${rx}" ry="${ry}" fill="${s}" stroke="#002B49" stroke-width="2"/>
+ <ellipse cx="${100-ex-8}" cy="${cy+16}" rx="8" ry="5" fill="#F08E7E" opacity=".45"/><ellipse cx="${100+ex+8}" cy="${cy+16}" rx="8" ry="5" fill="#F08E7E" opacity=".45"/>
+ ${beard}${eyes}${brows}<path d="M100 ${cy+2} Q${95-(o.nose||0)} ${cy+16} 100 ${cy+18} Q104 ${cy+19} 106 ${cy+16}" fill="none" stroke="#9B6748" stroke-width="2.4" stroke-linecap="round"/>
+ ${mouth}${lips}${front}${glasses}${earring}${o.acc||''}</g>${o.prop||''}</g></svg>`;
+}
+const P={
+ thiago:{name:'Thiago Vieira',skin:'mid',hair:'#1E1612',front:'short',beard:'#1E1612',glasses:'rect',mouth:'grin',
+   prop:`<g transform="translate(118 168) rotate(-8)"><rect x="0" y="0" width="58" height="38" rx="4" fill="#33556D" stroke="#002B49" stroke-width="2"/><rect x="5" y="5" width="48" height="26" fill="#DFE8F0"/><rect x="9" y="22" width="8" height="6" fill="#F78C16"/><rect x="20" y="16" width="8" height="12" fill="#5E8AB4"/><rect x="31" y="10" width="8" height="18" fill="#002B49"/><path d="M-4 38 L62 38 L66 44 L-8 44Z" fill="#002B49"/></g>`},
+ ana:{name:'Ana Paula Costa',skin:'mid',hair:'#4A2C1A',tips:'#D9A15B',back:'wavyback',front:'wavyfront',mouth:'grin',f:1,ear:1,lips:'#E0736A',big:1,
+   prop:`<g class="float" fill="#F78C16"><path d="M30 40 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4Z"/><path d="M168 30 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3Z"/></g>`},
+ joao:{name:'João Lopes',skin:'light',hair:'#4A3424',front:'bald',beard:'#4A3424',glasses:'rect',gc:'#5A3A22',mouth:'sing',ry:58,
+   prop:`<g transform="translate(132 120)"><path d="M14 30 C10 60 18 80 30 90" stroke="#F2C9A5" stroke-width="14" stroke-linecap="round" fill="none"/><rect x="2" y="16" width="10" height="34" rx="4" fill="#1F1F1F" transform="rotate(-25 7 33)"/><circle cx="2" cy="12" r="10" fill="#9AA3AD" stroke="#002B49" stroke-width="2"/></g>
+   <g class="float" fill="#002B49" font-family="Zilla Slab" font-size="24" font-weight="700"><text x="20" y="54">♪</text><text x="160" y="40" fill="#F78C16">♫</text><text x="34" y="96" font-size="18">♪</text></g>`},
+ gui:{name:'Guilherme Antonialli',skin:'light',hair:'#3A2618',front:'bravo',beard:'#2A1A10',mouth:'grin',thick:1,rx:52,
+   prop:`<g transform="translate(22 170)"><g class="wag"><path d="M44 22 C58 10 64 26 54 30" fill="#F2A65A" stroke="#C97B2E" stroke-width="2"/></g><circle cx="26" cy="26" r="22" fill="#F7B76E" stroke="#C97B2E" stroke-width="2"/><circle cx="14" cy="8" r="7" fill="#F7B76E" stroke="#C97B2E" stroke-width="2"/><circle cx="36" cy="8" r="7" fill="#F7B76E" stroke="#C97B2E" stroke-width="2"/><circle cx="19" cy="24" r="2.6" fill="#1b1b1b"/><circle cx="32" cy="24" r="2.6" fill="#1b1b1b"/><circle cx="26" cy="31" r="3" fill="#1b1b1b"/></g>
+   <rect x="138" y="200" width="16" height="26" rx="3" fill="#1b1b1b" stroke="#BFD0E1" stroke-width="1.5"/><text x="146" y="198" font-size="9" text-anchor="middle" fill="#F78C16" font-family="Courier Prime" font-weight="700">18 PRO</text>`},
+ talita:{name:'Talita Galvão',skin:'light',hair:'#2B1A12',back:'longback',front:'longfront',glasses:'rect',gc:'#7A4B2A',mouth:'grin',f:1,big:1,ear:1,
+   prop:`<g class="float" fill="#F78C16"><path d="M44 66 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3Z"/><path d="M156 62 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3Z"/></g><g transform="translate(130 22)"><rect width="52" height="26" rx="13" fill="#002B49"/><text x="26" y="17" font-size="11" fill="#fff" text-anchor="middle" font-family="Kalam" font-weight="700">mangá!</text></g>`},
+ alex:{name:'Alexandre Domingues',skin:'light',hair:'#4B3220',front:'short',beard:'#5A3B26',mouth:'smile',rx:46,ry:58,
+   prop:`<g transform="translate(130 150) rotate(8)"><rect width="48" height="58" fill="#fff" stroke="#8A6A3A" stroke-width="4"/><text x="24" y="40" font-size="30" text-anchor="middle" fill="#F78C16" font-family="Zilla Slab" font-weight="700">?</text></g>`},
+ marcos:{name:'Marcos Massao',skin:'light',hair:'#B9BEC4',front:'topete',glasses:'rect',mouth:'smile',vest:1,brow:'#6E737A',ex:20,
+   prop:`<g transform="translate(26 182)"><path d="M6 10 C0 30 14 34 20 24 L40 24 C46 34 60 30 54 10 C50 0 10 0 6 10Z" fill="#33556D" stroke="#002B49" stroke-width="2"/><rect x="13" y="12" width="10" height="3" fill="#fff"/><rect x="16.5" y="8.5" width="3" height="10" fill="#fff"/><circle cx="42" cy="11" r="2.6" fill="#F78C16"/><circle cx="48" cy="16" r="2.6" fill="#BFD0E1"/></g><g transform="translate(140 30)"><rect width="46" height="22" rx="11" fill="#F78C16"/><text x="23" y="15" font-size="10" fill="#002B49" text-anchor="middle" font-family="Courier Prime" font-weight="700">SELFIE</text></g>`},
+ victor:{name:'Victor Vitorino',skin:'light',hair:'#6B4A30',front:'bald',mouth:'flat',serious:1,rx:54,ry:56,brow:'#8A6040',
+   prop:`<g transform="translate(124 160) rotate(-10)"><rect width="50" height="62" rx="3" fill="#002B49" stroke="#F78C16" stroke-width="2"/><rect x="6" y="6" width="38" height="50" fill="none" stroke="#5E8AB4" stroke-dasharray="2 3"/><text x="25" y="28" font-size="12" text-anchor="middle" fill="#fff" font-family="Zilla Slab" font-weight="700">DTS</text><text x="25" y="42" font-size="7" text-anchor="middle" fill="#FCD1A2" font-family="Courier Prime">caderno</text></g>`},
+ lais:{name:'Laís Velame',skin:'mid',hair:'#2A1A12',back:'curly',mouth:'grin',f:1,ear:1,big:1,
+   prop:`<g transform="translate(18 176)"><ellipse cx="26" cy="22" rx="24" ry="20" fill="#F2E3C6" stroke="#8A6A3A" stroke-width="3"/>${[0,1,2,3,4,5].map(i=>`<circle cx="${26+Math.cos(i)*22}" cy="${22+Math.sin(i)*18}" r="3" fill="#BFC6CE"/>`).join('')}</g><g class="float" fill="#F78C16" font-family="Zilla Slab" font-size="22" font-weight="700"><text x="150" y="52">♪</text></g>`}
+};
+const MURAL=[
+ ['ana',5,'Volume de cabelo: nível Multiplicação','Thauany, Giovanna, Julio*, Vinicius* e… ela mesma (em branco)'],
+ ['gui',4,'Johnny Bravo de Tupã, com lulu e iPhone 18 no bolso','Monica, Thiago, Rodrigo*, Guilherme T.*'],
+ ['thiago',3,'Já chega com o deck pronto','Thomas, Arthur, Natalia*'],
+ ['joao',3,'O cantor oficial de DTS: pagode no Tio Sam','Talita, Glaucea, Marcus'],
+ ['marcos',3,'Se autorretratou. Duas vezes.','Laís, o próprio Marcos, Thais*'],
+ ['talita',2,'Modo mangá: ativado','João, Ana Carolina*'],
+ ['alex',2,'O retrato que ficou em branco','Gustavo (em branco), Pedro H.*'],
+ ['victor',1,'Expressão “séria”, dono do caderno','Alexandre, que retratou o organizador'],
+ ['lais',1,'Fora do mural, dentro do samba rock','Abner, que fugiu do mural'],
+];
+document.getElementById('mural').innerHTML=MURAL.map(([k,n,g,by])=>`<div class="cari"><span class="pin"></span><span class="cnt">${n}× retratad${k==='ana'||k==='talita'||k==='lais'?'a':'o'}</span>${cari(P[k])}<div class="nm">${P[k].name}</div><div class="gag">${g}</div>
+<div class="back"><b>${P[k].name}</b><span class="w">Retratad${k==='ana'||k==='talita'||k==='lais'?'a':'o'} por</span>${by}<span class="tiny" style="color:#9fb3c8;margin-top:auto">* identificado pela investigação</span></div></div>`).join('')+
+`<div class="cari" style="justify-content:center;background:var(--navy);border-color:var(--navy);cursor:default"><div style="font:700 54px var(--serif);color:var(--orange);line-height:1">23</div><div style="color:#fff;font-family:var(--serif);font-size:18px;text-align:center;line-height:1.15;margin-top:4px">retratos falados<br>escritos</div><div style="font-family:var(--hand);color:var(--peach);font-size:15px;margin-top:10px;text-align:center">17 reescreveram e a estrutura do prompt subiu <b>+24 pts</b></div></div>`;
+const WHO=[
+ ['Alexandre Domingues','Victor Vitorino','citou “Victor”','g'],
+ ['Abner Barreto','Laís Velame (fora do mural)','citou “a lais”','g'],
+ ['Thais Correia Rosa','Marcos Massao','citou no 2º rascunho','g'],
+ ['Julio Feijo','Ana Paula Costa','ondas + mechas caramelo','g'],
+ ['Natalia Topa','Thiago Vieira','óculos + barba + sorrisão','o'],
+ ['Vinicius de Sousa','Ana Paula Costa','sorriso largo + maçãs','o'],
+ ['Ana Carolina Godeia','Talita Galvão','cabelo liso, repartido','o'],
+ ['Guilherme Tanaka','Guilherme Antonialli','barba e cabelo pretos','n'],
+ ['Rodrigo Brea','Guilherme Antonialli','rosto redondo, sobrancelhas','n'],
+ ['Pedro H. Ramos','Alexandre Domingues','rosto fino, magro','n'],
+ ['Pedro Lanzetta','não bate com o mural','autorretrato? 😄','n'],
+];
+const conf={g:'certeza',o:'provável',n:'palpite'};
+document.getElementById('who').innerHTML=WHO.map(([a,b,c,k])=>`<div><span>${a}</span><span class="ar">→</span><span><b>${b}</b> <span class="tiny">· ${c}</span></span><span class="chip ${k==='g'?'g':k==='o'?'o':''}">${conf[k]}</span></div>`).join('');
+
+/* ---------------- navigation ---------------- */
+const slides=[...document.querySelectorAll('.slide')], tabs=document.getElementById('tabs');
+tabs.innerHTML=slides.map((s,i)=>`<button class="tab" title="${s.dataset.title}">0${i+1}</button>`).join('');
+const qs=new URLSearchParams(location.search);
+let cur=Math.max(0,Math.min(slides.length-1,(+qs.get('p')||1)-1));
+if(qs.has('print'))document.body.classList.add('print');
+function go(i){cur=(i+slides.length)%slides.length;slides.forEach((s,j)=>s.classList.toggle('on',j===cur));[...tabs.children].forEach((t,j)=>t.classList.toggle('on',j===cur));
+ slides[cur].querySelectorAll('.bar i,.col,.fb').forEach(el=>{el.style.animation='none';void el.offsetWidth;el.style.animation=''});}
+tabs.onclick=e=>{const b=e.target.closest('.tab');if(b)go([...tabs.children].indexOf(b))};
+document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+function fit(){const d=document.getElementById('deck'),pr=document.body.classList.contains('print');const W=innerWidth-(pr?0:48),H=innerHeight-(pr?0:52+40);d.style.transform=`scale(${Math.min(W/1600,H/900)})`}
+addEventListener('resize',fit);fit();go(cur);roll();
+</script>
+</body>
+</html>
