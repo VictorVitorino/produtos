@@ -137,6 +137,7 @@ body.print .slide{border-radius:0;box-shadow:none} body.print *{animation:none!i
 .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;align-items:stretch;position:relative}
 .fx{background:#fff;border:1px solid var(--soft-gray);border-radius:12px;padding:16px 16px;position:relative;margin-right:26px}
 .fx:not(:last-child):after{content:"";position:absolute;right:-22px;top:50%;width:18px;height:18px;margin-top:-9px;background:var(--orange);clip-path:polygon(0 20%,55% 20%,55% 0,100% 50%,55% 100%,55% 80%,0 80%)}
+.big3 .fx{padding:20px 18px}.big3 .fx b{font-size:22px}.big3 .fx p{font-size:15px}
 .fx:last-child{margin-right:0;background:#E3F2EC;border-color:#BFE3D4}
 .fx .n{font:700 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--orange)}
 .fx b{display:block;font:700 19px var(--serif);color:var(--navy);margin:3px 0 4px}
@@ -213,6 +214,7 @@ body.print .slide{border-radius:0;box-shadow:none} body.print *{animation:none!i
 .why2 i{grid-row:span 2;font-style:normal;font-size:22px;width:38px;height:38px;border-radius:10px;background:#fff;display:grid;place-items:center;border:1px solid var(--soft-gray)}
 .why2 b{font:700 16.5px var(--serif);color:var(--navy)}
 .why2 span{font-size:13px;line-height:1.38;color:var(--ink)}
+.big2>div{padding:16px;grid-template-columns:46px 1fr}.big2 i{width:46px!important;height:46px!important;font-size:26px!important}.big2 b{font-size:19px!important}.big2 span{font-size:14.5px!important}
 .why2 .hl{background:var(--navy);border-color:var(--navy)} .why2 .hl b{color:var(--peach)} .why2 .hl span{color:#d2dfea} .why2 .hl i{background:var(--orange);border-color:var(--orange)}
 .pm{margin-bottom:12px}
 .pm .h{display:flex;justify-content:space-between;font:700 14px var(--serif);color:var(--navy);margin-bottom:5px}
@@ -299,6 +301,26 @@ body.print .slide{border-radius:0;box-shadow:none} body.print *{animation:none!i
 .sug{display:flex;gap:16px;align-items:center;flex:none;background:#fff;border:1px solid var(--soft-gray);border-radius:10px;padding:9px 14px;font-size:13px}
 .sug b{font:700 15px var(--serif);color:var(--navy)}
 .sug i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+
+.kpis3{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:6px}
+.kpis3 div{background:var(--paper-hi);border-radius:10px;padding:8px 10px;border:1px solid var(--soft-gray)}
+.kpis3 b{display:block;font:700 22px/1 var(--serif);color:var(--navy)}
+.kpis3 span{font-size:11px;color:var(--muted);line-height:1.2;display:block;margin-top:3px}
+.kpis3 .hot{background:var(--navy);border-color:var(--navy)} .kpis3 .hot b{color:var(--orange)} .kpis3 .hot span{color:#aec2d4}
+.hr{display:grid;grid-template-columns:190px 1fr;gap:12px;align-items:center}
+.hr>span{font:700 15px var(--serif);color:var(--navy);line-height:1.15}
+.hr>span small{display:block;font:400 11px var(--sans);color:var(--muted);margin-top:2px}
+.hr>span em{font-style:normal;font:700 10px var(--mono);background:#D6EFE5;color:#1d6b50;border-radius:99px;padding:2px 7px;margin-top:4px;display:inline-block}
+.hb2{display:flex;flex-direction:column;gap:4px}
+.hb2 div{display:flex;align-items:center;gap:8px}
+.hb2 i{display:block;height:20px;border-radius:4px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.hb2 b{font:700 13px var(--mono);white-space:nowrap}
+.studies{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.studies div{background:var(--navy);color:#fff;border-radius:12px;padding:10px 14px;display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center}
+.studies b{grid-row:span 2;font:700 30px var(--serif);color:var(--orange)}
+.studies span{font-size:13px;line-height:1.25} .studies em{font-style:normal;color:var(--peach)}
+.studies small{font:400 10.5px var(--mono);color:#9fb3c8;letter-spacing:.04em}
+.studies .warn{background:#fff;color:var(--ink);border:1px solid var(--soft-gray)} .studies .warn b{color:var(--red)} .studies .warn small{color:var(--muted)}
 
 /* ---------- capa (caderno) ---------- */
 .cover{flex-direction:row!important;background:var(--navy)!important}
@@ -455,63 +477,55 @@ body.print *{animation:none!important}
       <div class="pdx d"><h4>🤝 Delegar <span class="chip o">próximo degrau</span></h4><p>Você entrega <b>objetivo, contexto e critério de pronto</b>. O Claude segue um <b>Método</b> e uma <b>Skill</b>, executa as etapas e você <b>audita</b>.</p></div>
       <div class="pdx k"><h4>🚀 Regra do kick-off</h4><p>Todo projeto começa com <b>FLOWS + Skills</b>:</p><div class="kick2"><span>01 achar o Método</span><span>02 ativar Skills</span><span>03 adaptar</span><span>04 registrar o novo</span></div></div>
     </div>
-    <div class="headline" style="font-size:24px">Exemplo · proposta comercial com a Skill <span style="font-family:var(--mono);font-size:20px;color:var(--orange-dk)">proposta-am</span> <small>de 3 dias para meio dia, no padrão A&amp;M</small></div>
-    <div class="flow">
+    <div class="headline" style="font-size:28px;margin-top:auto">Exemplo · proposta comercial com a Skill <span style="font-family:var(--mono);font-size:20px;color:var(--orange-dk)">proposta-am</span> <small>de 3 dias para meio dia, no padrão A&amp;M</small></div>
+    <div class="flow big3">
       <div class="fx"><div class="n">1 · Método (FLOWS)</div><b>A estrutura</b><p>Contexto do cliente → diagnóstico → abordagem → fases e cronograma → equipe → honorários → próximos passos.</p><code>FLOWS › Comercial › Proposta DTS</code></div>
       <div class="fx"><div class="n">2 · Skill</div><b>O padrão A&amp;M</b><p>Template visual, tom executivo, cases parecidos, tabela de perfis e regra “sempre 3 opções de escopo”.</p><code>skill: proposta-am</code></div>
       <div class="fx"><div class="n">3 · Delegação</div><b>O pedido certo</b><p>“Use a skill <span style="font-family:var(--mono);color:var(--orange-dk)">proposta-am</span>. A partir da transcrição da reunião e do RFP em anexo, monte a proposta para o CFO com 3 opções de escopo e me liste as dúvidas antes de precificar.”</p></div>
       <div class="fx"><div class="n">4 · Você</div><b>Audita e decide</b><p>Revisa preço, escopo, riscos e a mensagem para o cliente. O julgamento continua sendo seu.</p><code>4h de revisão · e não 3 dias</code></div>
     </div>
-    <div class="grid" style="grid-template-columns:1fr 1.15fr;flex:1">
+    <div class="grid" style="grid-template-columns:1fr;flex:none;margin-top:auto">
       <div class="card" style="display:flex;flex-direction:column">
         <div class="lab">Por que usar Métodos <span class="tiny" style="letter-spacing:0;text-transform:none;font-family:var(--sans)">13 de 25 usam pouco ou nada</span></div>
-        <div class="why2">
+        <div class="why2 big2" style="grid-template-columns:repeat(4,1fr)">
           <div><i>♻️</i><b>Não reinventa</b><span>Alguém de DTS já resolveu esse problema. O Método é o atalho para começar do melhor ponto.</span></div>
           <div><i>📐</i><b>Padrão A&amp;M</b><span>Mesma estrutura e a mesma régua em todo projeto, seja quem for o consultor.</span></div>
           <div class="hl"><i>🤖</i><b>Sem Método, sem agente</b><span>Não dá para delegar o que não está escrito. O Método é o manual que o Claude segue.</span></div>
           <div><i>⏱️</i><b>Onboarding em horas</b><span>Quem chega aprende o jeito DTS lendo o Método, sem precisar perguntar para cada pessoa.</span></div>
         </div>
       </div>
-      <div class="card">
-        <div class="lab">Performance operacional · 1 proposta <span class="legend2" style="margin:0"><span><i style="background:var(--light-blue)"></i>Sem IA</span><span><i style="background:var(--steel)"></i>IA sem Método</span><span><i style="background:var(--orange)"></i>IA + Método + Skill</span><span class="chip">ilustrativo</span></span></div>
-        <div id="perf"></div>
-      </div>
     </div>
   </div>
-  <div class="ft"><span><b>Fonte:</b> Caderno DTS · página 04 e maturidade agêntica · exemplo e números ilustrativos</span><span>2/6</span></div>
+  <div class="ft"><span><b>Fonte:</b> Caderno DTS · página 04 e maturidade agêntica · exemplo ilustrativo</span><span>2/6</span></div>
 </section>
 
 <!-- ================= 03 HIPER PERFORMANCE ================= -->
-<section class="slide" data-sec="Hiper performance" data-about="<b>Planos:</b> preços de tabela da Anthropic em out/2026 (Pro US$ 20, Max 5x US$ 100, Max 20x US$ 200 por mês). Confirme em claude.com/pricing. <br><br><b>Premissas do simulador:</b> 96h/mês de produção por consultor. Ganho de tempo nas tarefas cobertas pelo plano: 35% com IA solta e 60% com Métodos e Skills. É conservador frente ao estudo da Anthropic (≈80% por tarefa) e próximo do estudo Harvard/BCG com consultores (25% mais rápido e 40% mais qualidade, ainda sem Métodos). <br><br><b>Cobertura:</b> o Pro cobre bem texto e análise, mas tem pouco fôlego para construir sistemas, jogos e dashboards no Claude Code. O Max 20x cobre tudo. <br><br><b>ROI:</b> considera adoção gradual (50% no 1º mês e 75% no 2º). O custo/hora e o câmbio são editáveis.">
-  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Hiper performance</b><span>Parte 2 · Quanto rende o Claude com Métodos e Skills</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">3/6</span></div></header>
-  <div class="sb"><b>Capacidade do consultor · <em>escolha o plano e veja o cenário</em></b><span>Simulador por consultor · entregáveis por mês</span></div>
+<section class="slide" data-sec="Hiper performance" data-about="<b>Reduções de tempo (estudos reais):</b> escrita profissional −40% (Noy &amp; Zhang, MIT, revista Science, 2023, 453 profissionais) · tarefas de consultoria −25% (Dell'Acqua et al., Harvard/BCG, 2023, 758 consultores da BCG) · programação −56% (Peng et al., GitHub/Microsoft, 2023). <br><br><b>Horas sem IA:</b> são referências DTS para um entregável típico. Os percentuais vêm dos estudos. <br><br><b>Cobertura do plano:</b> Max 5x dá 5× o uso do Pro e Max 20x dá 20× (números oficiais da Anthropic). Pro sustenta ~30% do mês de produção, Max 5x ~80% e Max 20x 100% (estimativa DTS). <br><br><b>Retorno:</b> horas economizadas × custo/hora, com adoção gradual (50% no mês 1 e 75% no mês 2). Base de 96h de produção por mês.">
+  <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Hiper performance</b><span>Parte 2 · Quanto a IA reduz do operacional</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">3/6</span></div></header>
+  <div class="sb"><b>Estudos reais · <em>tempo, custo e retorno por plano</em></b><span>Clique em um plano: os gráficos mudam</span></div>
   <div class="body" style="gap:12px">
     <div class="plans" id="plans"></div>
-    <div class="grid" style="grid-template-columns:1.32fr 1fr;flex:1">
+    <div class="grid" style="grid-template-columns:1.05fr 1fr;flex:1">
       <div class="card" style="display:flex;flex-direction:column">
-        <div class="lab">Entregáveis por mês · mesmo consultor, mesmas 96h <span class="legend2" style="margin:0"><span><i style="background:var(--light-blue)"></i>Sem IA</span><span><i style="background:var(--steel)"></i>Claude solto</span><span><i style="background:var(--orange)"></i>Claude + Métodos + Skills</span></span></div>
-        <div id="cap" style="flex:1;display:flex;flex-direction:column;justify-content:space-around"></div>
+        <div class="lab">Horas por entregável · sem IA × com Claude <span class="legend2" style="margin:0"><span><i style="background:var(--light-blue)"></i>Sem IA</span><span><i style="background:var(--orange)"></i>Com Claude</span></span></div>
+        <div id="hrs" style="flex:1;display:flex;flex-direction:column;justify-content:space-around"></div>
+        <div class="tiny" id="hrsNote"></div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
-        <div class="kpis" id="kpis"></div>
-        <div class="card" style="flex:1">
-          <div class="lab">Custo × retorno <span class="inp">custo/hora R$ <input id="rate" type="number" value="150" step="10"> · câmbio <input id="fx" type="number" value="5.5" step="0.1"></span></div>
-          <div id="roi"></div>
-          <div class="tiny" id="roiNote" style="margin-top:6px"></div>
-          <div id="cmp" style="margin-top:10px"></div>
-        </div>
+      <div class="card" style="display:flex;flex-direction:column">
+        <div class="lab">Investimento × retorno · 12 meses <span class="inp">custo/hora R$ <input id="rate" type="number" value="150" step="10"> · câmbio <input id="fx" type="number" value="5.5" step="0.1"></span></div>
+        <div class="kpis3" id="kpis"></div>
+        <svg id="roiChart" viewBox="0 0 640 300" style="width:100%;flex:1;min-height:0"></svg>
+        <div class="legend2"><span><i style="background:#F78C16"></i>retorno acumulado (horas economizadas × custo/hora)</span><span><i style="background:#C8553D"></i>investimento acumulado no plano</span></div>
       </div>
     </div>
-    <div class="prof">
-      <div class="pt"><b>O novo perfil</b><span>de produtor para<br><em>auditor e analista</em></span></div>
-      <div class="pbars">
-        <div class="pb"><span>Antes</span><div><i style="width:70%;background:var(--light-blue)">Produzir 70%</i><i style="width:20%;background:var(--steel)">Revisar 20%</i><i style="width:10%;background:#8FB0CF">10%</i></div></div>
-        <div class="pb"><span>Com Claude</span><div><i style="width:20%;background:var(--light-blue)">Delegar 20%</i><i style="width:35%;background:var(--steel)">Auditar 35%</i><i style="width:45%;background:var(--orange);color:var(--navy)">Analisar e decidir 45%</i></div></div>
-      </div>
-      <div class="ptr"><span><b>Audita</b> fatos, números e riscos</span><span><b>Analisa</b> dados e gera insight</span><span><b>Orquestra</b> Métodos, Skills e agentes</span></div>
+    <div class="studies">
+      <div><b>−25%</b><span>tempo · <em>+40% qualidade</em></span><small>Harvard/BCG 2023 · 758 consultores</small></div>
+      <div><b>−40%</b><span>tempo · <em>+18% qualidade</em></span><small>MIT · Science 2023 · escrita profissional</small></div>
+      <div><b>−56%</b><span>tempo em programação</span><small>GitHub/Microsoft 2023 · desenvolvedores</small></div>
+      <div class="warn"><b>−19 p.p.</b><span>de acerto quando a IA é usada fora do que ela faz bem</span><small>Harvard/BCG 2023 · por isso o consultor audita</small></div>
     </div>
   </div>
-  <div class="ft"><span><b>Fontes:</b> preços Anthropic (out/2026) · Anthropic, “Estimating AI productivity gains” (nov/2025) · Harvard/BCG, “Navigating the Jagged Technological Frontier” (2023) · simulação ilustrativa DTS</span><span>3/6</span></div>
+  <div class="ft"><span><b>Fontes:</b> Dell'Acqua et al. (Harvard/BCG, 2023) · Noy &amp; Zhang (Science, 2023) · Peng et al. (GitHub, 2023) · preços Anthropic out/2026 · horas de referência DTS</span><span>3/6</span></div>
 </section>
 
 <!-- ================= 04 FERRAMENTAS E MODELOS ================= -->
@@ -600,33 +614,31 @@ document.getElementById('thermo').innerHTML='<div class="rail"></div>'+SC.map((v
 const ST=[['Ponto de partida','0–20',0],['Exploração','21–40',0],['Evolução','41–60',1],['Autonomia','61–80',14],['Multiplicação','81–100',10]];
 document.getElementById('stairs').innerHTML=ST.map(([n,r,c],i)=>`<div class="st ${i===3?'on':''} ${i===4?'next':''}" style="height:${28+i*18}%;animation-delay:${i*.07}s">${i===3?'<span class="pin">DTS · 78,6</span>':''}${i===4?'<span class="pin" style="background:#fff;color:var(--navy)">Próximo degrau</span>':''}<b>${c}</b><span>${n}</span><i>${r}</i></div>`).join('');
 
-/* ---------- P2: performance proposta ---------- */
-const PERF=[['Horas por proposta',[24,12,4],'h','menos é melhor'],['Rodadas de revisão',[4,3,1],'','menos é melhor'],['Aderência ao padrão A&M',[60,45,95],'%','mais é melhor']];
-const PC=['var(--light-blue)','var(--steel)','var(--orange)'];
-document.getElementById('perf').innerHTML=PERF.map(([n,v,u,h])=>{const mx=Math.max(...v);return `<div class="pm"><div class="h">${n}<small>${h}</small></div>${v.map((x,i)=>`<div class="r"><div style="width:${x/mx*100}%;background:${PC[i]};animation-delay:${i*.1}s"></div><b style="color:${i===2?'var(--orange-dk)':'var(--navy)'}">${x}${u}</b></div>`).join('')}</div>`}).join('');
-
-/* ---------- P3: simulador de capacidade ---------- */
-const PLANS=[{n:'Plano 1',t:'Claude Pro',usd:20,cov:{l:.6,h:.2},d:'Texto, análise e protótipos leves'},{n:'Plano 2',t:'Claude Max 5x',usd:100,cov:{l:.9,h:.6},d:'Uso diário intenso + Claude Code'},{n:'Plano 3',t:'Claude Max 20x',usd:200,cov:{l:1,h:1},d:'Construção pesada: sistemas, jogos, agentes'}];
-const TYPES=[['Apresentações executivas',4,6,'l'],['Propostas comerciais',2,8,'l'],['Análises de redução de custos',1,12,'l'],['Gestão de projetos',4,2,'l','status, riscos, cronograma'],['Indicadores e dashboards',2,10,'h'],['Sistemas e protótipos',.5,24,'h'],['Jogos e dinâmicas',.25,16,'h']];
-const RA=.35,RM=.6,HB=TYPES.reduce((t,x)=>t+x[1]*x[2],0);
-let plan=2;const fmt=(x,d=1)=>x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});const brl=x=>'R$ '+Math.round(x).toLocaleString('pt-BR');
+/* ---------- P3: estudos reais × planos ---------- */
+const PLANS=[{n:'Plano 1',t:'Claude Pro',usd:20,cov:.3,d:'Uso leve · ~30% do mês de produção'},{n:'Plano 2',t:'Claude Max 5x',usd:100,cov:.8,d:'5× o uso do Pro · ~80% do mês'},{n:'Plano 3',t:'Claude Max 20x',usd:200,cov:1,d:'20× o uso do Pro · 100%, inclui Claude Code pesado'}];
+const DELIV=[['Proposta comercial',16,.40,'escrita · MIT'],['Apresentação executiva',12,.25,'consultoria · Harvard/BCG'],['Análise de redução de custos',24,.25,'consultoria · Harvard/BCG'],['Dashboard ou protótipo',40,.56,'código · GitHub']];
+const MIX=[[30,.40],[40,.25],[26,.56]];
+let plan=1;const fmt=(x,d=1)=>x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});const brl=x=>'R$ '+Math.round(x).toLocaleString('pt-BR');
 document.getElementById('plans').innerHTML=PLANS.map((p,i)=>`<button class="plan" data-i="${i}"><span class="pn">${p.n}</span><span class="pp">US$ ${p.usd}<small>por mês</small></span><span class="pt2">${p.t}</span><span class="pd2">${p.d}</span></button>`).join('');
 document.getElementById('plans').onclick=e=>{const b=e.target.closest('.plan');if(b){plan=+b.dataset.i;sim()}};
 ['rate','fx'].forEach(id=>document.getElementById(id).oninput=()=>sim());
 function sim(){const p=PLANS[plan];[...document.querySelectorAll('.plan')].forEach((b,i)=>b.classList.toggle('on',i===plan));
- let ha=0,hm=0;
- document.getElementById('cap').innerHTML=TYPES.map(([n,b,h,k,sub])=>{const c=p.cov[k],ma=1/(1-c*RA),mm=1/(1-c*RM);ha+=b*h*(1-c*RA);hm+=b*h*(1-c*RM);const mx=b*2.5;
-  return `<div class="cr"><span>${n}<small>${sub||(k==='h'?'exige Claude Code':'texto e análise')} · base ${fmt(b,b<1?2:0)}/mês</small></span><div class="cb">${[b,b*ma,b*mm].map((v,i)=>`<div><i style="width:${v/mx*100}%;background:${PC[i]}"></i><b style="color:${i===2?'var(--orange-dk)':'var(--navy)'}">${fmt(v,v<1?2:1)}</b></div>`).join('')}</div></div>`}).join('');
+ document.getElementById('hrs').innerHTML=DELIV.map(([n,h,r,src])=>{const w=h*(1-r*p.cov);return `<div class="hr"><span>${n}<small>${src}</small><em>−${Math.round(r*p.cov*100)}% de tempo</em></span><div class="hb2"><div><i style="width:${h/40*82}%;background:var(--light-blue)"></i><b>${fmt(h,0)}h</b></div><div><i style="width:${w/40*82}%;background:var(--orange)"></i><b style="color:var(--orange-dk)">${fmt(w)}h</b></div></div></div>`}).join('');
+ document.getElementById('hrsNote').innerHTML=`Redução do estudo × cobertura do plano (${Math.round(p.cov*100)}%). Horas sem IA são referência DTS.`;
  const rate=+document.getElementById('rate').value||0,fx=+document.getElementById('fx').value||0,cost=p.usd*fx;
- const sa=HB-ha,sm=HB-hm,va=sa*rate,vm=sm*rate;
- const R=[['6 meses',5.25,6],['1 ano',11.25,12]];const mx=vm*11.25;
- document.getElementById('kpis').innerHTML=`<div class="kp hot"><b>${fmt(HB/hm)}x</b><span>capacidade com Métodos + Skills</span></div><div class="kp"><b>${fmt(HB/ha)}x</b><span>capacidade com Claude solto</span></div><div class="kp"><b>${Math.round(sm)}h</b><span>liberadas por mês para auditar e analisar</span></div><div class="kp"><b>${brl(cost)}</b><span>custo do plano por mês</span></div>`;
- document.getElementById('roi').innerHTML=R.map(([n,f,m])=>`<div class="rg2"><div class="h">${n}<em>retorno ${fmt(vm*f/(cost*m))}x o custo</em></div>
-  <div class="r"><span>Custo do plano</span><i style="width:${cost*m/mx*100}%;background:var(--red)"></i><b>${brl(cost*m)}</b></div>
-  <div class="r"><span>Claude solto</span><i style="width:${va*f/mx*100}%;background:var(--steel)"></i><b>${brl(va*f)}</b></div>
-  <div class="r"><span>+ Métodos e Skills</span><i style="width:${vm*f/mx*100}%;background:var(--orange)"></i><b>${brl(vm*f)}</b></div></div>`).join('');
- document.getElementById('cmp').innerHTML='<div class="lab" style="margin-bottom:6px">Os 3 planos lado a lado · 1 ano</div><div class="cmp">'+PLANS.map((q,i)=>{let h=0;TYPES.forEach(([n,b,hh,k])=>h+=b*hh*(1-q.cov[k]*RM));const c=q.usd*fx*12,v=(HB-h)*rate*11.25;return `<div class="${i===plan?'on':''}"><span>${q.t}</span><b>${fmt(HB/h)}x</b><small>capacidade</small><b>${brl(v-c)}</b><small>retorno líquido</small></div>`}).join('')+'</div>';
- document.getElementById('roiNote').innerHTML=`Retorno líquido em 1 ano: <b>${brl(vm*11.25-cost*12)}</b> por consultor · para os 25 do caderno: <b>${brl((vm*11.25-cost*12)*25)}</b>. Métodos e Skills somam <b>${brl((vm-va)*11.25)}</b> por pessoa/ano.`;}
+ const saved=MIX.reduce((t,[h,r])=>t+h*r*p.cov,0),val=saved*rate,ramp=[.5,.75,1,1,1,1,1,1,1,1,1,1];
+ let cc=[0],cv=[0];ramp.forEach((f,i)=>{cc.push(cc[i]+cost);cv.push(cv[i]+val*f)});
+ const pay=cv.findIndex((v,i)=>i>0&&v>=cc[i]);
+ document.getElementById('kpis').innerHTML=`<div class="hot"><b>${Math.round(saved)}h</b><span>economizadas por mês</span></div><div><b>${brl(cost)}</b><span>investimento por mês</span></div><div><b>${brl(cv[6]-cc[6])}</b><span>retorno líquido em 6 meses</span></div><div><b>${brl(cv[12]-cc[12])}</b><span>retorno líquido em 1 ano</span></div>`;
+ const W=640,H=300,L=58,R=18,T=14,B=30,mx=Math.max(...cv)*1.08,x=i=>L+i*(W-L-R)/12,y=v=>T+(H-T-B)*(1-v/mx);
+ const path=a=>a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+ let g='';for(let k=0;k<=4;k++){const v=mx*k/4;g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#E2E7EF"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="10.5" fill="#5B6B7C" font-family="Courier Prime">${v>=1000?Math.round(v/1000)+'k':0}</text>`}
+ for(let i=0;i<=12;i+=2)g+=`<text x="${x(i)}" y="${H-10}" text-anchor="middle" font-size="10.5" fill="#5B6B7C" font-family="Courier Prime">${i===0?'':'m'+i}</text>`;
+ g+=`<path d="${path(cv)} L ${x(12)} ${y(0)} L ${x(0)} ${y(0)} Z" fill="rgba(247,140,22,.12)"/><path d="${path(cv)}" fill="none" stroke="#F78C16" stroke-width="3.5"/><path d="${path(cc)}" fill="none" stroke="#C8553D" stroke-width="3" stroke-dasharray="6 5"/>`;
+ [6,12].forEach(i=>g+=`<circle cx="${x(i)}" cy="${y(cv[i])}" r="5" fill="#F78C16" stroke="#fff" stroke-width="2"/><text x="${x(i)-6}" y="${y(cv[i])-10}" text-anchor="end" font-size="12" font-weight="700" fill="#002B49" font-family="Libre Franklin">${brl(cv[i])}</text>`);
+ g+=`<text x="${x(12)-4}" y="${y(cc[12])-8}" text-anchor="end" font-size="12" font-weight="700" fill="#C8553D" font-family="Libre Franklin">investimento ${brl(cc[12])}</text>`;
+ if(pay>0)g+=`<line x1="${x(pay)}" x2="${x(pay)}" y1="${T}" y2="${y(0)}" stroke="#002B49" stroke-dasharray="2 4"/><text x="${x(pay)+5}" y="${T+10}" font-size="11.5" font-weight="700" fill="#002B49" font-family="Libre Franklin">se paga no mês ${pay}</text>`;
+ document.getElementById('roiChart').innerHTML=g;}
 sim();
 
 /* ---------- P4: ferramentas e modelos ---------- */
