@@ -7,7 +7,9 @@
 const D = {
   text(p, x, y, lines, o = {}) {
     const t = sv("text", {
-      x, y, "font-family": o.head ? "Barlow Condensed" : "Inter", "font-size": o.size || 12, "font-weight": o.weight || 400,
+      x, y, "font-family": o.head && (o.size || 12) >= 17 ? "Montserrat" : "Inter",
+      "font-size": o.head ? ((o.size || 12) >= 17 ? (o.size || 12) - 3.5 : Math.round((o.size || 12) * 0.78 * 2) / 2) : o.size || 12,
+      "font-weight": o.weight || 400,
       fill: o.fill || "#10263B", "text-anchor": o.anchor || "start", "letter-spacing": o.ls || null,
     }, p);
     [].concat(lines).forEach((ln, i) => sv("tspan", { x, dy: i ? (o.lh || (o.size || 12) * 1.3) : 0 }, t, ln));
@@ -33,13 +35,13 @@ const D = {
   defs(svg, id) {
     svg.insertAdjacentHTML("afterbegin", `<defs>
       <marker id="${id}-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5 0 10z" fill="#03426F"/></marker>
-      <marker id="${id}-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5 0 10z" fill="#C2453B"/></marker>
+      <marker id="${id}-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5 0 10z" fill="#D2504A"/></marker>
     </defs>`);
   },
   edge(g, pts, o = {}) {
     return sv("path", {
       class: "edge", "data-f": o.f || null, "data-pts": JSON.stringify(pts), d: D.path(pts), fill: "none",
-      stroke: o.deny ? "#C2453B" : "#03426F", "stroke-width": o.w || 1.8, "stroke-dasharray": o.deny ? "6 5" : o.dash || null,
+      stroke: o.deny ? "#D2504A" : "#03426F", "stroke-width": o.w || 1.8, "stroke-dasharray": o.deny ? "6 5" : o.dash || null,
       "marker-end": `url(#${o.id}-${o.deny ? "ar" : "a"})`,
     }, g);
   },
@@ -49,10 +51,10 @@ const D = {
 function buildProcessPool() {
   const host = $("#poolProc");
   const W = 1750, H = 690;
-  const svg = sv("svg", { viewBox: `0 0 ${W} ${H}` }, host);
+  const svg = sv("svg", { viewBox: `-3 -2 ${W + 6} ${H + 4}` }, host);
   D.defs(svg, "pp");
   const POOLW = 40, LANEW = 232, X0 = POOLW + LANEW, CX0 = X0 + 42, CX1 = W - 64;
-  const COLS = 7, CW = (CX1 - CX0) / COLS, BW = CW - 46, BH = 76;
+  const COLS = 7, CW = (CX1 - CX0) / COLS, BW = CW - 38, BH = 76;
   const TOP = 74, LH = 101, LANES = 5;
   const colX = (c) => CX0 + c * CW + (CW - BW) / 2;
   const laneY = (l) => TOP + l * LH;
@@ -71,9 +73,9 @@ function buildProcessPool() {
     { c0: 6, c1: 7, t: "4 · Revisão e fechamento", s: "cobrança 7º d.u. · pagamento dia 21" },
   ].forEach((p, k) => {
     const x = CX0 + p.c0 * CW + 3, w = (p.c1 - p.c0) * CW - 6;
-    D.rect(svg, x, 2, w, 60, { rx: 10, fill: k === 1 ? "#33475B" : "#EEF2F6" });
+    D.rect(svg, x, 2, w, 60, { rx: 10, fill: k === 1 ? "#03426F" : "#EEF2F6" });
     D.text(svg, x + 14, 27, p.t, { head: 1, size: 18, weight: 600, fill: k === 1 ? "#fff" : "#03426F" });
-    D.text(svg, x + 14, 47, p.s, { size: 12, fill: k === 1 ? "#f6c7b1" : "#66788A" });
+    D.text(svg, x + 14, 47, p.s, { size: 12, fill: k === 1 ? "#FECC32" : "#66788A" });
     if (k) sv("line", { x1: CX0 + p.c0 * CW, x2: CX0 + p.c0 * CW, y1: TOP, y2: TOP + LH * LANES, stroke: "#C9D3DD", "stroke-dasharray": "3 6" }, svg);
   });
 
@@ -117,14 +119,14 @@ function buildProcessPool() {
     const x = colX(c), y = boxY(l);
     box[id] = { x, y, w: BW, h: BH, cx: x + BW / 2, cy: y + BH / 2 };
     const g = sv("g", { class: "node", "data-r": JSON.stringify([x, y, BW, BH]) }, gBoxes);
-    D.rect(g, x, y, BW, BH, { rx: 10, fill: pain ? "#FDF1EA" : "#fff", stroke: pain ? "#D2643A" : "#AFC3D6", sw: pain ? 1.6 : 1.3 });
+    D.rect(g, x, y, BW, BH, { rx: 10, fill: pain ? "#FFFAE8" : "#fff", stroke: pain ? "#E9B415" : "#AFC3D6", sw: pain ? 1.6 : 1.3 });
     const h = t.length * 17 + s.length * 14 + (s.length ? 3 : 0);
     const ty = y + (BH - h) / 2 + 13;
     D.text(g, x + 12, ty, t, { head: 1, size: 16, weight: 600, fill: "#0B2740", lh: 17 });
     if (s.length) D.text(g, x + 12, ty + t.length * 17 + 1, s, { size: 11.5, fill: "#66788A", lh: 14 });
     if (pain) {
-      sv("circle", { cx: x + BW - 2, cy: y + 2, r: 9, fill: "#D2643A", stroke: "#fff", "stroke-width": 2 }, g);
-      D.text(g, x + BW - 2, y + 6.5, "!", { head: 1, size: 13, weight: 700, fill: "#fff", anchor: "middle" });
+      sv("circle", { cx: x + BW - 2, cy: y + 2, r: 9, fill: "#E9B415", stroke: "#fff", "stroke-width": 2 }, g);
+      D.text(g, x + BW - 2, y + 6.5, "!", { head: 1, size: 15, weight: 700, fill: "#032B4E", anchor: "middle" });
     }
   });
   const R = (b) => [b.x + b.w, b.cy], L = (b) => [b.x, b.cy], Tp = (b) => [b.cx, b.y], Bt = (b) => [b.cx, b.y + b.h];
@@ -169,8 +171,8 @@ function buildProcessPool() {
     sx += w + 8;
   });
   const LY2 = SY + 60, lg = sv("g", {}, svg);
-  sv("circle", { cx: 9, cy: LY2 - 5, r: 8, fill: "#D2643A" }, lg);
-  D.text(lg, 9, LY2 - 0.5, "!", { head: 1, size: 12, weight: 700, anchor: "middle", fill: "#fff" });
+  sv("circle", { cx: 9, cy: LY2 - 5, r: 8, fill: "#E9B415" }, lg);
+  D.text(lg, 9, LY2 - 0.5, "!", { head: 1, size: 14, weight: 700, anchor: "middle", fill: "#032B4E" });
   D.text(lg, 24, LY2, "ponto de dor", { size: 13, fill: "#3A4E62" });
   sv("path", { d: `M140 ${LY2 - 5}h36`, stroke: "#03426F", "stroke-width": 1.8, "marker-end": "url(#pp-a)" }, lg);
   D.text(lg, 186, LY2, "fluxo de sequência", { size: 13, fill: "#3A4E62" });
@@ -199,12 +201,12 @@ const SYS_DENY = [
 function buildSystemPool() {
   const host = $("#poolSys");
   const W = 1410, H = 700;
-  const svg = sv("svg", { viewBox: `0 0 ${W} ${H}` }, host);
+  const svg = sv("svg", { viewBox: `-3 -2 ${W + 6} ${H + 4}` }, host);
   D.defs(svg, "sp");
   const gPools = sv("g", {}, svg), gEdges = sv("g", {}, svg), gBox = sv("g", {}, svg), gBadge = sv("g", {}, svg);
   const P0 = 74, P1 = 640;
   const tag = (p, x, y, txt, kind) => {
-    const col = { u: ["#EEF1F4", "#66788A"], t: ["#DDF0E8", "#1d6a50"], r: ["#33475B", "#ffffff"], a: ["#FBE7DC", "#B4502A"] }[kind];
+    const col = { u: ["#EEF1F4", "#66788A"], t: ["#DDF3EA", "#1b7a56"], r: ["#03426F", "#ffffff"], a: ["#FECC32", "#032B4E"] }[kind];
     const w = txt.length * 6.6 + 18;
     D.rect(p, x, y, w, 20, { rx: 10, fill: col[0] });
     D.text(p, x + w / 2, y + 14.5, txt, { head: 1, size: 12, weight: 600, fill: col[1], anchor: "middle", ls: ".08em" });
@@ -248,7 +250,7 @@ function buildSystemPool() {
   D.rect(gPools, PX, P0, PW, P1 - P0, { rx: 14, fill: "#fff", stroke: "#03426F", sw: 2 });
   sv("path", { d: `M${PX + 14} ${P0}h${PW - 28}a14 14 0 0 1 14 14v24h-${PW}v-24a14 14 0 0 1 14-14z`, fill: "#0B2740" }, gPools);
   D.text(gPools, PX + 16, P0 + 26, "Perímetro NTS", { head: 1, size: 20, weight: 600, fill: "#fff" });
-  D.text(gPools, PX + 136, P0 + 25, "rede, identidade e dado", { size: 12.5, fill: "#AFC3D6" });
+  D.text(gPools, PX + 172, P0 + 25, "rede, identidade e dado", { size: 12.5, fill: "#AFC3D6" });
   tag(gPools, PX + PW - 96, P0 + 9, "RESTRITA", "r");
   [
     { t: "Estação do analista", tags: [["CONFIÁVEL", "t"], ["OPÇÃO A · DESKTOP", "a"]] },
@@ -281,15 +283,15 @@ function buildSystemPool() {
   const cl = {
     web: node(LX(2), 190, NW, "Web app", "na assinatura Azure da NTS", { badge: "B" }),
     db: node(LX(2), 326, NW, "Banco da ferramenta", "registro de cada ciclo"),
-    gw: node(LX(2), 500, NW, "Gateway de IA", "conteúdo mínimo, log de chamadas", { stroke: "#D2643A", sw: 2, fill: "#FDF1EA" }),
+    gw: node(LX(2), 500, NW, "Gateway de IA", "conteúdo mínimo, log de chamadas", { stroke: "#E9B415", sw: 2, fill: "#FFFAE8" }),
   };
   // Homologação e Provedor
   const CX = 1074, CW2 = W - CX;
-  D.rect(gPools, CX, P0, CW2, 244, { rx: 14, fill: "#fff", stroke: "#33475B", sw: 2 });
+  D.rect(gPools, CX, P0, CW2, 244, { rx: 14, fill: "#fff", stroke: "#03426F", sw: 2 });
   D.text(gPools, CX + 16, P0 + 30, "Homologação", { head: 1, size: 20, weight: 600, fill: "#0B2740" });
   tag(gPools, CX + 16, P0 + 42, "RESTRITA", "r");
   const hom = node(CX + 16, 190, CW2 - 32, "Ambiente de teste", "dados mascarados, sem dado real");
-  D.rect(gPools, CX, 362, CW2, P1 - 362, { rx: 14, fill: "#fff", stroke: "#33475B", sw: 2 });
+  D.rect(gPools, CX, 362, CW2, P1 - 362, { rx: 14, fill: "#fff", stroke: "#03426F", sw: 2 });
   D.text(gPools, CX + 16, 392, "Provedor de modelo", { head: 1, size: 20, weight: 600, fill: "#0B2740" });
   tag(gPools, CX + 16, 404, "RESTRITA", "r");
   const api = node(CX + 16, 500, CW2 - 32, "API do modelo", "sem treino; retenção zero a contratar");
@@ -298,7 +300,7 @@ function buildSystemPool() {
   const edge = (f, pts, o = {}) => D.edge(gEdges, pts, { id: "sp", f, ...o });
   const badge = (fid, x, y, deny) => {
     const g = sv("g", { class: "ebadge", "data-f": fid, "data-c": JSON.stringify([x, y]), style: "cursor:pointer" }, gBadge);
-    sv("circle", { cx: x, cy: y, r: 12, fill: deny ? "#C2453B" : "#03426F", stroke: "#fff", "stroke-width": 2.5 }, g);
+    sv("circle", { cx: x, cy: y, r: 12, fill: deny ? "#D2504A" : "#03426F", stroke: "#fff", "stroke-width": 2.5 }, g);
     D.text(g, x, y + 5, deny ? "✕" : fid, { head: 1, size: 15, weight: 600, fill: "#fff", anchor: "middle" });
     g.addEventListener("click", () => highlight(fid));
   };
@@ -325,7 +327,7 @@ function buildSystemPool() {
   const ly = H - 14, lg = sv("g", {}, svg);
   sv("path", { d: `M0 ${ly - 5}h34`, stroke: "#03426F", "stroke-width": 1.8, "marker-end": "url(#sp-a)" }, lg);
   D.text(lg, 44, ly, "permitido", { size: 13, fill: "#3A4E62" });
-  sv("path", { d: `M128 ${ly - 5}h34`, stroke: "#C2453B", "stroke-width": 1.8, "stroke-dasharray": "6 5", "marker-end": "url(#sp-ar)" }, lg);
+  sv("path", { d: `M128 ${ly - 5}h34`, stroke: "#D2504A", "stroke-width": 1.8, "stroke-dasharray": "6 5", "marker-end": "url(#sp-ar)" }, lg);
   D.text(lg, 172, ly, "negado", { size: 13, fill: "#3A4E62" });
   sv("path", { d: `M244 ${ly - 5}h34`, stroke: "#03426F", "stroke-width": 1.8, "stroke-dasharray": "4 3", "marker-end": "url(#sp-a)" }, lg);
   D.text(lg, 288, ly, "exportação / opção B", { size: 13, fill: "#3A4E62" });

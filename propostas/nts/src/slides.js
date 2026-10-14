@@ -18,10 +18,10 @@ function buildChaos() {
     ["Excel", "ajusta e refaz", "office"],
   ];
   const wire = sv("svg", { class: "wire" }, host);
-  const STEP = 166, W = 200, H = 80;
+  const STEP = 160, W = 176, H = 74;
   const pts = [];
   apps.forEach(([t, s, k], i) => {
-    const x = i * STEP, y = i % 2 ? 128 : 8;
+    const x = i * STEP, y = i % 2 ? 112 : 6;
     const a = el("div", { class: "app", style: `left:${x}px;top:${y}px` }, host);
     a.innerHTML = `<span class="n">${i + 1}</span><b><i class="type-${k}"></i>${t}</b><span>${s}</span>`;
     pts.push([x + W / 2, y + (i % 2 ? 0 : H)]);
@@ -54,9 +54,9 @@ function buildWaterfall() {
     ghosts.push(sv("rect", { x: cx - barW / 2, width: barW, rx: 4, fill: "none", stroke: "#8C9BAA", "stroke-dasharray": "4 3", "stroke-width": 1.4 }, gGhost));
     const tot = i === 0 || i === cats.length - 1;
     bars.push(sv("rect", { x: cx - barW / 2, width: barW, rx: 4 }, gBars));
-    vals.push(D.text(gVal, cx, 0, "", { head: 1, size: 19, weight: 600, anchor: "middle", fill: tot ? "#03426F" : "#3A4E62" }));
+    vals.push(D.text(gVal, cx, 0, "", { head: 1, size: 15, weight: 700, anchor: "middle", fill: tot ? "#03426F" : "#34495E" }));
     if (i < cats.length - 1) links.push(sv("line", { stroke: "#8C9BAA", "stroke-dasharray": "2 3" }, gLink));
-    D.text(svg, cx, Y1 + 22, c, { size: 13, weight: 600, fill: i === cats.length - 1 ? "#03426F" : "#3A4E62", anchor: "middle", lh: 16 });
+    D.text(svg, cx, Y1 + 22, c, { size: 12, weight: 600, fill: i === cats.length - 1 ? "#03426F" : "#34495E", anchor: "middle", lh: 15 });
   });
   const geom = (vals) => {
     let run = 0;
@@ -71,7 +71,7 @@ function buildWaterfall() {
     const g = geom(vs), go = geom(other);
     g.forEach((s, i) => {
       bars[i].setAttribute("y", y(s.b)); bars[i].setAttribute("height", Math.max(1, y(s.a) - y(s.b)));
-      bars[i].setAttribute("fill", s.kind === "tot" ? "#03426F" : s.kind === "down" ? "#2E8B6A" : "#AFC3D6");
+      bars[i].setAttribute("fill", s.kind === "tot" ? "#03426F" : s.kind === "down" ? "#23946A" : "#A3BDD4");
       const o = go[i];
       ghosts[i].setAttribute("y", y(o.b)); ghosts[i].setAttribute("height", Math.max(1, y(o.a) - y(o.b)));
       ghosts[i].style.opacity = Math.abs(o.v - s.v) > 0.5 ? 1 : 0;
@@ -131,7 +131,7 @@ function buildPattern() {
       <div class="bc"><h4>${n + 1} · ${s.who}</h4>
         <div class="lab">Vê</div><p>${s.ve}</p>
         <div class="lab">Faz</div><div class="acts">${s.faz.map((a) => `<span class="chip">${a}</span>`).join("")}</div>
-        <div class="turn">${icon("arrowL")}voltar</div></div></div>`;
+        <div class="turn" style="color:var(--blue-700)">${icon("arrowL")}voltar</div></div></div>`;
     const tog = () => f.classList.toggle("on");
     f.addEventListener("click", tog);
     f.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); tog(); } });
@@ -142,13 +142,13 @@ function buildPattern() {
   const draw = () => {
     if (Deck.read) return;
     const cards = $$(".flip", host), off = host.offsetTop;
-    line.innerHTML = `<defs><marker id="fl-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5 0 10z" fill="#4F7698"/></marker></defs>`;
+    line.innerHTML = `<defs><marker id="fl-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5 0 10z" fill="#2F7DC4"/></marker></defs>`;
     cards.forEach((c, i) => {
       const cx = c.offsetLeft + c.offsetWidth / 2, y = off;
-      sv("circle", { cx, cy: y - 3, r: 6, fill: "#fff", stroke: "#4F7698", "stroke-width": 2 }, line);
+      sv("circle", { cx, cy: y - 3, r: 6, fill: "#fff", stroke: "#2F7DC4", "stroke-width": 2 }, line);
       if (i < cards.length - 1) {
         const n = cards[i + 1], nx = n.offsetLeft + n.offsetWidth / 2;
-        sv("path", { d: `M${cx + 10} ${y - 8} C${cx + 80} ${y - 46} ${nx - 80} ${y - 46} ${nx - 12} ${y - 9}`, fill: "none", stroke: "#4F7698", "stroke-width": 2, "stroke-dasharray": "6 7", class: "dash", "marker-end": "url(#fl-a)" }, line);
+        sv("path", { d: `M${cx + 10} ${y - 8} C${cx + 80} ${y - 46} ${nx - 80} ${y - 46} ${nx - 12} ${y - 9}`, fill: "none", stroke: "#2F7DC4", "stroke-width": 2, "stroke-dasharray": "6 7", class: "dash", "marker-end": "url(#fl-a)" }, line);
       }
     });
   };
@@ -166,14 +166,14 @@ function buildZones() {
     { t: "Provedor", lvl: ["Restrita", "r"], i: "cpu", items: ["API do modelo", "Sem treino", "Retenção zero (contrato)"], fl: [["Nuvem NTS", 0, "sem chamada de volta"]] },
   ];
   const host = $("#zones");
-  const lvlStyle = { u: "background:#EEF1F4;color:#5F7387", t: "background:var(--teal-l);color:#1d6a50", r: "background:var(--slate);color:#fff" };
+  const lvlStyle = { u: "background:#EEF1F4;color:#5F7387", t: "background:var(--green-100);color:#1b7a56", r: "background:var(--navy-900);color:var(--yellow)" };
   Z.forEach((z, n) => {
     const f = el("div", { class: "flip rv d" + (n + 1), tabindex: 0, role: "button", "aria-label": `${z.t}: ver fluxos` }, host);
     f.innerHTML = `<div class="in">
       <div class="fc"><div class="zt"><span class="zi">${icon(z.i)}</span><div><h3>${z.t}</h3><span class="tag lvl" style="${lvlStyle[z.lvl[1]]}">${z.lvl[0]}</span></div></div>
         <ul>${z.items.map((x) => `<li>${icon("check")}${x}</li>`).join("")}</ul>
-        <div class="turn">${icon("tap")}com quem fala · ${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</div></div>
-      <div class="bc"><div class="zt"><span class="zi" style="background:#ffffff18;color:#fff">${icon(z.i)}</span><div><div class="eyebrow">De ${z.t} para</div><h3>${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</h3></div></div>
+        <div class="turn" style="color:var(--blue-700)">${icon("tap")}com quem fala · ${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</div></div>
+      <div class="bc"><div class="zt"><span class="zi" style="background:#ffffff18;color:#fff">${icon(z.i)}</span><div><div class="eyebrow" style="color:var(--yellow)">De ${z.t} para</div><h3>${z.fl.length} fluxo${z.fl.length > 1 ? "s" : ""}</h3></div></div>
         <div class="fl">${z.fl.map(([to, ok, s]) => `<div class="${ok ? "" : "no"}"><b>${icon("arrowR", "ar")} ${to}<em>${ok ? "permitido" : "negado"}</em></b><span>${s}</span></div>`).join("")}</div>
         <div class="turn" style="color:#a9c2d9">${icon("arrowL")}voltar</div></div></div>`;
     const tog = () => f.classList.toggle("on");
@@ -219,14 +219,14 @@ function buildGantt() {
   msr.innerHTML = `<div class="lab">Marcos</div><div class="trk"></div>`;
   [["Seguir ou parar", 2], ["Piloto no ar", 6], ["Aceite do piloto", 10]].forEach(([t, w]) => { el("b", { style: `left:${(w / 12) * 100}%` }, $(".trk", msr)).innerHTML = `<i></i>${t}`; });
   const lanes = el("div", { class: "g-lanes" }, g);
-  const RH = 48;
+  const RH = 41;
   GANTT.forEach((ln) => {
     const lab = el("div", { class: `g-lab lane-${ln.id}` }, lanes);
-    lab.innerHTML = `<i class="${ln.c}" style="background:${{ "c-acc": "var(--steel-l)", "c-eng": "var(--navy)", "c-pes": "var(--coral)", "c-enj": "var(--steel)", "c-nts": "var(--steel)" }[ln.c]}"></i><div>${ln.t}<small>${ln.s}</small></div>`;
+    lab.innerHTML = `<i class="${ln.c}" style="background:${{ "c-acc": "var(--blue-200)", "c-eng": "var(--navy-800)", "c-pes": "var(--yellow)", "c-enj": "var(--blue-500)", "c-nts": "var(--blue-500)" }[ln.c]}"></i><div>${ln.t}<small>${ln.s}</small></div>`;
     const row = el("div", { class: `g-row lane-${ln.id}`, style: `height:${ln.rows.length * RH + 12}px` }, lanes);
     lab.style.height = row.style.height;
     ln.rows.forEach((r, ri) => r.forEach(([t, a, b, d]) => {
-      const bar = el("button", { class: `gbar ${ln.c}`, type: "button", style: `left:calc(${((a - 1) / 12) * 100}% + 3px);width:calc(${((b - a + 1) / 12) * 100}% - 6px);top:${8 + ri * RH + 4}px` }, row, t);
+      const bar = el("button", { class: `gbar ${ln.c}`, type: "button", style: `left:calc(${((a - 1) / 12) * 100}% + 3px);width:calc(${((b - a + 1) / 12) * 100}% - 6px);top:${6 + ri * RH + 4}px` }, row, t);
       bar.onclick = () => showDetail(bar, ln, t, a, b, d);
     }));
   });
@@ -350,7 +350,7 @@ function buildRaci() {
   }
   function applyHl() {
     $$("td[data-c]", tbl).forEach((td) => (td.style.opacity = colHl == null || td.dataset.c === colHl ? 1 : 0.2));
-    $$("th[data-c]", tbl).forEach((h) => (h.style.color = h.dataset.c === colHl ? "var(--coral)" : ""));
+    $$("th[data-c]", tbl).forEach((h) => (h.style.color = h.dataset.c === colHl ? "var(--blue-700)" : ""));
   }
   tbl.addEventListener("click", (e) => {
     const th = e.target.closest("th[data-c]");
@@ -436,7 +436,7 @@ function buildMeasure() {
   t.innerHTML = `<thead><tr><th>Medida</th><th>Como</th><th>Fonte</th><th>Opção</th></tr></thead><tbody>${rows.map(([a, b, c, o]) => `<tr><td class="m">${a}</td><td>${b}</td><td class="s">${c}</td><td><span class="opt-badge"><i class="${o.includes("1") ? "" : "off"}">1</i><i>2</i></span></td></tr>`).join("")}</tbody>`;
   t.querySelectorAll("tbody td").forEach((td) => (td.style.padding = "15px 14px"));
   const side = el("div", { class: "stop" }, host);
-  side.innerHTML = `<div class="eyebrow">Regra de parada · proposta, a combinar</div>
+  side.innerHTML = `<div class="eyebrow" style="color:var(--yellow)">Regra de parada · proposta, a combinar</div>
     <h4>Ao fim da semana 2, seguir ou parar com base no medido</h4>
     <div class="cond"><b>≈ R$ 100 mil/ano</b>valor de controle da ordem de</div>
     <div class="or">OU</div>
@@ -485,8 +485,8 @@ function buildRisk() {
   ];
   const band = (s) => (s >= 16 ? ["crit", "Crítico"] : s >= 10 ? ["high", "Alto"] : s >= 5 ? ["med", "Médio"] : ["low", "Baixo"]);
   const host = $("#riskGrid");
-  const left = el("div", { style: "display:flex;flex-direction:column;min-height:0" }, host);
-  const hm = el("div", { class: "hm", style: "flex:1;min-height:0;height:auto" }, left);
+  const left = el("div", {}, host);
+  const hm = el("div", { class: "hm", style: "height:calc(100% - 30px)" }, left);
   el("div", { class: "yl" }, hm, "PROBABILIDADE →");
   const grid = el("div", { class: "grid" }, hm);
   for (let p = 5; p >= 1; p--) for (let i = 1; i <= 5; i++) {
@@ -532,8 +532,8 @@ function buildAssumptions() {
   t.innerHTML = `<thead><tr><th>Premissa</th><th>Valor</th><th>Tipo</th><th>Fonte</th></tr></thead><tbody>${rows.map(([a, v, k, s]) => `<tr data-k="${k}"><td class="m">${a}</td><td class="v" style="white-space:normal">${v}</td><td><span class="ty ${k}">${TYPE[k][0]}</span></td><td class="s">${s}</td></tr>`).join("")}</tbody>`;
   const side = el("div", { style: "display:flex;flex-direction:column;gap:10px" }, host);
   typeFilter(side, t, rows);
-  el("div", { style: "margin-top:auto;border-radius:12px;background:var(--slate);color:#dbe4ed;padding:16px;font-size:14px;line-height:1.5" }, side).innerHTML =
-    `<b style="color:#fff;font:600 20px/1.3 'Barlow Condensed'">Os assumidos viram medidos</b><br>na pesquisa de campo ou no piloto; cada número tem uma segunda assinatura no ledger.`;
+  el("div", { style: "margin-top:auto;border-radius:14px;background:var(--navy-800);color:#d2e2f0;padding:16px;font-size:13px;line-height:1.5" }, side).innerHTML =
+    `<b style="color:var(--yellow);font:700 15px/1.3 Montserrat">Os assumidos viram medidos</b><br>na pesquisa de campo ou no piloto; cada número tem uma segunda assinatura no ledger.`;
 }
 
 /* --------------------------------------------- 22 · decisões marcáveis */

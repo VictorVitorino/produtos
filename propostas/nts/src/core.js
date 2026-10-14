@@ -96,6 +96,22 @@ function enjLogoSVG({ birds = "url(#enjG)", word = "#8F8F8F", id = "" } = {}) {
   </svg>`;
 }
 
+/* ------------------------------------------------------- ondas (fundo) --- */
+function drawWaves(svg) {
+  const n = +svg.dataset.waves || 20;
+  let d = "";
+  for (let i = 0; i < n; i++) {
+    const y0 = 120 + i * (700 / n), a = 40 + (i % 5) * 9, ph = i * 0.33;
+    let p = `M-20 ${y0.toFixed(1)}`;
+    for (let x = 0; x <= 1640; x += 40) {
+      const y = y0 + Math.sin(x / 260 + ph) * a + Math.sin(x / 90 + ph * 2) * 6 - x * 0.08;
+      p += ` L${x} ${y.toFixed(1)}`;
+    }
+    d += `<path d="${p}"/>`;
+  }
+  svg.innerHTML = `<g fill="none" stroke="#7fb6ea" stroke-opacity=".11" stroke-width="1">${d}</g>`;
+}
+
 /* ================================================================ deck --- */
 const CHAPTERS = [
   { t: "A resposta" },
@@ -113,27 +129,26 @@ const Deck = {
   init() {
     this.slides = $$(".slide");
     const total = this.slides.length;
-    const logoDark = enjLogoSVG({ birds: "#d6e8f8", word: "#ffffff", id: "D" });
+    const logoLight = enjLogoSVG({ id: "L" });
+    const logoDark = enjLogoSVG({ birds: "#cfe4f7", word: "#ffffff", id: "D" });
     this.slides.forEach((s, n) => {
       s.dataset.n = n + 1;
       if (s.hasAttribute("data-bare")) return;
-      const ch = CHAPTERS[+s.dataset.chapter];
-      const pg = `${String(n + 1).padStart(2, "0")} / ${total}`;
-      const head = $(".head", s), body = $(".body", s);
-      const hbar = el("div", { class: "hbar" });
-      hbar.innerHTML = `${logoDark}<span class="sep"></span><div class="ht"><b>${s.dataset.title}</b><span>${+s.dataset.chapter ? "Parte " + String(s.dataset.chapter).padStart(2, "0") + " · " : ""}${ch.t}</span></div>
-        <div class="rt"><span class="dot"></span><span>Proposta de agentes de IA para</span><img src="__NTS_LOGO__" alt="NTS"><span class="pg">${pg}</span></div>`;
-      const band = el("div", { class: "band" });
-      band.innerHTML = `<b>${s.dataset.title}</b><span>${s.dataset.bs || ch.t}</span>`;
+      const ch = CHAPTERS[+s.dataset.chapter].t;
+      const dark = s.classList.contains("dark");
+      const top = el("div", { class: "top" });
+      top.innerHTML = `<div class="brand">${dark ? logoDark : logoLight}<span class="sep"></span><span class="client">Proposta para <img src="__NTS_LOGO__" alt="NTS"></span></div>
+        <div class="where"><span>${ch}</span><span class="pg">${String(n + 1).padStart(2, "0")} / ${total}</span></div>`;
+      s.insertBefore(top, s.firstElementChild?.classList.contains("waves") ? s.children[1] : s.firstElementChild);
       const panel = el("div", { class: "panel" });
+      const head = $(".head", s), body = $(".body", s);
       if (head) panel.appendChild(head);
       if (body) panel.appendChild(body);
-      const foot = el("div", { class: "foot" });
-      foot.innerHTML = `<span class="mark">Enjourney · Proposta NTS</span><span class="src">${s.dataset.src || ""}</span><span class="pgn">${pg}</span>`;
-      s.prepend(hbar, band, panel);
-      s.appendChild(foot);
+      top.after(panel);
+      const foot = el("div", { class: "foot" }, s);
+      foot.innerHTML = `<span class="mark">Enjourney · Projeto NTS · Proposta</span><span class="src">${s.dataset.src || ""}</span>`;
     });
-    $$("svg[data-birds]").forEach((svg) => (svg.innerHTML = `<g fill="#9fc8ee">${BIRD_PATHS.map((p) => `<path d="${p.d}"/>`).join("")}</g>`));
+    $$("svg.waves").forEach(drawWaves);
     hydrateIcons();
     this.buildBar();
     this.bindKeys();
@@ -149,7 +164,7 @@ const Deck = {
   fit() {
     if (this.read) return;
     const vp = $("#viewport"), st = $("#stage");
-    const w = vp.clientWidth - 24, h = vp.clientHeight - 16;
+    const side = Math.max(28, vp.clientWidth * 0.045), w = vp.clientWidth - side * 2, h = vp.clientHeight - 28;
     const s = Math.min(w / 1920, h / 1080);
     st.style.transform = `translate(${-960 * s}px, ${-540 * s}px) scale(${s})`;
     this.scale = s;
@@ -250,6 +265,7 @@ const Deck = {
     if (this.read) { this.slides[n].scrollIntoView({ behavior: instant ? "auto" : "smooth" }); return; }
     const prevI = this.i, prev = this.slides[prevI], cur = this.slides[n];
     if (n === prevI && !force && cur.classList.contains("is-active")) return;
+    const chChange = +cur.dataset.chapter !== +prev.dataset.chapter;
     this.slides.forEach((s, k) => {
       s.classList.toggle("is-prev", k < n);
       if (k !== n) s.classList.remove("is-active");
@@ -257,7 +273,8 @@ const Deck = {
     if (prev && prev !== cur) (this.leave[prev.id] || []).forEach((f) => f());
     this.i = n;
     const show = () => { cur.classList.add("is-active"); this.fire(cur.id); };
-    show();
+    if (!instant && chChange && n > prevI && +cur.dataset.chapter > 0 && !reduceMotion) this.chapterFx(+cur.dataset.chapter, show);
+    else show();
     history.replaceState(null, "", "#" + (n + 1));
     this.updateUI();
   },
@@ -276,5 +293,21 @@ const Deck = {
       b.querySelector("b").style.width = `${Math.round(done * 100)}%`;
     });
     $$("#menu button").forEach((b, k) => b.classList.toggle("on", k === n));
+  },
+  chapterFx(c, done) {
+    const fx = $("#chapterfx");
+    $(".num", fx).textContent = String(c).padStart(2, "0") + " · CAPÍTULO";
+    $(".ttl", fx).textContent = CHAPTERS[c].t;
+    $(".sub", fx).textContent = CHAPTERS[c].s || "";
+    const birds = $(".fxbirds", fx);
+    birds.innerHTML = "";
+    [[880, 0, 1], [950, 0.12, 0.7], [820, 0.2, 0.55]].forEach(([y, d, sc]) => {
+      const b = el("div", { class: "fxbird", style: `top:${y}px;animation-delay:${d}s;width:${90 * sc}px` }, birds);
+      b.innerHTML = `<svg viewBox="14 4 90 58"><g fill="#cfe4f7">${BIRD_PATHS.map((p) => `<path d="${p.d}"/>`).join("")}</g></svg>`;
+    });
+    fx.classList.remove("run"); void fx.offsetWidth; fx.classList.add("run");
+    clearTimeout(this._fx1); clearTimeout(this._fx2);
+    this._fx1 = setTimeout(done, 520);
+    this._fx2 = setTimeout(() => fx.classList.remove("run"), 1950);
   },
 };

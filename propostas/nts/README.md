@@ -11,29 +11,25 @@ Redesenho da proposta "Do mapeamento à ferramenta" com a identidade da Enjourne
 
 ## Como apresentar
 
-- `→`, `espaço` ou o botão Avançar avançam; `←` volta; `F` tela cheia; `G` ou o contador abrem a lista de slides; `L` alterna o modo leitura.
+- `→`, `espaço` ou o botão amarelo avançam; `←` volta; `F` tela cheia; `G` ou o contador abrem a lista de slides; `L` alterna o modo leitura.
 - Em telas estreitas (celular, tablet em pé) o modo leitura entra sozinho: os slides viram uma página rolável e as grades se reorganizam em coluna. Diagramas largos rolam na horizontal.
 - `Ctrl+P` imprime um slide por página (1920 × 1080).
 
-## Linguagem visual (v2)
+## Ajustes v1.1
 
-Segue a estrutura de páginas do modelo TMG, com a paleta da Enjourney:
+- Palco 1920 × 1080 com moldura no estilo do modelo TMG: margem lateral em volta da página, cabeçalho e painel de conteúdo com bordas; mais largura para fluxos e tabelas.
+- Menos amarelo e azul (destaques em texto, cards claros); sem animações de entrada em cascata nem fundos ondulados nos slides de conteúdo.
+- Capa: chave discreta "reunir o bando". Capítulos: o texto da transição sai antes do slide aparecer, sem sobreposição.
+- Slides 4 e 8: fluxos redesenhados com mais espaço; um teste confere que nenhuma seta atravessa caixa e nenhum texto se sobrepõe.
+- Slide 14: o "Faz" de cada etapa traz itens da própria proposta, com o slide de origem.
+- Slide 15: matriz RASCI editável (clique troca o papel, botão direito volta, nome editável, adicionar e remover decisões, status por decisão, restaurar proposta).
 
-- Palco 1920 × 1080 (mais largura para fluxos e tabelas).
-- Cada página tem barra de cabeçalho escura (logo Enjourney, título, capítulo, logo NTS e página), faixa de seção colorida, painel de conteúdo e rodapé com a fonte.
-- Capas de capítulo são slides próprios (número grande ao fundo, sem sobreposição).
-- Títulos em Barlow Condensed, texto em Inter. Azul e amarelo Enjourney como marca, neutros como base e coral como acento de leitura.
-- Os diagramas dos slides 5 e 10 guardam a geometria de caixas e setas, e o teste confere que nenhuma seta atravessa uma caixa e que nenhum texto se sobrepõe.
-- A matriz "Quem decide o quê" é editável: clique troca o papel (D, P, E, C, I, vazio), botão direito volta, o nome da decisão é editável, dá para adicionar e remover decisões, o status avisa quando falta um D ou há mais de um, e "Restaurar proposta" volta ao original. As mudanças ficam salvas no navegador.
-
-## Roteiro (28 páginas: 23 slides e 5 capas de capítulo)
-
-A numeração abaixo é a dos 23 slides de conteúdo; na apresentação, as capas de capítulo entram antes dos slides 4, 7, 12, 18 e 22.
+## Roteiro (23 slides, 6 capítulos)
 
 | # | Slide | O que mudou |
 |---|---|---|
-| 1 | Capa | Bando de pássaros Enjourney em voo; a chave discreta "reunir o bando", abaixo do logo, leva cada um ao logo (três pousam nas posições exatas do símbolo, os outros se fundem). Desligar solta o bando de novo. |
-| 2 | Resumo executivo | Quatro números de destaque, três mensagens e o pedido. |
+| 1 | Capa | Bando de pássaros Enjourney em voo; o botão "Unir o bando à Enjourney" leva cada um ao logo (três pousam nas posições exatas do símbolo, os outros se fundem). Desligar solta o bando de novo. |
+| 2 | Resumo executivo | Faixa de números no estilo "Enjourney em números" e o pedido em destaque. |
 | 3 | Por que agora | SCQA em sequência com conectores. |
 | 4 | O processo mapeado | Pool com cinco raias e quatro fases; conectores ortogonais sem cruzamentos, início e fim, pontos de dor marcados. |
 | 5 | Jornada do analista | Os dez aplicativos de hoje contra uma interface com cinco ações. |
