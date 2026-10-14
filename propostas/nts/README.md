@@ -11,9 +11,9 @@ Redesenho da proposta "Do mapeamento à ferramenta" com a identidade da Enjourne
 
 ## Como apresentar
 
-- `→`, `espaço` ou o botão amarelo avançam; `←` volta; `F` tela cheia; `G` ou o contador abrem a lista de slides; `L` alterna o modo leitura.
+- `→`, `espaço` ou o botão Avançar avançam; `←` volta; `F` tela cheia; `G` ou o contador abrem a lista de slides; `L` alterna o modo leitura.
 - Em telas estreitas (celular, tablet em pé) o modo leitura entra sozinho: os slides viram uma página rolável e as grades se reorganizam em coluna. Diagramas largos rolam na horizontal.
-- `Ctrl+P` imprime um slide por página (1600 × 900).
+- `Ctrl+P` imprime um slide por página (1920 × 1080).
 
 ## Linguagem visual (v2)
 
@@ -28,10 +28,12 @@ Segue a estrutura de páginas do modelo TMG, com a paleta da Enjourney:
 
 ## Roteiro (28 páginas: 23 slides e 5 capas de capítulo)
 
+A numeração abaixo é a dos 23 slides de conteúdo; na apresentação, as capas de capítulo entram antes dos slides 4, 7, 12, 18 e 22.
+
 | # | Slide | O que mudou |
 |---|---|---|
-| 1 | Capa | Bando de pássaros Enjourney em voo; o botão "Unir o bando à Enjourney" leva cada um ao logo (três pousam nas posições exatas do símbolo, os outros se fundem). Desligar solta o bando de novo. |
-| 2 | Resumo executivo | Faixa de números no estilo "Enjourney em números" e o pedido em destaque. |
+| 1 | Capa | Bando de pássaros Enjourney em voo; a chave discreta "reunir o bando", abaixo do logo, leva cada um ao logo (três pousam nas posições exatas do símbolo, os outros se fundem). Desligar solta o bando de novo. |
+| 2 | Resumo executivo | Quatro números de destaque, três mensagens e o pedido. |
 | 3 | Por que agora | SCQA em sequência com conectores. |
 | 4 | O processo mapeado | Pool com cinco raias e quatro fases; conectores ortogonais sem cruzamentos, início e fim, pontos de dor marcados. |
 | 5 | Jornada do analista | Os dez aplicativos de hoje contra uma interface com cinco ações. |
