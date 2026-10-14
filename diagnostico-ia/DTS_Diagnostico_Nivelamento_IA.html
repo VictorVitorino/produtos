@@ -19,8 +19,8 @@ html,body{height:100%;background:#0A2236;color:var(--ink);font-family:var(--sans
 body{background:radial-gradient(1200px 700px at 30% 20%,#0F3352 0%,#071A2B 70%)}
 /* ---------- stage (modelo Axon) ---------- */
 .progress{position:fixed;top:0;left:0;height:3px;background:var(--orange);z-index:9;transition:width .4s}
-.stage{position:fixed;inset:0 0 58px 0;display:grid;place-items:center}
-.deck{width:1600px;height:900px;position:relative;transform-origin:center center}
+.stage{position:fixed;inset:0 0 58px 0;overflow:hidden}
+.deck{width:1600px;height:900px;position:absolute;left:0;top:0;transform-origin:0 0}
 .slide{position:absolute;inset:0;display:none;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);flex-direction:column;
   background-color:var(--paper-hi);background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:24px 24px}
 .slide.on{display:flex;animation:pagein .45s cubic-bezier(.2,.8,.2,1)}
@@ -815,7 +815,7 @@ secs.onclick=e=>{const b=e.target.closest('.sec');if(b)go([...secs.children].ind
 document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);
 document.getElementById('aboutBtn').onclick=()=>about.classList.toggle('on');
 addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')go(cur+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(cur-1);if(e.key==='Escape')about.classList.remove('on')});
-function fit(){const d=document.getElementById('deck'),pr=document.body.classList.contains('print');const W=innerWidth-(pr?0:40),H=innerHeight-(pr?0:58+24);d.style.transform=`scale(${Math.min(W/1600,H/900)})`}
+function fit(){const st=document.querySelector('.stage'),d=document.getElementById('deck'),pad=document.body.classList.contains('print')?0:16;const W=st.clientWidth-pad*2,H=st.clientHeight-pad*2;const k=Math.min(W/1600,H/900);d.style.transform=`translate(${(st.clientWidth-1600*k)/2}px,${(st.clientHeight-900*k)/2}px) scale(${k})`}
 addEventListener('resize',fit);fit();go(cur);roll();
 </script>
 </body>
