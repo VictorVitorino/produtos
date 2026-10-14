@@ -322,6 +322,20 @@ body.print .slide{border-radius:0;box-shadow:none} body.print *{animation:none!i
 .studies small{font:400 10.5px var(--mono);color:#9fb3c8;letter-spacing:.04em}
 .studies .warn{background:#fff;color:var(--ink);border:1px solid var(--soft-gray)} .studies .warn b{color:var(--red)} .studies .warn small{color:var(--muted)}
 
+.hr3{display:grid;grid-template-columns:206px 1fr;gap:12px;align-items:center}
+.hr3>div:first-child b{display:block;font:700 15px/1.1 var(--serif);color:var(--navy)}
+.hr3>div:first-child small{display:block;font-size:10.5px;color:var(--muted);line-height:1.2;margin-top:1px}
+.hr3 .cf3{font:700 10px var(--mono);color:var(--orange-dk);letter-spacing:.05em;margin-top:3px;display:block}
+.hr3 .bars{display:flex;flex-direction:column;gap:2px}
+.hr3 .bars div{display:flex;align-items:center;gap:6px}
+.hr3 .bars i{display:block;height:11px;border-radius:3px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.hr3 .bars b{font:700 11.5px var(--mono);white-space:nowrap}
+.hr3 .bars em{font-style:normal;font:700 11px var(--mono);color:#fff;background:var(--orange);border-radius:99px;padding:1px 6px;margin-left:2px}
+.hr3 .ev{font-size:10.5px;color:var(--muted);margin-top:1px}
+.studies.s5{grid-template-columns:repeat(5,1fr)}
+.studies.s5 b{font-size:22px}
+.studies.s5 span{font-size:12px}
+
 /* ---------- capa (caderno) ---------- */
 .cover{flex-direction:row!important;background:var(--navy)!important}
 .cover .l{width:50%;background:linear-gradient(160deg,var(--navy),var(--navy-deep));color:#fff;padding:70px 64px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
@@ -493,32 +507,33 @@ body.print .lb{display:none!important}
 </section>
 
 <!-- ================= 03 HIPER PERFORMANCE ================= -->
-<section class="slide" data-sec="Hiper performance" data-about="<b>Reduções de tempo (estudos reais):</b> escrita profissional −40% (Noy &amp; Zhang, MIT, revista Science, 2023, 453 profissionais) · tarefas de consultoria −25% (Dell'Acqua et al., Harvard/BCG, 2023, 758 consultores da BCG) · programação −56% (Peng et al., GitHub/Microsoft, 2023). <br><br><b>Horas sem IA:</b> são referências DTS para um entregável típico. Os percentuais vêm dos estudos. <br><br><b>Cobertura do plano:</b> Max 5x dá 5× o uso do Pro e Max 20x dá 20× (números oficiais da Anthropic). Pro sustenta ~30% do mês de produção, Max 5x ~80% e Max 20x 100% (estimativa DTS). <br><br><b>Retorno:</b> horas economizadas × custo/hora, com adoção gradual (50% no mês 1 e 75% no mês 2). Base de 96h de produção por mês.">
+<section class="slide" data-sec="Hiper performance" data-about="<b>Como ler:</b> horas por entregável em três cenários. Sem IA, do zero; com IA, do zero; com IA e uma base reaproveitada (Skill, Método, proposta anterior). As horas sem IA são uma premissa de consultoria típica, a calibrar com o timesheet de DTS. Os percentuais vêm de 37 casos verificados na fonte. <br><br><b>Mais fortes:</b> Schwarcz et al. 2025 (RCT, carta persuasiva 111→72–82 min); Choi et al. 2024 (RCT, contrato 70→48 min); Peng et al. 2023 (RCT, sistema do zero 161→71 min); Microsoft 2023 (resumo de reunião 43→11 min); Google 2024 (RCT, código corporativo −21%). Os ganhos acima de −56% vêm de casos de empresa ou de estimativa de modelo, por isso cada linha tem nível de confiança. <br><br><b>Planos:</b> Pro US$ 20, Max 5x US$ 100, Max 20x US$ 200. O Pro sustenta bem textos e decks, mas tem pouco fôlego para construir dashboards e sistemas no Claude Code (estimativa DTS: 85% e 40% de cobertura). <br><br><b>Aproveitamento:</b> estudos de campo mostram que só parte da hora economizada vira valor (mais entregas, menos hora extra). O padrão é 50% e dá para editar.">
   <header class="hb"><div class="logo"><b>ALVAREZ <i>&amp;</i> MARSAL</b><span>DTS · NIVELAMENTO IA</span></div><div class="ttl"><b>Hiper performance</b><span>Parte 2 · Quanto a IA reduz do operacional</span></div><div class="rt"><span class="tag">Diagnóstico IA · DTS</span><span class="no">3/6</span></div></header>
-  <div class="sb"><b>Estudos reais · <em>tempo, custo e retorno por plano</em></b><span>Clique em um plano: os gráficos mudam</span></div>
+  <div class="sb"><b>O ganho real vem da base reaproveitada · <em>não só do prompt</em></b><span>37 casos verificados · clique em um plano e o gráfico muda</span></div>
   <div class="body" style="gap:12px">
     <div class="plans" id="plans"></div>
-    <div class="grid" style="grid-template-columns:1.05fr 1fr;flex:1">
-      <div class="card" style="display:flex;flex-direction:column">
-        <div class="lab">Horas por entregável · sem IA × com Claude <span class="legend2" style="margin:0"><span><i style="background:var(--light-blue)"></i>Sem IA</span><span><i style="background:var(--orange)"></i>Com Claude</span></span></div>
-        <div id="hrs" style="flex:1;display:flex;flex-direction:column;justify-content:space-around"></div>
-        <div class="tiny" id="hrsNote"></div>
+    <div class="grid" style="grid-template-columns:1.22fr 1fr;flex:1">
+      <div class="card" style="display:flex;flex-direction:column;padding-bottom:10px">
+        <div class="lab">Horas por entregável <span class="legend2" style="margin:0"><span><i style="background:var(--light-blue)"></i>Sem IA</span><span><i style="background:var(--steel)"></i>IA do zero</span><span><i style="background:var(--orange)"></i>IA + Skill / base</span></span></div>
+        <div id="hrs" style="flex:1;display:flex;flex-direction:column;justify-content:space-between"></div>
       </div>
       <div class="card" style="display:flex;flex-direction:column">
-        <div class="lab">Investimento × retorno · 12 meses <span class="inp">custo/hora R$ <input id="rate" type="number" value="150" step="10"> · câmbio <input id="fx" type="number" value="5.5" step="0.1"></span></div>
+        <div class="lab">Investimento × retorno · 12 meses <span class="inp">R$/h <input id="rate" type="number" value="150" step="10"> · câmbio <input id="fx" type="number" value="5.5" step="0.1"> · aproveit. <input id="real" type="number" value="50" step="10">%</span></div>
         <div class="kpis3" id="kpis"></div>
-        <svg id="roiChart" viewBox="0 0 640 300" style="width:100%;flex:1;min-height:0"></svg>
-        <div class="legend2"><span><i style="background:#F78C16"></i>retorno acumulado (horas economizadas × custo/hora)</span><span><i style="background:#C8553D"></i>investimento acumulado no plano</span></div>
+        <div class="tiny" style="margin:-2px 0 4px">*Mês típico: 1 proposta, 2 PPTs, 1 dashboard, ¼ de sistema, ½ análise de custos e 4 status reports</div>
+        <svg id="roiChart" viewBox="0 0 640 330" style="width:100%;flex:1;min-height:0"></svg>
+        <div class="legend2"><span><i style="background:#F78C16"></i>valor das horas liberadas (acumulado)</span><span><i style="background:#C8553D"></i>investimento no plano (acumulado)</span></div>
       </div>
     </div>
-    <div class="studies">
-      <div><b>−25%</b><span>tempo · <em>+40% qualidade</em></span><small>Harvard/BCG 2023 · 758 consultores</small></div>
-      <div><b>−40%</b><span>tempo · <em>+18% qualidade</em></span><small>MIT · Science 2023 · escrita profissional</small></div>
-      <div><b>−56%</b><span>tempo em programação</span><small>GitHub/Microsoft 2023 · desenvolvedores</small></div>
-      <div class="warn"><b>−19 p.p.</b><span>de acerto quando a IA é usada fora do que ela faz bem</span><small>Harvard/BCG 2023 · por isso o consultor audita</small></div>
+    <div class="studies s5">
+      <div><b>−26 a −35%</b><span>carta persuasiva: 111 → 72–82 min</span><small>RCT · Schwarcz et al. 2025</small></div>
+      <div><b>−56%</b><span>sistema do zero: 161 → 71 min</span><small>RCT · Peng et al. 2023 (GitHub)</small></div>
+      <div><b>−74%</b><span>resumo de reunião: 43 → 11 min</span><small>Microsoft Research 2023</small></div>
+      <div><b>até −90%</b><span>propostas com templates e base aprovada</span><small>casos de empresa · confiança baixa</small></div>
+      <div class="warn"><b>3×</b><span>quem usa IA acha que economizou 36 min; o medido foi 12 min</span><small>Microsoft 2023 · meça antes de prometer</small></div>
     </div>
   </div>
-  <div class="ft"><span><b>Fontes:</b> Dell'Acqua et al. (Harvard/BCG, 2023) · Noy &amp; Zhang (Science, 2023) · Peng et al. (GitHub, 2023) · preços Anthropic out/2026 · horas de referência DTS</span><span>3/6</span></div>
+  <div class="ft"><span><b>Fontes:</b> Schwarcz 2025 · Choi 2024 · Peng 2023 · Paradis/Google 2024 · Microsoft 2023/2025 · Anthropic 2025/2026 · casos de empresa · horas sem IA = premissa DTS (inclui revisão humana)</span><span>3/6</span></div>
 </section>
 
 <!-- ================= 04 FERRAMENTAS E MODELOS ================= -->
@@ -603,26 +618,33 @@ document.getElementById('thermo').innerHTML='<div class="rail"></div>'+SC.map((v
 const ST=[['Ponto de partida','0–20',0],['Exploração','21–40',0],['Evolução','41–60',1],['Autonomia','61–80',14],['Multiplicação','81–100',10]];
 document.getElementById('stairs').innerHTML=ST.map(([n,r,c],i)=>`<div class="st ${i===3?'on':''} ${i===4?'next':''}" style="height:${28+i*18}%;animation-delay:${i*.07}s">${i===3?'<span class="pin">DTS · 78,6</span>':''}${i===4?'<span class="pin" style="background:#fff;color:var(--navy)">Próximo degrau</span>':''}<b>${c}</b><span>${n}</span><i>${r}</i></div>`).join('');
 
-/* ---------- P3: estudos reais × planos ---------- */
-const PLANS=[{n:'Plano 1',t:'Claude Pro',usd:20,cov:.3,d:'Uso leve · ~30% do mês de produção'},{n:'Plano 2',t:'Claude Max 5x',usd:100,cov:.8,d:'5× o uso do Pro · ~80% do mês'},{n:'Plano 3',t:'Claude Max 20x',usd:200,cov:1,d:'20× o uso do Pro · 100%, inclui Claude Code pesado'}];
-const DELIV=[['Proposta comercial',16,.40,'escrita · MIT'],['Apresentação executiva',12,.25,'consultoria · Harvard/BCG'],['Análise de redução de custos',24,.25,'consultoria · Harvard/BCG'],['Dashboard ou protótipo',40,.56,'código · GitHub']];
-const MIX=[[30,.40],[40,.25],[26,.56]];
+/* ---------- P3: casos reais × planos ---------- */
+const PLANS=[{n:'Plano 1',t:'Claude Pro',usd:20,cov:{t:.85,b:.4},d:'Textos e decks · pouco fôlego para construir'},{n:'Plano 2',t:'Claude Max 5x',usd:100,cov:{t:1,b:.8},d:'5× o uso do Pro · decks, dashboards, protótipos'},{n:'Plano 3',t:'Claude Max 20x',usd:200,cov:{t:1,b:1},d:'20× o uso do Pro · Claude Code pesado, sistemas'}];
+const DELIV=[
+ {n:'Proposta comercial',s:'10–15 págs · escopo, cronograma e preço',h:[16,9,3],k:'t',c:2,m:1,ev:'medido −26% a −35% (RCT) · com base até −90%'},
+ {n:'PPT com indicadores',s:'~12 slides · 6–8 gráficos',h:[10,5,1.5],k:'t',c:1,m:2,ev:'rascunho −41% (Microsoft) · derivado'},
+ {n:'Dashboard de indicadores',s:'8–10 KPIs · 2–3 fontes de dados',h:[24,12,4],k:'b',c:1,m:1,ev:'código −16% a −56% (RCTs) · derivado'},
+ {n:'Sistema simples',s:'app interno · 3–5 telas (protótipo)',h:[40,18,6],k:'b',c:2,m:.25,ev:'do zero 161 → 71 min (RCT) · produção: só −20% a −40%'},
+ {n:'Análise de redução de custos',s:'spend de 12 meses · alavancas',h:[32,20,9],k:'t',c:1,m:.5,ev:'sem RCT · validar sempre os números'},
+ {n:'Status report semanal',s:'gestão de projetos · por semana',h:[3,1.5,.5],k:'t',c:2,m:4,ev:'resumo de reunião −74% (Microsoft)'}];
 let plan=1;const fmt=(x,d=1)=>x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});const brl=x=>'R$ '+Math.round(x).toLocaleString('pt-BR');
 document.getElementById('plans').innerHTML=PLANS.map((p,i)=>`<button class="plan" data-i="${i}"><span class="pn">${p.n}</span><span class="pp">US$ ${p.usd}<small>por mês</small></span><span class="pt2">${p.t}</span><span class="pd2">${p.d}</span></button>`).join('');
 document.getElementById('plans').onclick=e=>{const b=e.target.closest('.plan');if(b){plan=+b.dataset.i;sim()}};
-['rate','fx'].forEach(id=>document.getElementById(id).oninput=()=>sim());
+['rate','fx','real'].forEach(id=>document.getElementById(id).oninput=()=>sim());
+const hh=x=>x<1?Math.round(x*60)+' min':fmt(x,x%1?1:0)+'h';
 function sim(){const p=PLANS[plan];[...document.querySelectorAll('.plan')].forEach((b,i)=>b.classList.toggle('on',i===plan));
- document.getElementById('hrs').innerHTML=DELIV.map(([n,h,r,src])=>{const w=h*(1-r*p.cov);return `<div class="hr"><span>${n}<small>${src}</small><em>−${Math.round(r*p.cov*100)}% de tempo</em></span><div class="hb2"><div><i style="width:${h/40*82}%;background:var(--light-blue)"></i><b>${fmt(h,0)}h</b></div><div><i style="width:${w/40*82}%;background:var(--orange)"></i><b style="color:var(--orange-dk)">${fmt(w)}h</b></div></div></div>`}).join('');
- document.getElementById('hrsNote').innerHTML=`Redução do estudo × cobertura do plano (${Math.round(p.cov*100)}%). Horas sem IA são referência DTS.`;
- const rate=+document.getElementById('rate').value||0,fx=+document.getElementById('fx').value||0,cost=p.usd*fx;
- const saved=MIX.reduce((t,[h,r])=>t+h*r*p.cov,0),val=saved*rate,ramp=[.5,.75,1,1,1,1,1,1,1,1,1,1];
+ let mb=0,mz=0,ms=0;
+ document.getElementById('hrs').innerHTML=DELIV.map(d=>{const c=p.cov[d.k],b=d.h[0],z=b-(b-d.h[1])*c,s=b-(b-d.h[2])*c;mb+=b*d.m;mz+=z*d.m;ms+=s*d.m;const W=v=>Math.max(1.2,v/40*100);
+  return `<div class="hr3"><div><b>${d.n}</b><small>${d.s}</small><span class="cf3">${'●'.repeat(d.c)+'○'.repeat(3-d.c)} confiança</span></div><div><div class="bars"><div><i style="width:${W(b)}%;background:var(--light-blue)"></i><b>${hh(b)}</b></div><div><i style="width:${W(z)}%;background:var(--steel)"></i><b>${hh(z)}</b></div><div><i style="width:${W(s)}%;background:var(--orange)"></i><b style="color:var(--orange-dk)">${hh(s)}</b><em>−${Math.round((1-s/b)*100)}%</em></div></div><div class="ev">${d.ev}</div></div></div>`}).join('');
+ const rate=+document.getElementById('rate').value||0,fx=+document.getElementById('fx').value||0,real=(+document.getElementById('real').value||0)/100,cost=p.usd*fx;
+ const saved=mb-ms,val=saved*rate*real,ramp=[.5,.75,1,1,1,1,1,1,1,1,1,1];
  let cc=[0],cv=[0];ramp.forEach((f,i)=>{cc.push(cc[i]+cost);cv.push(cv[i]+val*f)});
  const pay=cv.findIndex((v,i)=>i>0&&v>=cc[i]);
- document.getElementById('kpis').innerHTML=`<div class="hot"><b>${Math.round(saved)}h</b><span>economizadas por mês</span></div><div><b>${brl(cost)}</b><span>investimento por mês</span></div><div><b>${brl(cv[6]-cc[6])}</b><span>retorno líquido em 6 meses</span></div><div><b>${brl(cv[12]-cc[12])}</b><span>retorno líquido em 1 ano</span></div>`;
- const W=640,H=300,L=58,R=18,T=14,B=30,mx=Math.max(...cv)*1.08,x=i=>L+i*(W-L-R)/12,y=v=>T+(H-T-B)*(1-v/mx);
+ document.getElementById('kpis').innerHTML=`<div class="hot"><b>${Math.round(mb)}h → ${Math.round(ms)}h</b><span>mês típico* com IA + Skill</span></div><div><b>${Math.round(mb)}h → ${Math.round(mz)}h</b><span>com IA, do zero</span></div><div><b>${brl(cost)}</b><span>investimento por mês</span></div><div><b>${brl(cv[12]-cc[12])}</b><span>retorno líquido em 1 ano</span></div>`;
+ const W=640,H=330,L=58,R=18,T=14,B=28,mx=Math.max(...cv,...cc)*1.1,x=i=>L+i*(W-L-R)/12,y=v=>T+(H-T-B)*(1-v/mx);
  const path=a=>a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
  let g='';for(let k=0;k<=4;k++){const v=mx*k/4;g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#E2E7EF"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="10.5" fill="#5B6B7C" font-family="Courier Prime">${v>=1000?Math.round(v/1000)+'k':0}</text>`}
- for(let i=0;i<=12;i+=2)g+=`<text x="${x(i)}" y="${H-10}" text-anchor="middle" font-size="10.5" fill="#5B6B7C" font-family="Courier Prime">${i===0?'':'m'+i}</text>`;
+ for(let i=2;i<=12;i+=2)g+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle" font-size="10.5" fill="#5B6B7C" font-family="Courier Prime">m${i}</text>`;
  g+=`<path d="${path(cv)} L ${x(12)} ${y(0)} L ${x(0)} ${y(0)} Z" fill="rgba(247,140,22,.12)"/><path d="${path(cv)}" fill="none" stroke="#F78C16" stroke-width="3.5"/><path d="${path(cc)}" fill="none" stroke="#C8553D" stroke-width="3" stroke-dasharray="6 5"/>`;
  [6,12].forEach(i=>g+=`<circle cx="${x(i)}" cy="${y(cv[i])}" r="5" fill="#F78C16" stroke="#fff" stroke-width="2"/><text x="${x(i)-6}" y="${y(cv[i])-10}" text-anchor="end" font-size="12" font-weight="700" fill="#002B49" font-family="Libre Franklin">${brl(cv[i])}</text>`);
  g+=`<text x="${x(12)-4}" y="${y(cc[12])-8}" text-anchor="end" font-size="12" font-weight="700" fill="#C8553D" font-family="Libre Franklin">investimento ${brl(cc[12])}</text>`;
@@ -703,7 +725,7 @@ lb.onclick=e=>{if(e.target===lb||e.target.id==='lbCl')lb.classList.remove('on')}
 /* ---------- navegação (modelo Axon) ---------- */
 const slides=[...document.querySelectorAll('.slide')],secs=document.getElementById('secs');
 secs.innerHTML=slides.map((s,i)=>`<button class="sec">${s.dataset.sec}</button>`).join('');
-document.getElementById('toc').innerHTML=slides.slice(1).map((s,i)=>`<div data-i="${i+1}"><b>0${i+1}</b>${s.dataset.sec}<i>${['onde estamos','pedir × delegar','capacidade e ROI','qual usar e quanto consome','estude no seu ritmo','retrato falado'][i]}</i></div>`).join('');
+document.getElementById('toc').innerHTML=slides.slice(1).map((s,i)=>`<div data-i="${i+1}"><b>0${i+1}</b>${s.dataset.sec}<i>${['onde estamos','pedir × delegar','casos reais e ROI','qual usar e quanto consome','estude no seu ritmo','retrato falado'][i]}</i></div>`).join('');
 document.getElementById('toc').onclick=e=>{const d=e.target.closest('[data-i]');if(d)go(+d.dataset.i)};
 const qs=new URLSearchParams(location.search);let cur=Math.max(0,Math.min(slides.length-1,(+qs.get('p')||1)-1));
 if(qs.has('print'))document.body.classList.add('print');
