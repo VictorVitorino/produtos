@@ -1,102 +1,132 @@
 /* =====================================================================
-   SLIDE 05 · Seis forças (Node Network Motion: forças → exigências → painel) · dono: slide 05
-   Ganchos pela chave data-s: ENTER["05"] (ao entrar), STEP["05"] (→/← internos), PRINT.push(f) (impressão).
+   SLIDE 05 · Seis forças · dono: mercado-forcas (V6)
+   fx 39 · Node Network Motion, em versão calma: as seis forças ficam em duas colunas alinhadas e cada uma se liga
+   por um fio ao centro, onde está a pergunta do cliente. Na visão geral um sinal corre por todos os fios até o centro
+   (as seis forças apontam para o mesmo lugar); ao escolher uma força, o fio dela acende em laranja, o resto recua e o
+   centro mostra o detalhe em três assuntos: o que mudou (fato verificado, sempre por data-fato) · o que o cliente passa
+   a exigir · por que pesa para a DTS. Sem nomes de produtos novos (a resposta vem na Parte 4). A ligação força →
+   exigência é leitura nossa (o verso explica).
+   Estados: visão geral (−1) → força 01 … 06. → / ← percorrem; clique numa força ou no seletor escolhe; clique na força
+   escolhida volta à visão geral.
+   Ganchos: ENTER["05"] (visão geral; força 06 quando vem pelo ←), STEP["05"] (passos), PRINT (visão geral estática e
+   uma página extra com as seis forças em detalhe, depois do verso).
    ===================================================================== */
-/* ---------- forças de mercado · fx 39 Node Network Motion ----------
-   Rede: forças (esquerda) → exigências do cliente (meio) → painel navy (direita).
-   Passar o mouse escolhe a força (com pequena espera de intenção); clicar ou usar → fixa a escolha,
-   e daí a passagem do mouse só pré-visualiza as ligações de outra força, sem trocar o painel
-   (como na referência), até um novo clique ou até o mouse sair da rede.
-   As ligações força → exigência são leitura DTS a partir do que mudou e da implicação de cada força. */
-(function(){
-  const sl=SL("05");if(!sl)return;
-  const map=$("fmMap"),svg=$("fmSvg"),L=$("fmLeft"),M=$("fmMid"),P=$("fmPanel");
-  /* seis forças: ícone, título, o que mudou, número, rótulo, fonte, "Para o DTS", exigências (proposta DTS), produtos que respondem */
+(function(){const sec=SL("05");if(!sec)return;
+  const net=$("s05Net"),svg=$("s05Svg"),colL=$("s05L"),colR=$("s05R"),hub=$("s05Hub"),seg=$("s05Seg");
+  if(!net||!svg||!colL||!colR||!hub)return;
+  const nn=i=>pad(i+1),fato=id=>`<span data-fato="${id}"></span>`;
+  /* as seis forças
+     ic ícone · t nome (uma linha) · fx o que mudou, versão do cartão · ex o que o cliente exige, versão do cartão
+     tok fato com o número de destaque ("" = sem número) · mud o que mudou, frase do centro (continua o número) · src fonte curta
+     req o que o cliente passa a exigir · dts por que pesa para a DTS (leitura nossa) */
   const F=[
-   {ic:"ai",t:"IA: uso amplo, retorno raro",x:"Quase todas as grandes empresas usam IA, mas poucas saem do piloto e provam resultado no caixa.",v:"56%",vl:"dos CEOs ainda sem retorno financeiro com IA",src:"PwC, 29ª CEO Survey · jan/2026",imp:"Vender valor medido e governança de IA, não estratégia genérica.",ask:["res","cmd"],p:["1.7","1.1"]},
-   {ic:"doc",t:"Reforma Tributária e fim do SAP ECC",x:"Dois prazos com data marcada obrigam a mexer em ERP, fiscal e dados ao mesmo tempo.",v:"01/01/27",vl:"CBS plena; manutenção padrão do SAP ECC termina em 2027",src:"LC 214/2025 · Baguete",imp:"Produtos com prazo e preço fixos: prontidão e resgate de projetos.",ask:["prazo","cmd"],p:["2.2","2.4"]},
-   {ic:"hand",t:"Deals liderados por private equity",x:"Menos transações, tickets maiores e fundos em metade dos deals; tecnologia é o setor mais negociado.",v:"50%",vl:"das transações de 2025 com fundos de PE ou VC",src:"KPMG, Fusões e Aquisições 2025 · mar/2026",imp:"Diligência rápida, Dia 1 garantido e sinergias que viram EBITDA.",ask:["prazo","res"],p:["3.1","3.2","3.4"]},
-   {ic:"coin",t:"Custo de tecnologia sob escrutínio",x:"O orçamento de TI desacelera, licenças sobem e contratos em dólar pesam no caixa.",v:"8–15×",vl:"alta de licenças VMware após a compra pela Broadcom",src:"Baguete · ABES/IDC (TI +5,3% em 2026)",imp:"Otimização de gastos com economia certificada e radar contínuo.",ask:["res","ind"],p:["1.5","4.3"]},
-   {ic:"shield",t:"Risco operacional e regulação",x:"Ataques à cadeia do Pix e novas regras do Banco Central elevam a exigência sobre terceiros de TI.",v:"~R$ 800 mi",vl:"desviados no ataque à C&M Software (jul/2025)",src:"Finsiders · Res. CMN 5.274/2025",imp:"Resiliência, recuperação e avaliação de risco de terceiros.",ask:["ind","cmd"],p:["4.5"]},
-   {ic:"people",t:"Talento e liderança escassos",x:"Metade das empresas não tem o talento necessário para IA; transações e reestruturações pedem liderança imediata.",v:"53%",vl:"das empresas sem o talento necessário para IA",src:"KPMG Global Tech Report 2026",imp:"Liderança interina e modelo operacional para a era dos agentes.",ask:["cmd"],p:["1.3","1.4"]}];
-  /* o que o cliente passa a exigir: critérios da Leitura DTS (prazo, preço e resultado definidos; independência de fornecedor; capacidade de assumir o comando) */
-  const A={prazo:["calendar","Prazo e preço fixos"],res:["chart","Resultado medido em R$"],ind:["split","Independência de fornecedor"],cmd:["flag","Capacidade de assumir o comando"]};
-  const K=Object.keys(A),nn=i=>pad(i+1);
+    {ic:"ai",t:"IA em toda parte, retorno raro",
+     fx:`${fato("ceo-sem-retorno-ia-56")} dos CEOs no mundo ainda não viram a IA aumentar a receita nem reduzir custos`,
+     ex:"ganho medido no resultado",
+     tok:"ceo-sem-retorno-ia-56",mud:"dos CEOs no mundo ainda não viram a IA aumentar a receita nem reduzir custos.",src:"PwC, pesquisa global com CEOs (jan/2026)",
+     req:"Ver o ganho na receita ou no custo antes de ampliar o investimento em IA.",
+     dts:"Nenhum dos 29 serviços descreve IA no método; diagnóstico e estratégia que não medem o ganho viram disputa de preço."},
+    {ic:"calendar",t:"2027 com data marcada",
+     fx:"Começa a cobrança do novo tributo federal e acaba a manutenção padrão do ERP antigo da SAP",
+     ex:"prazo e custo conhecidos até 2027",
+     tok:"forcas-cbs-2027",mud:"é o ano em que começa a cobrança da CBS, novo tributo federal sobre consumo, e termina a manutenção padrão do ECC, a versão antiga do ERP da SAP.",src:"Agência Senado (dez/2024) · SAP (fev/2020)",
+     req:"Chegar a 2027 com fiscal e ERP prontos, com prazo e custo conhecidos antes de começar.",
+     dts:"Prontidão de ERP e resgate de projetos já estão no portfólio; com data fixa, o cliente compra quem responde pela data."},
+    {ic:"hand",t:"Fundos no centro das transações",
+     fx:"Os fundos ganharam espaço nas transações de 2025; tecnologia é uma das áreas de maior interesse deles",
+     ex:"resposta rápida e valor capturado",
+     tok:"",mud:"Os fundos de private equity e de venture capital ganharam espaço nas fusões e aquisições de 2025, e a tecnologia está entre as áreas de maior interesse deles.",src:"KPMG, pesquisa de fusões e aquisições de 2025 (mar/2026)",
+     req:"Saber, antes de assinar, quanto custa integrar ou separar a tecnologia, e ver a sinergia no resultado depois.",
+     dts:"Os oito serviços de Tech M&A são fases do mesmo ciclo, vendidas em separado; o fundo quer um só responsável, da diligência ao valor."},
+    {ic:"coin",t:"Preço por hora na mira",
+     fx:`Gartner prevê: até 2027, ${fato("clawback-contratos-60")} dos grandes contratos de serviços de TI vão devolver ao cliente ganhos da IA`,
+     ex:"preço por entrega, não por hora",
+     tok:"clawback-contratos-60",mud:"dos grandes contratos de serviços de TI terão, até 2027, cláusulas que devolvem ao cliente parte dos ganhos com IA.",src:"previsão do Gartner (out/2025), noticiada pela imprensa",
+     req:"Pagar por entrega ou por resultado, não por pessoa alocada, e ver no preço a eficiência que a IA traz.",
+     dts:"Os 29 serviços são vendidos por esforço; se a IA corta horas e o contrato devolve o ganho, a receita por hora encolhe."},
+    {ic:"shield",t:"Risco cibernético com regra nova",
+     fx:"Regra nova exige das instituições financeiras teste de intrusão anual e controle da nuvem",
+     ex:"resiliência provada em teste",
+     tok:"forcas-cmn-5274",mud:"foi o prazo para as instituições financeiras cumprirem a regra nova de segurança cibernética e de nuvem, com teste de intrusão ao menos uma vez por ano.",src:"Resolução 5.274 do Conselho Monetário Nacional (dez/2025)",
+     req:"Provar em teste que a operação resiste e volta, inclusive nos fornecedores de tecnologia e de nuvem.",
+     dts:"Continuidade de negócios ainda é vendida como plano; o cliente regulado quer recuperação testada e terceiros sob controle."},
+    {ic:"people",t:"Talento e liderança escassos",
+     fx:`${fato("talento-transformacao-53")} das empresas ainda não têm o talento para tirar do papel seus planos de transformação digital`,
+     ex:"liderança que assume e entrega",
+     tok:"talento-transformacao-53",mud:"das empresas ainda não têm o talento necessário para tirar do papel seus planos de transformação digital.",src:"KPMG, pesquisa global com executivos (jan/2026)",
+     req:"Alguém que assuma a tecnologia já, com mandato e metas, e deixe a equipe pronta para seguir.",
+     dts:"Liderança interina é DNA de operador da A&amp;M e já está no portfólio; o cliente quer comando com resultado, não alocação de perfis."}];
 
-  /* nós das forças */
-  const nodes=F.map((f,i)=>{const w=H("div",{class:"fm-w","data-a":"left",style:`--d:${3+i*.8}`},L);
-    const b=H("button",{class:"fm-node",type:"button","aria-label":`Força ${nn(i)}: ${f.t}`},w);
-    b.innerHTML=`<span class="fm-ic">${icoSvg(f.ic,4+i)}</span><span class="fm-tx"><b><i>${nn(i)}</i>${f.t}</b><span class="fm-k"><em>${f.v}</em>${f.vl}</span></span>`;
-    /* hover no invólucro, que não se desloca: o nó anda 4px sem sair de baixo do cursor (sem oscilar na borda) */
-    w.addEventListener("pointerenter",()=>{clearTimeout(hv);if(lock){pv=i;apply();return}hv=setTimeout(()=>sel(i),120)});
-    w.addEventListener("pointerleave",()=>{clearTimeout(hv);if(pv===i){pv=-1;apply()}});
-    const pick=()=>{clearTimeout(hv);lock=true;pv=-1;sel(i)};b.addEventListener("click",pick);b.addEventListener("focus",pick);return b});
-  /* nós das exigências */
-  const DL=H("div",{class:"fm-dl"},M),dems={};K.forEach((k,j)=>{const w=H("div",{class:"fm-w","data-a":"right",style:`--d:${5+j}`},DL);
-    const fs=F.map((f,i)=>f.ask.includes(k)?i:-1).filter(i=>i>=0);
-    const d=H("div",{class:"fm-dem","data-k":k,"data-tv":A[k][1],"data-th":`Puxada por ${fs.length===1?"1 força":fs.length+" forças"}:<br>${fs.map(i=>`${nn(i)} · ${F[i].t}`).join("<br>")}<span class="tl"><i>Ligação: leitura DTS (proposta) a partir do que mudou e da implicação de cada força.</i></span>`},w);
-    d.innerHTML=`${icoSvg(A[k][0],6+j)}<span class="fm-dt"><b>${A[k][1]}</b><span class="fm-tags"><span class="lb">${fs.length===1?"força":"forças"}</span>${fs.map(i=>`<i data-f="${i}">${nn(i)}</i>`).join("")}</span></span>`;
-    d.addEventListener("pointerenter",()=>{hk=k;apply()});d.addEventListener("pointerleave",()=>{hk=null;apply()});dems[k]=d});
-  fixPaths(sl);
+  /* ---------- cartões das forças (01–03 à esquerda, 04–06 à direita) ---------- */
+  let k=-1;
+  const cards=F.map((f,i)=>{const b=H("button",{class:"s05-f",type:"button","data-k":i,"data-a":i<3?"left":"right",style:`--d:${2+i}`,"aria-pressed":"false","aria-label":`Força ${nn(i)}: ${strip(f.t)}`},i<3?colL:colR);
+    b.innerHTML=`<span class="s05-ic">${icoSvg(f.ic,3+i)}</span><span class="s05-tx"><span class="s05-ft"><i>${nn(i)}</i><b>${f.t}</b></span><span class="s05-fx">${f.fx}</span><span class="s05-fd"><em>Exigência</em><span>${f.ex}</span></span></span>`;
+    b.addEventListener("click",e=>{e.stopPropagation();show(k===i?-1:i)});
+    b.addEventListener("pointerenter",()=>hov(i,true));b.addEventListener("pointerleave",()=>hov(i,false));return b});
+  fixPaths(net);
 
-  /* painel navy: força selecionada */
-  P.innerHTML=`<div class="fm-pin">
-    <div class="fm-g"><div class="fm-ptop"><span class="fm-pic" id="fmIc"></span><span class="label" id="fmK"></span><span class="fm-dots" id="fmDots"></span></div>
-      <h3 class="fm-pt" id="fmT"></h3>
-      <div class="fm-sec"><span class="fm-sh">O que mudou</span><p id="fmX"></p></div></div>
-    <div class="fm-g fm-big"><b id="fmV"></b><span id="fmVl"></span><span class="fm-src" id="fmS"></span></div>
-    <div class="fm-g"><div class="fm-sec fm-imp"><span class="fm-sh">Para o DTS</span><p id="fmI"></p></div>
-      <div class="fm-sec fm-prod"><span class="fm-sh">Quem responde</span><div id="fmP"></div></div></div></div>`;
-  const dots=F.map((f,i)=>{const b=H("button",{type:"button","aria-label":`Força ${nn(i)}`,title:f.t},$("fmDots"));b.addEventListener("click",()=>{lock=true;pv=-1;sel(i)});return b});
-  /* clique num produto do painel: a ficha abre por cima, então a dica do chip sai junto */
-  P.addEventListener("click",e=>{if(e.target.closest("[data-pd]"))$("tip").classList.remove("on")});
+  /* ---------- seletor (visão geral · 01 … 06) ---------- */
+  if(seg)[["Visão geral",-1]].concat(F.map((f,i)=>[nn(i),i])).forEach(([l,i])=>{const b=H("button",{type:"button",title:i<0?"Visão geral das seis forças":`Força ${nn(i)} · ${strip(F[i].t)}`},seg,l);b.addEventListener("click",e=>{e.stopPropagation();show(i)})});
 
-  let edges=[],fi=0,hk=null,lock=false,pv=-1,hv=0,vTok=0;
-  /* sair da rede solta a trava do clique */
-  map.addEventListener("pointerleave",()=>{clearTimeout(hv);lock=false;if(pv>=0){pv=-1;apply()}});
-  function draw(){const W=map.offsetWidth,Hh=map.offsetHeight;if(!W||!Hh)return;svg.setAttribute("viewBox",`0 0 ${W} ${Hh}`);svg.setAttribute("width",W);svg.setAttribute("height",Hh);svg.innerHTML="";edges=[];
-    F.forEach((f,i)=>{const a=rel(nodes[i],map);f.ask.forEach(k=>{const b=rel(dems[k],map);const x1=a.x+a.w,y1=a.cy,x2=b.x,y2=b.cy,mx=(x1+x2)/2;
-      const p=S("path",{d:`M${x1} ${y1} C${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`,class:"fm-edge"},svg);p.dataset.f=i;p.dataset.k=k;edges.push(p)})});apply()}
-  /* hk = exigência sob o mouse (mostra as forças que a puxam); pv = força pré-visualizada com a escolha travada */
-  function apply(){const f=F[fi],q=!hk&&pv>=0&&pv!==fi?pv:-1;map.classList.add("focus");map.classList.toggle("dem",!!hk);
-    nodes.forEach((n,i)=>{n.classList.toggle("on",!hk&&i===fi);n.classList.toggle("lit",!!hk&&F[i].ask.includes(hk))});
-    K.forEach(k=>{dems[k].classList.toggle("on",hk?hk===k:f.ask.includes(k));dems[k].querySelectorAll(".fm-tags i").forEach(t=>t.classList.toggle("on",hk?hk===k:+t.dataset.f===fi))});
-    edges.forEach(e=>{const on=hk?e.dataset.k===hk:+e.dataset.f===fi;e.classList.toggle("on",on);e.classList.toggle("pv",!on&&+e.dataset.f===q);if(on)svg.appendChild(e)});
-    dots.forEach((d,i)=>d.classList.toggle("on",i===fi))}
-  function fill(still){const f=F[fi];$("fmK").textContent=`Força ${nn(fi)} de ${nn(F.length-1)}`;$("fmIc").innerHTML=icoSvg(f.ic);fixPaths($("fmIc"));$("fmT").textContent=f.t;
-    $("fmX").textContent=f.x;const v=$("fmV"),m=/^(\d+)%$/.exec(f.v);if(m&&!still&&!REDMO)cnt(v,+m[1],"%");else{vTok++;v.textContent=f.v}$("fmVl").textContent=f.vl;
-    $("fmS").textContent="Fonte: "+f.src;$("fmI").textContent=f.imp;
-    $("fmP").innerHTML=f.p.map(c=>{const q=PBY(c);return q?`<a href="#p=${q.id}" data-pd="${q.id}" class="fm-pchip" data-tv="${q.code} · ${q.name}" data-tl="${strip(q.tagline).replace(/"/g,"&quot;")}">${picoSvg(c)}<b>${q.code}</b><span>${q.name}</span><i>→</i></a>`:""}).join("");fixPaths($("fmP"));
-    if(!still&&!REDMO)P.querySelector(".fm-pin").animate([{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"none"}],{duration:340,easing:"cubic-bezier(.22,.61,.36,1)"})}
-  /* contador local que pode ser cancelado: trocar de força antes do fim nunca deixa o número de outra força */
-  function cnt(el,to,suf){const t=++vTok,t0=performance.now();el.textContent="0"+suf;
-    const st=n=>{if(t!==vTok)return;const k=clamp((n-t0)/700,0,1);el.textContent=Math.round(to*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
-  function sel(i,still){const ch=i!==fi||!$("fmT").textContent;fi=i;if(ch||still)fill(still);apply()}
-  fill(true);apply();
+  /* ---------- centro: a pergunta do cliente (visão geral) ou o detalhe da força ---------- */
+  /* visão geral; na entrada do slide (ent) a pergunta antiga é riscada antes de a nova aparecer */
+  const HUB0=ent=>`<div class="s05-hv${ent?" s05-ent":""}">
+      <span class="s05-eye">A pergunta do cliente mudou</span>
+      <div class="s05-q s05-q0"><span class="s05-ql">Antes</span><p>Qual é a nossa estratégia digital?</p></div>
+      <div class="s05-q s05-q1"><span class="s05-ql">Agora</span><p>Quanto a tecnologia devolve, em que prazo e quem responde por isso?</p></div>
+      <p class="s05-con"><b>Seis forças, uma exigência:</b> <em>resultado comprovado</em>, com prazo, preço e dono.</p>
+      <span class="s05-hint" data-ui>→ percorre as forças · clique numa força para ver o detalhe</span></div>`;
+  const HUB=i=>{const f=F[i];return `<div class="s05-hd">
+      <div class="s05-hh"><span class="s05-hic">${icoSvg(f.ic)}</span><span class="s05-eye">Força ${nn(i)} de ${nn(F.length-1)}</span></div>
+      <h3 class="s05-ht">${f.t}</h3>
+      <div class="s05-ss">
+        <div class="s05-sec s05-mud"><span class="s05-sl">O que mudou</span>${f.tok?`<b class="s05-tok">${fato(f.tok)}</b>`:""}<p>${f.mud}</p><span class="s05-src src-note">Fonte: ${f.src}</span></div>
+        <div class="s05-sec"><span class="s05-sl">O que o cliente passa a exigir</span><p>${f.req}</p></div>
+        <div class="s05-sec"><span class="s05-sl">Por que pesa para a DTS</span><p>${f.dts}</p></div>
+      </div></div>`};
+  function show(i,inst,ent){k=clamp(i,-1,F.length-1);apply();hub.innerHTML=k<0?HUB0(!!ent):HUB(k);fixPaths(hub);if(typeof refFill==="function")refFill(hub);
+    if(!inst&&!REDMO){const v=hub.firstElementChild;if(v&&v.animate)v.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:340,easing:"cubic-bezier(.22,.61,.36,1)"})}}
+  function apply(){net.classList.toggle("sel",k>=0);
+    cards.forEach((c,j)=>{c.classList.toggle("on",j===k);c.setAttribute("aria-pressed",String(j===k))});
+    svg.querySelectorAll(".s05-sp").forEach(g=>{const on=+g.dataset.k===k;g.classList.toggle("on",on);if(on)svg.appendChild(g)});
+    if(seg){seg.querySelectorAll("button").forEach((b,j)=>b.classList.toggle("on",j===k+1));segSync(seg)}}
+  function hov(i,on){const g=svg.querySelector(`.s05-sp[data-k="${i}"]`);if(g)g.classList.toggle("hv",on)}
 
-  /* de onde se veio: observa qual slide fica ativo (o core só marca "back" nas trocas animadas,
-     e reativa o mesmo slide ao fechar uma ficha). fresh = o slide acabou de ser aberto vindo de outro;
-     from = índice do slide anterior. Funciona igual com e sem movimento reduzido. */
-  const idx=slides.indexOf(sl);let act=slides.findIndex(s=>s.classList.contains("active")),from=-1,fresh=true;
-  const mo=new MutationObserver(()=>{const a=slides.findIndex(s=>s.classList.contains("active"));if(a===act)return;if(a===idx){from=act;fresh=true}act=a});
-  slides.forEach(s=>mo.observe(s,{attributes:true,attributeFilter:["class"]}));
-  /* entrada nova: aberto pelo ← (goLast, ver core.js) abre na última força, como as vistas dos outros slides; trilha, índice e links abrem na primeira.
-     reentrada (fechar uma ficha aberta daqui): mantém a força e a trava, e o → continua de onde parou */
-  ENTER["05"]=()=>{hk=null;pv=-1;clearTimeout(hv);
-    if(!fresh){lock=true;requestAnimationFrame(()=>{draw();sel(fi,true)});return}
-    fresh=false;lock=false;const i=goLast?F.length-1:0;requestAnimationFrame(()=>{draw();sel(i)})};
-  STEP["05"]=d=>{const n=fi+d;if(n<0||n>=F.length)return false;hk=null;pv=-1;lock=true;clearTimeout(hv);sel(n);return true};
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(sl.classList.contains("active"))draw()});
+  /* ---------- fios: da borda interna de cada cartão até a borda do centro (três pontos de chegada por lado) ---------- */
+  function draw(){const W=net.offsetWidth,Hh=net.offsetHeight;if(!W||!Hh)return false;
+    svg.setAttribute("viewBox",`0 0 ${W} ${Hh}`);svg.setAttribute("width",W);svg.setAttribute("height",Hh);svg.innerHTML="";
+    const hb=rel(hub,net),dy=Math.min(64,hb.h*.12);
+    cards.forEach((c,i)=>{const r=rel(c,net),L=i<3,row=i%3;
+      const x1=L?r.x+r.w:r.x,y1=r.cy,x2=L?hb.x:hb.x+hb.w,y2=hb.cy+(row-1)*dy,mx=(x1+x2)/2;
+      const d=`M${x1.toFixed(1)} ${y1.toFixed(1)} C${mx.toFixed(1)} ${y1.toFixed(1)} ${mx.toFixed(1)} ${y2.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+      const g=S("g",{class:"s05-sp","data-k":i},svg);
+      S("path",{d,class:"s05-ln dr",pathLength:1,style:`--d:${8+i}`},g);
+      S("path",{d,class:"s05-fl",id:"s05p"+i},g);
+      S("circle",{cx:x1,cy:y1,r:5.5,class:"s05-n0"},g);
+      S("circle",{cx:x2,cy:y2,r:4.5,class:"s05-n1"},g);
+      /* sinal que corre até o centro (sem movimento reduzido; some na impressão) */
+      if(!REDMO){const p=S("circle",{r:4,class:"s05-pu"},g);const a=S("animateMotion",{dur:"2.6s",repeatCount:"indefinite",begin:`${(i*.43).toFixed(2)}s`},p);S("mpath",{href:"#s05p"+i},a)}});
+    apply();return true}
 
-  /* impressão: rede estática com a força 1 e uma página extra com as seis forças completas;
-     depois da impressão (afterprint) a tela volta à força em que estava */
-  let rest=null;addEventListener("afterprint",()=>{if(!rest)return;const r=rest;rest=null;if(!sl.classList.contains("active"))return;lock=r.lock;draw();sel(r.fi,true)});
-  PRINT.push(()=>{if(!rest)rest={fi,lock};const was=sl.style.display;sl.style.display="block";hk=null;pv=-1;lock=false;clearTimeout(hv);fi=0;draw();sel(0,true);sl.style.display=was;
-    if(stage.querySelector(".fm-print"))return;
-    const c=sl.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","fm-print","play");
+  /* ---------- ganchos ---------- */
+  ENTER["05"]=()=>{show(goLast?F.length-1:-1,true,true);requestAnimationFrame(()=>draw())};
+  STEP["05"]=d=>{const n=k+d;if(n<-1||n>=F.length)return false;show(n);return true};
+  /* fontes da web chegam depois do primeiro desenho: redesenha se o slide estiver na tela */
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(sec.classList.contains("active"))draw()});
+
+  /* ---------- impressão: visão geral estática na página da frente e uma página extra com as seis forças em detalhe ---------- */
+  PRINT.push(()=>{const was=sec.style.display;sec.style.display="block";show(-1,true);draw();sec.style.display=was;
+    if(stage.querySelector(".s05-print"))return;
+    const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","s05-print","play");
     c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));
-    const ce=c.querySelector(".hd .eyebrow");if(ce)ce.textContent="Seis forças em detalhe · número, fonte e leitura para a DTS";
-    const g=H("div",{class:"forces2"});
-    F.forEach((f,i)=>{const d=H("div",{class:"f2"},g);d.innerHTML=`<div class="hd"><div class="ic">${icoSvg(f.ic)}</div><h4><i>${nn(i)}</i>${f.t}</h4></div><div class="th">${f.x}</div><div class="v">${f.v}<small>${f.vl}</small></div><div class="src">Fonte: ${f.src}</div><div class="imp"><b>Para o DTS</b>${f.imp}</div><div class="fm-who"><b>Quem responde</b>${f.p.map(cd=>plink(cd)).join("")}</div>`});
-    const fmm=c.querySelector(".fm-map");if(fmm)fmm.replaceWith(g);const sb=c.querySelector(".sumbar");if(sb)sb.remove();fixPaths(c);sl.after(c)});
+    const sub=c.querySelector(".sub");if(sub)sub.textContent="As seis forças em detalhe: o que mudou, o que o cliente passa a exigir e por que pesa para a DTS";
+    const g=H("div",{class:"s05-pgrid"});
+    F.forEach((f,i)=>H("div",{class:"s05-pc",html:`<div class="s05-ph"><span class="s05-ic">${icoSvg(f.ic)}</span><i>${nn(i)}</i><b>${f.t}</b></div>
+      <div class="s05-ps"><span class="s05-pl">O que mudou</span><p>${f.tok?fato(f.tok)+" ":""}${f.mud}</p><span class="s05-psrc src-note">Fonte: ${f.src}</span></div>
+      <div class="s05-ps"><span class="s05-pl">O que o cliente passa a exigir</span><p>${f.req}</p></div>
+      <div class="s05-ps"><span class="s05-pl">Por que pesa para a DTS</span><p>${f.dts}</p></div>`},g));
+    const n=c.querySelector(".s05-net");if(n)n.replaceWith(g);
+    const r=c.querySelector(".head-r");if(r)r.remove();
+    const w=c.querySelector(".sowhat");if(w)w.remove();
+    fixPaths(c);sec.after(c)});
 })();

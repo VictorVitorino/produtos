@@ -1,32 +1,123 @@
 /* =====================================================================
-   SLIDE 18 · Fábrica de produtos (Card Stack) · dono: slide 18
-   Ganchos pela chave data-s: ENTER["18"] (ao entrar), STEP["18"] (→/← internos), PRINT.push(f) (impressão).
+   SLIDE 18 · Fábrica de produtos · dono: fabrica-jogos
+   Os sete portões que um serviço atravessa para virar produto (proposta DTS), nesta ordem:
+   dor que se repete → escopo fechado → método replicável → IA no método → dados que se acumulam →
+   formato que o cliente compra → dono do produto → saída: piloto com clientes selecionados (prazo e preço calibrados ali).
+   - Esteira no topo: os sete portões e o piloto; clique num portão para abri-lo; o mascote (capacete) vigia a saída.
+   - Card Stack (engine.js · CardStack): um cartão por portão, com a pergunta, o que o produto precisa mostrar para passar,
+     um exemplo do portfólio (link para a ficha) e o que acontece se não passa. Clicar ou arrastar o cartão do topo
+     também avança (comportamento do CardStack).
+   - Lateral: por que portões agora (três fatos do registro, ligados aos portões que reforçam: passar o cursor acende
+     os portões na esteira), quem decide e a saída (piloto).
+   Ganchos: ENTER["18"] (portão 1; entrando pelo ←, portão 7), STEP["18"] (→ abre o próximo portão; no 7º, segue
+   para o slide 19; ← volta), PRINT (página do slide no portão 1 + página extra com a tabela dos sete portões).
+   Sem números além dos estruturais (sete portões, posição de cada portão, códigos de produto); o 60% vem de FATOS.
    ===================================================================== */
-/* ---------- fábrica: card stack + anatomia ---------- */
-(function(){const C=[["01","Codificar o método","Etapas, entregáveis, templates e critérios de qualidade iguais em todo cliente.",["Ficha padrão (12 blocos e fontes)","Kit: data request, roteiros, modelos","Definição de ‘pronto’ por etapa"]],
-  ["02","Nomear pelo que entrega","Nomes em inglês, no vocabulário que o comprador usa em RFP e compras, e que dizem o resultado, não o método.",["Mercado: CIO Advisory · Separation & Carve-out · Trusted AI","Um nome por produto; buy-side, sell-side e níveis são edições","Strategy Application → Application Portfolio Rationalization"]],
-  ["03","Embarcar a IA","Agentes e prompts testados por etapa, rodando em LLM corporativo seguro.",["Biblioteca de agentes por produto","Revisão humana obrigatória (sênior assina)","Trilha de evidências: cada achado cita a fonte"]],
-  ["04","Capturar dados","Cada projeto alimenta o benchmark DTS, anonimizado: a vantagem cresce a cada venda.",["Taxonomia única (TBM, maturidade, preços)","Benchmark DTS Brasil","Base para radares por assinatura"]],
-  ["05","Precificar","Preço por valor, não por hora: sprint fixo, execução com êxito, assinatura.",["Faixas por porte de cliente","Success fee onde há economia mensurável","Assinatura para radares e escritórios"]],
-  ["06","Equipar o time","Dono de produto, squad padrão e trilha de skills com certificação interna.",["1 dono por pilar + 1 de IA","Squad: sócio, gerente, consultores, eng. de IA/dados","Certificação interna por produto"]],
-  ["07","Escalar e medir","Funil, conversão, margem e NPS por produto: o comitê trimestral acompanha e a revisão anual decide.",["Revisão anual: escalar · ajustar · aposentar","Conversão sprint → execução","Casos de sucesso viram material de venda"]]];
-  const EXS=["Ex.: <b>3.1 AI-Powered Tech Due Diligence</b> · checklist padrão, modelo de custos e relatório em 3 níveis", "Ex.: <b>IT Integration Management Office + IT Separation Management Office</b> → 3.3 Integration & Separation Office (IMO/SMO)", "Ex.: <b>1.5 Tech Spend Optimization & Spend Radar</b> · agente lê contratos e faturas; o gerente valida cada achado", "Ex.: <b>3.5 PE Tech Value Radar</b> · score comparável entre investidas", "Ex.: <b>1.7 AI Value & Governance Office</b> · assinatura Essencial · Avançado · Regulado", "Ex.: <b>2.4 Tech Project Rescue</b> · squad forense pronto em 1 semana", "Ex.: <b>1.1 Tech & AI Value Diagnostic</b> → 1.4 e 1.5 · meta de conversão sprint → execução"];
-  const OPM=[["Dono de produto","1 por pilar + 1 de IA: P&L, roadmap e qualidade da ficha"],["Squad padrão","Sócio · gerente · 2 consultores · engenheiro de IA/dados"],["Comitê trimestral","Acompanha receita, margem e conversão; a revisão anual decide escalar, ajustar ou aposentar"]];
-  const cs=CardStack($("csScene"),C.map(([n,t,p,li],i)=>`<div class="q">${n}</div><div class="k">PASSO ${n} DE 07</div><h3>${t}</h3><p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul><div class="ex">${EXS[i]}</div>`),$("csDots"));
-  $("csNext").onclick=()=>cs.next();$("csPrev").onclick=()=>cs.prev();ENTER["18"]=()=>{if(goLast)cs.to(C.length-1);else cs.reset()};
-  /* → percorre os 7 passos antes de sair do slide; ← volta passo a passo (entrando pelo ←, abre no passo 07) */
-  STEP["18"]=d=>{if(d>0&&cs.top<C.length-1){cs.next();return true}if(d<0&&cs.top>0){cs.prev();return true}return false};
-  /* impressão: a pilha vira a lista dos 7 passos e uma página extra traz os 7 cards completos */
-  PRINT.push(()=>{const sec=SL("18");cs.reset();
-    if(!sec.querySelector(".cs-print")){const l=H("ol",{class:"cs-print"});$("csScene").after(l);C.forEach(([n,t,p])=>{H("li",{html:`<i>${n}</i><b>${t}</b><span>${p}</span>`},l)})}
-    if(stage.querySelector(".cs-print-page"))return;const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","cs-print-page","play");
-    c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));const ce=c.querySelector(".hd .eyebrow");if(ce)ce.textContent="Os sete passos em detalhe · método, exemplo e entregas";
-    const g=H("div",{class:"cs-grid"});C.forEach(([n,t,p,li],i)=>{H("div",{class:"cs-g",html:`<div class="k">PASSO ${n} DE 07</div><h4>${t}</h4><p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul><div class="ex">${EXS[i]}</div>`},g)});
-    /* 8ª célula: o modelo operacional que sustenta os sete passos (o mesmo do slide) */
-    H("div",{class:"cs-g op",html:`<div class="k">MODELO OPERACIONAL DA FÁBRICA</div>${OPM.map(([t,x])=>`<div class="om"><b>${t}</b><span>${x}</span></div>`).join("")}<div class="ex">Proposta DTS</div>`},g);
-    const cmn=c.querySelector(".main");if(cmn)cmn.replaceWith(Object.assign(g,{className:"main cs-grid"}));sec.after(c)});
-  /* anatomia: os blocos da ficha real (modelo Playbook), na ordem em que aparecem */
-  [["1","Para quem é"],["2","Formato e encaixe"],["3","Origem"],["4","Por que A&amp;M"],["5","O problema"],["6","O que recebe"],["7","Como funciona"],["8","Números"],["9","Papel da IA"],["10","Como vira produto"],["11","Ferramentas e dados"],["12","Skills aplicadas"]].forEach(([n,t],i)=>{const d=H("div",{class:"anat-i","data-a":"up",style:`--d:${3+i}`},$("anat"));d.innerHTML=`<i>${n}</i><span>${t}</span>`});
-  [["Sprint","Diagnóstico com escopo e preço fixos <span class=\"nwr\">(1–6 semanas)</span>",["1.1","2.4","3.1","4.6"]],["Execução","Programa com fee + êxito ou marcos",["1.5","2.3","3.3","4.3"]],["Assinatura","Radar ou escritório contínuo: receita recorrente",["1.7","3.5","1.5"]]].forEach(([t,x,ps],i)=>{const d=H("div",{class:"tier","data-a":"up",style:`--d:${8+i}`},$("tiers"));d.innerHTML=`<h4>${i+1} · ${t}</h4><p>${x}</p><div class="pls">${ps.map(c=>`<a href="#p=${PBY(c).id}" data-pd="${PBY(c).id}" class="plink sm ${PBY(c).st}">${c}</a>`).join("")}</div>`});
-  [["Demanda recorrente","≥ 3 clientes por ano com o mesmo problema"],["Método repetível","≥ 70% do escopo igual entre clientes"],["Dados reaproveitáveis","cada projeto melhora o benchmark e o próximo"],["IA com ganho real","≥ 30% menos esforço nas etapas automatizadas"],["Preço por valor","fixo, êxito ou assinatura, defensável pelo resultado"],["Dono e squad","responsável pelo P&L e time treinado"]].forEach(([t,x],i)=>{const d=H("div",{class:"gate-i","data-a":"up",style:`--d:${14+i}`},$("gate"));d.innerHTML=`<i>✓</i><div><b>${t}</b><p>${x}</p></div>`});
-  OPM.forEach(([t,x],i)=>{const d=H("div",{"data-a":"up",style:`--d:${11+i}`},$("opm"));d.innerHTML=`<h4>${t}</h4><p>${x}</p>`})})();
+(function(){const sec=SL("18"),track=$("s18Track"),scene=$("s18Scene");if(!sec||!track||!scene)return;
+  /* k: rótulo da esteira (palavra do subtítulo) · kk: complemento · t: nome do portão · ic: ícone (05-icons.js)
+     q: a pergunta do portão · p: o que o produto precisa mostrar · ex: [código, exemplo no portfólio] · no: se não passa */
+  const G=[
+    {k:"Dor",kk:"que se repete",t:"Dor que se repete",ic:"target",
+     q:"A mesma dor aparece em vários clientes, com o mesmo comprador?",
+     p:["A dor se repete em clientes do mesmo perfil; não é um caso isolado","Há um comprador claro, que assina e responde pelo resultado","O gatilho é reconhecível: orçamento, troca de liderança, transação ou prazo legal"],
+     ex:["2.4","Projeto de ERP, sistema ou transformação em crise: a dor se repete e quem compra é sempre o CEO, o CFO ou o conselho."],
+     no:"Segue como serviço sob medida: não ganha ficha nem kit."},
+    {k:"Escopo",kk:"fechado",t:"Escopo fechado",ic:"doc",
+     q:"O que entra, o que fica de fora e em que decisão o trabalho termina?",
+     p:["Entregáveis e critério de pronto escritos","O que não está incluído também escrito","O trabalho termina numa decisão do cliente, não num relatório"],
+     ex:["1.1","Termina numa lista curta de decisões, com valor em reais e dono, e não num relatório de maturidade."],
+     no:"Volta para o desenho: escopo aberto vira hora vendida."},
+    {k:"Método",kk:"replicável",t:"Método replicável",ic:"route",
+     q:"Outra equipe entrega o mesmo resultado em outro cliente?",
+     p:["Etapas, roteiros, modelos e pedido de dados padronizados","Critério de qualidade em cada etapa, revisado por um sênior antes da entrega","Um kit que um consultor novo aprende a usar"],
+     ex:["3.1","Une a diligência de quem compra e de quem vende num só método, em níveis com escopo e preço fechados."],
+     no:"O método ainda mora na cabeça de quem entrega: escrever antes de vender."},
+    {k:"IA",kk:"no método",t:"IA no método",ic:"ai",
+     q:"Em que etapa a IA tira trabalho repetitivo ou enxerga o que a equipe não veria?",
+     p:["Cada etapa diz o que a IA faz e o que fica com a equipe","Revisão humana: um sênior assina cada achado","Cada achado cita a evidência, no ambiente seguro do cliente e dentro da LGPD"],
+     ex:["1.5","A IA lê contratos e extrai renovação, reajuste, multa e cláusula cambial; Finanças valida cada economia."],
+     no:"Sem papel claro para a IA, o ganho de produtividade vira desconto pedido pelo cliente."},
+    {k:"Dados",kk:"que se acumulam",t:"Dados que se acumulam",ic:"db",
+     q:"O que cada projeto deixa para o próximo cliente?",
+     p:["Base de comparação anonimizada, com permissão de cada cliente","A mesma taxonomia em todos os projetos","Regra de atualização da base a cada entrega"],
+     ex:["3.5","Cada investida acompanhada melhora a comparação entre as empresas do mesmo fundo."],
+     no:"Cada projeto recomeça do zero, e o produto não melhora com o uso."},
+    {k:"Formato",kk:"que o cliente compra",t:"Formato que o cliente compra",ic:"contract",
+     q:"Como o cliente compra: diagnóstico fechado, programa com marcos ou assinatura?",
+     p:["Formato e modelo comercial escritos na ficha","Preço ligado à entrega ou ao resultado, não às horas","Prazo e preço calibrados no piloto, não no papel"],
+     ex:["1.7","Escritório operado pela A&amp;M, vendido por assinatura em níveis de serviço."],
+     no:"Sem formato claro, a proposta volta a ser hora estimada."},
+    {k:"Dono",kk:"do produto",t:"Dono do produto",ic:"people",
+     q:"Quem responde pela ficha, pela qualidade e pela evolução do produto?",
+     p:["Um dono por produto, com equipe treinada no método","Resultados do produto acompanhados pelo comitê de portfólio","Revisão periódica: escalar, ajustar ou aposentar"],
+     ex:["1.3","Três ofertas de liderança viram um só produto, com um dono para o método, a bancada de executivos e o preço."],
+     no:"Produto sem dono envelhece: o método se perde e a ficha para no tempo."}];
+  const N=G.length;
+  /* sem palavra sozinha na última linha: espaço não separável antes da última palavra */
+  const cola=t=>String(t==null?"":t).replace(/ (\S+)$/,"\u00a0$1");
+  G.forEach(g=>{g.q=cola(g.q);g.p=g.p.map(cola);g.ex[1]=cola(g.ex[1]);g.no=cola(g.no)});
+  const at=s=>String(s==null?"":s).replace(/&(?!amp;)/g,"&amp;").replace(/"/g,"&quot;");
+  const ic=(n,d)=>typeof icoSvg==="function"?icoSvg(n,d):"";
+  const CHK='<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 12.5 10 16.5 18 8"/></svg>';
+  const plk=c=>{const p=PBY(c);return p?`<a href="#p=${p.id}" data-pd="${p.id}" class="plink sm ${p.st}" data-tv="${at(p.code+" · "+p.name)}" data-tl="Clique para abrir a ficha.">${p.code} ${p.name}</a>`:`<b>${c}</b>`};
+  const pnm=c=>{const p=PBY(c);return p?`${p.code} ${p.name}`:c};
+
+  /* ---------- esteira: sete portões e a saída (piloto) ---------- */
+  const rail=H("div",{class:"s18-rail"});track.prepend(rail);
+  const nodes=[],lns=[];
+  G.forEach((g,i)=>{if(i)lns.push(H("i",{class:"s18-ln","aria-hidden":"true"},rail));
+    const b=H("button",{class:"s18-g",type:"button","data-k":i,"aria-label":`Portão ${i+1}: ${g.t}`},rail);
+    b.innerHTML=`<span class="s18-n"><b>${i+1}</b>${CHK}</span><span class="s18-gt"><b>${g.k}</b><i>${g.kk}</i></span>`;
+    b.addEventListener("click",e=>{e.stopPropagation();goTo(i)});nodes.push(b)});
+  lns.push(H("i",{class:"s18-ln s18-lnp","aria-hidden":"true"},rail));
+  const pil=H("div",{class:"s18-pil"},rail);
+  pil.innerHTML=`<span class="s18-pic">${ic("rocket",8)}</span><span class="s18-gt"><b>Piloto</b><i>prazo e preço calibrados</i></span>`;
+
+  /* ---------- pilha de cartões (um por portão) ---------- */
+  const cardHTML=(g,i)=>`<div class="s18-cd dk">
+      <span class="s18-cq" aria-hidden="true">${i+1}</span>
+      <div class="s18-ck"><span class="s18-cic">${ic(g.ic,i)}</span><span class="s18-ckt">Portão ${i+1} de ${N}</span></div>
+      <b class="s18-ct">${g.t}</b>
+      <p class="s18-cp">${g.q}</p>
+      <div class="s18-cc">
+        <div class="s18-crit"><span class="s18-cl">Para passar, o produto mostra</span><ul>${g.p.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+        <div class="s18-ex"><span class="s18-cl">No portfólio</span>${plk(g.ex[0])}<p>${g.ex[1]}</p></div>
+      </div>
+      <div class="s18-no"><span class="s18-cl">Se não passa</span><p>${g.no}</p></div>
+    </div>`;
+  let cur=0,tmr=0;
+  function sync(){nodes.forEach((n,j)=>{n.classList.toggle("done",j<cur);n.classList.toggle("cur",j===cur);n.setAttribute("aria-current",j===cur?"step":"false")});
+    lns.forEach((l,j)=>l.classList.toggle("on",j<cur||(j===N-1&&cur===N-1)));pil.classList.toggle("on",cur===N-1)}
+  const cs=CardStack(scene,G.map(cardHTML),null,k=>{cur=k;sync()});
+  if(typeof fixPaths==="function"){fixPaths(scene);fixPaths(track)}
+  const els=()=>[...scene.querySelectorAll(".cs-card")];
+  /* abre o portão k: para a frente, o cartão do topo sai voando (como no CardStack); para trás, o anterior volta pela esquerda */
+  function goTo(k,instant){k=clamp(k,0,N-1);clearTimeout(tmr);const from=cur,E=els();
+    if(k===from){cs.to(k);return}
+    if(!instant&&!REDMO&&k===from+1&&E[from]){const el=E[from];el.style.transition="transform .32s ease-in,opacity .32s";el.style.transform="translate(112%,-20px) rotate(12deg)";el.style.opacity=0;
+      cur=k;sync();tmr=setTimeout(()=>{el.style.transition="";cs.to(k)},320);return}
+    if(!instant&&!REDMO&&k===from-1&&E[k]){const el=E[k];el.style.transition="none";el.style.transform="translate(-112%,-20px) rotate(-12deg)";el.style.opacity=0;void el.offsetWidth;el.style.transition=""}
+    cs.to(k)}
+
+  /* fatos da lateral: passar o cursor acende os portões que o fato reforça */
+  sec.querySelectorAll(".s18-f[data-g]").forEach(f=>{const ks=f.dataset.g.split(",").map(Number);
+    f.addEventListener("mouseenter",()=>ks.forEach(k=>nodes[k]&&nodes[k].classList.add("hl")));
+    f.addEventListener("mouseleave",()=>ks.forEach(k=>nodes[k]&&nodes[k].classList.remove("hl")))});
+
+  /* ---------- ganchos ---------- */
+  ENTER["18"]=()=>{clearTimeout(tmr);els().forEach(e=>{e.style.transition=""});cs.to(goLast?N-1:0)};
+  STEP["18"]=d=>{if(d>0){if(cur<N-1){goTo(cur+1);return true}return false}if(cur>0){goTo(cur-1);return true}return false};
+  /* impressão: a página do slide abre no portão 1; uma página extra traz os sete portões em tabela */
+  PRINT.push(()=>{clearTimeout(tmr);els().forEach(e=>{e.style.transition=""});cs.to(0);
+    if(stage.querySelector(".s18-print"))return;
+    const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","s18-print","play");
+    c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));
+    const sub=c.querySelector(".sub");if(sub)sub.textContent="Os sete portões em detalhe: a pergunta, o que o produto precisa mostrar, um exemplo do portfólio e o que acontece se não passa";
+    const tb=H("table",{class:"tbl s18-tb"});
+    tb.innerHTML=`<thead><tr><th>Portão</th><th>A pergunta</th><th>Para passar, o produto mostra</th><th>No portfólio</th><th>Se não passa</th></tr></thead><tbody>${G.map((g,i)=>`<tr>
+      <td class="s18-tg"><span class="s18-tn">${i+1}</span><b>${g.t}</b></td><td>${g.q}</td><td>${g.p.join(" · ")}</td><td><b>${pnm(g.ex[0])}</b> · ${g.ex[1]}</td><td>${g.no}</td></tr>`).join("")}
+      <tr class="s18-tp"><td class="s18-tg"><span class="s18-tn">→</span><b>Piloto</b></td><td colspan="4">Com clientes selecionados: prazo e preço de cada produto saem daqui, não de estimativa. O dono leva o produto portão a portão; o comitê de portfólio da DTS aprova, devolve com ajuste ou arquiva e, depois do piloto, decide escalar, ajustar ou aposentar.</td></tr></tbody>`;
+    const w=H("div",{class:"s18-pw"});w.appendChild(tb);
+    const tr=c.querySelector(".s18-track");if(tr)tr.remove();const sw=c.querySelector(".sowhat");if(sw)sw.remove();
+    const m=c.querySelector(".s18-main");if(m)m.replaceWith(w);sec.after(c)});
+})();

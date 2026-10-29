@@ -27,6 +27,7 @@
      ia        o papel da IA no jogo (até 125)
      ponte     {código: como o resultado do jogo leva àquele produto} (até 95 cada); percorrer por `produtos`
      metodo    de onde vem o método, em palavras, com a organização e o ano da fonte (até 230)
+     selo      {m: nome do método, f: organização ou publicação e ano}: o selo "Método" na frente da carta (slide 19)
      fatos     ids de FATOS que dão peso ao jogo (método e "por que agora"); só fatos "verificado" (conferidos em 29/10/2026)
      validar   o que observar nos primeiros jogos com clientes (até 140)
 
@@ -66,6 +67,7 @@ const JOGOS={
     quando:"Antes de fechar o orçamento do ano ou quando o conselho cobra o retorno da IA",
     ia:"A IA prepara as cartas com o orçamento e os contratos que o cliente compartilha e resume a mesa em decisões com dono.",
     metodo:"Jogo de decisão para executivos, com a mecânica dos jogos de guerra de negócios (McKinsey Quarterly, 2011). Jogos de simulação ensinam mais quando complementam outros métodos (Personnel Psychology, 2011): aqui, o produto.",
+    selo:{m:"Jogos de guerra de negócios",f:"McKinsey Quarterly, 2011"},
     fontes:["mckinsey-war-games-2011","fj-personnel-psych-2011"],
     fatos:["jogos-de-guerra-executivos","jogos-simulacao-aprendizado","ceo-sem-retorno-ia-56","ia-ligada-resultado-um-terco"],
     validar:"Se a diretoria aceita levar os próprios números para a mesa e se a lista do que ninguém soube medir vira pedido de diagnóstico."
@@ -76,14 +78,14 @@ const JOGOS={
     pilar:2,
     tipo:"Jogo de antecipação",
     duracao:"uma manhã",
-    pergunta:"Se o programa fracassar em 2027, por que terá sido?",
-    promessa:"Imaginar hoje o fracasso de 2027, enquanto ainda dá tempo de evitá-lo.",
+    pergunta:"Se o programa de ERP ou da Reforma Tributária fracassar em 2027, por que terá sido?",
+    promessa:"Imaginar hoje o fracasso de 2027 e corrigir o plano enquanto ainda dá tempo de evitá-lo.",
     passos:[
       "A manchete chega: é o fim de 2027 e o programa fracassou",
       "Cada um escreve as causas em silêncio; depois, a mesa lê uma a uma",
       "As causas mais fortes viram riscos com dono e ação no plano"
     ],
-    regra:"O fracasso é certo: ninguém defende o plano, só explica por que ele falhou.",
+    regra:"O fracasso é dado como certo: ninguém defende o plano, cada um explica por que ele falhou.",
     quem:"Patrocinador, time do programa, donos de processo, área tributária e integrador",
     material:"A manchete fictícia do fracasso, datada do fim de 2027, cartões de causa, quadro de riscos e cronômetro",
     leva:"A lista das causas prováveis de fracasso, cada uma com sinal de alerta, dono e ação no plano",
@@ -96,6 +98,7 @@ const JOGOS={
     quando:"No início de um programa de ERP ou da Reforma Tributária, ou com o semáforo ainda verde",
     ia:"A IA também joga: lê o plano e as atas do programa e traz as causas que ninguém escreveu.",
     metodo:"Pré-mortem, método publicado na Harvard Business Review (2007): o time dá o fracasso como certo e lista os motivos, e quem tem reservas fala enquanto o plano ainda pode mudar.",
+    selo:{m:"Pré-mortem",f:"Harvard Business Review, 2007"},
     fontes:["fj-hbr-premortem"],
     fatos:["premortem-metodo"],
     validar:"Se surgem causas que não estavam no mapa de riscos do programa e se elas viram ações com dono logo depois da sessão."
@@ -106,8 +109,8 @@ const JOGOS={
     pilar:3,
     tipo:"Simulação de virada",
     duracao:"meio período",
-    pergunta:"No primeiro dia sob o novo dono, o que para e quem decide?",
-    promessa:"O primeiro dia sob o novo dono, ensaiado antes: o que para, quem decide e quanto custa.",
+    pergunta:"No primeiro dia sob o novo dono, o que para, quem decide e o que o contrato não cobre?",
+    promessa:"O Dia 1 ensaiado antes do fechamento: as falhas aparecem a tempo de entrar no preço e no contrato.",
     passos:[
       "O relógio marca o Dia 1: a empresa acaba de mudar de dono",
       "Caem as cartas: e-mail, folha de pagamento, acessos, notas fiscais",
@@ -126,6 +129,7 @@ const JOGOS={
     quando:"Na diligência, para testar a tese e o preço, ou entre a assinatura e o fechamento",
     ia:"A IA lê os contratos e o inventário do alvo e transforma o que acha em cartas, como uma cláusula de mudança de controle.",
     metodo:"Ensaio do Dia 1: testar sob pressão o plano da virada antes do fechamento, como recomendam guias de integração da EY e da Deloitte, com a mecânica dos jogos de guerra de negócios (McKinsey Quarterly, 2011).",
+    selo:{m:"Ensaio do Dia 1",f:"guias de integração da EY e da Deloitte"},
     fontes:["ey-integracao-nove-passos","deloitte-day-one","mckinsey-war-games-2011"],
     fatos:["dia-1-simulacoes","dia-1-pontos-de-prontidao","jogos-de-guerra-executivos"],
     validar:"Se as cartas refletem os sistemas e os contratos reais do alvo e se as lacunas chegam ao contrato de transição e ao preço."
@@ -137,7 +141,7 @@ const JOGOS={
     tipo:"Exercício de mesa",
     duracao:"uma manhã",
     pergunta:"Se um sistema crítico parar hoje, quem decide e quando a operação volta?",
-    promessa:"Ensaiar a crise na mesa para não improvisar quando ela chegar.",
+    promessa:"Ensaiar a crise na mesa, com o plano e os contratos reais, para não improvisar quando ela chegar.",
     passos:[
       "O cenário abre: um ataque ou uma queda para um sistema crítico",
       "A cada rodada, uma notícia nova piora o quadro e pede decisão",
@@ -156,13 +160,14 @@ const JOGOS={
     quando:"Depois de um incidente no setor, antes de uma migração grande ou com o plano nunca testado",
     ia:"A IA monta o cenário e as surpresas a partir das dependências reais e registra cada decisão tomada.",
     metodo:"Exercício de mesa: discussão guiada por um cenário, em que quem tem papel no plano testa se ele funciona, como descreve o guia de exercícios do instituto de padrões dos Estados Unidos (2006).",
+    selo:{m:"Exercício de mesa",f:"guia oficial dos Estados Unidos, 2006"},
     fontes:["fj-nist-800-84"],
     fatos:["exercicio-mesa-nist"],
     validar:"Se a diretoria aceita jogar com o próprio plano e se o tempo de parada aceito vira exigência a fornecedores e investimento."
   }
 };
 /* sem palavra sozinha na última linha: espaço não separável antes da última palavra; rótulos curtos não quebram */
-(function(){const NB="\u00a0",cola=s=>s.replace(/ (\S+)$/,NB+"$1"),fixo=s=>s.replace(/ /g,NB);
+(function(){const NB="\u00a0",cola=s=>s.replace(/ (\S+)$/,NB+"$1").replace(/\bDia 1\b/g,"Dia"+NB+"1"),fixo=s=>s.replace(/ /g,NB);
   for(const g of Object.values(JOGOS)){
     ["nome","tipo","duracao"].forEach(k=>{if(typeof g[k]==="string")g[k]=fixo(g[k])});
     ["pergunta","promessa","regra","quem","material","leva","quando","ia","metodo","validar"].forEach(k=>{if(typeof g[k]==="string")g[k]=cola(g[k])});

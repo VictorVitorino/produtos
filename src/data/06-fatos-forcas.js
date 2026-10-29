@@ -1,0 +1,29 @@
+/* =====================================================================
+   FATOS CONFERIDOS PELO DONO DO SLIDE 05 (Seis forças) · 29/10/2026
+   Complementa src/data/05-fontes.js (carrega depois dele, em ordem alfabética).
+   Ids com prefixo "forcas-" para não colidir com o registro nem com os arquivos de outros donos.
+   Cada fato abaixo foi lido na página da própria fonte (ferramenta de raspagem), não em resumo de busca;
+   a obs diz o trecho que foi visto. Registro e regras: SPEC V6 §4 e §10.1.
+   ===================================================================== */
+if(typeof FONTES!=="undefined"&&typeof FATOS!=="undefined"){
+Object.assign(FONTES,{
+  /* comunicado global da SAP (o registro tinha a edição africana do mesmo texto, sap-ecc-2020) */
+  "forcas-sap-ecc-2020":{org:"SAP",titulo:"SAP Extends Its Innovation Commitment for SAP S/4HANA, Provides Clarity and Choice on SAP Business Suite 7",data:"04/02/2020",url:"https://news.sap.com/2020/02/sap-s4hana-maintenance-2040-clarity-choice-sap-business-suite-7/",tipo:"empresa"},
+  /* texto oficial da norma no site do Banco Central (o registro tinha a reprodução da Legisweb, cmn-5274-2025) */
+  "forcas-bcb-cmn-5274":{org:"Banco Central do Brasil (Conselho Monetário Nacional)",titulo:"Resolução CMN nº 5.274, de 18 de dezembro de 2025 (altera a Resolução CMN nº 4.893/2021: segurança cibernética e contratação de nuvem)",data:"18/12/2025",url:"https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20CMN&numero=5274",tipo:"oficial"}
+});
+Object.assign(FATOS,{
+  "forcas-cbs-2027":{txt:"Em 2027 começa a cobrança efetiva da CBS, novo tributo federal sobre consumo, e PIS e Cofins deixam de existir",num:"2027",fontes:["senado-reforma-2024"],status:"verificado",tema:"reforma-erp",uso:"s05",
+    nota:"Agência Senado (16/12/2024), sobre a regulamentação da Reforma Tributária (Lei Complementar 214/2025): em 2026 a CBS e o IBS são testados (0,9% e 0,1% destacados na nota fiscal, sem recolhimento efetivo); em 2027 começa a cobrança efetiva da CBS e acabam PIS e Cofins; a transição vai até 2033.",
+    obs:"Verificado por forcas em 29/10/2026: página da Agência Senado lida: “Em 2027, entra em vigor o Imposto Seletivo. Nesse mesmo ano, além da cobrança efetiva da CBS federal, serão extintos os seguintes tributos: PIS e Cofins, IOF/Seguros e isenção de IPI…”. O texto da lei no Planalto não abriu (acesso negado); por isso a fonte é a Agência Senado, e não lc-214-2025. Equivale ao fato cbs-plena-2027 (a verificar), sem o “01/01” e sem o “por inteiro”, que não foram vistos."},
+  "forcas-ecc-2027":{txt:"A manutenção padrão da versão antiga do ERP da SAP (ECC) termina no fim de 2027; a estendida, opcional e mais cara, vai até o fim de 2030",num:"2027",fontes:["forcas-sap-ecc-2020"],status:"verificado",tema:"reforma-erp",uso:"s05",
+    nota:"Comunicado da SAP de 04/02/2020: manutenção padrão das aplicações centrais do SAP Business Suite 7 (família que inclui o ECC) até o fim de 2027, seguida de manutenção estendida opcional de 2028 até o fim de 2030, com acréscimo de dois pontos percentuais sobre a base de manutenção.",
+    obs:"Verificado por forcas em 29/10/2026: comunicado da SAP lido: “SAP will provide mainstream maintenance for core applications of SAP Business Suite 7 software until the end of 2027 followed by optional extended maintenance until the end of 2030” e “a premium of two percentage points on the existing maintenance basis”. Equivale ao fato sap-ecc-manutencao-2027 (a verificar). A nota de rodapé da SAP sobre as versões do ECC abrangidas não foi lida."},
+  "forcas-fundos-tecnologia-2025":{txt:"Os fundos de private equity e de venture capital ganharam espaço nas fusões e aquisições de 2025 no Brasil, e a tecnologia está entre as áreas de maior interesse deles",num:"",fontes:["kpmg-ma-2025"],status:"verificado",tema:"ma-pe",uso:"s05",
+    nota:"KPMG, Pesquisa de Fusões e Aquisições 2025 (4º trimestre, mar/2026). No slide de forças o fato aparece só em palavras: o usuário pediu para tirar a contagem de transações e o percentual dos fundos.",
+    obs:"Verificado por forcas em 29/10/2026: página da KPMG lida: “O principal movimento estrutural foi o avanço dos fundos de private equity e venture capital, que ampliaram sua participação de 43% para 50% das transações realizadas no ano” e “reforça a expansão de transações voltadas à tecnologia, uma das áreas de maior interesse de fundos”. O 50% (pe-vc-metade-deals-2025) fica para o pilar 3, no máximo uma vez no deck (auditoria T12)."},
+  "forcas-cmn-5274":{txt:"O Conselho Monetário Nacional endureceu as regras de segurança cibernética e de contratação de nuvem das instituições financeiras, com teste de intrusão ao menos uma vez por ano e prazo de adequação em 01/03/2026",num:"01/03/2026",fontes:["forcas-bcb-cmn-5274"],status:"verificado",tema:"resiliencia-regulacao",uso:"s05",
+    nota:"Resolução 5.274 do Conselho Monetário Nacional (18/12/2025), que altera a Resolução 4.893/2021 (política de segurança cibernética e contratação de processamento, armazenamento de dados e computação em nuvem). Os procedimentos passam a incluir testes de intrusão com periodicidade mínima anual; as instituições em funcionamento tinham até 01/03/2026 para se adequar.",
+    obs:"Verificado por forcas em 29/10/2026: texto da resolução no site do Banco Central lido: “IV - testes de intrusão”, “I - ter periodicidade mínima anual” e “As instituições em funcionamento na data da entrada em vigor desta Resolução devem promover as adaptações necessárias à adequação ao disposto nesta Resolução até 1º de março de 2026”. Equivale ao fato cmn-5274-ciber-nuvem (a verificar), agora com a fonte oficial. O isolamento dos ambientes do Pix não foi visto no trecho lido."}
+});
+}
