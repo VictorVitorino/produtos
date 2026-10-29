@@ -1,70 +1,72 @@
 /* A&M — monograma vetorial: montagem, laços de luz, paralaxe e estados estáticos.
-   Classes no <svg class="ammono">: amm-in (montagem), amm-loop (laços). Sem classe (ou sem esta folha) = estado final. */
+   mount() gera <span class="amm-wrap"> com o objeto (svg.ammono) e, por cima, a camada leve de efeitos (svg.ammono-fx).
+   Classes no amm-wrap (ou no próprio svg de AMMono.svg()): amm-in (montagem) e amm-loop (laços).
+   Sem classe, ou sem esta folha, aparece o estado final estático. */
+.amm-wrap{display:block;position:relative;max-width:100%}
+/* paralaxe proporcional ao tamanho (1% x .55%: cerca de 8 x 5 px a 820 px). O transform fica no próprio SVG: o navegador
+   promove a camada durante a transição e não redesenha os filtros (sem will-change fixo, que pesa sem GPU) */
+.amm-wrap>svg{display:block;transform:translate(calc(var(--amm-x,0)*1%),calc(var(--amm-y,0)*.55%));transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .ammono{display:block;max-width:100%;height:auto;overflow:visible}
-.ammono [data-layer]{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
-.ammono .amm-part,.ammono .amm-ctr{transform-box:view-box;transform-origin:600px 1281px}
-.ammono .amm-m,.ammono .amm-r{transform-box:fill-box;transform-origin:50% 100%}
-.ammono .amm-bev{transform-box:view-box}
-.ammono .amm-flare{transform-box:fill-box;transform-origin:center}
-.ammono .amm-draw{stroke-dasharray:1 1;stroke-dashoffset:0}
-.ammono .amm-sweep,.ammono .amm-run,.ammono .amm-head{opacity:0}
-
-/* paralaxe (opção parallax ou a capa grava --amm-x/--amm-y entre -1 e 1):
-   faces e fita andam juntas (corpo rígido); a luz anda mais e o piso menos */
-.ammono [data-layer=faces],.ammono [data-layer=fita]{transform:translate(calc(var(--amm-x,0)*7px),calc(var(--amm-y,0)*5px))}
-.ammono [data-layer=brilho]{transform:translate(calc(var(--amm-x,0)*12px),calc(var(--amm-y,0)*8px))}
-.ammono [data-layer=piso]{transform:translate(calc(var(--amm-x,0)*2px),0)}
+.amm-wrap>.ammono{width:100%}
+.ammono-fx{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.amm-part,.amm-ctr{transform-box:view-box;transform-origin:600px 1281px}
+.amm-m,.amm-r{transform-box:fill-box;transform-origin:50% 100%}
+.amm-bev{transform-box:view-box}
+.amm-flare{transform-box:fill-box;transform-origin:center}
+.amm-draw{stroke-dasharray:1 1;stroke-dashoffset:0}
+.amm-sweep,.amm-run,.amm-head{opacity:0}
 
 /* ---- 1. montagem (~1,7 s): faces com profundidade -> a fita se desenha conduzida pela luz -> a luz acende ---- */
-.ammono.amm-in .amm-halo,.ammono.amm-in .amm-bokeh{animation:amm-fade 1s ease-out both}
-.ammono.amm-in .amm-cshadow{animation:amm-fade .7s .15s ease-out both}
-.ammono.amm-in .amm-ctr{animation:amm-rise .8s cubic-bezier(.16,.84,.24,1) both}
-.ammono.amm-in .amm-a{animation:amm-a .86s cubic-bezier(.16,.84,.24,1) both}
-.ammono.amm-in .amm-bev{animation:amm-bev .62s .16s cubic-bezier(.2,.8,.25,1) both}
-.ammono.amm-in .amm-m{animation:amm-grow .64s .2s cubic-bezier(.2,.9,.3,1.08) both}
-.ammono.amm-in .amm-r{animation:amm-grow .58s .32s cubic-bezier(.2,.9,.3,1.08) both}
-.ammono.amm-in .amm-dL{animation:amm-draw .72s .48s cubic-bezier(.5,0,.25,1) both}
-.ammono.amm-in .amm-dE{animation:amm-draw .54s .86s cubic-bezier(.4,0,.2,1) both}
-.ammono.amm-in .amm-hL path{animation:amm-head .72s .48s cubic-bezier(.5,0,.25,1) both}
-.ammono.amm-in .amm-hE path{animation:amm-head .54s .86s cubic-bezier(.4,0,.2,1) both}
-.ammono.amm-in .amm-hL{animation:amm-headL .72s .48s linear both}
-.ammono.amm-in .amm-hE{animation:amm-headE .54s .86s linear both}
-.ammono.amm-in .amm-mfL{animation:amm-mfull 1.2s linear both}
-.ammono.amm-in .amm-mfE{animation:amm-mfull 1.4s linear both}
-.ammono.amm-in .amm-ign{animation:amm-ign .62s 1.06s ease-out both}
-.ammono.amm-in .amm-warm,.ammono.amm-in .amm-floorlight{animation:amm-fade .62s 1.06s ease-out both}
-.ammono.amm-in .amm-flare{animation:amm-flare .66s 1.04s ease-out both}
-.ammono.amm-in .amm-refl{animation:amm-fade .5s 1.12s ease-out both}
+.amm-in .amm-halo,.amm-in .amm-bokeh{animation:amm-fade 1s ease-out both}
+.amm-in .amm-cshadow{animation:amm-fade .7s .15s ease-out both}
+/* o vão do A anda junto com o A (corpo rígido): nada escapa por trás da perna durante a subida */
+.amm-in .amm-ctr,.amm-in .amm-a{animation:amm-a .86s cubic-bezier(.16,.84,.24,1) both}
+.amm-in .amm-bev{animation:amm-bev .62s .16s cubic-bezier(.2,.8,.25,1) both}
+.amm-in .amm-m{animation:amm-grow .64s .2s cubic-bezier(.2,.9,.3,1.08) both}
+.amm-in .amm-mside{animation:amm-fade .5s .36s ease-out both}
+.amm-in .amm-r{animation:amm-grow .58s .32s cubic-bezier(.2,.9,.3,1.08) both}
+.amm-in .amm-dL{animation:amm-draw .72s .48s cubic-bezier(.5,0,.25,1) both}
+.amm-in .amm-dE{animation:amm-draw .54s .86s cubic-bezier(.4,0,.2,1) both}
+.amm-in .amm-hL path{animation:amm-head .72s .48s cubic-bezier(.5,0,.25,1) both}
+.amm-in .amm-hE path{animation:amm-head .54s .86s cubic-bezier(.4,0,.2,1) both}
+.amm-in .amm-hL{animation:amm-headL .72s .48s linear both}
+.amm-in .amm-hE{animation:amm-headE .54s .86s linear both}
+.amm-in .amm-mfL{animation:amm-mfull 1.2s linear both}
+.amm-in .amm-mfE{animation:amm-mfull 1.4s linear both}
+.amm-in .amm-ign{animation:amm-ign .62s 1.06s ease-out both}
+.amm-in .amm-warm,.amm-in .amm-floorlight{animation:amm-fade .62s 1.06s ease-out both}
+.amm-in .amm-flare{animation:amm-flare .66s 1.04s ease-out both}
+.amm-in .amm-refl{animation:amm-fade .5s 1.12s ease-out both}
+.amm-in .amm-shade{animation:amm-fade .42s .98s ease-out both}
 
 @keyframes amm-fade{from{opacity:0}}
-@keyframes amm-rise{from{opacity:0;transform:translateY(60px)}}
+@keyframes amm-ign{from{opacity:0}}
 @keyframes amm-a{from{opacity:0;transform:translate(-46px,70px) scale(.94)}35%{opacity:1}}
 @keyframes amm-bev{from{transform:translate(52px,8px)}}
 @keyframes amm-grow{from{opacity:0;transform:scaleY(.05)}40%{opacity:1}}
 @keyframes amm-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-@keyframes amm-head{from{stroke-dashoffset:.04}to{stroke-dashoffset:-1}}
-/* a cabeça de luz só aparece onde a fita está à vista (some antes de passar por trás do chanfro; nasce fora do pilar) */
+@keyframes amm-head{from{stroke-dashoffset:.028}to{stroke-dashoffset:-1}}
+/* a cabeça de luz só aparece onde a fita está à vista: some antes de passar por trás do chanfro e nasce fora do pilar */
 @keyframes amm-headL{0%{opacity:0}8%{opacity:1}58%{opacity:1}68%,100%{opacity:0}}
 @keyframes amm-headE{0%,13%{opacity:0}21%{opacity:1}84%{opacity:1}100%{opacity:0}}
 @keyframes amm-mfull{0%,96%{opacity:0}100%{opacity:1}}
-@keyframes amm-ign{from{opacity:0}}
 @keyframes amm-flare{0%{opacity:0;transform:scale(.4)}42%{opacity:1;transform:scale(1.35)}100%{opacity:.8;transform:none}}
 
-/* ---- 2. laços: corredor de luz na aresta da fita + varredura suave nas faces + pulso na torção ---- */
-.ammono.amm-loop .amm-run{animation:amm-run 5.6s .2s cubic-bezier(.45,.05,.35,1) infinite}
-.ammono.amm-loop .amm-sweep{animation:amm-sweep 7.2s 1.6s cubic-bezier(.4,0,.3,1) infinite}
-.ammono.amm-loop .amm-flare{animation:amm-pulse 5.6s .2s ease-in-out infinite}
+/* ---- 2. laços (só na camada de efeitos): corredor de luz na aresta da fita, varredura nas faces, pulso na torção ---- */
+.amm-loop .amm-run{animation:amm-run 5.6s .2s cubic-bezier(.45,.05,.35,1) infinite}
+.amm-loop .amm-sweep{animation:amm-sweep 7.2s 1.6s cubic-bezier(.4,0,.3,1) infinite}
+.amm-loop .amm-flare{animation:amm-pulse 5.6s .2s ease-in-out infinite}
 @keyframes amm-run{0%{stroke-dashoffset:80;opacity:0}5%{opacity:1}31%{opacity:1}37%{stroke-dashoffset:-1000;opacity:0}100%{stroke-dashoffset:-1000;opacity:0}}
 @keyframes amm-sweep{0%{transform:translateX(0) skewX(-28deg);opacity:0}4%{opacity:1}24%{opacity:1}28%{transform:translateX(1950px) skewX(-28deg);opacity:0}100%{transform:translateX(1950px) skewX(-28deg);opacity:0}}
 @keyframes amm-pulse{0%,20%,100%{opacity:.8}29%{opacity:1}}
 
 /* ---- 3. estado final estático: movimento reduzido e impressão (sem desfoque) ---- */
 @media (prefers-reduced-motion:reduce){
-  .ammono *{animation:none!important;transition:none!important}
-  .ammono .amm-run,.ammono .amm-sweep,.ammono .amm-head{opacity:0!important}
+  .amm-wrap>svg,.ammono *,.ammono-fx *{animation:none!important;transition:none!important}
+  .amm-run,.amm-sweep,.amm-head{opacity:0!important}
 }
 @media print{
-  .ammono *{animation:none!important;transition:none!important}
-  .ammono [data-layer]{transform:none!important}
-  .ammono .amm-runner,.ammono .amm-sweepw,.ammono .amm-head,.ammono .amm-glow,.ammono .amm-refl{display:none!important}
+  .amm-wrap>svg,.ammono *,.ammono-fx *{animation:none!important;transition:none!important}
+  .amm-wrap>svg{transform:none!important}
+  .amm-runner,.amm-sweepw,.amm-head,.amm-glow,.amm-refl{display:none!important}
 }

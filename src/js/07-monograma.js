@@ -4,12 +4,17 @@
 
    API: window.AMMono = { svg(opts), mount(el, opts), play(el), stop(el) }
      opts: w (largura em px, 820) · anim (true) · theme ("navy" | "light") · reflexo (true quando w >= 260)
-           fundo (true: halo e linha do piso) · bokeh (true no navy) · parallax (false; true = camadas seguem o cursor)
-     svg(opts)       devolve a string SVG (prefixo de id único a cada chamada)
-     mount(el, opts) injeta o SVG em el e anima; idempotente (mesmas opções = mesmo nó)
+           fundo (true: halo e linha do piso) · bokeh (true no navy) · parallax (false; true = segue o cursor)
+     svg(opts)       devolve o SVG completo numa string (prefixo de id único a cada chamada)
+     mount(el, opts) injeta em el um <span class="amm-wrap"> com o objeto (svg.ammono) e a camada de efeitos
+                     (svg.ammono-fx) e anima; idempotente (mesmas opções = mesmo nó). Depois da montagem o objeto
+                     fica estático: os laços de luz redesenham só a camada leve e a paralaxe desloca os dois SVG
+                     por transform (GPU), sem refazer os filtros.
      play(el)        repete a montagem · stop(el) para os laços de luz (saída do slide) e deixa o estado final
-   Camadas: [data-layer=piso|fita|faces|brilho]. "faces" e as duas "fita" se entrelaçam: devem mover juntas.
-   Auto-montagem: elementos .am-mono (data-w, data-anim, data-theme, data-reflexo, data-fundo, data-parallax). */
+   Camadas: [data-layer=piso|fita|faces|brilho]. "faces" e "fita" se entrelaçam e devem mover juntas.
+   Paralaxe externa: gravar --amm-x e --amm-y (-1..1) no .amm-wrap.
+   Auto-montagem: elementos .am-mono (data-w, data-anim, data-theme, data-reflexo, data-fundo, data-parallax).
+   Manutenção: svg({ debug: true }) desenha os contornos de construção sobre o objeto. */
 (function (root) {
   'use strict';
   var VW = 1199, VH = 1312, FL = 1281, RH = 170, INTRO = 1720, seq = 0;
@@ -47,9 +52,9 @@
   var QL = [[500, 549], [475, 557], [440, 570], [405, 586], [372, 610], [350, 640], [347, 662], [355, 688], [374, 712], [392, 722]];
 
   var G = {
-    bevel: 'M876,94L146,1283L16,1278Q3,1277 3.5,1263L309.2,830L332.9,770L766.4,144.6Q771,138 778.3,134.7L866,95.5Q871,93.4 876,94Z',
+    bevel: 'M876,94L146,1283L16,1278Q3,1277 3.5,1263L298.6,845C321.2,813 324.6,782 346.8,750L766.4,144.6Q771,138 778.3,134.7L866,95.5Q871,93.4 876,94Z',
     bevelDark: 'M876,94L146,1283L131,1274L861,85Z',
-    white: 'M871.8,100.8Q876,94 883.3,97.3L971.4,135.9Q979.5,139.5 981,149L984.5,200L994.5,400L997.5,500L1004.5,650L1005.5,850L1007.5,1100L1008,1266Q1008,1271 1003,1271L879,1271L879,346L875,328L547,892L481,1035L352.3,1273.8Q349,1280 342,1280.1L152,1282.9Q146,1283 149.1,1277.9Z',
+    white: 'M871.8,100.8Q876,94 883.3,97.3L971.4,135.9Q979.5,139.5 981,149L984.5,200L994.5,400L997.5,500L1004.5,650L1005.5,850L1007.5,1100L1008,1266Q1008,1271 1003,1271L879,1271L879,346L875,328L547,892C519.1,940 506.9,987 481,1035L352.3,1273.8Q349,1280 342,1280.1L152,1282.9Q146,1283 149.1,1277.9Z',
     pBevel: 'M875,328L879,346L879,1271L865,1271L865,392Z',
     counter: 'M875,320L882,330L882,1272L812,1272L812,640L640,640L650,500Z',
     // lado interno da perna / vão entre a perna e o M (sobe até o ápice do vão, sem aresta dura)
@@ -111,12 +116,12 @@
   }
 
   /* ---------- SVG ---------- */
-  function svg(opts) {
+  function svg(opts, mode) {
     var o = norm(opts), th = THEMES[o.theme], small = o.w < 260, refl = o.reflexo;
     var id = 'amm' + (++seq).toString(36) + Math.random().toString(36).slice(2, 5) + '-';
     var u = function (n) { return 'url(#' + id + n + ')'; };
     var vh = refl ? VH + RH : VH, h = Math.round(o.w * vh / VW);
-    var d = '';
+    var d = '', dx = '';
 
     /* gradientes: chanfro, faces, M e triângulo */
     d += lg(id + 'bev', 820, 120, 40, 1270, [[0, '#3C49D3'], [0.2, '#333BC2'], [0.45, '#2A2CA6'], [0.72, '#1E1C82'], [1, '#120F55']]);
@@ -161,10 +166,11 @@
     d += rg(id + 'psh', 1010, 505, 150, [[0, '#4B4F9C', 0.36], [1, '#4B4F9C', 0]]);
     d += lg(id + 'psh2', 940, 593, 891, 530, [[0, '#3B3F8A', 0.36], [1, '#3B3F8A', 0]]);
     d += rg(id + 'halo', 640, 700, 556, [[0, th.halo, th.haloO], [0.3, th.halo, th.haloO * 0.78], [0.6, th.halo, th.haloO * 0.34], [0.84, th.halo, th.haloO * 0.08], [1, th.halo, 0]]);
-    d += rg(id + 'flare', 628, 1066, 120, [[0, '#FFF8E4', 0.85], [0.2, '#FFE2A6', 0.52], [0.55, '#F9A64A', 0.13], [1, '#F78C16', 0]]);
+    dx += rg(id + 'flare', 628, 1066, 120, [[0, '#FFF8E4', 0.85], [0.2, '#FFE2A6', 0.52], [0.55, '#F9A64A', 0.13], [1, '#F78C16', 0]]);
     d += rg(id + 'flr', 900, FL, 380, [[0, '#F9A64A', 0.45], [0.4, '#F78C16', 0.14], [1, '#F78C16', 0]], ' gradientTransform="translate(0 ' + FL + ') scale(1 .09) translate(0 -' + FL + ')"');
     d += rg(id + 'cs', 600, FL, 640, [[0, th.shadow, 0.75], [0.7, th.shadow, 0.35], [1, th.shadow, 0]], ' gradientTransform="translate(0 ' + FL + ') scale(1 .03) translate(0 -' + FL + ')"');
-    d += '<linearGradient id="' + id + 'sweep" x1="0" y1="0" x2="1" y2="0">' + stops([[0, '#FFFFFF', 0], [0.5, '#FFFFFF', 0.6], [1, '#FFFFFF', 0]]) + '</linearGradient>';
+    dx += '<clipPath id="' + id + 'cA"><path d="' + G.white + '"/><path d="' + G.bevel + '"/><path d="' + G.pBevel + '"/></clipPath>';
+    dx += '<linearGradient id="' + id + 'sweep" x1="0" y1="0" x2="1" y2="0">' + stops([[0, '#FFFFFF', 0], [0.5, '#FFFFFF', 0.6], [1, '#FFFFFF', 0]]) + '</linearGradient>';
     d += lg(id + 'fline', -60, 0, 1260, 0, [[0, th.line, 0], [0.3, th.line, th.lineO], [0.75, th.line, th.lineO], [1, th.line, 0]]);
     d += lg(id + 'rfade', 0, FL, 0, FL + RH, [[0, '#FFFFFF', 1], [1, '#FFFFFF', 0]]);
     /* filtros (só tela; a impressão desliga) */
@@ -176,7 +182,6 @@
     /* recortes */
     d += '<clipPath id="' + id + 'cW"><path d="' + G.white + '"/></clipPath>';
     d += '<clipPath id="' + id + 'cB"><path d="' + G.bevel + '"/></clipPath>';
-    d += '<clipPath id="' + id + 'cA"><path d="' + G.white + '"/><path d="' + G.bevel + '"/><path d="' + G.pBevel + '"/></clipPath>';
     d += '<clipPath id="' + id + 'cL"><path d="' + G.lBand + '"/></clipPath>';
     d += '<clipPath id="' + id + 'cEl"><path d="' + G.eLit + '"/></clipPath>';
     d += '<clipPath id="' + id + 'cLf"><rect x="0" y="690" width="' + VW + '" height="' + (VH - 690) + '"/></clipPath>';
@@ -221,8 +226,9 @@
     // faces
     var mg = 'M812,534' + crv([[812, 534], [752, 644], [680, 777], [663, 820]]);
     var mglow = S(mg, '#5658F0', 40, ' opacity=".1"') + S(mg, '#5C62F4', 24, ' opacity=".14"') + S(mg, '#6670F8', 12, ' opacity=".2"');
-    faces += P(G.counter, u('ctr'), ' class="amm-ctr"');
-    faces += '<g class="amm-part amm-m">' + P(G.mSide, u('ms')) +
+    // vão do A (fundo escuro e lado interno da perna): sobe com o A; o M cresce do piso por cima dele
+    faces += '<g class="amm-ctr">' + P(G.counter, u('ctr')) + P(G.mSide, u('ms'), ' class="amm-mside"') + '</g>';
+    faces += '<g class="amm-part amm-m">' +
       mglow +
       P(G.mFacet, u('mfc')) + P(G.mFront, u('mf')) + P(G.mFront, u('mfx')) +
       S(open(MEDGE), '#86D8FF', 10, ' stroke-linecap="round" opacity=".32"') +
@@ -232,7 +238,7 @@
       S('M1026,671L1180,1271', '#E6F7FF', 2.5, ' opacity=".9"') + '</g>';
     faces += '<g class="amm-part amm-a">' +
       '<g class="amm-bev">' + P(G.bevel, u('bev')) + '<g clip-path="' + u('cB') + '">' + P(G.bevelDark, u('bd')) + '</g>' +
-        S('M3.5,1263L309.2,830M332.9,770L766.4,144.6Q771,138 778.3,134.7L866,95.5', '#A6B6FF', 3, ' stroke-linejoin="round" opacity=".85"') + '</g>' +
+        S('M3.5,1263L298.6,845C321.2,813 324.6,782 346.8,750L766.4,144.6Q771,138 778.3,134.7L866,95.5', '#A6B6FF', 3, ' stroke-linejoin="round" opacity=".85"') + '</g>' +
       P(G.pBevel, u('pbv')) + P(G.white, u('wht')) +
       '<g clip-path="' + u('cW') + '">' +
         '<rect x="879" y="100" width="130" height="1180" fill="' + u('pil') + '" opacity=".9" mask="' + u('mP') + '"/>' +
@@ -241,8 +247,8 @@
         '<g class="amm-warm"><circle cx="520" cy="1060" r="380" fill="' + u('warm') + '"/>' +
         '<circle cx="960" cy="1262" r="160" fill="' + u('warm2') + '"/>' +
         '<circle cx="950" cy="672" r="190" fill="' + u('warm3') + '"/></g>' +
-        '<circle cx="1010" cy="505" r="150" fill="' + u('psh') + '"/>' +
-        '<path d="M1003,547L879,644L879,528L1003,428Z" fill="' + u('psh2') + '"/>' +
+        '<g class="amm-shade"><circle cx="1010" cy="505" r="150" fill="' + u('psh') + '"/>' +
+        '<path d="M1003,547L879,644L879,528L1003,428Z" fill="' + u('psh2') + '"/></g>' +
       '</g>' +
       S('M876,94L146,1283', '#FFFFFF', 2.2, ' opacity=".9"') +
       (th.outline ? S(G.white, '#B9C3DE', 2) : '') +
@@ -274,33 +280,39 @@
       S(open(cut(LP, 11, 19)), '#FFD592', 2.2) +
       S(open(cut(LR, 14, 23)), '#FFF1D8', 3) + '</g>';
 
-    // brilho: flare da torção, varredura nas faces, corredor de luz e cabeças de luz da montagem
+    // efeitos animados: flare da torção, varredura nas faces, corredor de luz e cabeças de luz da montagem.
+    // mount() os põe num SVG próprio por cima do objeto: os laços redesenham só essa camada leve.
+    var fxF = '', fxR = '';
     bri += '<circle class="amm-flare" cx="628" cy="1066" r="120" fill="' + u('flare') + '" opacity=".8"/>';
     if (!small) {
-      bri += '<g class="amm-sweepw" clip-path="' + u('cA') + '"><rect class="amm-sweep" x="-300" y="0" width="260" height="1400" fill="' + u('sweep') + '" transform="skewX(-28)"/></g>';
+      fxF += '<g class="amm-sweepw" clip-path="' + u('cA') + '"><rect class="amm-sweep" x="-300" y="0" width="260" height="1400" fill="' + u('sweep') + '" transform="skewX(-28)"/></g>';
       var run = open(RUN), dash = ' pathLength="1000" stroke-dasharray="80 1100" stroke-dashoffset="80"';
-      bri += '<g class="amm-runner" fill="none" stroke-linecap="round">' +
+      fxR += '<g class="amm-runner" fill="none" stroke-linecap="round">' +
         S(run, '#FFAE5C', 40, ' class="amm-run" stroke-opacity=".26"' + dash) +
         S(run, '#FFDCA6', 19, ' class="amm-run" stroke-opacity=".6"' + dash) +
         S(run, '#FFFFFF', 7, ' class="amm-run"' + dash) + '</g>';
       var head = function (k, path) {
-        var hd = ' pathLength="1" stroke-dasharray=".04 2" stroke-dashoffset=".04"';
+        var hd = ' pathLength="1" stroke-dasharray=".028 2" stroke-dashoffset=".028"';
         return '<g class="amm-head amm-h' + k + '" fill="none" stroke-linecap="round">' +
           S(path, '#FFB262', 64, ' stroke-opacity=".16"' + hd) + S(path, '#FFD9A0', 30, ' stroke-opacity=".42"' + hd) +
-          S(path, '#FFF8EC', 11, hd) + '</g>';
+          S(path, '#FFF8EC', 9, hd) + '</g>';
       };
-      bri += head('L', open(SPL)) + head('E', open(SPE));
+      fxR += head('L', open(SPL)) + head('E', open(SPE));
     }
+    var fx = '<g data-layer="brilho" class="amm-brilho">' + bri + '</g>' +
+      (fxR ? '<g data-layer="fita" class="amm-fita amm-fitaX">' + fxR + '</g>' : '') +
+      (fxF ? '<g data-layer="faces" class="amm-faces amm-facesX">' + fxF + '</g>' : '');
 
     var reflex = refl ? '<g class="amm-refl" mask="' + u('mR') + '" opacity="' + th.refl + '"><g class="amm-reflblur" filter="' + u('rblur') + '" transform="matrix(1 0 0 -1 0 ' + 2 * FL + ')"><use href="#' + id + 'faces"/><use href="#' + id + 'fitaF"/></g></g>' : '';
     piso = piso.replace('%%REFL%%', reflex);
     var body = '<g data-layer="piso" class="amm-piso">' + piso + '</g>' +
       '<g data-layer="fita" class="amm-fita amm-fitaB">' + fitaB + '</g>' +
       '<g data-layer="faces" class="amm-faces" id="' + id + 'faces">' + faces + '</g>' +
-      '<g data-layer="fita" class="amm-fita amm-fitaF" id="' + id + 'fitaF">' + fitaF + '</g>' +
-      '<g data-layer="brilho" class="amm-brilho">' + bri + '</g>';
-    return '<svg xmlns="http://www.w3.org/2000/svg" class="ammono amm-' + o.theme + (small ? ' amm-small' : '') + '" viewBox="0 0 ' + VW + ' ' + vh + '" width="' + o.w + '" height="' + h + '" role="img" aria-label="Monograma A&amp;M da Alvarez &amp; Marsal">' +
-      '<defs>' + d + '</defs>' + body + (o.debug ? dbg() : '') + '</svg>';
+      '<g data-layer="fita" class="amm-fita amm-fitaF" id="' + id + 'fitaF">' + fitaF + '</g>';
+    var open_ = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + VW + ' ' + vh + '" width="' + o.w + '" height="' + h + '"';
+    if (mode === 'fx') return open_ + ' class="ammono-fx" aria-hidden="true" focusable="false"><defs>' + dx + '</defs>' + fx + '</svg>';
+    return open_ + ' class="ammono amm-' + o.theme + (small ? ' amm-small' : '') + '" role="img" aria-label="Monograma A&amp;M da Alvarez &amp; Marsal">' +
+      '<defs>' + d + (mode === 'main' ? '' : dx) + '</defs>' + body + (mode === 'main' ? '' : fx) + (o.debug ? dbg() : '') + '</svg>';
   }
   function dbg() {
     var s = '<g fill="none" stroke="#00FFD0" stroke-width="1.5" opacity=".9">';
@@ -308,47 +320,51 @@
     return s + '</g>';
   }
 
-  /* ---------- montagem, laços e paralaxe ---------- */
+  /* ---------- montagem, laços e paralaxe ----------
+     mount() cria <span class="amm-wrap"> com dois SVG empilhados: o objeto (svg.ammono, estático depois da
+     montagem) e a camada de efeitos (svg.ammono-fx). Os laços de luz só redesenham a camada leve, e a paralaxe
+     desloca os dois SVG por transform (composição na GPU), sem redesenhar os filtros do objeto. */
   function still() { try { return root.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
   function svgOf(el) { return el && el.querySelector ? el.querySelector('svg.ammono') : null; }
+  function wrapOf(el) { return el && el.querySelector ? el.querySelector('.amm-wrap') : null; }
   function key(o) { return [o.w, o.anim, o.theme, o.reflexo, o.fundo, o.bokeh].join('|'); }
 
   function mount(el, opts) {
     if (!el) return null;
     var o = norm(opts), k = key(o), cur = svgOf(el), st = el.__amm;
-    if (!st || st.key !== k || !cur) {
+    if (!st || st.key !== k || !cur || !wrapOf(el)) {
       if (st) { clearTimeout(st.t); unbind(el); }
-      el.innerHTML = svg(o);
+      el.innerHTML = '<span class="amm-wrap" style="width:' + o.w + 'px">' + svg(o, 'main') + svg(o, 'fx') + '</span>';
       cur = svgOf(el);
       st = el.__amm = { key: k, anim: o.anim, t: 0 };
       if (o.anim) play(el);
-    } else if (o.anim && !still() && !cur.classList.contains('amm-in')) {
-      cur.classList.add('amm-loop');
+    } else if (o.anim && !still() && !wrapOf(el).classList.contains('amm-in')) {
+      wrapOf(el).classList.add('amm-loop');
     }
     if (o.parallax && !still()) bind(el); else unbind(el);
     return cur;
   }
   function play(el) {
-    var s = svgOf(el), st = el && el.__amm;
-    if (!s || !st) return;
+    var w = wrapOf(el), st = el && el.__amm;
+    if (!w || !st) return;
     clearTimeout(st.t);
-    s.classList.remove('amm-in', 'amm-loop');
+    w.classList.remove('amm-in', 'amm-loop');
     if (!st.anim || still()) return;
-    void s.getBoundingClientRect();
-    s.classList.add('amm-in');
+    void w.getBoundingClientRect();
+    w.classList.add('amm-in');
     // fim da montagem: sai a classe de entrada (estado final = estilo padrão) e entram os laços de luz
-    st.t = setTimeout(function () { s.classList.remove('amm-in'); s.classList.add('amm-loop'); }, INTRO);
+    st.t = setTimeout(function () { w.classList.remove('amm-in'); w.classList.add('amm-loop'); }, INTRO);
   }
   function stop(el) {
-    var s = svgOf(el), st = el && el.__amm;
-    if (!s) return;
+    var w = wrapOf(el), st = el && el.__amm;
+    if (!w) return;
     if (st) clearTimeout(st.t);
-    s.classList.remove('amm-in', 'amm-loop');
+    w.classList.remove('amm-in', 'amm-loop');
   }
-  // paralaxe: grava --amm-x/--amm-y (-1..1) no SVG; o CSS desloca as camadas (faces e fita como corpo rígido)
+  // paralaxe: grava --amm-x/--amm-y (-1..1) no invólucro; o CSS desloca os dois SVG juntos
   function setXY(el, x, y) {
-    var s = svgOf(el);
-    if (s) { s.style.setProperty('--amm-x', x.toFixed(3)); s.style.setProperty('--amm-y', y.toFixed(3)); }
+    var w = wrapOf(el);
+    if (w) { w.style.setProperty('--amm-x', x.toFixed(3)); w.style.setProperty('--amm-y', y.toFixed(3)); }
   }
   function bind(el) {
     if (el.__ammPx) return;
@@ -381,7 +397,7 @@
       });
     }
   }
-  root.AMMono = { svg: svg, mount: mount, play: play, stop: stop };
+  root.AMMono = { svg: function (opts) { return svg(opts); }, mount: mount, play: play, stop: stop };
   if (root.document) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', auto);
     else auto();
