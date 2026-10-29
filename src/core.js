@@ -1,10 +1,13 @@
 /* =====================================================================
    NÚCLEO V6 · moldura APODI, navegação, vistas (panes), capítulos, barra inferior,
-   índice, fichas, "virar a página" (stub) e impressão
+   índice, fichas, invólucro do "virar a página" (#flip; o verso mora em src/js/07-verso.js) e impressão
    Depende de engine.js e src/data/*.js. Os módulos de src/js/ registram ganchos por slide,
    sempre pela chave data-s ("NN"): ENTER["05"], STEP["05"], PRINT.push(f), BOOT.push(f).
    ===================================================================== */
 const stage=$("stage");
+/* #flip: invólucro do palco que gira em "Virar a página" (frente = #stage, verso = #vface, criado por src/js/07-verso.js).
+   fit() escala o invólucro; o build já o escreve, e este trecho só o cria se faltar. */
+const flipEl=(()=>{const p=stage.parentNode;if(p&&p.id==="flip")return p;const f=document.createElement("div");f.id="flip";p.insertBefore(f,stage);f.appendChild(stage);return f})();
 const slides=[...stage.querySelectorAll(":scope > .slide")],N=slides.length;let cur=0,busy=false;
 const pad=n=>String(n).padStart(2,"0");
 const keyOf=s=>s?(s.dataset.s||pad(slides.indexOf(s)+1)):"";
@@ -16,6 +19,8 @@ const safe=(f,...a)=>{try{return f(...a)}catch(e){console.error("[deck]",e)}};
 const hlx=t=>String(t).replace(/\*(.+?)\*/g,'<span class="hl">$1</span>');
 const esc=t=>String(t).replace(/&(?![#\w]+;)/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
 const DECK_EV=(n,d)=>{try{document.dispatchEvent(new CustomEvent(n,{detail:d}))}catch(e){}};
+/* mascote AM: monta todo .am-masc dentro de r quando o módulo do mascote (src/js/06-mascote.js) existe; sem ele, nada acontece */
+const deckMasc=r=>{if(window.AMMasc&&typeof window.AMMasc.mount==="function")safe(()=>window.AMMasc.mount(r||document))};
 /* fichas de produto: o estado mora aqui; src/js/40-fichas.js redefine openPD/closePD/pdStep (os stubs evitam erro se o módulo faltar) */
 let pdOpen=null,pdFrom=0;
 function openPD(){}
@@ -69,12 +74,12 @@ function showChapter(k,done){const m=CAP[k]||{};chapEl.className="";
   chapEl.innerHTML=`<div class="ch-bg"></div><div class="ch-grid" aria-hidden="true"></div>
     <svg class="ch-slash" viewBox="0 0 1600 900" aria-hidden="true"><path d="M1010 -20 L720 920" stroke="#5E8AB4" stroke-width="46" opacity=".11" fill="none" pathLength="1000" style="--d:0"/><path d="M1064 -20 L774 920" stroke="#5E8AB4" stroke-width="7" opacity=".3" fill="none" pathLength="1000" style="--d:1"/><path d="M1044 -20 L754 920" stroke="#F78C16" stroke-width="1.6" opacity=".85" fill="none" pathLength="1000" style="--d:2"/></svg>
     <div class="ch-floor" aria-hidden="true"></div>
-    ${m.pose?`<div class="ch-m"><div class="am-masc" data-pose="${m.pose}" style="--s:340px"></div></div>`:""}
+    ${m.pose?`<div class="ch-m" aria-hidden="true"><div class="am-masc" data-pose="${m.pose}"></div></div>`:""}
     <div class="ch-txt"><span class="ch-eye">${m.eye||""}</span><b class="ch-h"><span class="ch-rv">${hlx(t)}</span></b><i class="ch-bar" aria-hidden="true"></i><span class="ch-sub">${d}</span>${chips?`<div class="ch-chips">${chips}</div>`:""}</div>
     <div class="cv-logos">${logosHTML()}</div><div class="ch-tag"><i></i>→ ou clique para continuar</div>`;
-  if(window.AMMasc&&typeof AMMasc.mount==="function")safe(()=>AMMasc.mount(chapEl));
-  chapEl.classList.add("on");void chapEl.offsetWidth;chapEl.classList.add("play");
-  const cl=CHAPX[k]?safe(CHAPX[k],chapEl):null;chapOn={k,done,cleanup:typeof cl==="function"?cl:()=>{}};DECK_EV("deck:chapter",{key:k})}
+  chapEl.classList.toggle("pil",!!m.pilar);chapEl.classList.add("on");void chapEl.offsetWidth;chapEl.classList.add("play");
+  const cl=CHAPX[k]?safe(CHAPX[k],chapEl):null;chapOn={k,done,cleanup:typeof cl==="function"?cl:()=>{}};
+  deckMasc(chapEl);DECK_EV("deck:chapter",{key:k})}
 function hideChapter(run){if(!chapOn)return;const c=chapOn;chapOn=null;const a=chapEl.animate([{opacity:1},{opacity:0}],{duration:REDMO?1:380});a.onfinish=()=>{if(chapOn)return;chapEl.className="";chapEl.innerHTML="";safe(c.cleanup)};if(run)safe(c.done)}
 chapEl.addEventListener("click",e=>{const ch=e.target.closest("[data-go-ch]");if(ch){e.stopPropagation();const i=+ch.dataset.goCh-1;hideChapter(true);if(i!==cur)go(i,true);return}if(e.target.closest("button,a"))return;hideChapter(true)});
 
@@ -112,18 +117,22 @@ function fillPdx(){const xl=pdxP.querySelector(".xl");xl.innerHTML="";if(typeof 
 function ctlMode(pdm){$("bPrev").querySelector(".lb").textContent=pdm?"Ficha anterior":"Voltar";$("bNext").querySelector(".lb").textContent=pdm?"Próxima ficha":"Avançar"}
 
 /* ---------- "Virar a página" (contexto e fontes) ----------
-   A parte 2 da fundação define window.flipPage / window.unflipPage (verso de cada slide) e marca o palco com a classe
-   "flipped". Até lá vale este stub, que só alterna a classe e mostra um aviso. O botão chama window.flipPage na hora. */
-if(typeof window.flipPage!=="function")window.flipPage=()=>{const on=!stage.classList.contains("flipped");stage.classList.toggle("flipped",on);stage.classList.toggle("flip-stub",on)};
-if(typeof window.unflipPage!=="function")window.unflipPage=()=>{stage.classList.remove("flipped","flip-stub")};
+   src/js/07-verso.js define window.flipPage(force) (true = vira, false = desvira com animação, sem argumento = alterna)
+   e window.unflipPage() (desvira na hora; usado ao navegar). O estado é a classe "flipped" no #stage.
+   Sem o módulo, o botão não faz nada (nenhum erro). */
+if(typeof window.flipPage!=="function")window.flipPage=()=>{};
+if(typeof window.unflipPage!=="function")window.unflipPage=()=>{stage.classList.remove("flipped")};
 const isFlipped=()=>stage.classList.contains("flipped");
 $("bFlip").onclick=e=>{e.stopPropagation();safe(()=>window.flipPage())};
-const flipSync=()=>{const on=isFlipped();$("bFlip").classList.toggle("on",on);$("bFlip").querySelector(".lb").textContent=on?"Desvirar":"Virar a página"};
+const flipSync=()=>{const on=isFlipped();$("bFlip").classList.toggle("on",on);$("bFlip").querySelector(".lb").textContent=on?"Desvirar":"Virar a página";$("bFlip").title=on?"Desvirar: volta à frente da página (V ou Esc)":"Virar a página: contexto e fontes (V)"};
 new MutationObserver(flipSync).observe(stage,{attributes:true,attributeFilter:["class"]});
 
-/* ---------- escala do palco (fit da APODI: deixa ~62 px para a barra inferior) ---------- */
+/* ---------- escala do palco (fit da APODI: deixa ~62 px para a barra inferior) ----------
+   A escala vai no invólucro #flip (o giro do verso compõe rotateY sobre fitT). */
+let fitT="translate(-50%,-50%) scale(1)";
 function fit(){const vw=innerWidth,vh=innerHeight,sm=vw<760,land=vh<=480&&vw>vh,pd0=land?4:(sm?6:10),bar=land?14:(sm?54:62);
-  const sc=Math.min((vw-pd0*2)/1600,(vh-pd0-bar)/900);stage.style.left=vw/2+"px";stage.style.top=(pd0+(vh-pd0-bar)/2)+"px";stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
+  const sc=Math.min((vw-pd0*2)/1600,(vh-pd0-bar)/900);fitT=`translate(-50%,-50%) scale(${sc})`;
+  flipEl.style.left=vw/2+"px";flipEl.style.top=(pd0+(vh-pd0-bar)/2)+"px";flipEl.style.transform=fitT}
 addEventListener("resize",fit);
 
 /* ---------- ativação e navegação ---------- */
@@ -134,11 +143,11 @@ function activate(i,inst,back,noEnter,last){tipEl.classList.remove("on");if(isFl
   if(!pdOpen)try{history.replaceState(null,"","#"+(i+1))}catch(e){}
   navIdx(i);if(P)segSync(P.sg);
   n.querySelectorAll("[data-count]").forEach(el=>count(el,0,+el.dataset.count,el.dataset.suf||"",1200));
-  DECK_EV("deck:activate",{i,from,key:keyOf(n),slide:n});
+  deckMasc(n);DECK_EV("deck:activate",{i,from,key:keyOf(n),slide:n});
   if(noEnter)return;const fn=hook(ENTER,n);if(fn)setTimeout(()=>safe(fn),inst?0:60)}
 /* goLast: o slide foi aberto pelo ← (prev): abre na última vista ou passo. Abas, índice e links abrem no início */
 let goLast=false;
-function go(i,inst,opt){i=clamp(i,0,N-1);if(i===cur&&!inst)return;if(busy)return;const back=i<cur,last=!!(opt&&opt.last)&&back;goLast=last;if(chapOn)hideChapter(false);
+function go(i,inst,opt){if(isFlipped())safe(()=>window.unflipPage());i=clamp(i,0,N-1);if(i===cur&&!inst)return;if(busy)return;const back=i<cur,last=!!(opt&&opt.last)&&back;goLast=last;if(chapOn)hideChapter(false);
   const k=keyOf(slides[i]),chap=!back&&!inst&&i!==cur&&CAP[k]?k:null;
   if(!chap||REDMO){activate(i,!!inst,back,false,last);if(chap)showChapter(chap,()=>{});return}
   /* entrada de capítulo: barras cobrem o palco, o slide é ativado por baixo e a divisória aparece */
@@ -156,7 +165,7 @@ function prev(){tipEl.classList.remove("on");if(pdOpen){pdStep(-1);return}if(cha
 $("bNext").onclick=e=>{e.stopPropagation();next()};$("bPrev").onclick=e=>{e.stopPropagation();prev()};
 addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA"||e.target.isContentEditable||e.defaultPrevented||e.ctrlKey||e.metaKey||e.altKey)return;const k=e.key;
   if((k===" "||k==="Enter")&&e.target.closest&&e.target.closest("button,[role=button],a"))return;
-  if(k==="Escape"){if(chapOn){hideChapter(true);return}if(panels.some(p=>p.classList.contains("on"))){closePanels(null);return}if(isFlipped()){safe(()=>window.unflipPage());return}if(pdOpen)closePD();return}
+  if(k==="Escape"){if(chapOn){hideChapter(true);return}if(panels.some(p=>p.classList.contains("on"))){closePanels(null);return}if(isFlipped()){safe(()=>window.flipPage(false));return}if(pdOpen)closePD();return}
   if(["ArrowRight","PageDown"," "].includes(k)){e.preventDefault();next()}else if(["ArrowLeft","PageUp"].includes(k)){e.preventDefault();prev()}
   else if(k==="Home"){closePD(true);go(0)}else if(k==="End"){closePD(true);go(N-1)}
   else if(k==="f"||k==="F"){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.()}
@@ -171,16 +180,27 @@ document.addEventListener("pointerdown",e=>{if(REDMO)return;const el=e.target.cl
 stage.addEventListener("click",e=>{const a=e.target.closest("[data-pd]");if(!a||!stage.contains(a))return;e.preventDefault();if(chapOn)hideChapter(true);openPD(a.dataset.pd)});
 stage.addEventListener("click",e=>{const a=e.target.closest("[data-go]");if(!a)return;e.preventDefault();e.stopPropagation();closePD(true);go(+a.dataset.go-1)});
 
-/* ---------- impressão: vistas extras (panes), fichas como páginas e ganchos PRINT dos slides ---------- */
-function buildPrint(){PRINT.forEach(f=>safe(f));
+/* ---------- impressão (PDF) ----------
+   Ordem das páginas: para cada slide, a frente (vista 1 e as demais vistas, clonadas aqui com a classe "pane-view"),
+   logo depois o VERSO (contexto e fontes, página estática gerada por VERSO.page) e então as páginas extras de detalhe
+   criadas pelos ganchos PRINT dos slides (sec.after(clone)); no fim, as 24 fichas de produto.
+   Idempotente: os ganchos PRINT rodam a cada chamada; as páginas só são criadas uma vez. */
+function buildPrint(){if(isFlipped())safe(()=>window.unflipPage());if(chapOn)hideChapter(false);if(pdOpen)closePD(true);
+  PRINT.forEach(f=>safe(f));
   stage.querySelectorAll(":scope > .slide:not(.pd-print) a[data-pd]").forEach(a=>{if(a.dataset.h0==null)a.dataset.h0=a.getAttribute("href")||"";a.setAttribute("href","#pdp-"+a.dataset.pd)});
-  if(stage.querySelector(".pd-print"))return;
-  Object.values(PANE).forEach(P=>{for(let k=P.panes.length-1;k>=1;k--){const c=P.s.cloneNode(true);c.classList.add("pane-print");c.classList.remove("active");[...c.querySelectorAll(":scope > .body.pane")].forEach((x,j)=>{if(j!==k)x.remove();else x.classList.add("on")});
+  if(stage.querySelector(":scope > .pd-print,:scope > .vpage"))return;
+  /* vistas extras: cada vista depois da primeira vira uma página logo após o slide */
+  Object.values(PANE).forEach(P=>{for(let k=P.panes.length-1;k>=1;k--){const c=P.s.cloneNode(true);c.classList.add("pane-print","pane-view");c.classList.remove("active","entering","back");[...c.querySelectorAll(":scope > .body.pane")].forEach((x,j)=>{if(j!==k)x.remove();else x.classList.add("on")});
       const pn=P.panes[k],fs=c.querySelector(":scope > .foot .s");if(fs&&pn.dataset.paneSrc)fs.textContent=pn.dataset.paneSrc;c.querySelectorAll(".pseg button").forEach((b,j)=>b.classList.toggle("on",j===k));P.s.after(c)}
-    P.panes.forEach((x,j)=>x.classList.toggle("on",j===0));P.btns.forEach((b,j)=>b.classList.toggle("on",j===0))});
-  if(typeof PRODUCTS==="undefined"||typeof pdHTML!=="function")return;
-  PRODUCTS.forEach((P,k)=>{const sec=H("section",{class:"pd-print slide",id:"pdp-"+P.id,html:pdHTML(P,k+1)},stage);plainBadges(sec);sec.classList.add("play");
-    sec.querySelectorAll("a[data-pd]").forEach(a=>a.setAttribute("href","#pdp-"+a.dataset.pd))})}
+    P.panes.forEach((x,j)=>x.classList.toggle("on",j===0));P.btns.forEach((b,j)=>b.classList.toggle("on",j===0));
+    const fs0=P.s.querySelector(":scope > .foot .s"),src0=P.panes[0].dataset.paneSrc||P.s.dataset.src||"";if(fs0){fs0.textContent=src0;fs0.title=src0}});
+  /* verso de cada slide, logo depois da frente (e das vistas dela) */
+  if(typeof VERSO!=="undefined"&&VERSO&&typeof VERSO.page==="function")slides.forEach(s=>{let at=s;while(at.nextElementSibling&&at.nextElementSibling.classList.contains("pane-view")&&at.nextElementSibling.dataset.s===s.dataset.s)at=at.nextElementSibling;
+    const v=safe(()=>VERSO.page(s));if(v)at.after(v)});
+  /* fichas de produto */
+  if(typeof PRODUCTS!=="undefined"&&typeof pdHTML==="function")PRODUCTS.forEach((P,k)=>{const sec=H("section",{class:"pd-print slide",id:"pdp-"+P.id,html:safe(()=>pdHTML(P,k+1))||""},stage);plainBadges(sec);sec.classList.add("play");
+    sec.querySelectorAll("a[data-pd]").forEach(a=>a.setAttribute("href","#pdp-"+a.dataset.pd))});
+  if(typeof refFill==="function")safe(()=>refFill(stage));deckMasc(stage)}
 addEventListener("beforeprint",buildPrint);
 addEventListener("afterprint",()=>stage.querySelectorAll("a[data-h0]").forEach(a=>{a.setAttribute("href",a.dataset.h0);delete a.dataset.h0}));
 
@@ -199,7 +219,8 @@ window.DECK={slides,get cur(){return cur},go:(i,inst)=>go(i,inst),next,prev,setP
   step:k=>{let n=0;for(let j=0;j<k;j++){if(stepHook(1)||paneStep(1))n++;else break}return n},
   chap:nn=>{const s=SL(nn);if(!s)return false;closePD(true);if(chapOn)hideChapter(false);activate(slides.indexOf(s),true,false,true);s.classList.remove("play");showChapter(keyOf(s),()=>{s.classList.add("play");const fn=hook(ENTER,s);if(fn)safe(fn)});return true},
   ficha:id=>{openPD(id);return pdOpen},
-  flip:()=>safe(()=>window.flipPage()),print:buildPrint};
+  /* flip(): alterna · flip(true): vira · flip(false): desvira · flipped: estado atual */
+  flip:on=>safe(()=>window.flipPage(on)),get flipped(){return isFlipped()},print:buildPrint};
 
 function boot(){plainBadges();fit();const h=location.hash.slice(1),op=typeof ONEPAGE!=="undefined"&&ONEPAGE>0?ONEPAGE:1;
   if(h.startsWith("p=")){activate(op-1,true);openPD(h.slice(2));if(!pdOpen)try{history.replaceState(null,"","#"+op)}catch(e){}}

@@ -9,8 +9,9 @@ Ordem de montagem:
   VERSOS : src/versos/*.html dentro de <div id="versos" hidden>
   JS     : um <script> por arquivo, nesta ordem: ativos (const ASSET), src/engine.js, src/data/*.js,
            src/core.js, src/js/*.js (99-boot.js inicia). Um erro de sintaxe num módulo não derruba os outros.
-  ATIVOS : const ASSET={...} em base64: logos (src/assets/*.png), fotos leves da equipe
-           (src/assets/equipe-web/*.webp → "equipe/<nome>") e outras imagens em subpastas ("pasta/<nome>").
+  ATIVOS : const ASSET={...} em base64: logos (src/assets/*.png) e outras imagens em subpastas ("pasta/<nome>").
+           Fotos de pessoas NÃO entram (SPEC V6 §0: nada de pessoas da A&M): as pastas equipe/ e equipe-web/ são ignoradas.
+  PALCO  : <div id="viewport"><div id="flip"><div id="stage">…</div></div></div> (#flip gira no "Virar a página")
 Uso: python3 build.py --out caminho.html   (trabalho em paralelo)
      python3 build.py --final              (gera DTS_Portfolio_Estrategico_2027.html)
 """
@@ -38,7 +39,7 @@ def read_all(paths):
     return "\n".join(p.read_text(encoding="utf-8") for p in paths)
 
 
-# ---------- ativos: logos, fotos leves da equipe e imagens em subpastas ----------
+# ---------- ativos: logos e imagens em subpastas (sem fotos de pessoas) ----------
 def collect_assets():
     assets = {}
     base = SRC / "assets"
@@ -47,11 +48,9 @@ def collect_assets():
             continue
         rel = p.relative_to(base)
         top = rel.parts[0] if len(rel.parts) > 1 else ""
-        if top in ("equipe", "fonts"):          # originais pesados da equipe e fontes ficam de fora
+        if top in ("equipe", "equipe-web", "fonts"):   # fotos de pessoas (regra do usuário) e fontes ficam de fora
             continue
-        if top == "equipe-web":
-            key = "equipe/" + p.stem
-        elif top:
+        if top:
             key = "/".join(rel.parts[:-1]) + "/" + p.stem
         else:
             key = p.stem
@@ -111,10 +110,10 @@ html = f"""<!doctype html>
 </style>
 </head>
 <body>
-<div id="viewport"><div id="stage">
+<div id="viewport"><div id="flip"><div id="stage">
 {slides}
 <div id="wipe"><i></i><i></i><i></i></div>
-</div></div>
+</div></div></div>
 <div id="versos" hidden>
 {versos}
 </div>

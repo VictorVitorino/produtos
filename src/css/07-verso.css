@@ -1,0 +1,58 @@
+/* =====================================================================
+   VERSO ("Virar a página") · fundação · SPEC V6 §6
+   Mesma moldura dos slides (.sr-top, .sr-band c-steel, .foot) e corpo branco em duas colunas:
+   contexto em prosa (~60 %) à esquerda; fontes numeradas e a caixa "Leitura do AM" (~40 %) à direita.
+   .vsheet = a folha do verso (na tela: #vface; na impressão: section.slide.vpage; na medição: .vmeasure).
+   O tamanho do texto vem de --vf/--vlh (contexto) e --vs/--vslh (fontes), escolhidos por 07-verso.js.
+   ===================================================================== */
+.vsheet{color:var(--ink);overflow:hidden;background-color:var(--canvas);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px}
+.vmeasure{position:absolute;left:0;top:0;width:1600px;height:900px;visibility:hidden;pointer-events:none;z-index:-1}
+.vsheet .vbody{padding:20px 28px 18px;gap:0}
+.vsheet .v-cols{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,60fr) minmax(0,40fr);gap:0 34px}
+.vsheet .v-l{min-height:0;overflow:hidden;--vf:15px;--vlh:1.55}
+.vsheet .v-r{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:12px;padding-left:32px;border-left:1px solid var(--line);--vs:13px;--vslh:1.45}
+
+/* contexto: subtítulos curtos (Barlow 700 18 px, marcador laranja) e prosa (Inter 15 px / 1,55, navy 80 %) */
+.vsheet h4{display:flex;align-items:center;gap:10px;font:700 18px/1.15 var(--fh);letter-spacing:.015em;color:var(--navy);white-space:nowrap}
+.vsheet h4::before{content:"";flex:none;width:14px;height:3px;border-radius:2px;background:var(--orange)}
+.vsheet .v-ctx>h4{margin:15px 0 5px}
+.vsheet .v-ctx>h4:first-child{margin-top:0}
+.vsheet .v-ctx p,.vsheet .v-ctx li{font:400 var(--vf)/var(--vlh) var(--fb);color:#33556D;text-wrap:pretty}
+.vsheet .v-ctx p+p{margin-top:6px}
+.vsheet .v-ctx ul,.vsheet .v-ctx ol{margin:4px 0 0;padding-left:20px}
+.vsheet .v-ctx li+li{margin-top:3px}
+.vsheet .v-ctx li::marker{color:var(--orange)}
+.vsheet .v-ctx b,.vsheet .v-ctx strong{font-weight:600;color:var(--navy)}
+.vsheet .v-ctx em{font-style:italic}
+.vsheet .v-ref{font-weight:600;font-size:.86em;color:var(--steel);text-decoration:none;white-space:nowrap;cursor:help;border-radius:3px;padding:0 1px;transition:background .2s,color .2s}
+.vsheet .v-ref:hover{background:var(--ice);color:var(--navy)}
+
+/* fontes: lista numerada; cada item = Organização — título (data) · tipo · abrir fonte ↗ */
+.vsheet .v-rh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex:none}
+.vsheet .v-rh span{font:600 11px var(--fb);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.vsheet .v-src{list-style:none;counter-reset:vs;display:flex;flex-direction:column;gap:8px;flex:none;margin:0;padding:0}
+.vsheet .v-src>li{counter-increment:vs;position:relative;padding-left:32px;font:400 var(--vs)/var(--vslh) var(--fb);color:var(--ink2);overflow-wrap:anywhere;transition:background .25s}
+.vsheet .v-src>li::before{content:counter(vs);position:absolute;left:0;top:1px;width:22px;height:20px;border-radius:5px;background:var(--ice);color:var(--navy);font:700 11px/20px var(--fb);text-align:center;transition:background .2s,color .2s}
+.vsheet .v-src>li b{font-weight:700;color:var(--navy)}
+.vsheet .v-src .v-tp{color:var(--muted)}
+.vsheet .v-src a{font-weight:600;color:var(--navy);text-decoration:underline;text-decoration-color:rgba(247,140,22,.85);text-decoration-thickness:1.5px;text-underline-offset:2px;white-space:nowrap}
+.vsheet .v-src a:hover{color:var(--steel)}
+.vsheet .v-src>li.hl::before,.vsheet .v-src>li.pulse::before{background:var(--navy);color:#fff}
+.vsheet .v-src>li.pulse{animation:vPulse 1.2s ease}
+@keyframes vPulse{0%{background:rgba(247,140,22,.18)}100%{background:transparent}}
+.vsheet .v-nosrc{font:400 13px/1.45 var(--fb);color:var(--muted)}
+
+/* caixa "Leitura do AM": mascote (pose livro) + uma frase de síntese, no pé da coluna das fontes */
+.vsheet .v-amb{margin-top:auto;flex:none;display:flex;align-items:center;gap:14px;padding:12px 18px 12px 14px;border-radius:12px;
+  background:var(--ice2);border:1px solid var(--line);border-left:4px solid var(--orange)}
+.vsheet .v-amb .am-masc{--s:72px;flex:none}
+.vsheet .v-amt{min-width:0}
+.vsheet .v-amt .eye{margin:0 0 3px}
+.vsheet .v-amt p{font:600 14px/1.42 var(--fb);color:var(--navy);text-wrap:pretty}
+
+/* fatos e fontes que não existem no registro: vermelho, para a revisão achar */
+.ref-miss{color:#B3261E!important;font-weight:600}
+
+@media (prefers-reduced-motion:reduce){.vsheet .v-src>li.pulse{animation:none}}
+@media print{.vsheet .v-ref{color:var(--steel)}.vsheet .v-src a{color:var(--navy)}}

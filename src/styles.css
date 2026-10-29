@@ -43,8 +43,18 @@ svg text{font-family:var(--fb)}
    2. PALCO · 1600×900 fixo, escalado por fit() (core.js) deixando ~62 px para a barra inferior
    ===================================================================== */
 #viewport{position:fixed;inset:0;overflow:hidden}
-#stage{position:absolute;left:50%;top:50%;width:1600px;height:900px;background:#fff;border-radius:14px;
-  box-shadow:0 18px 50px rgba(14,28,57,.28),0 0 0 1px rgba(14,28,57,.06);overflow:hidden;transform-origin:center}
+/* #flip: invólucro escalado por fit(); frente = #stage, verso = #vface (07-verso.js). Em repouso é 2D puro:
+   o contexto 3D (.fl3d) só existe durante o giro; virado e parado, a frente fica oculta e o verso aparece sem rotação. */
+#flip{position:absolute;left:50%;top:50%;width:1600px;height:900px;transform-origin:center}
+#stage{position:absolute;left:0;top:0;width:1600px;height:900px;background:#fff;border-radius:14px;
+  box-shadow:0 18px 50px rgba(14,28,57,.28),0 0 0 1px rgba(14,28,57,.06);overflow:hidden}
+#vface{position:absolute;left:0;top:0;width:1600px;height:900px;display:none;border-radius:14px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(14,28,57,.28),0 0 0 1px rgba(14,28,57,.06)}
+#flip.fl3d{transform-style:preserve-3d}
+#flip.fl3d>#stage,#flip.fl3d>#vface{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+#flip.fl3d>#vface{display:block;transform:rotateY(180deg)}
+#flip.vback>#stage{visibility:hidden}
+#flip.vback>#vface{display:block}
 .slide{position:absolute;inset:0;display:none;overflow:hidden;color:var(--ink);
   background-color:var(--canvas);
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
@@ -228,7 +238,13 @@ svg text{font-family:var(--fb)}
 #chap .ch-chip{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 18px 0 7px;border-radius:999px;border:1px solid rgba(157,187,217,.38);background:rgba(255,255,255,.06);color:#DFE8F0;font:600 14px var(--fb);white-space:nowrap;cursor:pointer;transition:background-color .25s,border-color .25s,transform .25s}
 #chap .ch-chip b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--orange);color:#0E1C39;font:800 13px var(--fh)}
 #chap .ch-chip:hover{background:rgba(247,140,22,.16);border-color:rgba(247,140,22,.65);transform:translateY(-2px)}
-#chap .ch-m{position:absolute;left:1110px;top:200px;z-index:2;width:400px;display:flex;justify-content:center;align-items:flex-end;height:476px}
+/* mascote AM (pose em CAPITULOS[..].pose): em pé sobre a linha do chão, chega deslizando como na APODI (h3M) */
+#chap .ch-m{position:absolute;left:1110px;top:200px;z-index:2;width:400px;display:flex;justify-content:center;align-items:flex-end;height:476px;--s:340px;pointer-events:none}
+#chap.play .ch-m{animation:chM .75s cubic-bezier(.22,.61,.36,1) .45s both}
+@keyframes chM{from{opacity:0;transform:translate(70px,10px)}to{opacity:1;transform:none}}
+/* abertura de pilar: o morphing fica à direita e o mascote (pose aponta), menor, aponta para ele do pé da cena */
+#chap.pil .ch-m{left:842px;top:446px;width:200px;height:228px;--s:168px}
+#chap.pil .pc-pills{max-width:690px}
 #chap .cv-logos{position:absolute;left:120px;bottom:52px;display:flex;align-items:center;gap:22px;z-index:2;pointer-events:none}
 #chap .cv-logos img{display:block}
 #chap .cv-logos i{width:1px;height:42px;background:rgba(255,255,255,.25)}
@@ -257,10 +273,8 @@ svg text{font-family:var(--fb)}
 #wipe i{position:absolute;top:-5%;bottom:-5%;left:-10%;width:120%;transform:translateX(-110%) skewX(-10deg)}
 #wipe i:nth-child(1){background:var(--orange)}#wipe i:nth-child(2){background:var(--indigo)}#wipe i:nth-child(3){background:var(--navy-dd)}
 
-/* "Virar a página": a parte 2 da fundação implementa o verso; o stub só marca o palco */
+/* "Virar a página": os versos (src/versos/*.html) ficam guardados aqui; a moldura e o estilo do verso estão em src/css/07-verso.css */
 #versos{display:none}
-#stage.flip-stub::after{content:"Verso desta página em construção · V ou Esc para voltar";position:absolute;left:50%;bottom:60px;transform:translateX(-50%);z-index:95;
-  padding:10px 18px;border-radius:999px;background:#0E1C39;color:#fff;font:600 13px var(--fb);box-shadow:0 10px 30px rgba(14,28,57,.35)}
 
 /* =====================================================================
    7. MOVIMENTO REDUZIDO e IMPRESSÃO (uma lâmina por página 1600×900)
@@ -272,6 +286,7 @@ svg text{font-family:var(--fb)}
   .flow{animation:none!important}.lift{transition:none}
   #dots .nb i{transition:none}
   #chap .ch-rv{clip-path:none!important;animation:none!important}#chap .ch-bar{transform:none!important;animation:none!important}
+  #chap .ch-m{animation:none!important;opacity:1!important;transform:none!important}
   #chap .ch-slash path{stroke-dashoffset:0!important;animation:none!important}
   *{scroll-behavior:auto!important}
 }
@@ -283,8 +298,10 @@ svg text{font-family:var(--fb)}
   html,body{overflow:visible;background:#fff!important}
   #controls,#progress,#dots,.pop,#tip,#wipe,#chap,#rotate,[data-ui]{display:none!important}
   #viewport{position:static}
+  #flip{position:static;left:auto!important;top:auto!important;transform:none!important;width:auto;height:auto}
+  #flip>#stage{visibility:visible!important}
+  #vface{display:none!important}
   #stage{position:relative;left:auto!important;top:auto!important;transform:none!important;height:auto;box-shadow:none;border-radius:0;overflow:visible}
-  #stage.flip-stub::after{display:none}
   .slide{position:relative;display:block!important;height:900px;break-after:page;overflow:hidden}
   .slide [data-a],.play [data-a],[data-a]{opacity:1!important;animation:none!important}
   .slide.entering>.body{animation:none!important}
