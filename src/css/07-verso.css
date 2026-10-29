@@ -46,7 +46,7 @@
 /* caixa "Leitura do AM": mascote (pose livro) + uma frase de síntese, no pé da coluna das fontes */
 .vsheet .v-amb{margin-top:auto;flex:none;display:flex;align-items:center;gap:14px;padding:12px 18px 12px 14px;border-radius:12px;
   background:var(--ice2);border:1px solid var(--line);border-left:4px solid var(--orange)}
-.vsheet .v-amb .am-masc{--s:72px;flex:none}
+.vsheet .v-amb .am-masc{--s:84px;flex:none}
 .vsheet .v-amt{min-width:0}
 .vsheet .v-amt .eye{margin:0 0 3px}
 .vsheet .v-amt p{font:600 14px/1.42 var(--fb);color:var(--navy);text-wrap:pretty}

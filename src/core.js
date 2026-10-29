@@ -79,6 +79,8 @@ function showChapter(k,done){const m=CAP[k]||{};chapEl.className="";
     <div class="cv-logos">${logosHTML()}</div><div class="ch-tag"><i></i>→ ou clique para continuar</div>`;
   chapEl.classList.toggle("pil",!!m.pilar);chapEl.classList.add("on");void chapEl.offsetWidth;chapEl.classList.add("play");
   const cl=CHAPX[k]?safe(CHAPX[k],chapEl):null;chapOn={k,done,cleanup:typeof cl==="function"?cl:()=>{}};
+  /* título numa linha que não cruza as faixas diagonais: até ~770 px de largura (desce de 4 em 4 px, mínimo 76 px) */
+  const hh=chapEl.querySelector(".ch-h");if(hh){let fs=parseFloat(getComputedStyle(hh).fontSize)||120;while(hh.offsetWidth>770&&fs>76){fs-=4;hh.style.fontSize=fs+"px"}}
   deckMasc(chapEl);DECK_EV("deck:chapter",{key:k})}
 function hideChapter(run){if(!chapOn)return;const c=chapOn;chapOn=null;const a=chapEl.animate([{opacity:1},{opacity:0}],{duration:REDMO?1:380});a.onfinish=()=>{if(chapOn)return;chapEl.className="";chapEl.innerHTML="";safe(c.cleanup)};if(run)safe(c.done)}
 chapEl.addEventListener("click",e=>{const ch=e.target.closest("[data-go-ch]");if(ch){e.stopPropagation();const i=+ch.dataset.goCh-1;hideChapter(true);if(i!==cur)go(i,true);return}if(e.target.closest("button,a"))return;hideChapter(true)});
@@ -132,8 +134,18 @@ new MutationObserver(flipSync).observe(stage,{attributes:true,attributeFilter:["
 let fitT="translate(-50%,-50%) scale(1)";
 function fit(){const vw=innerWidth,vh=innerHeight,sm=vw<760,land=vh<=480&&vw>vh,pd0=land?4:(sm?6:10),bar=land?14:(sm?54:62);
   const sc=Math.min((vw-pd0*2)/1600,(vh-pd0-bar)/900);fitT=`translate(-50%,-50%) scale(${sc})`;
-  flipEl.style.left=vw/2+"px";flipEl.style.top=(pd0+(vh-pd0-bar)/2)+"px";flipEl.style.transform=fitT}
+  flipEl.style.left=vw/2+"px";flipEl.style.top=(pd0+(vh-pd0-bar)/2)+"px";flipEl.style.transform=fitT;barQ()}
 addEventListener("resize",fit);
+/* barra inferior: as abas de capítulo (#dots) e os botões dividem a largura da janela. Se encostarem (janela estreita, como
+   1280 px, ou rótulos mais longos, como "Ficha anterior" / "Próxima ficha" e "Ficha 16 / 24"), a barra fica compacta
+   (classe bar-tight no <body>: menos folga, mesmo desenho); se nem assim couber, as abas saem (o índice G continua).
+   Refeito ao redimensionar (fit) e sempre que um rótulo ou o contador dos botões muda. */
+function barFit(){const B=document.body;B.classList.remove("bar-tight","bar-nodots");if(getComputedStyle(dotsEl).display==="none")return;
+  const room=()=>ctr.getBoundingClientRect().left-dotsEl.getBoundingClientRect().right;
+  if(room()<24){B.classList.add("bar-tight");if(room()<16)B.classList.add("bar-nodots")}}
+let barRaf=0;function barQ(){cancelAnimationFrame(barRaf);barRaf=requestAnimationFrame(barFit)}
+new MutationObserver(barQ).observe(ctr,{subtree:true,childList:true,characterData:true});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(barQ);
 
 /* ---------- ativação e navegação ---------- */
 function activate(i,inst,back,noEnter,last){tipEl.classList.remove("on");if(isFlipped())safe(()=>window.unflipPage());const n=slides[i];const P=paneOf(n);if(P)setPane(n,last?P.panes.length-1:0);

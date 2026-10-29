@@ -1,0 +1,149 @@
+/* =====================================================================
+   Mascote "AM" · versão final (V6) — estilos
+   Par do 06-mascote.js (window.AMMasc). Tamanho pela variável --s (largura, pode vir de um
+   ancestral); altura proporcional ao viewBox 320 × 312 (os pés ficam no rodapé da caixa).
+
+   .am-masc                  contêiner; o JS injeta <svg class="am-svg">
+   .am-masc.am-play          entrada (aceno acena, comemora pula, demais: pulinho)
+   .am-masc.am-parado        estático (AMMasc.stop)
+   Detalhe por tamanho (container query no próprio .am-masc): até 219 px o contorno engrossa;
+   até 119 px some o que vira ruído (brilhos finos, linhas do livro, desfoques) e as mãos crescem.
+
+   .am-fala                  balão branco, texto navy, fio laranja à esquerda, bico embaixo à direita
+     data-tail = b (padrão) · bl · bc · t · tl · l · r · none     direção do bico
+     (aliases: .cauda-esq · .cauda-cima · .cauda-dir · .cauda-lado-esq · .sem-cauda)
+     .am-fala--navy (aliases .escura · .dk)   variante para fundo navy
+     .am-fala--p                              versão compacta (13 px)
+   Tudo parado em prefers-reduced-motion e na impressão.
+   ===================================================================== */
+
+/* ---------- contêiner ---------- */
+.am-masc{display:block;position:relative;width:var(--s,160px);aspect-ratio:320/312;flex:none;line-height:0;
+  container:am-masc/inline-size;-webkit-tap-highlight-color:transparent}
+.am-masc>.am-svg{display:block;width:100%;height:100%;overflow:visible;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.am-masc.am-ok:hover>.am-svg{transform:translateY(-3%)}
+
+/* ---------- movimento contínuo ---------- */
+.am-masc .am-flutua{animation:am-flutua 3.6s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-sombra{transform-box:fill-box;transform-origin:50% 50%;animation:am-sombra 3.6s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-olhos{transform-box:fill-box;transform-origin:50% 55%;animation:am-pisca 5.4s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-shine{animation:am-shine 4.8s ease-in-out infinite;animation-delay:calc(var(--am-d,0s) * .7)}
+.am-masc .am-halo{animation:am-halo 4.8s ease-in-out infinite;animation-delay:calc(var(--am-d,0s) * .7)}
+.am-masc .am-pula{transform-box:view-box;transform-origin:172px 304px}
+/* gesto discreto de cada pose (o transform-origin vem do SVG, em unidades do viewBox) */
+.am-masc .am-aceno{transform-box:view-box;animation:am-aceno-idle 6.5s ease-in-out infinite;animation-delay:calc(var(--am-d,0s) * .5)}
+.am-masc .am-aponta{transform-box:view-box;animation:am-aponta 3.4s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-lupa{transform-box:view-box;animation:am-balanca 3.8s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-lanterna{transform-box:view-box;animation:am-varre 5s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-feixe{animation:am-feixe 2.4s ease-in-out infinite}
+.am-masc .am-cartas{transform-box:view-box;animation:am-leque 3.4s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-chave-g{transform-box:view-box;animation:am-chave 4.6s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-pano{transform-box:fill-box;transform-origin:100% 50%;animation:am-pano 2.8s ease-in-out infinite}
+.am-masc .am-bolha{transform-box:fill-box;transform-origin:50% 50%;animation:am-bolha 2.6s ease-in-out infinite}
+.am-masc .am-bolha:nth-child(2){animation-delay:.25s}
+.am-masc .am-bolha:nth-child(3){animation-delay:.5s}
+.am-masc .am-p-livro .am-ler{animation:am-ler 4.2s ease-in-out infinite;animation-delay:var(--am-d,0s)}
+.am-masc .am-faisca{transform-box:fill-box;transform-origin:50% 50%;animation:am-cintila 2.4s ease-in-out infinite}
+.am-masc .am-faisca.am-f2{animation-delay:.6s}.am-masc .am-faisca.am-f3{animation-delay:1.2s}.am-masc .am-faisca.am-f4{animation-delay:1.8s}
+
+@keyframes am-flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes am-sombra{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.9);opacity:.75}}
+@keyframes am-pisca{0%,91%,100%{transform:scaleY(1)}93.5%{transform:scaleY(.08)}96%{transform:scaleY(1)}}
+@keyframes am-shine{0%,12%{transform:translateX(0)}64%,100%{transform:translateX(400px)}}
+@keyframes am-halo{0%,100%{opacity:.5}40%{opacity:.75}}
+@keyframes am-aceno-idle{0%,64%,100%{transform:rotate(0)}70%{transform:rotate(9deg)}76%{transform:rotate(-5deg)}82%{transform:rotate(9deg)}88%{transform:rotate(0)}}
+@keyframes am-aponta{0%,55%,100%{transform:rotate(0)}66%{transform:rotate(-4deg)}78%{transform:rotate(1deg)}}
+@keyframes am-balanca{0%,100%{transform:rotate(0)}50%{transform:rotate(-3deg)}}
+@keyframes am-varre{0%,100%{transform:rotate(0)}50%{transform:rotate(7deg)}}
+@keyframes am-feixe{0%,100%{opacity:1}50%{opacity:.78}}
+@keyframes am-leque{0%,100%{transform:rotate(0)}50%{transform:rotate(-4deg)}}
+@keyframes am-chave{0%,70%,100%{transform:rotate(0)}78%{transform:rotate(-14deg)}86%{transform:rotate(4deg)}}
+@keyframes am-pano{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-3deg) scaleX(.97)}}
+@keyframes am-bolha{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-3px);opacity:.82}}
+@keyframes am-ler{0%,18%,100%{transform:translateX(0)}32%,48%{transform:translateX(-2.4px)}62%,80%{transform:translateX(2.4px)}}
+@keyframes am-cintila{0%,100%{transform:scale(1) rotate(0);opacity:1}50%{transform:scale(.72) rotate(18deg);opacity:.75}}
+
+/* ---------- entrada: AMMasc.play(el) ---------- */
+.am-masc.am-play .am-pula{animation:am-pulinho .7s cubic-bezier(.3,.7,.4,1) both}
+.am-masc.am-play[data-pose="aceno"] .am-aceno{animation:am-aceno .42s ease-in-out 5 alternate}
+.am-masc.am-play[data-pose="comemora"] .am-pula{animation:am-pulo .62s cubic-bezier(.3,.7,.4,1) 3 both}
+.am-masc.am-play[data-pose="comemora"] .am-festa-l{transform-box:view-box;animation:am-festa-l .62s ease-in-out 3}
+.am-masc.am-play[data-pose="comemora"] .am-festa-r{transform-box:view-box;animation:am-festa-r .62s ease-in-out 3}
+.am-masc.am-play[data-pose="comemora"] .am-faisca{animation:am-estoura .9s cubic-bezier(.2,.9,.3,1.3) both}
+.am-masc.am-play[data-pose="comemora"] .am-faisca.am-f2{animation-delay:.12s}
+.am-masc.am-play[data-pose="comemora"] .am-faisca.am-f3{animation-delay:.24s}
+.am-masc.am-play[data-pose="comemora"] .am-faisca.am-f4{animation-delay:.36s}
+.am-masc.am-play .am-shine{animation:am-shine 1.3s ease-in-out .15s both}
+.am-masc.am-troca>.am-svg{animation:am-troca .38s cubic-bezier(.2,.9,.3,1.2) both}
+
+@keyframes am-aceno{from{transform:rotate(-7deg)}to{transform:rotate(12deg)}}
+@keyframes am-pulinho{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-10px) scale(.98,1.03)}62%{transform:translateY(0) scale(1.03,.97)}100%{transform:none}}
+@keyframes am-pulo{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-24px) scale(.97,1.04)}78%{transform:translateY(0) scale(1.05,.95)}100%{transform:none}}
+@keyframes am-festa-l{0%,100%{transform:rotate(0)}45%{transform:rotate(-12deg)}}
+@keyframes am-festa-r{0%,100%{transform:rotate(0)}45%{transform:rotate(12deg)}}
+@keyframes am-estoura{0%{transform:scale(0);opacity:0}60%{transform:scale(1.25);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes am-troca{from{transform:scale(.93);opacity:.4}to{transform:none;opacity:1}}
+
+/* ---------- detalhe por tamanho ---------- */
+@container am-masc (max-width:219px){
+  .am-svg .am-ol{stroke-width:4.4px}
+  .am-svg .am-fl-ol{stroke-width:2.6px;stroke-opacity:.75}
+  .am-svg .am-braco-ol{stroke-width:2.6px}
+  .am-svg .am-mao>*{stroke-width:2.6px}
+}
+@container am-masc (max-width:119px){
+  .am-svg .am-det,.am-svg .am-blur,.am-svg .am-shine{display:none}
+  .am-svg .am-ol{stroke-width:7px}
+  .am-svg .am-fl-ol{stroke-width:3.6px;stroke-opacity:.9}
+  .am-svg .am-braco-ol{stroke-width:3.4px}
+  .am-svg .am-mao{transform:scale(1.22)}
+  .am-svg .am-mao>*{stroke-width:3px}
+  .am-svg .am-sapato{stroke:#9DBDF0;stroke-width:2.4px}
+  .am-svg .am-sobr{stroke-width:3.4px}
+  .am-svg .am-boca-l{stroke-width:4.2px}
+  .am-svg .am-fita-ol{stroke-opacity:.6;stroke-width:1.6px}
+}
+
+/* ---------- estático: stop(), movimento reduzido, impressão ---------- */
+.am-masc.am-parado *,.am-masc.am-parado>.am-svg{animation:none!important}
+@media (prefers-reduced-motion:reduce){
+  .am-masc *,.am-masc>.am-svg{animation:none!important;transition:none!important}
+  .am-masc.am-ok:hover>.am-svg{transform:none}
+}
+@media print{
+  .am-masc *,.am-masc>.am-svg{animation:none!important;transition:none!important}
+  .am-masc .am-shine{display:none}
+  .am-masc>.am-svg{transform:none!important}
+  .am-masc{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* =====================================================================
+   Balão de fala (substitui a reserva de 02-componentes.css)
+   ===================================================================== */
+.am-fala{position:relative;display:block;box-sizing:border-box;width:fit-content;max-width:var(--fala-w,340px);
+  background:#fff;color:#002B49;font:600 15px/1.42 var(--fb,"Inter","Helvetica Neue",Arial,sans-serif);letter-spacing:-.006em;text-align:left;
+  padding:11px 18px 12px 22px;border:1px solid rgba(14,28,57,.07);border-radius:14px;box-shadow:none;text-wrap:pretty;
+  filter:drop-shadow(0 12px 22px rgba(14,28,57,.2)) drop-shadow(0 2px 4px rgba(14,28,57,.1));--fala-bg:#fff}
+/* fio laranja fino à esquerda */
+.am-fala::before{content:"";position:absolute;left:9px;top:11px;bottom:11px;width:3px;border-radius:3px;background:linear-gradient(180deg,#F9A64A,#F78C16)}
+/* bico: padrão embaixo, à direita (o mascote fica abaixo e à direita do balão) */
+.am-fala::after{content:"";position:absolute;right:30px;bottom:-11px;width:20px;height:12px;background:var(--fala-bg);clip-path:polygon(0 0,100% 0,72% 100%)}
+.am-fala b,.am-fala strong{font-weight:800;color:#002B49}
+.am-fala[data-tail="bl"]::after,.am-fala.cauda-esq::after{right:auto;left:30px;clip-path:polygon(0 0,100% 0,28% 100%)}
+.am-fala[data-tail="bc"]::after{right:auto;left:calc(50% - 10px);clip-path:polygon(0 0,100% 0,50% 100%)}
+.am-fala[data-tail="t"]::after,.am-fala.cauda-cima::after{bottom:auto;top:-11px;clip-path:polygon(72% 0,100% 100%,0 100%)}
+.am-fala[data-tail="tl"]::after,.am-fala.cauda-cima.cauda-esq::after{bottom:auto;top:-11px;right:auto;left:30px;clip-path:polygon(28% 0,100% 100%,0 100%)}
+/* bico lateral: balão à esquerda do mascote (r) ou à direita dele (l) */
+.am-fala[data-tail="r"]::after,.am-fala.cauda-dir::after{right:-11px;left:auto;top:50%;bottom:auto;width:12px;height:20px;margin-top:-10px;clip-path:polygon(0 0,100% 62%,0 100%)}
+.am-fala[data-tail="l"]::after,.am-fala.cauda-lado-esq::after{left:-11px;right:auto;top:50%;bottom:auto;width:12px;height:20px;margin-top:-10px;clip-path:polygon(100% 0,100% 100%,0 62%)}
+.am-fala[data-tail="none"]::after,.am-fala.sem-cauda::after{display:none}
+/* compacto */
+.am-fala.am-fala--p{font-size:13px;line-height:1.38;padding:9px 14px 9px 19px;border-radius:12px}
+.am-fala.am-fala--p::before{left:8px;top:9px;bottom:9px}
+/* fundo navy: vidro índigo, texto branco, destaque em laranja claro */
+.am-fala.am-fala--navy,.am-fala.escura,.am-fala.dk{--fala-bg:#1C2D5C;background:var(--fala-bg);color:#fff;border-color:rgba(157,189,240,.28);
+  filter:drop-shadow(0 14px 26px rgba(0,0,0,.35)) drop-shadow(0 0 1px rgba(157,189,240,.5))}
+.am-fala.am-fala--navy b,.am-fala.am-fala--navy strong,.am-fala.escura b,.am-fala.escura strong,.am-fala.dk b,.am-fala.dk strong{color:#F9A64A}
+@media print{
+  .am-fala{filter:none!important;box-shadow:0 0 0 1px #D6DEE6!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}

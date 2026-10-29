@@ -61,10 +61,10 @@
   background:radial-gradient(circle,rgba(247,140,22,.16) 0%,rgba(247,140,22,0) 68%);box-shadow:0 0 0 16px rgba(255,255,255,.025),0 0 0 32px rgba(255,255,255,.018)}
 .pd-art .ico{width:54px;height:54px;color:var(--orange-l);stroke-width:1.4}
 @container (max-height:170px){.pd-art>span{transform:scale(.72)}}
-@container (max-height:112px){.pd-art>span{display:none}}
+@container (max-height:98px){.pd-art>span{display:none}}
 .pd-kv{margin-top:auto;display:flex;flex-direction:column;gap:5px;padding-top:9px;border-top:1px solid rgba(255,255,255,.14)}
 .pd-kv>div{display:grid;grid-template-columns:128px minmax(0,1fr);gap:10px;align-items:baseline}
-.pd-kv dt{font:700 10.5px/1.3 var(--fb);letter-spacing:.12em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
+.pd-kv dt{font:700 11px/1.3 var(--fb);letter-spacing:.1em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
 .pd-kv dd{font:400 var(--pf)/var(--plh) var(--fb);color:#fff;min-width:0}
 .pd-kv>.pd-who{grid-template-columns:minmax(0,1fr);gap:4px}
 .pd-kv dd ul{list-style:none;display:flex;flex-direction:column;gap:2px}
@@ -75,9 +75,6 @@
 .pd-from dd i{font-style:normal;color:var(--orange-l);margin:0 2px}
 .pd-from dd span{color:#C8DBEB}
 .pd-card a.pd-xref{color:#fff;text-decoration-color:rgba(249,166,74,.85)}
-.pd-skv dd{padding-top:1px}
-.pd-card .pd-chips{display:flex;flex-wrap:wrap;gap:4px}
-.pd-card .pd-chip{height:22px;padding:0 8px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#DDE6F0;font-size:11.5px}
 
 .pd-why{position:relative;flex:none;padding:var(--pp) 16px;border-radius:12px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange)}
 .pd-why .pd-lb{display:inline-flex;vertical-align:baseline;color:var(--navy);margin:0 8px 0 0}
@@ -89,14 +86,14 @@
 .pd-r{position:relative;min-height:0;display:flex;flex-direction:column;gap:var(--pg)}
 .pd-r>*{flex:none}
 /* topo: o problema e o que o cliente recebe; à direita, os fatos com fonte (kpis), empilhados */
-.pd-top{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:stretch}
+.pd-top{display:grid;grid-template-columns:minmax(0,1fr) var(--kw,300px);gap:14px;align-items:stretch}
 .pd-top.solo{grid-template-columns:minmax(0,1fr)}
 .pd-tl{min-width:0;display:flex;flex-direction:column;gap:var(--pg)}
 .pd-stm{font:400 var(--pst)/1.34 var(--fb);color:var(--ink2);text-wrap:pretty}
 .pd-stm b{font-weight:700;color:var(--navy)}
 .pd-num{min-width:0;display:flex;flex-direction:column}
-.pd-kp{flex:1;display:flex;flex-direction:column;gap:7px}
-.pd-k{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:10px;background:var(--ice2);border-left:3px solid var(--orange);min-width:0}
+.pd-kp{flex:1;display:flex;flex-direction:column;gap:6px}
+.pd-k{display:flex;align-items:center;gap:12px;padding:6px 12px;border-radius:10px;background:var(--ice2);border-left:3px solid var(--orange);min-width:0}
 .pd-k>b{flex:none;min-width:62px;font:800 28px/1 var(--fh);color:var(--navy);white-space:nowrap}
 .pd-k>div{min-width:0}
 .pd-k span{display:block;font:500 13px/1.32 var(--fb);color:var(--ink2)}
@@ -117,7 +114,7 @@
 .pd-s b{display:flex;align-items:baseline;gap:7px;font:700 13.5px/1.28 var(--fb);color:var(--navy)}
 .pd-s b em{flex:none;display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 4px;border-radius:5px;background:var(--navy);color:#fff;font:800 12px/1 var(--fh);font-style:normal;transform:translateY(-1px)}
 .pd-s:last-child b em{background:var(--orange);color:var(--navy-dd)}
-.pd-s b small{font:600 10.5px var(--fb);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.pd-s b small{font:600 11px var(--fb);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .pd-s span{display:block;font:400 var(--pf)/var(--plh) var(--fb);color:var(--ink2);margin-top:3px;text-wrap:pretty}
 
 .pd-trio{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -132,11 +129,13 @@
 .pd-box p+p{margin-top:5px}
 .pd-box b{color:var(--navy);font-weight:700}
 
-.pd-row5{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:10px;align-items:stretch}
-.pd-row5.solo{grid-template-columns:minmax(0,1fr)}
-.pd-jogo,.pd-fon{position:relative;min-width:0;padding:var(--pp) 14px;border-radius:12px;background:#fff;border:1px solid var(--line)}
-.pd-chips{display:flex;flex-wrap:wrap;gap:5px}
-.pd-chip{display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:999px;background:var(--ice2);border:1px solid var(--line);font:600 11.5px var(--fb);color:var(--navy);white-space:nowrap}
+/* última linha: flex com base no conteúdo (largura na proporção do texto de cada caixa; nunca abaixo do item mais largo) */
+.pd-row5{display:flex;gap:10px;align-items:stretch}
+.pd-row5>section{flex:1 1 auto;min-width:min-content}
+.pd-skl,.pd-jogo,.pd-fon{position:relative;min-width:0;padding:var(--pp) 14px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+/* skills em texto corrido, cada skill inteira numa linha (quebra só entre uma e outra) */
+.pd-sk{font:600 var(--pf)/var(--plh) var(--fb);color:var(--navy)}
+.pd-sk i{font-style:normal;font-weight:400;color:var(--steel)}
 .pd-jogo{position:relative;background:linear-gradient(135deg,#FFF6EC 0%,#fff 62%);border-color:rgba(247,140,22,.5)}
 .pd-jogo .pd-lb{color:var(--navy);margin-bottom:0}
 .pd-jh{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
@@ -144,8 +143,11 @@
 .pd-jogo p{font:400 13px/1.4 var(--fb);color:var(--ink2);text-wrap:pretty}
 .pd-jl{flex:none;font:600 12px var(--fb);color:var(--navy);text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:2px;white-space:nowrap}
 .pd-jl:hover{color:var(--steel)}
-.pd-fon ol{list-style:none;display:flex;flex-wrap:wrap;gap:3px 12px}
-.pd-fon li{font:400 12px/1.4 var(--fb);color:var(--ink2);white-space:nowrap}
+/* fontes em texto corrido (quebram entre palavras, nunca para fora da caixa): Org data ↗ · Org data ↗ · … */
+.pd-fon ol{list-style:none;display:block;font:400 12px/1.45 var(--fb);color:var(--ink2)}
+.pd-fon li{display:inline}
+.pd-fon li:not(:last-child)::after{content:"\00a0· ";color:var(--muted)}
+.pd-fon li a,.pd-fon li>span{white-space:normal}
 .pd-fon li i{font-style:normal;color:var(--muted)}
 .pd-fon a{font-weight:600;color:var(--navy);text-decoration:underline;text-decoration-color:rgba(247,140,22,.85);text-underline-offset:2px}
 .pd-fon a .ar{margin-left:3px;text-decoration:none;display:inline-block}
@@ -158,7 +160,7 @@ a.pd-xref:hover{color:var(--steel)}
 /* ---------- rodapé: outros produtos do pilar ---------- */
 .foot.pd-foot{align-items:center}
 .foot.pd-foot .rel{display:flex;align-items:center;gap:4px;flex:1;min-width:0;white-space:nowrap;overflow:hidden}
-.foot.pd-foot .rel .lbl{font:700 10px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.foot.pd-foot .rel .lbl{font:700 11px var(--fb);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:6px}
 .foot.pd-foot .plink{margin:0;font-size:11px;padding:2px 7px}
 
 @media (prefers-reduced-motion:reduce){#pd.on.play .pd-body{animation:none!important}.pd-card{transition:none}.pd-g:hover{transform:none}}

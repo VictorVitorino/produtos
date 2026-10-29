@@ -267,9 +267,14 @@ function renderCliente(){
     h.innerHTML=`<span class="ttl">Jornada comercial do pilar · entrada → expansão → recorrência · proposta DTS</span><div class="jr">${J.map(([k,t,ps,x],i)=>`<div class="jr-i ${i===0?"l":i===J.length-1?"r":""}"><div class="k">${k}</div><b>${t}</b><div class="jr-c">${(ps||[]).map(c=>pcode(c,"sm")).join("")}</div><p>${x}</p></div>`).join("")}</div>`});
   document.querySelectorAll(".pos[data-pos]").forEach(h=>{const P=pcfgC(h.dataset.pos).pos;if(!P)return;h.innerHTML=`<div class="t">Posicionamento proposto</div><p>${P} <span class="hy">Hipótese</span></p>`})}
 
-/* ---------- boot: tudo o que depende de PCFG ---------- */
-BOOT.push(()=>{document.querySelectorAll(".bap[data-pillar]").forEach(h=>safe(renderBAP,h));
-  document.querySelectorAll(".pp[data-pillar]").forEach(h=>safe(renderPP,h));
+/* ---------- boot: tudo o que depende de PCFG ----------
+   Dados de produto ausentes ou incompletos (src/data/1N-produtos-pN.js falta ou está sendo editado por outro time): a vista mostra um aviso
+   discreto em vez de quebrar; os demais pilares e a navegação seguem normais. */
+const ppData=n=>typeof PRODUCTS!=="undefined"&&PRODUCTS.some(p=>p.pillar===n)&&(typeof OLD==="undefined"||OLD.filter(o=>o.p===n).every(o=>PBY(o.to)));
+function ppMissing(host,n){host.innerHTML=`<div class="pp-miss">Produtos do Pilar ${n} em atualização · dados em src/data/1${n}-produtos-p${n}.js</div>`;
+  console.warn(`[pilares] Pilar ${n}: produtos ausentes ou incompletos no registro (src/data/1${n}-produtos-p${n}.js); a vista foi desenhada sem eles`)}
+BOOT.push(()=>{document.querySelectorAll(".bap[data-pillar]").forEach(h=>{const n=+h.dataset.pillar;if(!ppData(n))return ppMissing(h,n);safe(renderBAP,h)});
+  document.querySelectorAll(".pp[data-pillar]").forEach(h=>{const n=+h.dataset.pillar;if(!ppData(n))return ppMissing(h,n);safe(renderPP,h)});
   safe(renderCliente)});
 
 /* ---------- abertura de pilar (divisória): morphing Hoje → Produtos → Com IA e os números do pilar ---------- */

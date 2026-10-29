@@ -93,6 +93,10 @@ function pdHTML(P,num){const X=PDX,me=P.code,pl=(typeof PILLARS!=="undefined"&&P
   const rel=(typeof PRODUCTS!=="undefined"?PRODUCTS:[]).filter(x=>x.pillar===P.pillar&&x.id!==P.id).map(x=>`<a href="#p=${x.id}" data-pd="${x.id}" class="plink sm ${x.st}" data-tv="${x.code} · ${x.name}" data-tl="Clique para abrir a ficha.">${x.code}</a>`).join("");
   const total=typeof PRODUCTS!=="undefined"?PRODUCTS.length:24;
   const lv=X.st.level||"lv0";
+  /* coluna dos fatos pelo número de fatos (as letras não mudam): 1 → 300 px · 2 → 340 px · 3 → 380 px. A última linha (skills · jogo ·
+     fontes) é flex com base no conteúdo (40-fichas.css): cada caixa recebe largura na proporção do próprio texto, sem ficar abaixo
+     do seu item mais largo; assim nenhuma fica alta e apertada ao lado de outra vazia */
+  const kw=kp.length>=3?380:kp.length===2?340:300;
   return `${frameTopHTML(`Ficha de produto ${P.code}`,`Pilar ${pl.n} · ${pl.name}`)}${bandHTML(`Ficha ${P.code} · ${P.name}`,"c-navy","← → navega entre fichas · Esc volta")}
   <div class="body pd-body"><div class="pd-wrap ${lv}">
     <div class="pd-l">
@@ -106,13 +110,12 @@ function pdHTML(P,num){const X=PDX,me=P.code,pl=(typeof PILLARS!=="undefined"&&P
           <div class="pd-who"><dt>Para quem é</dt><dd><ul${(P.who||[]).length>=3&&Math.max(...P.who.map(x=>strip(x).length))<=34?' class="two"':""}>${li(P.who)}</ul></dd></div>
           ${rows.map(([k,v])=>`<div><dt>${k}</dt><dd>${X.xref(v,me)}</dd></div>`).join("")}
           <div class="pd-from"><dt>Origem</dt><dd>${X.fromHTML(P)}</dd></div>
-          ${(P.skills||[]).length?`<div class="pd-skv"><dt>Skills</dt><dd><div class="pd-chips">${P.skills.map(x=>`<span class="pd-chip">${X.clean(x)}</span>`).join("")}</div></dd></div>`:""}
         </dl>
       </article>
       <section class="pd-why" data-a="fade" style="--d:6"><p><span class="pd-lb">${pdIco("hand",6)}Por que A&amp;M</span>${X.T(P.bench,me)}</p></section>
     </div>
     <div class="pd-r">
-      <div class="pd-top${kp.length?"":" solo"}">
+      <div class="pd-top${kp.length?"":" solo"}" style="--kw:${kw}px">
         <div class="pd-tl">
           <section class="pd-prob" data-a="up" style="--d:2"><span class="pd-lb">O problema</span><p class="pd-stm"><b>${pains[0]||""}</b>${pains.slice(1).map(x=>` <span>${x}</span>`).join("")}</p></section>
           <section class="pd-sec" data-a="up" style="--d:3"><span class="pd-lb">O que o cliente recebe</span><ol class="pd-get">${get}</ol></section>
@@ -126,7 +129,8 @@ function pdHTML(P,num){const X=PDX,me=P.code,pl=(typeof PILLARS!=="undefined"&&P
         <section class="pd-box"><span class="pd-lb">Ferramentas e dados</span><p><b>Ferramentas</b> ${X.T(P.tools,me)}</p><p><b>Dados</b> ${X.T(P.data,me)}</p></section>
       </div>
       <div class="pd-row5${jg?"":" solo"}" data-a="up" style="--d:6">
-        ${jg?`<section class="pd-jogo"><div class="pd-jh"><span class="pd-lb">${pdIco("target",7)}Jogo de entrada · Pilar ${pl.n}</span><a href="#19" data-go="19" class="pd-jl" data-tv="Jogos de entrada" data-tl="As quatro experiências lúdicas que abrem a porta para os produtos (slide 19).">ver os jogos ›</a></div><p><b class="pd-jn">${jg.nome||""}</b>${jg.promessa?` ${X.clean(jg.promessa)}`:""}</p></section>`:""}
+        <section class="pd-skl"><span class="pd-lb">Skills</span><p class="pd-sk">${(P.skills||[]).map((x,i,a)=>`<span class="nwr">${X.clean(x)}${i<a.length-1?`<i aria-hidden="true"> ·</i>`:""}</span>`).join(" ")}</p></section>
+        ${jg?`<section class="pd-jogo" title="Jogo de entrada do Pilar ${pl.n}"><div class="pd-jh"><span class="pd-lb">${pdIco("target",7)}Jogo de entrada</span></div><p><b class="pd-jn">${jg.nome||""}</b>${jg.promessa?` ${X.clean(jg.promessa)}`:""} <a href="#19" data-go="19" class="pd-jl" data-tv="Jogos de entrada" data-tl="As quatro experiências lúdicas que abrem a porta para os produtos (slide 19).">ver os jogos ›</a></p></section>`:""}
         <section class="pd-fon"><span class="pd-lb">Fontes</span>${fon.length?`<ol>${fon.join("")}</ol>`:""}${P.ev?`<p class="pd-ev">${X.clean(P.ev)}</p>`:""}</section>
       </div>
     </div>

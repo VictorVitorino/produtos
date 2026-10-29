@@ -1,7 +1,7 @@
 /* =====================================================================
    SLIDE 03 · DTS hoje (Shimmer / Holographic Sweep + escudo DTS) · dono: slide 03
    Ganchos pela chave data-s: ENTER["03"] (ao entrar), STEP["03"] (→/← internos), PRINT.push(f) (impressão).
-   Time DTS: EQUIPE (src/data/02-equipe.js) traz nome e foto leve de cada pessoa.
+   Sem pessoas (regra do usuário, SPEC V6 §0).
    ===================================================================== */
 /* ---------- contexto · Shimmer / Holographic Sweep ---------- */
 (function(){const root=$("sh"),vals=[...root.querySelectorAll(".sh__val")],kpis=[...root.querySelectorAll("[data-kpi]")],rows=[...root.querySelectorAll("[data-w]")],badge=root.querySelector("[data-badge]"),btn=root.querySelector("[data-load]"),status=root.querySelector("[data-status]");

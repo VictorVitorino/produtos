@@ -200,6 +200,12 @@ svg text{font-family:var(--fb)}
 .rp{position:absolute;border-radius:50%;background:rgba(247,140,22,.22);transform:scale(0);animation:rp .6s ease-out forwards;pointer-events:none;z-index:4}
 @keyframes rp{to{transform:scale(1);opacity:0}}
 #rotate{display:none;position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:61;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;background:#122143;color:#fff;font:600 12px var(--fb);box-shadow:0 6px 18px rgba(14,28,57,.25);white-space:nowrap}
+/* barra compacta (barFit em core.js): só quando abas e botões não cabem lado a lado; sem espaço nem assim, as abas saem */
+body.bar-tight #dots{gap:12px}
+body.bar-tight #dots button{letter-spacing:.03em}
+body.bar-tight #controls{gap:6px}
+body.bar-tight #controls button,body.bar-tight #controls .c{padding:0 12px}
+body.bar-nodots #dots{display:none}
 @media (max-width:1180px){#dots{display:none}}
 @media (max-width:900px){#controls .lb{display:none}}
 @media (max-width:760px){#controls{right:8px;bottom:8px}#controls button,#controls .c{height:36px;padding:0 12px}}
@@ -239,11 +245,14 @@ svg text{font-family:var(--fb)}
 #chap .ch-chip b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--orange);color:#0E1C39;font:800 13px var(--fh)}
 #chap .ch-chip:hover{background:rgba(247,140,22,.16);border-color:rgba(247,140,22,.65);transform:translateY(-2px)}
 /* mascote AM (pose em CAPITULOS[..].pose): em pé sobre a linha do chão, chega deslizando como na APODI (h3M) */
-#chap .ch-m{position:absolute;left:1110px;top:200px;z-index:2;width:400px;display:flex;justify-content:center;align-items:flex-end;height:476px;--s:340px;pointer-events:none}
+#chap .ch-m{position:absolute;left:1090px;top:200px;z-index:2;width:440px;display:flex;justify-content:center;align-items:flex-end;height:476px;--s:390px;pointer-events:none}
 #chap.play .ch-m{animation:chM .75s cubic-bezier(.22,.61,.36,1) .45s both}
 @keyframes chM{from{opacity:0;transform:translate(70px,10px)}to{opacity:1;transform:none}}
-/* abertura de pilar: o morphing fica à direita e o mascote (pose aponta), menor, aponta para ele do pé da cena */
-#chap.pil .ch-m{left:842px;top:446px;width:200px;height:228px;--s:168px}
+/* abertura de pilar: o morphing vem um pouco para o centro e o mascote (pose aponta, que aponta para a esquerda),
+   menor, fica à direita dele, em pé na linha do chão, apontando para os números */
+#chap.pil .ch-m{left:auto;right:26px;top:430px;width:230px;height:246px;--s:212px}
+#chap.pil .pc-morph{right:212px;top:132px;width:500px;height:500px}
+#chap.pil .pc-states{right:347px}
 #chap.pil .pc-pills{max-width:690px}
 #chap .cv-logos{position:absolute;left:120px;bottom:52px;display:flex;align-items:center;gap:22px;z-index:2;pointer-events:none}
 #chap .cv-logos img{display:block}
@@ -284,7 +293,7 @@ svg text{font-family:var(--fb)}
   .slide.entering>.body,.body.pane.on{animation:none!important}
   .dr{stroke-dashoffset:0!important;animation:none!important}
   .flow{animation:none!important}.lift{transition:none}
-  #dots .nb i{transition:none}
+  #dots .nb i,#progress,.sr-band .pseg .seg-ind{transition:none!important}
   #chap .ch-rv{clip-path:none!important;animation:none!important}#chap .ch-bar{transform:none!important;animation:none!important}
   #chap .ch-m{animation:none!important;opacity:1!important;transform:none!important}
   #chap .ch-slash path{stroke-dashoffset:0!important;animation:none!important}

@@ -269,3 +269,16 @@ a.xr:hover{color:var(--orange-400)}
 
 /* ---- de css/91-revisao-2.css ---- */
 .asis-chip i{font-size:11.5px}
+
+/* ---- V6 · SPEC 3 (notas ≥ 11 px no palco): os rótulos do motor dos pilares sobem para 11 px, com menos espaçamento entre
+   letras para quase não alargar (verificação da fundação, parte 3) ---- */
+.pos .t,.ba-grid .c.hd,.ba-side .count .small,.fdii .k,.pers .r,.jr-i .k{font-size:11px;letter-spacing:.1em}
+.asis-chip i,.asis-none,.dec,.sig2,.tb-nm .more,.tb-ai b,.heat,.pp-leg,.pp-stat span{font-size:11px;letter-spacing:.03em}
+.pp-prods,.pp-prods.n5,.pp-prods.n6{--fr:11px}
+@media print{.pp-v2 .ba-grid .c.p .tb-code,.pp-v2 .ba-grid .c.p i{font-size:11px}}
+/* marca A&M: nunca laranja como texto sobre fundo claro; os rótulos "Insight" e o do bloco em destaque ficam navy, com um ponto laranja como detalhe */
+.fdii .i .k,.fdii .m .k{color:var(--navy-800)}
+.fdii .i .k::before,.fdii .m .k::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange);margin-right:7px;vertical-align:1px}
+/* dados de produto ausentes ou em edição (25-pilares.js · ppMissing): aviso discreto no lugar da vista */
+.pp-miss{display:grid;place-items:center;height:100%;min-height:120px;border:1px dashed var(--line-strong);border-radius:14px;font:500 14px var(--fb);color:var(--muted);background:rgba(255,255,255,.04)}
+.dk .pp-miss{border-color:rgba(157,187,217,.35);color:#9DBBD9}

@@ -1,6 +1,6 @@
 /* =====================================================================
    VIRAR A PÁGINA · o verso de cada slide (SPEC V6 §6) · fundação
-   - window.flipPage(force): o palco (#flip) gira em 3D (rotateY 180°, perspectiva, ~0,76 s; instantâneo com
+   - window.flipPage(force): o palco (#flip) gira em 3D (rotateY 180°, perspectiva, ~0,7 s, como pede a SPEC §6; instantâneo com
      movimento reduzido) e mostra o verso do slide atual. force: true vira · false desvira · sem argumento alterna.
    - window.unflipPage(): desvira na hora (o núcleo chama ao navegar: go/next/prev/índice/abas/ficha).
    - O verso tem a mesma moldura dos slides: cabeçalho (.sr-top com o título da seção), faixa
@@ -103,7 +103,7 @@ const VERSO=(()=>{
     /* a página gira pela borda direita (vem na direção de quem olha e passa para a esquerda), com um leve recuo no meio */
     const a0=on?0:-180,a1=on?-180:0,P="perspective(3600px)";
     anim=flipEl.animate([{transform:`${fitT} ${P} rotateY(${a0}deg) scale(1)`},{transform:`${fitT} ${P} rotateY(${(a0+a1)/2}deg) scale(.84)`},{transform:`${fitT} ${P} rotateY(${a1}deg) scale(1)`}],
-      {duration:760,easing:"cubic-bezier(.45,.05,.2,1)"});
+      {duration:700,easing:"cubic-bezier(.45,.05,.2,1)"});
     anim.onfinish=()=>{anim=null;settle(on)};
     return true}
   window.flipPage=force=>{const on=force==null?!isFlipped():!!force;if(on===isFlipped()&&!anim)return false;return flipTo(on,true)};
@@ -111,7 +111,7 @@ const VERSO=(()=>{
 
   /* ---------- impressão: página estática do verso, logo depois da frente ---------- */
   function page(sec){const nn=keyOf(sec);
-    const m=H("div",{class:"vsheet vmeasure","aria-hidden":"true"},stage);m.innerHTML=sheetHTML(sec,true);number(m);refFill(m);
+    const m=H("div",{class:"vsheet vmeasure","aria-hidden":"true"},stage);m.innerHTML=sheetHTML(sec,true);number(m);refFill(m);deckMasc(m);
     const f=fitSheet(m,nn);const html=m.innerHTML;m.remove();
     const pg=H("section",{class:"slide vpage vsheet","data-vfor":nn,html});applyFit(pg,f);return pg}
 
