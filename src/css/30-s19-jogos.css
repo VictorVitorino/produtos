@@ -1,0 +1,22 @@
+/* =====================================================================
+   SLIDE 19 · Jogos de entrada · dono: slide 19
+   PLACEHOLDER DA FUNDAÇÃO (cartas simples que alternam frente e verso). Regras escopadas em .slide[data-s="19"].
+   ===================================================================== */
+.slide[data-s="19"] .jg-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding-right:200px}
+.slide[data-s="19"] .jg-card{position:relative;min-height:0;border-radius:14px;cursor:pointer;outline:none}
+.slide[data-s="19"] .jg-card:focus-visible{box-shadow:0 0 0 3px rgba(247,140,22,.4)}
+.slide[data-s="19"] .jg-face{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;padding:20px 20px 18px;border-radius:14px;overflow:hidden}
+.slide[data-s="19"] .jg-front{background:#fff;border:1px solid var(--line);border-top:5px solid var(--navy-d)}
+.slide[data-s="19"] .jg-back{display:none;color:#DDEAF5;background:linear-gradient(155deg,#1F3263 0%,#122143 55%,#0E1C39 100%);border-top:5px solid var(--orange)}
+.slide[data-s="19"] .jg-card.on .jg-front{display:none}.slide[data-s="19"] .jg-card.on .jg-back{display:flex}
+.slide[data-s="19"] .jg-pl{font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+.slide[data-s="19"] .jg-back .jg-pl{color:var(--orange-l)}
+.slide[data-s="19"] .jg-nm{font:700 30px/1.05 var(--fh);color:var(--navy)}
+.slide[data-s="19"] .jg-pr{font-size:15px;line-height:1.45;color:var(--ink2)}
+.slide[data-s="19"] .jg-hint{margin-top:auto;font:600 12px var(--fb);color:var(--muted)}
+.slide[data-s="19"] .jg-back ol{padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.slide[data-s="19"] .jg-back li,.slide[data-s="19"] .jg-back p{font-size:13.5px;line-height:1.45;color:#C8DBEB}
+.slide[data-s="19"] .jg-ps{display:flex;flex-wrap:wrap;gap:4px}
+.slide[data-s="19"] .jg-masc{position:absolute;right:26px;bottom:14px;width:190px;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none}
+.slide[data-s="19"] .jg-masc .am-fala{max-width:190px}
+@media print{.slide[data-s="19"] .jg-back{display:flex;position:static;margin-top:8px}.slide[data-s="19"] .jg-front{position:static}.slide[data-s="19"] .jg-hint{display:none}}

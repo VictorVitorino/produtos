@@ -10,7 +10,8 @@
    Densidade: pdFit escolhe, por coluna, o tamanho mais folgado que cabe no palco
    (o resultado fica em PDFIT; a impressão mede as 24 fichas antes de gerar as páginas).
    ===================================================================== */
-const pd=H("div",{id:"pd",class:"stage"},stage);let pdOpen=null,pdFrom=0;
+/* pdOpen e pdFrom moram em core.js */
+const pd=H("div",{id:"pd"},stage);
 const evb=t=>t.replace(/\s*\[E · ([^\]]+)\]/g,' <span class="srcx">Fonte: $1</span>').replace(/\s*\[E\]/g,"");
 
 /* ícones de linha com pathLength embutido: desenham na tela e saem inteiros na impressão */
@@ -70,9 +71,9 @@ function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);const f=PDFIT[P.
   /* ícone da etapa: o 4º item de steps fixa o ícone quando a palavra-chave escolheria mal */
   const flow=P.steps.map((s,i)=>{const ic=s[3]||pdKw([s[1],s[2]],i,DEF_STEP,us);if(s[3])us.add(s[3]);return`<div class="s" style="--k:${i}"><i>${pdIco(ic,i+5)}</i><em>${s[0]}</em><b>${s[1]}</b><span>${xref(s[2])}</span></div>`}).join("");
   const kpis=P.kpis.map((k,i)=>`<div style="--k:${i}"><b>${k[0]}</b><span>${evb(k[1])}${/\[E\b|\(meta/.test(k[1])?"":' <span class="srcx">proposta DTS</span>'}</span></div>`).join("");
-  const rel=PRODUCTS.filter(x=>x.pillar===P.pillar&&x.id!==P.id).map(x=>`<a href="#p=${x.id}" data-pd="${x.id}" class="plink sm dk ${x.st}" title="Abrir ficha: ${x.name}">${x.code} ${x.name}</a>`).join("");
-  return `<div class="top">${brand(true)}<div class="top-title"><span>Ficha de produto · Pilar ${pl.n} · ${pl.name}</span><b>${P.code} · ${P.name}</b></div><div class="top-right"><span class="pg"><b>${pad(num)}</b> / ${pad(PRODUCTS.length)}</span></div></div>
-  <div class="body pd-body"><div class="pd-wrap" style="${pdVars(f)}">
+  const rel=PRODUCTS.filter(x=>x.pillar===P.pillar&&x.id!==P.id).map(x=>`<a href="#p=${x.id}" data-pd="${x.id}" class="plink sm ${x.st}" data-tv="${x.code} · ${x.name}" data-tl="Clique para abrir a ficha.">${x.code}</a>`).join("");
+  return `${frameTopHTML(`Ficha de produto ${P.code}`,`Pilar ${pl.n} · ${pl.name}`)}${bandHTML(`Ficha ${P.code} · ${P.name}`,"c-navy","")}
+  <div class="body dk pd-body"><div class="pd-wrap" style="${pdVars(f)}">
     <div class="pd-hero">
       <div class="pd-scene" data-a="zoom" style="--d:1">
         <div class="pd-holo">
@@ -100,7 +101,7 @@ function pdHTML(P,num){const pl=PILLARS.find(x=>x.n===P.pillar);const f=PDFIT[P.
       ${P.ev?`<p class="pd-src" data-a="fade" style="--d:10"><b>FONTES E NOTAS</b>${P.ev}</p>`:""}
     </div>
   </div></div>
-  <div class="pd-foot"><div class="rel"><span class="label">Outros do Pilar ${pl.n}</span>${rel}</div></div>`}
+  <div class="foot pd-foot"><b>${CFG.foot}</b><span class="rel"><span class="label">Outros do Pilar ${pl.n}</span>${rel}</span><span class="n">Ficha ${num} / ${PRODUCTS.length}</span></div>`}
 
 /* --- ajuste ao palco: o valor mais folgado que cabe, por coluna (busca binária em t) --- */
 function pdOver(box){if(!box)return false;const lim=box.clientHeight-parseFloat(getComputedStyle(box).paddingBottom)+1;let m=0;for(const c of box.children){if(getComputedStyle(c).position==="absolute")continue;m=Math.max(m,c.offsetTop+c.offsetHeight)}return m>lim}
@@ -122,7 +123,7 @@ function pdFit(root){const w=root.querySelector(".pd-wrap");if(!w||!w.offsetHeig
 /* (idempotente: com as páginas já criadas não mede nada; fichas já medidas com as fontes carregadas ficam no cache) */
 function pdMeasureAll(){if(stage.querySelector(".pd-print"))return;
   const ok=document.fonts&&document.fonts.status==="loaded";const todo=PRODUCTS.filter(P=>!(ok&&PDFIT[P.id]&&PDFIT[P.id].v===1));if(!todo.length)return;
-  const box=H("div",{class:"stage pd-measure"},stage);
+  const box=H("div",{class:"pd-measure"},stage);
   todo.forEach(P=>{box.innerHTML=pdHTML(P,PRODUCTS.indexOf(P)+1);plainBadges(box);const f=pdFit(box);if(f)PDFIT[P.id]=ok?Object.assign(f,{v:1}):f});box.remove()}
 PRINT.push(pdMeasureAll);
 
@@ -135,22 +136,20 @@ function pdHolo(el,max){max=max||8;if(REDMO||!el)return;
 function renderPD(id){const k=PRODUCTS.findIndex(x=>x.id===id);if(k<0)return false;const P=PRODUCTS[k];
   pd.classList.remove("play");pd.innerHTML=pdHTML(P,k+1);
   const KB=`→ e ← navegam entre as ${PRODUCTS.length} fichas · Esc volta à apresentação`;
-  const nav=H("div",{class:"pd-nav","data-tv":"Navegação","data-tl":KB});pd.querySelector(".top-right").prepend(nav);
+  const nav=H("div",{class:"pd-nav","data-tv":"Navegação","data-tl":KB});(pd.querySelector(".sr-band")||pd).appendChild(nav);
   const bk=H("button",{class:"bk","data-tv":"Voltar à apresentação · Esc","data-tl":"Fecha a ficha e volta ao slide de onde ela foi aberta."},nav,"← Voltar à apresentação");bk.onclick=()=>closePD();
   const bp=H("button",{"data-tv":"Ficha anterior · ←","data-tl":KB},nav,"‹ Anterior");bp.onclick=()=>pdStep(-1);
   const bn=H("button",{"data-tv":"Próxima ficha · →","data-tl":KB},nav,"Próxima ›");bn.onclick=()=>pdStep(1);
   const op=H("button",{"data-tv":"One-page","data-tl":"Volta ao mapa do novo portfólio (One-page)."},nav,"One-page");op.onclick=()=>{closePD(true);go(ONEPAGE-1,true)};
-  /* dica de teclado no topo, ao lado do contador: sempre visível, em todas as fichas */
-  pd.querySelector(".top-right .pg").before(H("span",{class:"pd-kbd short","data-tv":"Navegação","data-tl":KB,html:`<b>←</b><b>→</b><span class="sh">fichas</span><i>·</i><b>Esc</b><span class="sh">volta</span>`}));
   plainBadges(pd);fixPaths(pd);return true}
 /* versão longa da dica se couber ao lado dos links do pilar, curta se não, oculta se nem a curta couber (os links nunca são cortados) */
 function pdKbd(){}
-function openPD(id){tipEl.classList.remove("on");if(!PRODUCTS.some(x=>x.id===id))return;if(chapOn)hideChapter(true);if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;railSync(cur,PRODUCTS.find(x=>x.id===id).pillar);ctlMode(true);pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");
+function openPD(id){tipEl.classList.remove("on");if(!PRODUCTS.some(x=>x.id===id))return;if(chapOn)hideChapter(true);if(!pdOpen)pdFrom=cur;if(!renderPD(id))return;pdOpen=id;navIdx(cur,PRODUCTS.find(x=>x.id===id).pillar);ctlMode(true);pd.classList.remove("on");void pd.offsetWidth;pd.classList.add("on");
   const ok=document.fonts&&document.fonts.status==="loaded",c=PDFIT[id];
   const cached=ok&&c&&c.v===1&&!pdOver(pd.querySelector(".pd-holo"))&&!pdOver(pd.querySelector(".pd-hero"))&&!pdOver(pd.querySelector(".pd-right"));
   if(!cached){const f=pdFit(pd);if(ok){if(f)PDFIT[id]=Object.assign(f,{v:1})}
     else if(document.fonts)document.fonts.ready.then(()=>{if(pdOpen===id){const g=pdFit(pd);if(g)PDFIT[id]=Object.assign(g,{v:1});pdKbd()}})}
   pdKbd();pdHolo(pd.querySelector(".pd-holo"));void pd.offsetWidth;pd.classList.add("play");
-  history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${pad(PRODUCTS.findIndex(x=>x.id===id)+1)} / ${PRODUCTS.length}`;if(infoP.classList.contains("on"))fillInfo()}
-function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");ctlMode(false);railSync(cur);if(!silent&&pdFrom!==cur){activate(pdFrom,true)}else{$("cnt").textContent=`${pad(cur+1)} / ${pad(N)}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;history.replaceState(null,"","#"+(cur+1));if(infoP.classList.contains("on"))fillInfo()}}
+  history.replaceState(null,"","#p="+id);$("bPrev").disabled=false;$("bNext").disabled=false;$("cnt").textContent=`Ficha ${PRODUCTS.findIndex(x=>x.id===id)+1} / ${PRODUCTS.length}`;DECK_EV("deck:ficha",{id})}
+function closePD(silent){if(!pdOpen)return;pdOpen=null;pd.classList.remove("on");ctlMode(false);navIdx(cur);if(!silent&&pdFrom!==cur){activate(pdFrom,true)}else{$("cnt").textContent=`${cur+1} / ${N}`;$("bPrev").disabled=cur===0;$("bNext").disabled=cur===N-1;try{history.replaceState(null,"","#"+(cur+1))}catch(e){}}}
 function pdStep(d){const k=PRODUCTS.findIndex(x=>x.id===pdOpen);const n=(k+d+PRODUCTS.length)%PRODUCTS.length;openPD(PRODUCTS[n].id)}

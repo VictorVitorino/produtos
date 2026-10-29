@@ -1,0 +1,19 @@
+/* =====================================================================
+   SLIDE 12 · Pilar 2 · Cliente e mercado · dono: slide 12
+   Regras novas: sempre escopadas em .slide[data-s="12"] (ver CONTRACT.md).
+   ===================================================================== */
+
+/* ---------- regras herdadas da V5 (sem escopo; reescrever com escopo ao refazer o slide) ---------- */
+/* ---- de styles.css ---- */
+.rt{display:grid;grid-template-columns:repeat(5,1fr);position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 6px 12px}
+.rt::before{content:"";position:absolute;left:10%;right:10%;top:23px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--line-strong),var(--steel-400),var(--line-strong))}
+.rt-i{display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 8px}
+.rt-i i{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--steel-400);z-index:1}
+.rt-i.hot i{background:var(--orange-500);border-color:var(--orange-500);box-shadow:0 0 0 5px rgba(247,140,22,.2)}
+.rt-i b{font-weight:800;font-size:16px;letter-spacing:-.02em;color:var(--navy-800);margin-top:7px;white-space:nowrap}
+.rt-i span{font-size:11.3px;line-height:1.35;color:var(--grey-700);margin-top:2px}
+
+/* ---- de css/90-revisao.css ---- */
+.rt{padding:20px 6px 18px}
+.rt-i b{font-size:18px}
+.rt-i span{font-size:13px}

@@ -1,0 +1,142 @@
+/* =====================================================================
+   SLIDE 18 · Fábrica de produtos · dono: slide 18
+   Regras novas: sempre escopadas em .slide[data-s="18"] (ver CONTRACT.md).
+   ===================================================================== */
+
+/* ---------- regras herdadas da V5 (sem escopo; reescrever com escopo ao refazer o slide) ---------- */
+/* ---- de styles.css ---- */
+.fab{display:grid;grid-template-columns:560px 1fr;gap:32px;height:100%}
+.fab-l{display:flex;flex-direction:column;gap:16px;min-height:0}
+.cs-scene{position:relative;perspective:1200px;flex:1;min-height:0;margin-top:30px}
+.cs-card{position:absolute;inset:0;border-radius:22px;background:linear-gradient(155deg,#16396B 0%,#0B2545 52%,#071A33 100%);box-shadow:0 30px 70px rgba(11,37,69,.35),0 0 0 1px rgba(255,255,255,.1) inset;color:#fff;padding:28px 30px;transform-origin:50% 100%;transition:transform .4s var(--ease),opacity .4s;cursor:grab;touch-action:none;user-select:none;overflow:hidden}
+.cs-card:active{cursor:grabbing}
+.cs-card .k{font-family:var(--fm);font-size:11px;letter-spacing:.2em;color:var(--orange-400)}
+.cs-card h3{font-weight:800;font-size:38px;line-height:1.05;letter-spacing:-.035em;margin-top:8px;white-space:nowrap}
+.cs-card p{font-size:16px;line-height:1.5;color:var(--steel-200);margin-top:12px}
+.cs-card ul{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.cs-card li{position:relative;padding-left:20px;font-size:14.5px;line-height:1.45;color:var(--steel-100)}
+.cs-card li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--orange-500);transform:rotate(45deg)}
+.cs-card .q{position:absolute;right:26px;top:14px;font-weight:800;font-size:110px;line-height:1;letter-spacing:-.06em;color:rgba(255,255,255,.06)}
+.cs-card .ex{position:absolute;left:30px;right:30px;bottom:24px;border-top:1px solid rgba(255,255,255,.15);padding-top:12px;font-size:13px;font-weight:600;line-height:1.45;color:var(--orange-200)}
+.cs-card .ex b{color:#fff}
+.cs-nav{display:flex;align-items:center;gap:12px}
+.cs-nav button{height:34px;padding:0 14px;border-radius:9px;font-size:12.5px;font-weight:700;border:1px solid var(--line-strong);background:#fff;color:var(--navy-800)}
+.cs-nav button.p{background:var(--navy-800);border-color:var(--navy-800);color:#fff}
+.cs-dots{display:flex;gap:6px;align-items:center}
+.cs-dots i{width:8px;height:8px;border-radius:99px;background:var(--line-strong);transition:width .3s,background .3s}
+.cs-dots i.on{width:24px;background:var(--orange-500)}
+.fab-r{display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:0}
+.fab-r .grp{display:flex;flex-direction:column;gap:8px}
+.anat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.anat-i{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:12.3px;font-weight:700;color:var(--navy-800);white-space:nowrap}
+.anat-i i{font-style:normal;flex:none;width:22px;height:22px;border-radius:6px;background:var(--navy-800);color:#fff;display:grid;place-items:center;font-family:var(--fm);font-size:10.5px}
+.anat-i:nth-child(7) i{background:var(--orange-500)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tier{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;overflow:hidden;box-shadow:0 1px 2px rgba(11,37,69,.05)}
+.tier::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--steel-400)}
+.tier:nth-child(2)::before{background:var(--navy-800)}
+.tier:nth-child(3)::before{background:var(--orange-500)}
+.tier h4{font-weight:800;font-size:14.5px;letter-spacing:-.015em;color:var(--navy-800)}
+.tier p{font-size:12px;line-height:1.42;color:var(--grey-700);margin-top:3px}
+.tier .pls{margin-top:6px;display:flex;flex-wrap:wrap;gap:3px}
+.opm{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.opm>div{background:var(--surface-2);border-radius:12px;padding:11px 14px}
+.opm h4{font-weight:800;font-size:14px;letter-spacing:-.01em;color:var(--navy-800)}
+.opm p{font-size:12px;line-height:1.42;color:var(--grey-700);margin-top:2px}
+.gate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gate-i{display:grid;grid-template-columns:22px 1fr;gap:9px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.gate-i i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--orange-100);color:var(--orange-600);display:grid;place-items:center;font-size:11px;font-weight:800}
+.gate-i b{font-size:12.5px;font-weight:700;color:var(--navy-800)}
+.gate-i p{font-size:11.3px;line-height:1.35;color:var(--grey-700)}
+
+/* ---- de css/90-revisao.css ---- */
+.anat{grid-template-columns:repeat(4,1fr);gap:7px}
+.anat-i{padding:8px 10px}
+.anat-i i{width:24px}
+.anat-i:nth-child(7) i{background:var(--navy-800)}
+.anat-i:nth-child(9) i{background:var(--orange-500)}
+.cs-card .ex{position:static;margin-top:auto;padding-top:12px}
+.cs-card{display:flex;flex-direction:column}
+.cs-card h3{font-size:40px}
+.cs-card p{font-size:17px}
+.cs-card li{font-size:15.5px}
+.cs-print{display:none}
+.fab-l .opm{grid-template-columns:1fr;gap:6px}
+.fab-l .opm>div{display:grid;grid-template-columns:150px 1fr;column-gap:12px;align-items:baseline;padding:9px 14px}
+.fab-l .opm p{margin-top:0;font-size:12.5px}
+.fab-l .grp{display:flex;flex-direction:column;gap:8px}
+.cs-scene{margin-top:26px}
+.cs-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:14px;flex:1;min-height:0}
+.cs-g{display:flex;flex-direction:column;gap:6px;border-radius:16px;padding:16px 18px;background:linear-gradient(155deg,#16396B 0%,#0B2545 52%,#071A33 100%);color:#fff}
+.cs-g .k{font-family:var(--fm);font-size:10px;letter-spacing:.18em;color:var(--orange-400)}
+.cs-g h4{font-weight:800;font-size:19px;letter-spacing:-.02em}
+.cs-g p{font-size:12.5px;line-height:1.45;color:var(--steel-200)}
+.cs-g ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.cs-g li{position:relative;padding-left:14px;font-size:12px;line-height:1.4;color:var(--steel-100)}
+.cs-g li::before{content:"";position:absolute;left:0;top:6px;width:6px;height:6px;border-radius:2px;background:var(--orange-500);transform:rotate(45deg)}
+.cs-g .ex{margin-top:auto;padding-top:8px;border-top:1px solid rgba(255,255,255,.15);font-size:12px;line-height:1.4;font-weight:600;color:var(--orange-200)}
+.cs-g .ex b{color:#fff}
+@media print{
+  .cs-nav{display:none!important}
+  .fab-l .cs-scene{display:none!important}
+  .cs-print{display:flex;flex-direction:column;gap:8px;list-style:none;flex:1;min-height:0;margin:0;padding:18px 20px;border-radius:20px;background:linear-gradient(155deg,#16396B 0%,#0B2545 52%,#071A33 100%);color:#fff}
+  .cs-print li{display:grid;grid-template-columns:30px 1fr;column-gap:10px;align-items:baseline}
+  .cs-print i{font-style:normal;font-family:var(--fm);font-size:11px;color:var(--orange-400);grid-row:span 2}
+  .cs-print b{font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .cs-print span{font-size:12px;line-height:1.4;color:var(--steel-200)}
+  .cs-print-page .main{padding-top:4px}
+}
+.fab-r .anat-i{font-size:13px;padding:11px 12px}
+.tier{padding:16px 18px}
+.tier h4{font-size:16px}
+.tier p{font-size:13px}
+.gate{gap:10px}
+.gate-i{padding:13px 14px}
+.gate-i b{font-size:14px}
+.gate-i p{font-size:12.5px;line-height:1.4;margin-top:2px}
+.gate-i i{font-size:11.5px}
+
+/* ---- de css/91-revisao-2.css ---- */
+.fab-l .cs-scene{flex:none;height:362px}
+.fab-l>.grp{flex:1;min-height:0}
+.fab-l .opm{flex:1;grid-auto-rows:1fr}
+.fab-l .opm>div{align-items:center;padding:10px 16px}
+.fab-l .opm h4{font-size:15px}
+.fab-l .opm p{font-size:13.5px;line-height:1.45}
+.fab-r{justify-content:flex-start;gap:22px}
+.fab-r>.grp:last-child{flex:1;min-height:0}
+.fab-r .gate{flex:1;grid-auto-rows:1fr}
+.fab-r .gate-i{align-items:center}
+.fab-r .anat-i{padding:18px 14px;font-size:14px}
+.fab-r .tier{padding:20px 22px}
+.fab-r .gate-i{padding:17px 16px}
+.tier h4{font-size:17px}
+.tier p{font-size:13.5px}
+.gate-i b{font-size:15px}
+.gate-i p{font-size:13px}
+.cs-grid{gap:14px}
+.cs-g{gap:6px;padding:16px 18px}
+.cs-g h4{font-size:20px}
+.cs-g p{font-size:13px;line-height:1.45}
+.cs-g li{font-size:12.5px;line-height:1.4}
+.cs-g .ex{font-size:12.5px;line-height:1.4;padding-top:9px}
+.cs-g.op{background:linear-gradient(155deg,#1B2F4D 0%,#0B2545 60%,#071A33 100%);border:1px solid rgba(247,140,22,.45)}
+.cs-g.op .om{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.cs-g.op .om:last-of-type{border-bottom:0}
+.cs-g.op .om b{font-size:16px;font-weight:800;color:#fff}
+.cs-g.op .om span{font-size:13.5px;line-height:1.42;color:var(--steel-200)}
+.cs-g.op .ex{font-family:var(--fm);font-weight:500;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel-300)}
+@media print{
+  .fab-l>.grp{flex:none}
+  .fab-l .opm{grid-auto-rows:auto}
+  .fab-l .opm>div{padding:9px 14px}
+  .cs-print{justify-content:space-between;padding:20px 22px}
+  .cs-print b{font-size:16.5px}
+  .cs-print span{font-size:13px;line-height:1.42}
+}
+
+/* ---------- ajuste da fundação (V6): cabe na altura do corpo novo, até o slide ser refeito ---------- */
+.slide[data-s="18"] .fab-l .cs-scene{height:330px;margin-top:22px}
+.slide[data-s="18"] .cs-card h3{font-size:36px}
+.slide[data-s="18"] .cs-card p{font-size:16px;margin-top:8px}
+.slide[data-s="18"] .cs-card li{font-size:14.5px}

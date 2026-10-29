@@ -1,0 +1,49 @@
+<!-- ===================================================== 02 · Sumário (Abertura) -->
+<section class="slide ag" data-s="02" data-t="Sumário" data-bare data-nofoot>
+  <svg class="sm-art" viewBox="0 0 1600 900" aria-hidden="true">
+    <defs>
+      <linearGradient id="smSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16467A"/><stop offset=".48" stop-color="#3F7DB4"/><stop offset=".8" stop-color="#9CC4E4"/><stop offset="1" stop-color="#C9DDEE"/></linearGradient>
+      <linearGradient id="smGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9D8E6"/><stop offset="1" stop-color="#8FA7BF"/></linearGradient>
+      <clipPath id="smClip"><polygon points="960,0 1600,0 1600,900 688,900"/></clipPath>
+      <filter id="smSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.2"/></filter>
+    </defs>
+    <g clip-path="url(#smClip)">
+      <rect x="600" y="0" width="1000" height="900" fill="url(#smSky)"/>
+      <g class="sm-clouds" fill="#fff">
+        <g class="sm-cl c1" opacity=".92"><circle cx="1240" cy="96" r="30"/><circle cx="1278" cy="80" r="40"/><circle cx="1322" cy="96" r="30"/><rect x="1210" y="96" width="142" height="30" rx="15"/></g>
+        <g class="sm-cl c2" opacity=".85"><circle cx="1452" cy="190" r="24"/><circle cx="1484" cy="176" r="32"/><circle cx="1520" cy="190" r="24"/><rect x="1428" y="190" width="116" height="24" rx="12"/></g>
+        <g class="sm-cl c3" opacity=".7"><circle cx="1060" cy="210" r="18"/><circle cx="1086" cy="198" r="25"/><circle cx="1114" cy="210" r="18"/><rect x="1042" y="210" width="90" height="18" rx="9"/></g>
+      </g>
+      <path d="M600 610 L1600 560 L1600 900 L600 900 Z" fill="url(#smGround)"/>
+      <path d="M600 610 L1600 560" stroke="#E8F0F7" stroke-width="2" opacity=".7"/>
+      <!-- trilha do tabuleiro: cinco paradas, da partida (embaixo) à execução (no alto) -->
+      <path class="sm-road" d="M1500 900 C1470 840 1330 830 1240 790 C1130 742 1180 680 1300 650 C1420 620 1480 560 1390 520 C1290 476 1160 470 1180 410 C1200 350 1330 360 1390 300" fill="none" stroke="#F4F7FB" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="sm-road-in" d="M1500 900 C1470 840 1330 830 1240 790 C1130 742 1180 680 1300 650 C1420 620 1480 560 1390 520 C1290 476 1160 470 1180 410 C1200 350 1330 360 1390 300" fill="none" stroke="#F78C16" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" pathLength="1000"/>
+      <g class="sm-stop" data-k="1" transform="translate(1240 790)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">1</text></g>
+      <g class="sm-stop" data-k="2" transform="translate(1300 650)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">2</text></g>
+      <g class="sm-stop" data-k="3" transform="translate(1390 520)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">3</text></g>
+      <g class="sm-stop" data-k="4" transform="translate(1180 410)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">4</text></g>
+      <g class="sm-stop goal" data-k="5" transform="translate(1390 300)"><path d="M0 -26 V-96" stroke="#122143" stroke-width="4"/><path d="M2 -96 L52 -82 L2 -66 Z" fill="#F78C16"/><circle r="27" fill="#F78C16" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">5</text></g>
+    </g>
+    <!-- borda diagonal entre o painel e a ilustração (fio laranja) -->
+    <polygon points="990,-10 940,-10 664,910 714,910" fill="#0E1C39" opacity=".55"/>
+    <path d="M962 0 L690 900" stroke="#F78C16" stroke-width="2"/>
+  </svg>
+  <div class="ag-left"></div>
+  <div class="sm-tags" aria-hidden="true">
+    <span style="left:1282px;top:810px">Partida</span><span style="left:1342px;top:668px">Mercado</span><span style="left:1430px;top:540px">Posição</span><span style="left:1032px;top:398px">Portfólio</span><span style="left:1432px;top:318px">Execução</span>
+  </div>
+  <div class="ag-wrap">
+    <div class="ag-title" data-a="fade">Sumário</div>
+    <button class="ag-item" type="button" data-go="3" data-a="left" style="--d:1" title="Ir para a parte 1"><span class="ag-n">1</span><span class="ag-t">O ponto de partida</span></button>
+    <button class="ag-item" type="button" data-go="5" data-a="left" style="--d:2" title="Ir para a parte 2"><span class="ag-n">2</span><span class="ag-t">O que o mercado vive</span></button>
+    <button class="ag-item" type="button" data-go="7" data-a="left" style="--d:3" title="Ir para a parte 3"><span class="ag-n">3</span><span class="ag-t">Nossa posição</span></button>
+    <button class="ag-item" type="button" data-go="8" data-a="left" style="--d:4" title="Ir para a parte 4"><span class="ag-n">4</span><span class="ag-t">O novo portfólio</span></button>
+    <button class="ag-item" type="button" data-go="18" data-a="left" style="--d:5" title="Ir para a parte 5"><span class="ag-n">5</span><span class="ag-t">Como fazer acontecer</span></button>
+  </div>
+  <div class="sm-masc">
+    <div class="am-fala">Cinco paradas. A pergunta é uma só: como vender o que o cliente passou a comprar?</div>
+    <div class="am-masc" data-pose="aponta" style="--s:300px"></div>
+  </div>
+  <div class="ag-hint" data-ui>clique numa parte para abrir</div>
+</section>

@@ -17,9 +17,10 @@ const ev=t=>`<span class="ev" title="Evidência com fonte">${t||"Evidência"}</s
 const hy=t=>`<span class="hy" title="Hipótese / inferência a validar">${t||"Hipótese"}</span>`;
 function tip(el,v,l){el.setAttribute("data-tv",v);el.setAttribute("data-tl",l||"")}
 
-/* logo A&M com shimmer holográfico (máscara pela própria marca) */
-const amLogo=(h)=>`<span class="am-logo" style="height:${h}px;width:${Math.round(h*227/36)}px" role="img" aria-label="Alvarez &amp; Marsal Performance"></span>`;
-const dtsLogo=(h,dark)=>`<img class="dts-logo" src="${dark===false?LOGO_DTS_NAVY:LOGO_DTS}" alt="DTS · Digital &amp; Technology Services" style="height:${h}px;width:auto">`;
+/* logos (imagens embutidas pelo build.py em ASSET): branco por padrão, navy com dark===false */
+const _AS=k=>typeof ASSET!=="undefined"&&ASSET[k]||"";
+const amLogo=(h,dark)=>`<img class="logo-am" src="${_AS(dark===false?"am-performance-navy":"am-performance-white")}" alt="Alvarez &amp; Marsal | Performance" style="height:${h}px;width:auto;display:block">`;
+const dtsLogo=(h,dark)=>`<img class="logo-dts" src="${_AS(dark===false?"dts-logo-navy":"dts-logo-white")}" alt="DTS · Digital &amp; Technology Services" style="height:${h}px;width:auto;display:block">`;
 
 /* kinetic type */
 function kin(el){let k=0;const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===3){const parts=c.textContent.split(/(\s+)/),f=document.createDocumentFragment();parts.forEach(p=>{if(!p)return;if(/^\s+$/.test(p)){f.appendChild(document.createTextNode(p));return}const w=document.createElement("span");w.className="kw";const i=document.createElement("span");i.style.setProperty("--k",k++);i.textContent=p;w.appendChild(i);f.appendChild(w)});c.replaceWith(f)}else if(c.nodeType===1&&!c.classList.contains("kw"))walk(c)})};walk(el)}
@@ -53,11 +54,11 @@ function Morpher(cfg){const{path,states,onState,dwell=2600,dur=1150}=cfg;let i=0
 /* =====================================================================
    EFEITO · SPOTLIGHT / FOCUS
    ===================================================================== */
-function Spotlight(host,steps,segHost){const spot=H("div",{class:"spot"},host),cap=H("div",{class:"spot-cap"},host);let cur=-1;
+function Spotlight(host,steps,segHost,o){o=o||{};host.classList.add("spot-clip");const spot=H("div",{class:"spot"},host),cap=H("div",{class:"spot-cap"},host);let cur=-1;
   function rectOf(st){if(st.rect)return st.rect;const els=st.sel.split(",").map(s=>host.querySelector(s.trim())).filter(Boolean);let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;const hr=host.getBoundingClientRect(),sc=hr.width/host.offsetWidth||1;els.forEach(el=>{const r=el.getBoundingClientRect();x0=Math.min(x0,(r.left-hr.left)/sc);y0=Math.min(y0,(r.top-hr.top)/sc);x1=Math.max(x1,(r.right-hr.left)/sc);y1=Math.max(y1,(r.bottom-hr.top)/sc)});const p=st.pad==null?6:st.pad;return{x:x0-p,y:y0-p,w:x1-x0+2*p,h:y1-y0+2*p}}
   function set(k){cur=k;const btns=segHost?[...segHost.querySelectorAll("button")]:[];btns.forEach((b,j)=>b.classList.toggle("on",j===k+1));segSync(segHost);
-    if(k<0){spot.classList.remove("on");cap.classList.remove("on");return}const st=steps[k],r=rectOf(st);Object.assign(spot.style,{left:r.x+"px",top:r.y+"px",width:r.w+"px",height:r.h+"px"});spot.classList.add("on");
-    cap.innerHTML=`<b class="tt">${st.title}</b>${st.text}`;const cw=380;let cx=st.capX!=null?st.capX:(r.x+r.w+16+cw<host.offsetWidth?r.x+r.w+16:r.x-cw-16);if(cx<0)cx=Math.min(host.offsetWidth-cw,r.x+20);const cy=st.capY!=null?st.capY:Math.max(0,Math.min(host.offsetHeight-140,r.y+20));cap.style.left=cx+"px";cap.style.top=cy+"px";cap.classList.add("on")}
+    if(k<0){spot.classList.remove("on");cap.classList.remove("on");o.onSet&&o.onSet(-1);return}const st=steps[k],r=rectOf(st);Object.assign(spot.style,{left:r.x+"px",top:r.y+"px",width:r.w+"px",height:r.h+"px"});spot.classList.add("on");
+    cap.innerHTML=`<b class="tt">${st.title}</b>${st.text}`;const cw=o.capW||cap.offsetWidth||380;let cx=st.capX!=null?st.capX:(r.x+r.w+16+cw<host.offsetWidth?r.x+r.w+16:r.x-cw-16);if(cx<0)cx=Math.min(host.offsetWidth-cw,r.x+20);const cy=st.capY!=null?st.capY:Math.max(0,Math.min(host.offsetHeight-(cap.offsetHeight||140)-4,r.y+20));cap.style.left=cx+"px";cap.style.top=cy+"px";cap.classList.add("on");o.onSet&&o.onSet(k)}
   if(segHost){const all=H("button",{class:"on"},segHost,"Visão geral");all.onclick=()=>set(-1);steps.forEach((s,k)=>{const b=H("button",null,segHost,s.btn||s.title);b.onclick=()=>set(cur===k?-1:k)})}
   return{set,get cur(){return cur},next(){if(cur<steps.length-1){set(cur+1);return true}set(-1);return false}}}
 function segSync(sg){if(!sg)return;requestAnimationFrame(()=>{let ind=sg.querySelector(".seg-ind");if(!ind){ind=H("span",{class:"seg-ind"});sg.prepend(ind)}const on=sg.querySelector("button.on");if(on){ind.style.opacity=1;ind.style.left=on.offsetLeft+"px";ind.style.width=on.offsetWidth+"px"}else ind.style.opacity=0})}

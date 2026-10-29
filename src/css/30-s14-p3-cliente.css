@@ -1,0 +1,16 @@
+/* =====================================================================
+   SLIDE 14 · Pilar 3 · Cliente e mercado · dono: slide 14
+   Regras novas: sempre escopadas em .slide[data-s="14"] (ver CONTRACT.md).
+   ===================================================================== */
+
+/* ---------- regras herdadas da V5 (sem escopo; reescrever com escopo ao refazer o slide) ---------- */
+/* ---- de styles.css ---- */
+.cases{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.cases .kpi-t{padding:12px 14px}
+.cases .nm{font-weight:800;font-size:19px;letter-spacing:-.025em;color:var(--navy-800);margin-top:8px;white-space:nowrap}
+.cases .l{font-size:11.5px}
+
+/* ---- de css/90-revisao.css ---- */
+.cases .kpi-t{padding:16px 16px}
+.cases .l{font-size:13px;line-height:1.42}
+.cases .nm{font-size:21px}

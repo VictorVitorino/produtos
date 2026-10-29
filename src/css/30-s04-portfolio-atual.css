@@ -1,0 +1,51 @@
+/* =====================================================================
+   SLIDE 04 · Portfólio atual · dono: slide 04 · SLIDE DE REFERÊNCIA DA V6
+   Colunas por pilar (cabeçalho navy + serviços em linhas alinhadas), spotlight por pilar,
+   barra "E daí?" e mascote pequeno (lanterna). Todas as regras escopadas em .slide[data-s="04"].
+   ===================================================================== */
+.slide[data-s="04"] .head-r{flex-direction:column;align-items:flex-end;gap:7px}
+.slide[data-s="04"] .pf-leg{font-size:11.5px;color:var(--muted)}
+.slide[data-s="04"] .pf-host{position:relative;flex:1;min-height:0;border-radius:12px}
+.slide[data-s="04"] .pf-grid{display:grid;grid-template-columns:1.18fr 1.05fr .95fr .82fr;gap:14px;height:100%}
+.slide[data-s="04"] .pf-col{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;outline:none;
+  transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s}
+.slide[data-s="04"] .pf-col:hover{box-shadow:0 14px 30px rgba(0,43,73,.14);transform:translateY(-3px)}
+.slide[data-s="04"] .pf-col:focus-visible{border-color:var(--orange);box-shadow:0 0 0 3px rgba(247,140,22,.25)}
+.slide[data-s="04"] .pf-col.on{transform:none}
+/* cabeçalho do pilar: painel navy (APODI) com fio laranja embaixo */
+.slide[data-s="04"] .pf-hd{position:relative;flex:none;display:flex;flex-direction:column;gap:3px;padding:12px 16px 13px;color:#fff;background:linear-gradient(155deg,#1F3263 0%,#122143 55%,#0E1C39 100%)}
+.slide[data-s="04"] .pf-hd::after{content:"";position:absolute;left:16px;bottom:0;width:56px;height:3px;border-radius:2px 2px 0 0;background:var(--orange)}
+.slide[data-s="04"] .pf-r1{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.slide[data-s="04"] .pf-n{font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9}
+.slide[data-s="04"] .pf-cnt{font:700 11px var(--fb);letter-spacing:.04em;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:3px 9px;white-space:nowrap}
+.slide[data-s="04"] .pf-nm{font:700 27px/1.05 var(--fh);letter-spacing:.005em;color:#fff;white-space:nowrap}
+.slide[data-s="04"] .pf-mo{display:flex;align-items:baseline;gap:8px;font:500 12.5px var(--fb);color:#C8DBEB;white-space:nowrap}
+.slide[data-s="04"] .pf-mo b{font:800 15px var(--fh);letter-spacing:.08em;text-transform:uppercase;color:var(--orange-l)}
+/* serviços: linhas da mesma altura nas quatro colunas */
+.slide[data-s="04"] .pf-list{flex:1;min-height:0;display:grid;grid-template-rows:repeat(var(--rows,10),minmax(0,1fr));gap:4px;padding:8px 10px 10px}
+.slide[data-s="04"] .pf-svc{position:relative;display:flex;align-items:center;gap:10px;min-width:0;padding:0 12px;border-radius:6px;background:var(--ice2);font:600 13px var(--fb);letter-spacing:-.005em;color:var(--navy);white-space:nowrap}
+.slide[data-s="04"] .pf-svc i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--steel)}
+.slide[data-s="04"] .pf-svc span{min-width:0}
+.slide[data-s="04"] .pf-svc.ov{box-shadow:inset 3px 0 0 var(--steel);background:#E6EEF6}
+.slide[data-s="04"] .pf-ovk{display:inline-block;flex:none;width:16px;height:10px;margin-left:auto;position:relative}
+.slide[data-s="04"] .pf-ovk::before,.slide[data-s="04"] .pf-ovk::after{content:"";position:absolute;top:0;width:10px;height:10px;border-radius:50%;border:1.6px solid var(--steel)}
+.slide[data-s="04"] .pf-ovk::before{left:0}.slide[data-s="04"] .pf-ovk::after{left:6px;background:rgba(94,138,180,.25)}
+.slide[data-s="04"] .pf-leg .pf-ovk{margin:0 4px 0 0}
+.slide[data-s="04"] .pf-note{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:8px 12px;border-radius:6px;border:1px dashed var(--line);background:#fff}
+.slide[data-s="04"] .pf-nl{font:700 10.5px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--steel)}
+.slide[data-s="04"] .pf-note p{font-size:12.5px;line-height:1.45;color:var(--ink2)}
+.slide[data-s="04"] .pf-note p+.pf-nl{margin-top:6px}
+/* legenda do spotlight */
+.slide[data-s="04"] .spot-cap{width:420px;max-width:420px}
+.slide[data-s="04"] .spot-cap .pf-off{display:block;font-size:12px;color:var(--muted);margin-top:-2px}
+/* "E daí?" e mascote */
+.slide[data-s="04"] .sowhat{padding-right:140px}
+.slide[data-s="04"] .pf-masc{position:absolute;right:34px;bottom:10px;z-index:3;width:110px;display:flex;justify-content:center;pointer-events:none}
+/* página extra da impressão: a leitura dos quatro pilares */
+.slide[data-s="04"] .pf-pgrid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.slide[data-s="04"] .pf-pcol{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.slide[data-s="04"] .pf-pt{flex:1;display:flex;flex-direction:column;gap:3px;padding:10px 16px;border-top:1px solid var(--line2)}
+.slide[data-s="04"] .pf-pt b{font:700 10.5px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--steel)}
+.slide[data-s="04"] .pf-pt p{font-size:13px;line-height:1.45;color:var(--ink2)}
+.slide[data-s="04"].pf-print .pf-masc{display:none}
+@media (prefers-reduced-motion:reduce){.slide[data-s="04"] .pf-col{transition:none}}

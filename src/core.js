@@ -1,139 +1,185 @@
 /* =====================================================================
-   NÚCLEO · chrome, navegação cinematográfica, capítulos, painéis, fichas
-   (depende de engine.js e data.js)
+   NÚCLEO V6 · moldura APODI, navegação, vistas (panes), capítulos, barra inferior,
+   índice, fichas, "virar a página" (stub) e impressão
+   Depende de engine.js e src/data/*.js. Os módulos de src/js/ registram ganchos por slide,
+   sempre pela chave data-s ("NN"): ENTER["05"], STEP["05"], PRINT.push(f), BOOT.push(f).
    ===================================================================== */
 const stage=$("stage");
 const slides=[...stage.querySelectorAll(":scope > .slide")],N=slides.length;let cur=0,busy=false;
-const ENTER={};          // hooks por data-t
 const pad=n=>String(n).padStart(2,"0");
-const DOSE={sutil:1,moderada:2,intensa:3};
-const brand=dark=>`<div class="brand">${amLogo(22)}<span class="brand-div"></span>${dark?dtsLogo(24):dtsLogo(24,false)}</div>`;
-const hlx=t=>t.replace(/\*(.+?)\*/g,'<span class="hl">$1</span>');
+const keyOf=s=>s?(s.dataset.s||pad(slides.indexOf(s)+1)):"";
+const ENTER={},STEP={},PRINT=[],CHAPX={},BOOT=[];
+/* gancho do slide: data-s primeiro; data-t ainda é aceito durante a transição da V5 */
+const hook=(o,s)=>s?(o[keyOf(s)]||o[s.dataset.t]||null):null;
+const SL=nn=>slides.find(s=>s.dataset.s===pad(+nn))||null;
+const safe=(f,...a)=>{try{return f(...a)}catch(e){console.error("[deck]",e)}};
+const hlx=t=>String(t).replace(/\*(.+?)\*/g,'<span class="hl">$1</span>');
+const esc=t=>String(t).replace(/&(?![#\w]+;)/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const DECK_EV=(n,d)=>{try{document.dispatchEvent(new CustomEvent(n,{detail:d}))}catch(e){}};
+/* fichas de produto: o estado mora aqui; src/js/40-fichas.js redefine openPD/closePD/pdStep (os stubs evitam erro se o módulo faltar) */
+let pdOpen=null,pdFrom=0;
+function openPD(){}
+function closePD(){}
+function pdStep(){}
 
-/* --- capítulos: um por ato (data-chapter="NN|Título|Descrição" no primeiro slide do ato) --- */
-const CHMETA={};slides.forEach(s=>{if(s.dataset.chapter){const [n,t,d]=s.dataset.chapter.split("|");CHMETA[s.dataset.p]={n,t,d}}});
-const chapLabel=s=>{const m=CHMETA[s.dataset.p];return m?`Capítulo ${m.n} · ${s.dataset.p}`:(s.dataset.p||"Abertura")};
+/* ---------- textos fixos da moldura ---------- */
+const CFG={wm:"Planejamento Estratégico · DTS",ws:"Produtos, Serviços e Inteligência Artificial",right:"Outubro de 2026",foot:"DTS · PLANEJAMENTO ESTRATÉGICO 2027"};
+const ASSETS=typeof ASSET!=="undefined"?ASSET:{};
+const IMG={am:ASSETS["am-performance-white"]||"",dts:ASSETS["dts-logo-white"]||""};
+const DECO='<svg class="am-deco" viewBox="0 0 520 80" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><path d="M40 80 L100 0" stroke="#F78C16" stroke-width="1.4" fill="none"/><path d="M150 80 L210 0" stroke="#5E8AB4" stroke-width="7" fill="none" opacity=".55"/><path d="M190 80 V0" stroke="#F78C16" stroke-width="1.2" opacity=".7"/><path d="M280 80 L340 0" stroke="#5E8AB4" stroke-width="16" fill="none" opacity=".45"/><path d="M350 80 V0" stroke="#5E8AB4" stroke-width="5" opacity=".45"/><path d="M420 80 L480 0" stroke="#F78C16" stroke-width="1.4" fill="none" opacity=".8"/></svg>';
+/* "2 · O que o mercado vive" → "Parte 2 · O que o mercado vive" */
+const partLine=p=>{if(!p)return"Abertura";const a=p.split(" · ");return a.length>1&&/^\d+$/.test(a[0])?`Parte ${a[0]} · ${a.slice(1).join(" · ")}`:p};
+/* moldura em HTML (também usada pelas fichas) */
+function frameTopHTML(title,line){return `<div class="sr-dec" aria-hidden="true">▸▸▸▸▸▸▸▸▸▸▸▸</div><div class="sr-top">${DECO}<img class="am-logo" src="${IMG.am}" alt="Alvarez &amp; Marsal | Performance"><i class="am-bd"></i><img class="dts-logo" src="${IMG.dts}" alt="DTS · Digital &amp; Technology Services"><div class="am-wm"><span class="am-a">${CFG.wm}</span><span class="am-s">${CFG.ws}</span></div><div class="am-div"></div><div class="am-title"><b>${title}</b><span>${line}</span></div><div class="am-right"><span class="am-dot"></span>${CFG.right}</div></div>`}
+function bandHTML(txt,tone,hint){const L=String(txt).replace(/<[^>]+>/g,"").length,fs=L>95?(L>140?"17px":"19px"):"";
+  return `<div class="sr-band ${tone||"c-navy"}"${fs?` style="font-size:${fs};line-height:1.08"`:""}><span>›</span><span>${txt}</span>${hint?`<small>${hint}</small>`:""}</div>`}
+function footHTML(src,n){return `<div class="foot"><b>${CFG.foot}</b>${src?`<span class="s" title="${esc(src)}">${src}</span>`:""}<span class="n">${n}</span></div>`}
 
-/* --- chrome: topo leve, rodapé com fonte e efeito --- */
+/* ---------- moldura automática: cabeçalho, faixa e rodapé a partir de data-* ---------- */
 slides.forEach((s,i)=>{
+  if(!s.dataset.s)s.dataset.s=pad(i+1);
   if(s.hasAttribute("data-bare"))return;
-  const dark=s.classList.contains("stage");
-  const top=H("div",{class:"top"});
-  top.innerHTML=`${brand(dark)}<div class="top-title"><span>${chapLabel(s)}</span><b>${s.dataset.t}</b></div><div class="top-right"><span class="pg"><b>${pad(i+1)}</b> / ${pad(N)}</span></div>`;
-  s.prepend(top);
-  const f=H("div",{class:"foot"},s);const src=H("span",{class:"src"},f);
-  const st=(s.dataset.src||"").replace(/^Fontes?:\s*/,"");src.innerHTML=st?`<b>FONTE</b>`:`<b>A&amp;M · DTS</b>Portfólio estratégico 2027`;if(st)src.append(st);src.title=st;
-  if(s.dataset.fx){const [num,name,dose]=s.dataset.fx.split("|");const d=DOSE[dose]||1;const c=H("span",{class:"fxchip",title:`Efeito do Guia de Design DTS: ${name} · dose ${dose}`},f);c.innerHTML=`<span>fx ${num} · ${name}</span><span class="dose"><i class="${d>=1?"on":""}"></i><i class="${d>=2?"on":""}"></i><i class="${d>=3?"on":""}"></i></span>`}
+  s.insertAdjacentHTML("afterbegin",frameTopHTML(s.dataset.t||"",partLine(s.dataset.p))+(s.dataset.band?bandHTML(s.dataset.band,s.dataset.c,s.dataset.panes?"":s.dataset.bs):""));
+  if(!s.dataset.band)s.classList.add("noband");
+  if(!s.hasAttribute("data-nofoot"))s.insertAdjacentHTML("beforeend",footHTML(s.dataset.src||"",`${i+1} / ${N}`));
 });
 document.querySelectorAll("#stage .kin").forEach(kin);
 
-/* --- duas vistas no mesmo slide (ex.: cliente | mercado): seletor no topo --- */
+/* ---------- duas vistas no mesmo slide (data-panes="Vista 1|Vista 2"): seletor na ponta da faixa ---------- */
 const PANE={};
-slides.forEach(s=>{if(!s.dataset.panes)return;const panes=[...s.querySelectorAll(":scope > .body.pane")];
-  const sg=H("div",{class:"seg pseg"});s.querySelector(".top-right").prepend(sg);
-  const btns=s.dataset.panes.split("|").map((l,k)=>{const b=H("button",{class:k?"":"on"},sg,`${k+1} · ${l}`);b.addEventListener("click",e=>{e.stopPropagation();setPane(s,k)});return b});
-  PANE[s.dataset.t]={s,panes,btns,sg,k:0}});
-function setPane(s,k){const P=PANE[s.dataset.t];if(!P)return;P.k=k;P.panes.forEach((p,j)=>p.classList.toggle("on",j===k));P.btns.forEach((b,j)=>b.classList.toggle("on",j===k));segSync(P.sg);
-  const pn=P.panes[k],fs=s.querySelector(".foot .src");if(fs&&pn.dataset.paneSrc){fs.innerHTML="<b>FONTE</b>";fs.append(pn.dataset.paneSrc.replace(/^Fontes?:\s*/,""));fs.title=pn.dataset.paneSrc}
-  tipEl.classList.remove("on");if(infoP.classList.contains("on"))fillInfo()}
-function paneStep(d){const P=PANE[slides[cur].dataset.t];if(!P)return false;if(d>0&&P.k<P.panes.length-1){setPane(P.s,P.k+1);return true}if(d<0&&P.k>0){setPane(P.s,P.k-1);return true}return false}
+slides.forEach(s=>{if(!s.dataset.panes)return;const panes=[...s.querySelectorAll(":scope > .body.pane")];if(!panes.length)return;
+  if(!panes.some(p=>p.classList.contains("on")))panes[0].classList.add("on");
+  const band=s.querySelector(":scope > .sr-band");const sg=H("div",{class:"seg pseg"},band||s);
+  const btns=s.dataset.panes.split("|").map((l,k)=>{const b=H("button",{type:"button",class:k?"":"on"},sg,`${k+1} · ${l}`);b.addEventListener("click",e=>{e.stopPropagation();setPane(s,k)});return b});
+  PANE[keyOf(s)]={s,panes,btns,sg,k:0}});
+const paneOf=s=>s?PANE[keyOf(s)]:null;
+function setPane(s,k){const P=paneOf(s);if(!P)return;k=clamp(k,0,P.panes.length-1);P.k=k;P.panes.forEach((p,j)=>p.classList.toggle("on",j===k));P.btns.forEach((b,j)=>b.classList.toggle("on",j===k));segSync(P.sg);
+  const pn=P.panes[k],fs=s.querySelector(":scope > .foot .s"),src=pn.dataset.paneSrc||s.dataset.src||"";if(fs){fs.textContent=src;fs.title=src}
+  tipEl.classList.remove("on");DECK_EV("deck:pane",{key:keyOf(s),k})}
+function paneStep(d){const P=paneOf(slides[cur]);if(!P)return false;if(d>0&&P.k<P.panes.length-1){setPane(P.s,P.k+1);return true}if(d<0&&P.k>0){setPane(P.s,P.k-1);return true}return false}
 
-/* --- transição de capítulo (fx 08 · orbs) · pilares ganham morphing (CHAPX) --- */
-const CHAPX={};const chapEl=H("div",{id:"chap"},stage);let chapOn=null;
-function showChapter(p,done){const m=CHMETA[p];chapEl.className="";
-  chapEl.innerHTML=`<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="cv-top">${brand(true)}<span class="cv-conf">Planejamento estratégico · DTS 2027</span></div><div class="cn">${m.n}</div><div class="chap-l"><div class="cey">CAPÍTULO ${m.n}</div><h1>${hlx(m.t)}</h1><p>${m.d}</p><div class="cln"></div></div><div class="csk">→ ou clique para continuar ›</div>`;
-  kin(chapEl.querySelector("h1"));chapEl.classList.add("on");void chapEl.offsetWidth;chapEl.classList.add("play");
-  if(!REDMO)chapEl.querySelector(".cln").animate([{width:"0px"},{width:"420px"}],{duration:900,delay:250,easing:"cubic-bezier(.22,.61,.36,1)",fill:"forwards"});else chapEl.querySelector(".cln").style.width="420px";
-  const cleanup=CHAPX[p]?CHAPX[p](chapEl):null;chapOn={done,cleanup:cleanup||(()=>{})}}
-function hideChapter(run){if(!chapOn)return;const c=chapOn;chapOn=null;const a=chapEl.animate([{opacity:1},{opacity:0}],{duration:REDMO?1:380});a.onfinish=()=>{if(chapOn)return;chapEl.className="";chapEl.innerHTML="";c.cleanup()};if(run)c.done();else c.cleanup()}
-chapEl.addEventListener("click",e=>{if(e.target.closest("button,a"))return;hideChapter(true)});
+/* ---------- capítulos: divisória "Parte N" antes do primeiro slide de cada parte (src/data/01-capitulos.js) ---------- */
+const CAP=typeof CAPITULOS!=="undefined"?CAPITULOS:{};
+const chapEl=H("div",{id:"chap"},stage);let chapOn=null;
+const logosHTML=()=>`<img src="${IMG.am}" alt="Alvarez &amp; Marsal | Performance" style="height:40px"><i></i><img src="${IMG.dts}" alt="DTS" style="height:34px">`;
+function showChapter(k,done){const m=CAP[k]||{};chapEl.className="";
+  const pl=m.pilar&&typeof PILLARS!=="undefined"?PILLARS[m.pilar-1]:null;
+  const t=m.t||(pl?pl.name:""),d=m.d||(pl?pl.def:"");
+  const chips=(m.chips||[]).map(([nn,l],j)=>`<button class="ch-chip" type="button" data-go-ch="${+nn}"><b>${j+1}</b>${l}</button>`).join("");
+  chapEl.innerHTML=`<div class="ch-bg"></div><div class="ch-grid" aria-hidden="true"></div>
+    <svg class="ch-slash" viewBox="0 0 1600 900" aria-hidden="true"><path d="M1010 -20 L720 920" stroke="#5E8AB4" stroke-width="46" opacity=".11" fill="none" pathLength="1000" style="--d:0"/><path d="M1064 -20 L774 920" stroke="#5E8AB4" stroke-width="7" opacity=".3" fill="none" pathLength="1000" style="--d:1"/><path d="M1044 -20 L754 920" stroke="#F78C16" stroke-width="1.6" opacity=".85" fill="none" pathLength="1000" style="--d:2"/></svg>
+    <div class="ch-floor" aria-hidden="true"></div>
+    ${m.pose?`<div class="ch-m"><div class="am-masc" data-pose="${m.pose}" style="--s:340px"></div></div>`:""}
+    <div class="ch-txt"><span class="ch-eye">${m.eye||""}</span><b class="ch-h"><span class="ch-rv">${hlx(t)}</span></b><i class="ch-bar" aria-hidden="true"></i><span class="ch-sub">${d}</span>${chips?`<div class="ch-chips">${chips}</div>`:""}</div>
+    <div class="cv-logos">${logosHTML()}</div><div class="ch-tag"><i></i>→ ou clique para continuar</div>`;
+  if(window.AMMasc&&typeof AMMasc.mount==="function")safe(()=>AMMasc.mount(chapEl));
+  chapEl.classList.add("on");void chapEl.offsetWidth;chapEl.classList.add("play");
+  const cl=CHAPX[k]?safe(CHAPX[k],chapEl):null;chapOn={k,done,cleanup:typeof cl==="function"?cl:()=>{}};DECK_EV("deck:chapter",{key:k})}
+function hideChapter(run){if(!chapOn)return;const c=chapOn;chapOn=null;const a=chapEl.animate([{opacity:1},{opacity:0}],{duration:REDMO?1:380});a.onfinish=()=>{if(chapOn)return;chapEl.className="";chapEl.innerHTML="";safe(c.cleanup)};if(run)safe(c.done)}
+chapEl.addEventListener("click",e=>{const ch=e.target.closest("[data-go-ch]");if(ch){e.stopPropagation();const i=+ch.dataset.goCh-1;hideChapter(true);if(i!==cur)go(i,true);return}if(e.target.closest("button,a"))return;hideChapter(true)});
 
-/* --- controles --- */
+/* ---------- barra inferior: abas de capítulo (#dots) e controles ---------- */
+const IC={grid:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>',
+  flip:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h7.5a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4z"/><path d="M20 5.5h-3.5"/><path d="M17.5 3l-2.5 2.5L17.5 8"/><path d="M20 9.5V18h-4.5"/></svg>'};
 const ctr=H("div",{id:"controls"},document.body);
-ctr.innerHTML=`<button class="k" id="bProd" title="Fichas de produto (P)">▦ <span class="lb">Fichas de produto</span></button><button class="g" id="bInfo" title="Sobre este slide (I)"><span style="display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:2px solid currentColor;font:800 10px/1 var(--fb)">i</span> <span class="lb">Sobre este slide</span></button><button class="g" id="bPrev">← <span class="lb">Voltar</span></button><span class="c" id="cnt" title="Índice (G)"></span><button class="p" id="bNext"><span class="lb">Avançar</span> →</button>`;
-H("div",{id:"progress"},document.body);H("div",{class:"rot-tip"},document.body,"Gire o aparelho para ver a apresentação inteira.");
+ctr.innerHTML=`<button class="g" id="bProd" type="button" title="Fichas de produto (P)">${IC.grid}<span class="lb">Fichas de produto</span></button><button class="g" id="bFlip" type="button" title="Virar a página: contexto e fontes (V)">${IC.flip}<span class="lb">Virar a página</span></button><button class="g" id="bPrev" type="button"><span class="ar">➜</span><span class="lb">Voltar</span></button><span class="c" id="cnt" role="button" tabindex="0" title="Índice · escolha a página (G)">1 / ${N}</span><button class="p" id="bNext" type="button"><span class="lb">Avançar</span><span class="ar">➜</span></button>`;
+H("div",{id:"progress"},document.body);H("div",{id:"rotate"},document.body,"Gire o aparelho para ver a apresentação inteira");
+const dotsEl=H("div",{id:"dots"},document.body);
+const idxOf=nn=>{const s=SL(nn);return s?slides.indexOf(s):-1};
+const TABS=(typeof ABAS!=="undefined"?ABAS:[["Abertura","01",pad(N)]]).map(([n,a,b])=>({n,a:idxOf(a),b:idxOf(b)})).filter(t=>t.a>=0&&t.b>=t.a);
+TABS.forEach(t=>{const b=H("button",{type:"button",title:`${t.n} · slides ${t.a+1}–${t.b+1}`},dotsEl);b.innerHTML=`<span>${t.n}</span><span class="nb"><i></i></span>`;b.onclick=e=>{e.stopPropagation();closePD(true);go(t.a)};t.el=b});
+/* i = slide ativo; pil = pilar da ficha aberta (acende a aba dos pilares) */
+function navIdx(i,pil){TABS.forEach(t=>{let on=i>=t.a&&i<=t.b,done=i>t.b;if(pil){const ps=SL(pad(9+pil*2-1));on=!!ps&&t.a<=slides.indexOf(ps)&&slides.indexOf(ps)<=t.b;done=false}
+  t.el.classList.toggle("on",on);t.el.classList.toggle("done",done);t.el.setAttribute("aria-current",on?"step":"false");
+  t.el.querySelector("i").style.setProperty("--f",on?(pil?"100%":Math.round((i-t.a+1)/(t.b-t.a+1)*100)+"%"):done?"100%":"0%")})}
 const tipEl=H("div",{id:"tip",html:"<b></b><span></span>"},document.body);
-const infoP=H("div",{class:"panel",id:"infoP",html:`<button class="px" aria-label="Fechar">×</button><div class="ie">Sobre este slide</div><div class="it"></div><div class="id"></div><div class="ifx"></div><div class="isrc"></div>`},document.body);
-const idxP=H("div",{class:"panel",id:"idxP",html:`<div class="xh">Roteiro da apresentação<button class="px" style="position:static" aria-label="Fechar">×</button></div><div class="xl"></div>`},document.body);
-const pdxP=H("div",{class:"panel",id:"pdxP",html:`<div class="xh">Fichas de produto · novo portfólio<button class="px" style="position:static" aria-label="Fechar">×</button></div><div class="xl"></div>`},document.body);
-const panels=[infoP,idxP,pdxP];
-function closePanels(except){panels.forEach(p=>{if(p!==except)p.classList.remove("on")});$("bInfo").classList.toggle("on",except===infoP&&infoP.classList.contains("on"));$("cnt").classList.toggle("on",except===idxP&&idxP.classList.contains("on"));$("bProd").classList.toggle("on",except===pdxP&&pdxP.classList.contains("on"))}
+const idxP=H("div",{class:"pop",id:"idxP",html:`<div class="xh">Roteiro da apresentação<button class="ix" type="button" aria-label="Fechar">×</button></div><div class="xl"></div>`},document.body);
+const pdxP=H("div",{class:"pop",id:"pdxP",html:`<div class="xh">Fichas de produto · novo portfólio<button class="ix" type="button" aria-label="Fechar">×</button></div><div class="xl"></div>`},document.body);
+const panels=[idxP,pdxP];
+function closePanels(except){panels.forEach(p=>{if(p!==except)p.classList.remove("on")});$("cnt").classList.toggle("on",idxP.classList.contains("on"));$("bProd").classList.toggle("on",pdxP.classList.contains("on"))}
 function togglePanel(p){p.classList.toggle("on");closePanels(p)}
-panels.forEach(p=>p.querySelector(".px").onclick=()=>{p.classList.remove("on");closePanels(null)});
-$("bInfo").onclick=()=>{fillInfo();togglePanel(infoP)};$("cnt").onclick=()=>{fillIdx();togglePanel(idxP)};$("bProd").onclick=()=>{fillPdx();togglePanel(pdxP)};
-function fillInfo(){const s=pdOpen?null:slides[cur];const P=pdOpen?PRODUCTS.find(x=>x.id===pdOpen):null;
-  infoP.querySelector(".it").textContent=P?`${P.code} · ${P.name}`:s.dataset.t;
-  infoP.querySelector(".id").innerHTML=P?`<p>Ficha de produto do novo portfólio DTS. Status: <b>${STATUS[P.st][0]}</b>. Origem: ${P.from}.</p><p>Layout do modelo Playbook: no card, público, formato e encaixe, origem e por que A&amp;M; à direita, o problema, o que o cliente recebe, como funciona (método e etapas), o produto em números, o papel da IA, como vira produto, ferramentas e dados, skills e fontes.</p>`:(s.querySelector("template.info")?s.querySelector("template.info").innerHTML:"");
-  const fx=P?["03","Hologram 3D Cards","moderada"]:(s.dataset.fx?s.dataset.fx.split("|"):null);
-  infoP.querySelector(".ifx").innerHTML=fx?`<b>Efeito (Guia DTS):</b> fx ${fx[0]} · ${fx[1]} · dose ${fx[2]}.`:"";
-  const PV=!P&&PANE[s.dataset.t],vs=PV&&PV.panes[PV.k].dataset.paneSrc||s.dataset.src;
-  infoP.querySelector(".isrc").textContent=P?"":(vs?"Fonte: "+vs.replace(/^Fontes?:\s*/,""):"")}
-function fillIdx(){const xl=idxP.querySelector(".xl");xl.innerHTML="";let last="";slides.forEach((s,i)=>{const g=s.dataset.p||"Abertura";if(g!==last){H("div",{class:"xg"},xl,CHMETA[g]?`${CHMETA[g].n} · ${g}`:g);last=g}const b=H("button",{class:"xi"+(i===cur&&!pdOpen?" cur":"")},xl);H("b",null,b,pad(i+1));H("span",null,b,s.dataset.t);b.onclick=()=>{idxP.classList.remove("on");closePanels(null);closePD(true);go(i,true)}});
+panels.forEach(p=>{p.querySelector(".ix").onclick=()=>{p.classList.remove("on");closePanels(null)};p.addEventListener("click",e=>e.stopPropagation())});
+addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#controls"))return;if(panels.some(p=>p.classList.contains("on")))closePanels(null)});
+$("cnt").onclick=e=>{e.stopPropagation();fillIdx();togglePanel(idxP)};
+$("cnt").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();e.stopPropagation();fillIdx();togglePanel(idxP)}};
+$("bProd").onclick=e=>{e.stopPropagation();fillPdx();togglePanel(pdxP)};
+function fillIdx(){const xl=idxP.querySelector(".xl");xl.innerHTML="";let last=null;slides.forEach((s,i)=>{const g=s.dataset.p?partLine(s.dataset.p):"Abertura";if(g!==last){H("div",{class:"xg"},xl,g);last=g}
+    const b=H("button",{type:"button",class:"xi"+(i===cur&&!pdOpen?" cur":"")},xl);H("b",null,b,pad(i+1));H("span",null,b,s.dataset.t||"");b.onclick=()=>{idxP.classList.remove("on");closePanels(null);closePD(true);go(i,true)}});
   requestAnimationFrame(()=>{const c=xl.querySelector(".xi.cur");if(c)c.scrollIntoView({block:"nearest"})})}
-function fillPdx(){const xl=pdxP.querySelector(".xl");xl.innerHTML="";PILLARS.forEach(pl=>{H("div",{class:"xg"},xl,`Pilar ${pl.n} · ${pl.name}`);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const b=H("button",{class:"xi"+(pdOpen===p.id?" cur":"")},xl);H("b",null,b,p.code);H("span",null,b,p.name);H("span",{class:"xst",title:STATUS[p.st][0],html:stTag(p.st)},b);b.onclick=()=>{pdxP.classList.remove("on");closePanels(null);openPD(p.id)}})})}
+function fillPdx(){const xl=pdxP.querySelector(".xl");xl.innerHTML="";if(typeof PILLARS==="undefined"||typeof PRODUCTS==="undefined")return;
+  PILLARS.forEach(pl=>{H("div",{class:"xg"},xl,`Pilar ${pl.n} · ${pl.name}`);PRODUCTS.filter(p=>p.pillar===pl.n).forEach(p=>{const b=H("button",{type:"button",class:"xi"+(pdOpen===p.id?" cur":"")},xl);H("b",null,b,p.code);H("span",null,b,p.name);H("span",{class:"xst",title:STATUS[p.st]?STATUS[p.st][0]:"",html:STATUS[p.st]?stTag(p.st):""},b);b.onclick=()=>{pdxP.classList.remove("on");closePanels(null);openPD(p.id)}})})}
+/* controles no modo ficha: os botões de baixo navegam entre fichas e dizem isso */
+function ctlMode(pdm){$("bPrev").querySelector(".lb").textContent=pdm?"Ficha anterior":"Voltar";$("bNext").querySelector(".lb").textContent=pdm?"Próxima ficha":"Avançar"}
 
-/* --- trilha narrativa (atos) --- */
-const PARTS=[...new Set(slides.map(s=>s.dataset.p||"Abertura"))];
-const RLBL=n=>n==="Abertura"?"Capa":n.replace(/^Pilar (\d).*/,"Pilar $1").replace("Ponto de partida","Partida").replace("Nossa posição","Posição").replace("Novo portfólio","Portfólio");
-const rail=H("div",{id:"rail"},document.body);
-const RAIL=PARTS.map(n=>{const idx=slides.map((s,i)=>(s.dataset.p||"Abertura")===n?i:-1).filter(i=>i>=0);const d=H("div",{class:"seg2",style:`min-width:${Math.max(46,idx.length*24)}px`},rail);H("span",null,d,RLBL(n));const bar=H("i",null,d);const b=H("b",null,bar);d.onclick=()=>{closePD(true);go(idx[0])};d.title=n;return{n,idx,d,b}});
-/* i = slide ativo; pil = pilar da ficha aberta (acende o capítulo do pilar, com a barra cheia) */
-function railSync(i,pil){RAIL.forEach(r=>{if(pil){const on=r.n.startsWith(`Pilar ${pil} `);r.d.classList.toggle("on",on);r.b.style.width=on?"100%":"0";return}
-  const k=r.idx.indexOf(i),on=k>=0;r.d.classList.toggle("on",on);r.b.style.width=on?((k+1)/r.idx.length*100)+"%":(r.idx[0]<i?"100%":"0")})}
-/* controles no modo ficha: os botões de baixo navegam entre fichas e dizem isso; o "i" fala da ficha */
-function ctlMode(pdm){$("bPrev").querySelector(".lb").textContent=pdm?"Ficha anterior":"Voltar";$("bNext").querySelector(".lb").textContent=pdm?"Próxima ficha":"Avançar";
-  $("bInfo").querySelector(".lb").textContent=pdm?"Sobre esta ficha":"Sobre este slide";$("bInfo").title=pdm?"Sobre esta ficha (I)":"Sobre este slide (I)";infoP.querySelector(".ie").textContent=pdm?"Sobre esta ficha":"Sobre este slide"}
+/* ---------- "Virar a página" (contexto e fontes) ----------
+   A parte 2 da fundação define window.flipPage / window.unflipPage (verso de cada slide) e marca o palco com a classe
+   "flipped". Até lá vale este stub, que só alterna a classe e mostra um aviso. O botão chama window.flipPage na hora. */
+if(typeof window.flipPage!=="function")window.flipPage=()=>{const on=!stage.classList.contains("flipped");stage.classList.toggle("flipped",on);stage.classList.toggle("flip-stub",on)};
+if(typeof window.unflipPage!=="function")window.unflipPage=()=>{stage.classList.remove("flipped","flip-stub")};
+const isFlipped=()=>stage.classList.contains("flipped");
+$("bFlip").onclick=e=>{e.stopPropagation();safe(()=>window.flipPage())};
+const flipSync=()=>{const on=isFlipped();$("bFlip").classList.toggle("on",on);$("bFlip").querySelector(".lb").textContent=on?"Desvirar":"Virar a página"};
+new MutationObserver(flipSync).observe(stage,{attributes:true,attributeFilter:["class"]});
 
-/* --- escala do palco --- */
-function fit(){const vw=innerWidth,vh=innerHeight,sm=vw<760,padx=sm?6:18,bar=sm?56:66,sc=Math.min((vw-padx*2)/1600,(vh-padx-bar)/900);stage.style.left=vw/2+"px";stage.style.top=(padx+(vh-padx-bar)/2)+"px";stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
+/* ---------- escala do palco (fit da APODI: deixa ~62 px para a barra inferior) ---------- */
+function fit(){const vw=innerWidth,vh=innerHeight,sm=vw<760,land=vh<=480&&vw>vh,pd0=land?4:(sm?6:10),bar=land?14:(sm?54:62);
+  const sc=Math.min((vw-pd0*2)/1600,(vh-pd0-bar)/900);stage.style.left=vw/2+"px";stage.style.top=(pd0+(vh-pd0-bar)/2)+"px";stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
 addEventListener("resize",fit);
 
-/* --- ativação --- */
-function activate(i,inst,back,noEnter,last){tipEl.classList.remove("on");const n=slides[i];if(PANE[n.dataset.t])setPane(n,last?PANE[n.dataset.t].panes.length-1:0);slides.forEach((s,k)=>{if(k!==i)s.classList.remove("active","entering","play","back")});n.classList.remove("play","entering","back");void n.offsetWidth;n.classList.add("active","play");if(!inst){n.classList.add("entering");if(back)n.classList.add("back")}cur=i;
-  $("cnt").textContent=`${pad(i+1)} / ${pad(N)}`;$("progress").style.width=((i+1)/N*100)+"%";$("bPrev").disabled=i===0;$("bNext").disabled=i===N-1;
-  if(!pdOpen)history.replaceState(null,"","#"+(i+1));
-  railSync(i);
-  if(PANE[n.dataset.t])segSync(PANE[n.dataset.t].sg);
+/* ---------- ativação e navegação ---------- */
+function activate(i,inst,back,noEnter,last){tipEl.classList.remove("on");if(isFlipped())safe(()=>window.unflipPage());const n=slides[i];const P=paneOf(n);if(P)setPane(n,last?P.panes.length-1:0);
+  slides.forEach((s,k)=>{if(k!==i)s.classList.remove("active","entering","play","back")});n.classList.remove("play","entering","back");void n.offsetWidth;n.classList.add("active","play");if(!inst){n.classList.add("entering");if(back)n.classList.add("back")}
+  const from=cur;cur=i;
+  $("cnt").textContent=`${i+1} / ${N}`;$("progress").style.width=((i+1)/N*100)+"%";$("bPrev").disabled=i===0;$("bNext").disabled=i===N-1;
+  if(!pdOpen)try{history.replaceState(null,"","#"+(i+1))}catch(e){}
+  navIdx(i);if(P)segSync(P.sg);
   n.querySelectorAll("[data-count]").forEach(el=>count(el,0,+el.dataset.count,el.dataset.suf||"",1200));
-  if(infoP.classList.contains("on"))fillInfo();
-  if(noEnter)return;const fn=ENTER[n.dataset.t];if(fn)setTimeout(fn,inst?0:60)}
-/* goLast: o slide foi aberto pelo ← (prev): abre na última vista ou passo. Trilha, índice, Home e links abrem no início */
+  DECK_EV("deck:activate",{i,from,key:keyOf(n),slide:n});
+  if(noEnter)return;const fn=hook(ENTER,n);if(fn)setTimeout(()=>safe(fn),inst?0:60)}
+/* goLast: o slide foi aberto pelo ← (prev): abre na última vista ou passo. Abas, índice e links abrem no início */
 let goLast=false;
 function go(i,inst,opt){i=clamp(i,0,N-1);if(i===cur&&!inst)return;if(busy)return;const back=i<cur,last=!!(opt&&opt.last)&&back;goLast=last;if(chapOn)hideChapter(false);
-  const np=slides[i].dataset.p,chap=!back&&np!==slides[cur].dataset.p&&CHMETA[np];
-  if(inst||REDMO){activate(i,true,back,false,last);if(chap&&!inst)showChapter(np,()=>{});return}
-  busy=true;const w=$("wipe");w.style.visibility="visible";const bars=[...w.querySelectorAll("i")],dir=back?-1:1;
-  bars.forEach((b,k)=>b.animate([{transform:`translateX(${-110*dir}%) skewX(-10deg)`},{transform:"translateX(0) skewX(-10deg)"}],{duration:380,delay:k*60,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}));
-  setTimeout(()=>{if(chap){activate(i,true,back,true);const n=slides[i];n.classList.remove("play");showChapter(np,()=>{void n.offsetWidth;n.classList.add("play");if(PANE[n.dataset.t])segSync(PANE[n.dataset.t].sg);n.querySelectorAll("[data-count]").forEach(el=>count(el,0,+el.dataset.count,el.dataset.suf||"",1200));const fn=ENTER[n.dataset.t];if(fn)setTimeout(fn,60)})}else activate(i,false,back,false,last);
-    bars.forEach((b,k)=>b.animate([{transform:"translateX(0) skewX(-10deg)"},{transform:`translateX(${110*dir}%) skewX(-10deg)`}],{duration:420,delay:(2-k)*60,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}));setTimeout(()=>{w.style.visibility="hidden";busy=false},600)},500)}
-/* passos internos: slides podem consumir o "avançar" (ex.: spotlight, timeline) */
-const STEP={};
-function next(){tipEl.classList.remove("on");if(pdOpen){pdStep(1);return}if(chapOn){hideChapter(true);return}const f=STEP[slides[cur].dataset.t];if(f&&f(1))return;if(paneStep(1))return;go(cur+1)}
-function prev(){tipEl.classList.remove("on");if(pdOpen){pdStep(-1);return}if(chapOn){hideChapter(false);slides[cur].classList.add("play");go(cur-1,false,{last:true});return}const f=STEP[slides[cur].dataset.t];if(f&&f(-1))return;if(paneStep(-1))return;go(cur-1,false,{last:true})}
-$("bNext").onclick=next;$("bPrev").onclick=prev;
-addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||e.defaultPrevented)return;
-  if(e.key==="Escape"&&chapOn){hideChapter(true);return}
-  if(e.key==="Escape"){if(panels.some(p=>p.classList.contains("on"))){panels.forEach(p=>p.classList.remove("on"));closePanels(null)}else if(pdOpen)closePD();return}
-  if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();next()}else if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();prev()}
-  else if(e.key==="Home"){closePD(true);go(0)}else if(e.key==="End"){closePD(true);go(N-1)}
-  else if(e.key==="f"||e.key==="F"){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.()}
-  else if(e.key==="i"||e.key==="I"){$("bInfo").click()}else if(e.key==="p"||e.key==="P"){$("bProd").click()}else if(e.key==="g"||e.key==="G"){$("cnt").click()}});
-let tx=null;addEventListener("touchstart",e=>{tx=e.target.closest&&e.target.closest(".ba-handle,.cs-scene")?null:e.touches[0].clientX},{passive:true});addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60)dx<0?next():prev();tx=null},{passive:true});
+  const k=keyOf(slides[i]),chap=!back&&!inst&&i!==cur&&CAP[k]?k:null;
+  if(!chap||REDMO){activate(i,!!inst,back,false,last);if(chap)showChapter(chap,()=>{});return}
+  /* entrada de capítulo: barras cobrem o palco, o slide é ativado por baixo e a divisória aparece */
+  busy=true;const w=$("wipe");w.style.visibility="visible";const bars=[...w.querySelectorAll("i")];
+  bars.forEach((b,j)=>b.animate([{transform:"translateX(-110%) skewX(-10deg)"},{transform:"translateX(0) skewX(-10deg)"}],{duration:380,delay:j*60,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}));
+  setTimeout(()=>{activate(i,true,back,true);const n=slides[i];n.classList.remove("play");
+    showChapter(chap,()=>{void n.offsetWidth;n.classList.add("play");const P=paneOf(n);if(P)segSync(P.sg);n.querySelectorAll("[data-count]").forEach(el=>count(el,0,+el.dataset.count,el.dataset.suf||"",1200));const fn=hook(ENTER,n);if(fn)setTimeout(()=>safe(fn),60)});
+    bars.forEach((b,j)=>b.animate([{transform:"translateX(0) skewX(-10deg)"},{transform:"translateX(110%) skewX(-10deg)"}],{duration:420,delay:(2-j)*60,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}));
+    setTimeout(()=>{w.style.visibility="hidden";busy=false},600)},500)}
+/* passos internos: o slide consome o "avançar" (spotlight, linha do tempo, cartas…) antes de trocar de vista ou de slide */
+function stepHook(d){const f=hook(STEP,slides[cur]);if(!f)return false;return !!safe(f,d)}
+/* com a página virada, ← / → vão direto ao slide vizinho (a ativação desvira) */
+function next(){tipEl.classList.remove("on");if(pdOpen){pdStep(1);return}if(chapOn){hideChapter(true);return}if(isFlipped()){go(cur+1);return}if(stepHook(1))return;if(paneStep(1))return;go(cur+1)}
+function prev(){tipEl.classList.remove("on");if(pdOpen){pdStep(-1);return}if(chapOn){hideChapter(false);slides[cur].classList.add("play");go(cur-1,false,{last:true});return}if(isFlipped()){go(cur-1);return}if(stepHook(-1))return;if(paneStep(-1))return;go(cur-1,false,{last:true})}
+$("bNext").onclick=e=>{e.stopPropagation();next()};$("bPrev").onclick=e=>{e.stopPropagation();prev()};
+addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA"||e.target.isContentEditable||e.defaultPrevented||e.ctrlKey||e.metaKey||e.altKey)return;const k=e.key;
+  if((k===" "||k==="Enter")&&e.target.closest&&e.target.closest("button,[role=button],a"))return;
+  if(k==="Escape"){if(chapOn){hideChapter(true);return}if(panels.some(p=>p.classList.contains("on"))){closePanels(null);return}if(isFlipped()){safe(()=>window.unflipPage());return}if(pdOpen)closePD();return}
+  if(["ArrowRight","PageDown"," "].includes(k)){e.preventDefault();next()}else if(["ArrowLeft","PageUp"].includes(k)){e.preventDefault();prev()}
+  else if(k==="Home"){closePD(true);go(0)}else if(k==="End"){closePD(true);go(N-1)}
+  else if(k==="f"||k==="F"){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.()}
+  else if(k==="v"||k==="V"){if(chapOn)hideChapter(true);safe(()=>window.flipPage())}
+  else if(k==="p"||k==="P"){$("bProd").click()}else if(k==="g"||k==="G"){$("cnt").click()}});
+let tx=null;addEventListener("touchstart",e=>{tx=e.target.closest&&e.target.closest(".ba-handle,.cs-scene,[data-noswipe]")?null:e.touches[0].clientX},{passive:true});addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60)dx<0?next():prev();tx=null},{passive:true});
+/* dica flutuante: qualquer elemento com data-tv (título), data-tl (texto) ou data-th (HTML) */
 addEventListener("pointermove",e=>{const el=e.target.closest&&e.target.closest("[data-tv]");if(el){tipEl.querySelector("b").textContent=el.dataset.tv;if(el.dataset.th)tipEl.querySelector("span").innerHTML=el.dataset.th;else tipEl.querySelector("span").textContent=el.dataset.tl||"";tipEl.classList.add("on");tipEl.style.left=Math.min(e.clientX+14,innerWidth-360)+"px";tipEl.style.top=Math.max(8,Math.min(e.clientY+14,innerHeight-tipEl.offsetHeight-8))+"px"}else tipEl.classList.remove("on")});
-/* ripple */
-document.addEventListener("pointerdown",e=>{if(REDMO)return;const el=e.target.closest(".prod,.clk,#controls button");if(!el)return;if(getComputedStyle(el).position==="static")el.style.position="relative";const r=el.getBoundingClientRect(),sc=stage.contains(el)?stage.getBoundingClientRect().width/1600:1,x=(e.clientX-r.left)/sc,y=(e.clientY-r.top)/sc,size=Math.max(r.width,r.height)/sc*1.1;const sp=H("span",{class:"rp",style:`width:${size}px;height:${size}px;left:${x-size/2}px;top:${y-size/2}px`},el);setTimeout(()=>sp.remove(),650)});
-/* links internos para fichas: qualquer [data-pd] */
-stage.addEventListener("click",e=>{const a=e.target.closest("[data-pd]");if(!a)return;e.preventDefault();if(chapOn)hideChapter(true);openPD(a.dataset.pd)});
-stage.addEventListener("click",e=>{const a=e.target.closest("[data-go]");if(!a)return;e.preventDefault();closePD(true);go(+a.dataset.go-1)});
+/* clique com ondulação */
+document.addEventListener("pointerdown",e=>{if(REDMO)return;const el=e.target.closest&&e.target.closest(".prod,.clk,#controls button");if(!el)return;if(getComputedStyle(el).position==="static")el.style.position="relative";const r=el.getBoundingClientRect(),sc=stage.contains(el)?stage.getBoundingClientRect().width/1600:1,x=(e.clientX-r.left)/sc,y=(e.clientY-r.top)/sc,size=Math.max(r.width,r.height)/sc*1.1;const sp=H("span",{class:"rp",style:`width:${size}px;height:${size}px;left:${x-size/2}px;top:${y-size/2}px`},el);setTimeout(()=>sp.remove(),650)});
+/* links internos: [data-pd] abre a ficha; [data-go="N"] vai ao slide N (1–20) */
+stage.addEventListener("click",e=>{const a=e.target.closest("[data-pd]");if(!a||!stage.contains(a))return;e.preventDefault();if(chapOn)hideChapter(true);openPD(a.dataset.pd)});
+stage.addEventListener("click",e=>{const a=e.target.closest("[data-go]");if(!a)return;e.preventDefault();e.stopPropagation();closePD(true);go(+a.dataset.go-1)});
 
-/* versão de impressão: vistas extras e fichas como páginas */
-const PRINT=[];
-function buildPrint(){PRINT.forEach(f=>{try{f()}catch(e){}});
+/* ---------- impressão: vistas extras (panes), fichas como páginas e ganchos PRINT dos slides ---------- */
+function buildPrint(){PRINT.forEach(f=>safe(f));
   stage.querySelectorAll(":scope > .slide:not(.pd-print) a[data-pd]").forEach(a=>{if(a.dataset.h0==null)a.dataset.h0=a.getAttribute("href")||"";a.setAttribute("href","#pdp-"+a.dataset.pd)});
   if(stage.querySelector(".pd-print"))return;
-  Object.values(PANE).forEach(P=>{for(let k=P.panes.length-1;k>=1;k--){const c=P.s.cloneNode(true);c.classList.add("pane-print");c.classList.remove("active");[...c.querySelectorAll(":scope > .body.pane")].forEach((x,j)=>{if(j!==k)x.remove();else x.classList.add("on")});const pn=P.panes[k];const fs=c.querySelector(".foot .src");if(fs&&pn.dataset.paneSrc){fs.innerHTML="<b>FONTE</b>";fs.append(pn.dataset.paneSrc)}c.querySelectorAll(".pseg button").forEach((b,j)=>b.classList.toggle("on",j===k));P.s.after(c)}P.panes.forEach((x,j)=>x.classList.toggle("on",j===0));P.btns.forEach((b,j)=>b.classList.toggle("on",j===0))});
-  PRODUCTS.forEach((P,k)=>{const sec=H("section",{class:"pd-print slide stage",id:"pdp-"+P.id,html:pdHTML(P,k+1)},stage);plainBadges(sec);sec.classList.add("play");
-    /* no PDF, os links de ficha apontam para a página da ficha (#pdp-…), que o Chromium transforma em link interno */
+  Object.values(PANE).forEach(P=>{for(let k=P.panes.length-1;k>=1;k--){const c=P.s.cloneNode(true);c.classList.add("pane-print");c.classList.remove("active");[...c.querySelectorAll(":scope > .body.pane")].forEach((x,j)=>{if(j!==k)x.remove();else x.classList.add("on")});
+      const pn=P.panes[k],fs=c.querySelector(":scope > .foot .s");if(fs&&pn.dataset.paneSrc)fs.textContent=pn.dataset.paneSrc;c.querySelectorAll(".pseg button").forEach((b,j)=>b.classList.toggle("on",j===k));P.s.after(c)}
+    P.panes.forEach((x,j)=>x.classList.toggle("on",j===0));P.btns.forEach((b,j)=>b.classList.toggle("on",j===0))});
+  if(typeof PRODUCTS==="undefined"||typeof pdHTML!=="function")return;
+  PRODUCTS.forEach((P,k)=>{const sec=H("section",{class:"pd-print slide",id:"pdp-"+P.id,html:pdHTML(P,k+1)},stage);plainBadges(sec);sec.classList.add("play");
     sec.querySelectorAll("a[data-pd]").forEach(a=>a.setAttribute("href","#pdp-"+a.dataset.pd))})}
 addEventListener("beforeprint",buildPrint);
 addEventListener("afterprint",()=>stage.querySelectorAll("a[data-h0]").forEach(a=>{a.setAttribute("href",a.dataset.h0);delete a.dataset.h0}));
@@ -141,8 +187,20 @@ addEventListener("afterprint",()=>stage.querySelectorAll("a[data-h0]").forEach(a
 /* --- tilt suave (cards hologram) --- */
 function tilt(el){if(REDMO||!el)return;el.classList.add("tilt");el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;el.style.transform=`perspective(1100px) rotateX(${(0.5-py)*6}deg) rotateY(${(px-0.5)*6}deg)`});el.addEventListener("pointerleave",()=>{el.style.transform=""})}
 
-/* boot é chamado ao final de slides.js */
+/* marcas antigas de evidência ([E]/[H]) viram texto simples ("Fonte: …" / "proposta DTS") */
 function badgeText(el){const t=el.textContent.trim();if(/^(E|Evidência)$/i.test(t))return"";return t.replace(/^E\s*·\s*/,"")}
 function plainBadges(root){const r=root||document,sel=root?"":"#stage > .slide ";r.querySelectorAll(sel+".ev").forEach(el=>{const x=badgeText(el);if(!x){el.remove();return}el.className="srcx";el.textContent="Fonte: "+x});
   r.querySelectorAll(sel+".hy").forEach(el=>{const x=el.textContent.trim();el.className="srcx";el.textContent=/^(H|Hipótese)$/i.test(x)?"proposta DTS":x})}
-function boot(){plainBadges();fit();const h=location.hash.slice(1);if(h.startsWith("p=")){activate(ONEPAGE-1,true);openPD(h.slice(2));if(!pdOpen)history.replaceState(null,"","#"+ONEPAGE)}else{const h0=parseInt(h,10);activate(isNaN(h0)?0:clamp(h0-1,0,N-1),true)}}
+
+/* ---------- API para ferramentas (shot.js, audit.js) e para a parte 2 da fundação ---------- */
+window.DECK={slides,get cur(){return cur},go:(i,inst)=>go(i,inst),next,prev,setPane,SL,keyOf,
+  slide:nn=>{const s=SL(nn);if(s){closePD(true);if(chapOn)hideChapter(false);go(slides.indexOf(s),true)}return s},
+  pane:k=>{const s=slides[cur];setPane(s,k);return !!paneOf(s)},
+  step:k=>{let n=0;for(let j=0;j<k;j++){if(stepHook(1)||paneStep(1))n++;else break}return n},
+  chap:nn=>{const s=SL(nn);if(!s)return false;closePD(true);if(chapOn)hideChapter(false);activate(slides.indexOf(s),true,false,true);s.classList.remove("play");showChapter(keyOf(s),()=>{s.classList.add("play");const fn=hook(ENTER,s);if(fn)safe(fn)});return true},
+  ficha:id=>{openPD(id);return pdOpen},
+  flip:()=>safe(()=>window.flipPage()),print:buildPrint};
+
+function boot(){plainBadges();fit();const h=location.hash.slice(1),op=typeof ONEPAGE!=="undefined"&&ONEPAGE>0?ONEPAGE:1;
+  if(h.startsWith("p=")){activate(op-1,true);openPD(h.slice(2));if(!pdOpen)try{history.replaceState(null,"","#"+op)}catch(e){}}
+  else{const h0=parseInt(h,10);activate(isNaN(h0)?0:clamp(h0-1,0,N-1),true)}}
