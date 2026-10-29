@@ -4,7 +4,7 @@
 Ordem de montagem:
   CSS  : src/styles.css + src/css/*.css (ordem alfabética)
   HTML : src/slides/*.html (um arquivo por slide, ordem alfabética)
-  JS   : engine.js, data.js, core.js, slides.js + src/js/*.js (ordem alfabética; 99-boot.js inicia)
+  JS   : engine.js, src/data/*.js, core.js, slides.js + src/js/*.js (ordem alfabética; 99-boot.js inicia)
 Uso: python3 build.py [--out caminho.html]
 """
 import base64, pathlib, sys
@@ -27,7 +27,7 @@ logos = (
     f'const LOGO_DTS_NAVY="{b64("dts-logo-navy.png")}";\n'
 )
 am = b64("am-performance-white.png")
-js = read_all([SRC / f for f in ["engine.js", "data.js", "core.js", "slides.js"]] + sorted((SRC / "js").glob("*.js")))
+js = read_all([SRC / "engine.js"] + sorted((SRC / "data").glob("*.js")) + [SRC / "core.js", SRC / "slides.js"] + sorted((SRC / "js").glob("*.js")))
 
 html = f"""<!doctype html>
 <html lang="pt-BR">
