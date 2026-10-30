@@ -82,7 +82,7 @@
 .slide[data-s="05"] .s05-ql{font:700 11.5px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9}
 .slide[data-s="05"] .s05-q0 p{position:relative;align-self:flex-start;font:500 22px/1.35 var(--fb);color:#AFC2D6;white-space:nowrap}
 /* a pergunta antiga riscada (fio laranja-claro, detalhe sobre fundo escuro); na entrada o risco se desenha e a pergunta nova chega depois */
-.slide[data-s="05"] .s05-q0 p::after{content:"";position:absolute;left:-3px;right:-3px;top:54%;height:2px;border-radius:2px;background:var(--orange-l);opacity:.85;transform-origin:left center}
+.slide[data-s="05"] .s05-q0 p::after{content:"";position:absolute;left:0;right:0;top:54%;height:2px;border-radius:2px;background:var(--orange-l);opacity:.85;transform-origin:left center}
 .slide[data-s="05"].play .s05-ent .s05-q0 p::after{animation:s05-strike .55s cubic-bezier(.65,0,.35,1) .95s both}
 .slide[data-s="05"].play .s05-ent .s05-q1{animation:s05-rise .6s cubic-bezier(.22,.61,.36,1) 1.3s both}
 .slide[data-s="05"].play .s05-ent .s05-con{animation:s05-rise .6s cubic-bezier(.22,.61,.36,1) 1.6s both}

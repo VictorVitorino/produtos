@@ -34,7 +34,7 @@ PCFG[3].cliente={
      l:"Ciclo completo com plataforma própria: disputa o desenho e o comando da separação",p:["3.2","3.3"]},
     {f:"DiligenceSquared",ia:"Faz diligência comercial para fundos com agentes de voz que entrevistam os clientes da empresa-alvo (mar/2026)",
      l:"A diligência comercial já sai por agentes; a de tecnologia tende a seguir o mesmo caminho",p:["3.1"]},
-    {f:"Ode with Anthropic",ia:"Empresa de IA criada pela Anthropic com Blackstone, Hellman &amp; Friedman e Goldman Sachs para atender investidas desses fundos",
+    {f:"Ode with Anthropic",ia:"Empresa de IA criada pela Anthropic com Blackstone, Hellman &amp; Friedman e Goldman Sachs; os primeiros clientes incluem investidas desses fundos",
      l:"Os fundos levam a IA para dentro das investidas: disputa o acompanhamento do portfólio",p:["3.5","3.4"]}
   ],
   /* onde a DTS ganha (título, texto, produto) e a ameaça a monitorar */

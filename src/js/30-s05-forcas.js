@@ -29,7 +29,7 @@
     {ic:"calendar",t:"2027 com data marcada",
      fx:"Começa a cobrança do novo tributo federal e acaba a manutenção padrão do ERP antigo da SAP",
      ex:"prazo e custo conhecidos até 2027",
-     tok:"forcas-cbs-2027",mud:"é o ano em que começa a cobrança da CBS, novo tributo federal sobre consumo, e termina a manutenção padrão do ECC, a versão antiga do ERP da SAP.",src:"Agência Senado (dez/2024) · SAP (fev/2020)",
+     tok:"forcas-cbs-2027",mud:"é o ano em que começa a cobrança do novo tributo federal sobre consumo (CBS) e termina a manutenção padrão da versão antiga do ERP da SAP (ECC).",src:"Agência Senado (dez/2024) · SAP (fev/2020)",
      req:"Chegar a 2027 com fiscal e ERP prontos, com prazo e custo conhecidos antes de começar.",
      dts:"Prontidão de ERP e resgate de projetos já estão no portfólio; com data fixa, o cliente compra quem responde pela data."},
     {ic:"hand",t:"Fundos no centro das transações",

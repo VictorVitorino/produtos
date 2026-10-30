@@ -5,6 +5,6 @@
    ===================================================================== */
 /* vista 2: tabela do mercado à esquerda, "onde a DTS ganha" à direita */
 .slide[data-s="10"] .s10-mk{display:grid;grid-template-columns:minmax(0,1fr) 492px;gap:16px}
-.slide[data-s="10"] .s10-mk .pl-mk th.c-f{width:150px}
-.slide[data-s="10"] .s10-mk .pl-mk th.c-l{width:300px}
+.slide[data-s="10"] .s10-mk .pl-mk th.c-f{width:142px}
+.slide[data-s="10"] .s10-mk .pl-mk th.c-l{width:344px}
 .slide[data-s="10"] .s10-mk .pl-mk th.c-p{width:118px}

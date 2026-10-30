@@ -20,13 +20,13 @@ const TL_MARKET=[
    src = fonte curta (as completas no verso) · f = ids de FONTES. Sem siglas fora da SPEC 5 e sem pessoas da A&M. */
 const TL_2026=[
  {d:"Jan 2026",s:"McKinsey",sig:1,tag:"IA vira plataforma",t:"McKinsey passa a contar agentes de IA na força de trabalho",
-  x:"A firma diz operar com cerca de <span data-fato=\"mckinsey-agentes-25-mil\">25 mil</span> agentes de IA ao lado das pessoas: a IA deixa de ser ferramenta e vira capacidade de entrega.",
-  src:"Business Insider e IT Forum, jan/2026",f:["bi-mckinsey-agentes-2026","itforum-mckinsey-agentes-2026"]},
+  x:"A firma diz operar com cerca de <span data-fato=\"mckinsey-agentes-25-mil\">25 mil</span> agentes de IA ao lado das pessoas. Quem vende horas de consultor passa a concorrer com horas de agente.",
+  src:"IT Forum e Business Insider, jan/2026",f:["itforum-mckinsey-agentes-2026","bi-mckinsey-agentes-2026"]},
  {d:"Fev 2026",s:"OpenAI",sig:1,tag:"IA vira plataforma",t:"OpenAI se alia a McKinsey, BCG, Accenture e Capgemini",
   x:"Parcerias de vários anos para levar às empresas os agentes da plataforma Frontier: as firmas de estratégia desenham o uso e os integradores implantam.",
   src:"Fortune, 23/02/2026",f:["fortune-frontier-alliance-2026"]},
  {d:"Mar 2026",s:"Startup",sig:3,tag:"Diligência",t:"Agentes de voz fazem a diligência comercial dos fundos",
-  x:"A DiligenceSquared, startup americana, entrevista clientes da empresa-alvo com agentes de voz de IA, no lugar de consultores: a pesquisa de mercado da diligência passa a ser feita por software.",
+  x:"A DiligenceSquared, startup americana, entrevista clientes da empresa-alvo com agentes de voz de IA, no lugar de consultores: a entrevista com clientes, base da diligência comercial, passa a ser feita por software.",
   src:"TechCrunch, 05/03/2026",f:["techcrunch-diligencesquared-2026"]},
  {d:"Abr 2026",s:"BCG",sig:1,tag:"IA vira receita",t:"Tecnologia e IA passam de <span data-fato=\"bcg-tech-ia-40\">40%</span> da receita do BCG",
   x:"No resultado de 2025, divulgado pela própria firma, a IA deixa de ser piloto e vira linha de receita de uma das três grandes firmas de estratégia.",

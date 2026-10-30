@@ -15,14 +15,14 @@ PCFG[2].cliente={
      g:"Cobrança da CBS em 2027 e saldo da apuração assistida para conferir",
      f:"pilar2-kpmg-orcamento-72",ft:"das empresas não tinham orçamento formalizado para a transição até 2033",p:["2.2","2.3"]},
     {r:"CIO e Compras",d:"escolhem a plataforma",q:"Que ERP, que motor fiscal, que agente: quem escolhe sem vender a licença?",
-     g:"Fim da manutenção padrão do SAP ECC e ofertas de agentes de IA todo mês",
+     g:"Fim da manutenção padrão do SAP ECC e excesso de ofertas de agentes de IA",
      f:"agentes-fornecedores-reais-130",fq:"só cerca de",ft:"dos milhares que dizem vender agentes de IA são fornecedores reais",p:["2.1","2.2"]},
     {r:"Patrocinador e conselho",d:"cobram a entrega",q:"O programa chega no prazo e no valor, e eu sei antes de ficar vermelho?",
      g:"Marcos atrasados, custo subindo e disputa com o integrador",
      f:"pilar2-erp-caso-negocio-70",fq:"mais de",ft:"das iniciativas recentes de ERP não vão cumprir todo o caso de negócio até 2027",p:["2.3","2.4"]},
-    {r:"CIO e diretor de RH",d:"levam a IA ao trabalho",q:"Pagamos IA: quem usa, quanto a TI ganhou e que processo já roda com agente?",
+    {r:"CIO e diretor de RH",d:"levam a IA ao trabalho",q:"A IA que pagamos é usada, e algum processo já roda com agente?",
      g:"Licenças de IA renovando sem medida de uso e pilotos parados",
-     f:"agentes-producao-11",ft:"das organizações têm agentes de IA rodando em produção",p:["2.5","2.6"]}
+     f:"agentic-cancelados-40",fq:"mais de",ft:"dos projetos de IA agêntica serão cancelados até o fim de 2027 (previsão)",p:["2.5","2.6"]}
   ],
   /* vista 2 · o que o mercado faz: quem, o que já faz (fato), o que isso muda para a DTS (leitura nossa), produtos em disputa */
   mk:[
@@ -36,8 +36,8 @@ PCFG[2].cliente={
      l:"Leva agentes aos processos das empresas brasileiras: disputa a automação agêntica",p:["2.6"]},
     {f:"CI&amp;T",ia:"Plataforma própria, a CI&amp;T Flow, liga modelos e agentes de IA ao desenvolvimento de software",
      l:"Software feito com agentes baixa o preço de construir e de implantar",p:["2.6","2.3"]},
-    {f:"Accenture · IBM",ia:"A Accenture fechou acordo com a OpenAI para levar agentes às empresas; a IBM vende consultoria baseada em ativos",
-     l:"Implantação vendida junto com plataforma e ativos próprios: a escolha perde neutralidade",p:["2.1","2.3"]}
+    {f:"Accenture · Capgemini",ia:"Fecharam acordos com a OpenAI para levar a plataforma de agentes de IA às empresas",
+     l:"Implantação vendida junto com a plataforma do parceiro: a escolha perde neutralidade",p:["2.1","2.3"]}
   ],
   /* onde a DTS ganha (título, texto, produto) e a ameaça a monitorar */
   ws:{it:[
