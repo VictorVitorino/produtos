@@ -19,6 +19,9 @@
   /* nome de hoje: de qual serviço oficial cada produto nasce */
   const orig=p=>{if(p.st==="new"){const a=absd(p.code);return MOD[p.code]?`novo · ${MOD[p.code]}`:a.length?`novo · absorve o ${a.map(nmOf).join(" e ")} como ativo interno`:"novo · produto criado com IA"}
     const os=live(p.code).sort((a,b)=>(a.d==="merge")-(b.d==="merge")),nm=o=>nmOf(o)+(o.p!==p.pillar?` (Pilar ${o.p})`:"");
+    /* dois nomes com a mesma raiz ("X (Buy Side)" e "X (Sell Side)") viram "X (Buy Side e Sell Side)" */
+    const m2=os.length===2&&os.map(o=>nm(o).match(/^(.*) \((.*)\)$/));
+    if(m2&&m2[0]&&m2[1]&&m2[0][1]===m2[1][1])return`de ${m2[0][1]} (${m2[0][2]} e ${m2[1][2]})`;
     return os.length>2?`de ${os.slice(0,-1).map(nm).join(", ")} e ${nm(os[os.length-1])}`:`de ${os.map(nm).join(" + ")}`};
   /* encaixes descritos nas fichas (meta "Encaixe: …"): os códigos citados viram vizinhos da carta */
   const mates=p=>{const m=(p.meta||[]).find(x=>/^Encaixe:/i.test(String(x)));return m?[...new Set((String(m).match(/\b[1-4]\.[1-7]\b/g)||[]).filter(c=>c!==p.code&&PBY(c)))]:[]};
@@ -26,13 +29,17 @@
   const DEC={1:["Decidir","onde investir em tecnologia e IA"],2:["Executar","o programa no prazo e no valor"],3:["Transacionar","da assinatura à saída"],4:["Modernizar","o legado sem parar a operação"]};
   const LEIT={
     1:{d:"Onde investir em tecnologia e IA, quanto isso devolve e quem responde pelo resultado.",
+       s:"; a resiliência vai para o Pilar 4",
        c:"O 1.1 diz o que decidir e abre 1.2, 1.4 e 1.5; o 1.2 vira plano e abre o 1.7; o 1.3 assume o cargo; o 1.6 transforma desenvolvimento em benefício fiscal."},
     2:{d:"Como entregar o programa crítico de tecnologia no prazo e no valor prometido.",
+       s:"; o IT Business Partner passa ao 1.3",
        c:"O 2.1 escolhe o fornecedor, o 2.2 prepara a virada fiscal e do ERP, o 2.3 avisa antes do atraso, o 2.4 resgata, o 2.5 faz usar e o 2.6 leva a IA à própria TI.",
        n:"Da escolha (2.1) ao uso medido (2.5), com alerta antes do atraso (2.3) e resgate (2.4)."},
     3:{d:"O que a tecnologia muda no preço, no primeiro dia e na saída do investimento.",
+       s:"; o playbook vira ativo interno do 3.5",
        c:"O 3.1 entra antes da assinatura e abre o 3.2; o 3.3 comanda o primeiro dia e a transição; o 3.4 segue até a venda; o 3.5 acompanha todas as empresas do fundo."},
     4:{d:"Que rota o legado segue e como migrar sem parar a operação.",
+       s:"; a resiliência chega do Pilar 1 como 4.5",
        c:"O 4.6 e o 4.1 mostram a rota, o 4.2 e o 4.3 liberam orçamento, o 4.4 revisa a virada e o 4.5 testa a crise antes que ela chegue.",
        n:"O 4.6 e o 4.1 mostram a rota; o 4.2 e o 4.3 liberam orçamento; o 4.4 revisa a virada."}};
   /* a base comum (a construir) e a ferramenta da A&M global (a confirmar para o Brasil) */
@@ -50,7 +57,7 @@
   PILLARS.forEach(pl=>{const ps=PR.filter(p=>p.pillar===pl.n),own=OL.filter(o=>o.p===pl.n).length,[vb,dt]=DEC[pl.n]||["",""];
     const col=H("div",{class:"s09-col",id:"s09c"+pl.n,"data-a":"up",style:`--d:${1+pl.n}`},cols);
     col.innerHTML=`<div class="s09-hd"><div class="s09-r1"><span class="s09-pn">${pl.n}</span><b class="s09-pnm">${pl.name}</b><span class="s09-cnt">${own||pl.was} → ${ps.length}</span></div>
-      <span class="s09-dec"><b>${vb}</b><span class="v1">${dt}</span><span class="v2">hoje: ${pl.official}</span></span></div>`;
+      <span class="s09-dec"><b><span class="v1">${vb}</span><span class="v2">Hoje</span></b><span class="v1">${dt}</span><span class="v2">${pl.official}</span></span></div>`;
     const list=H("div",{class:"s09-list",style:`--rows:${ROWS}`},col);
     ps.forEach((p,k)=>{const mt=mates(p);
       const th=`<span class="tl"><b>Proposta</b>${esc2(p.tagline||"")}</span><span class="tl"><b>${p.st==="new"?"Origem":"Nasce de"}</b>${esc2(orig(p).replace(/^de /,""))}</span>`+
@@ -63,7 +70,7 @@
   /* a base: Plataforma de Dados e AI */
   base.innerHTML=`<div class="s09-bt"><span class="s09-bl">A base de todos os produtos</span><b>Plataforma de Dados e AI</b></div>
     <div class="s09-bg"><span class="s09-gl">A construir</span>${BASE_NEW.map(t=>`<span class="s09-chip">${t}</span>`).join("")}</div>
-    <div class="s09-bg s09-bga"><span class="s09-gl">Da A&amp;M global</span><span class="s09-chip ext">A&amp;M Assist, a confirmar no Brasil</span></div>`;
+    <div class="s09-bg s09-bga"><span class="s09-gl">Da A&amp;M global</span><span class="s09-chip ext">A&amp;M Assist (a confirmar no Brasil)</span></div>`;
   base.dataset.tv="Plataforma de Dados e AI";base.dataset.th=PLAT.map(([k,v])=>`<span class="tl"><b>${k}</b>${v}</span>`).join("");
 
   /* nomes de produto numa linha: se a fonte de reserva for mais larga, a letra desce um pouco (até 14 px) */
@@ -82,7 +89,7 @@
       const dt=S("circle",{cx:x,cy:y,r:4.5,class:"s09-dot",id:"s09Dot"+pl.n},svg);CON[pl.n]={c,f,dt}});
     const bc=S("path",{d:ln(b.cx,y,b.cx,b.y),class:"s09-con s09-cb",pathLength:1},svg);bc.style.setProperty("--d",5);
     CON.base={c:bc,f:S("path",{d:ln(b.cx,y,b.cx,b.y),class:"s09-flow"},svg),dt:S("circle",{cx:b.cx,cy:y,r:5.5,class:"s09-dot s09-hub"},svg)};
-    st[st.length-1].capX=Math.round((W-420)/2);st[st.length-1].capY=Math.max(0,b.y-262);
+    st[st.length-1].capX=Math.round((W-420)/2);st[st.length-1].capY=Math.max(0,b.y-296);
     light(lit)}
   const tog=(o,on)=>{if(o){o.c.classList.toggle("on",on);o.f.classList.toggle("on",on);o.dt.classList.toggle("on",on)}};
   function light(n){lit=n;PILLARS.forEach(pl=>{const on=n==="all"||pl.n===n;const c=$("s09c"+pl.n);if(c)c.classList.toggle("hot",on);tog(CON[pl.n],on)});tog(CON.base,n==="all")}
@@ -103,7 +110,7 @@
   /* spotlight: um passo por pilar e um para a base */
   const st=PILLARS.map(pl=>{const ps=PR.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg2=ps.filter(p=>p.sig),L=LEIT[pl.n]||{},own=OL.filter(o=>o.p===pl.n).length||pl.was;
     return{sel:`#s09c${pl.n}`,btn:"Pilar "+pl.n,pad:6,title:`Pilar ${pl.n} · ${pl.name}`,
-      text:`<span class="sl"><b>A decisão do cliente</b>${L.d||""}</span><span class="sl"><b>De serviços a produtos</b>${own} serviços viram ${ps.length} produtos.</span><span class="sl"><b>Como se encadeia</b>${L.c||""}</span>`+
+      text:`<span class="sl"><b>A decisão do cliente</b>${L.d||""}</span><span class="sl"><b>De serviços a produtos</b>${own} serviços viram ${ps.length} produtos${L.s||""}.</span><span class="sl"><b>Como se encadeia</b>${L.c||""}</span>`+
         (sg2.length?`<span class="sl"><b>★ A&amp;M Signature</b>${sg2.map(p=>`${p.code} ${p.name}`).join(" · ")}</span>`:"")+(nw.length?`<span class="sl"><b>Novo com IA</b>${nw.map(p=>`${p.code} ${p.name}${MOD[p.code]?`, que ${MOD[p.code]}`:""}`).join(" · ")}</span>`:"")}});
   st.push({sel:"#s09Base",btn:"Base",pad:6,title:"Plataforma de Dados e AI",text:PLAT.map(([k,v])=>`<span class="sl"><b>${k}</b>${v}</span>`).join("")});
   const sp=Spotlight(host,st,sg,{capW:420});segSync(sg);

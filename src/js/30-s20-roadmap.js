@@ -29,7 +29,7 @@
       <b class="s20-wt">${w.s}</b>
       <p class="s20-wp">${w.t}</p>
       <div class="s20-wi">${(w.it||[]).map(x=>isCode(x)?pr(x):`<span class="s20-it"><i aria-hidden="true"></i><span>${lk(x)}</span></span>`).join("")}</div>
-      <div class="s20-wg"><p><b>${k<LAST?"Avança quando":"Chega quando"}</b> ${w.av}</p></div>`;
+      <div class="s20-wg"><p><b>${k<LAST?"Avança quando":"Chega quando"}</b> ${lk(w.av)}</p></div>`;
     const pick=e=>{if(e.target.closest("a[data-pd]"))return;e.stopPropagation();stopAuto();set(k)};
     c.addEventListener("click",pick);c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(e)}});
     return c});
@@ -39,8 +39,8 @@
   sec.querySelectorAll(".s20-jo,.s20-dx p,.s20-nx span").forEach(el=>{el.innerHTML=lk(el.innerHTML)});
 
   /* ---------- trilha (desenhada quando o slide tem medida; sem medida, usa a geometria do grid) ---------- */
-  let G=null;const PW=76,PH=PW*312/320;
-  function geo(){const Wd=trail.offsetWidth||1542,Hh=trail.offsetHeight||116,gap=16;
+  let G=null;const PW=88,PH=PW*312/320;
+  function geo(){const Wd=trail.offsetWidth||1542,Hh=trail.offsetHeight||130,gap=16;
     const xs=cards.map((c,k)=>c.offsetWidth?c.offsetLeft+c.offsetWidth/2:((Wd-gap*(N-1))/N)*(k+.5)+gap*k);
     return{Wd,Hh,xs,y:Hh-40}}
   function build(){const g=geo();if(G&&G.Wd===g.Wd&&G.Hh===g.Hh&&G.xs.every((x,k)=>Math.abs(x-g.xs[k])<1))return G;
@@ -65,16 +65,17 @@
     const fin=S("g",{class:"s20-fin",transform:`translate(${x1} ${y})`},svg);
     [[-9,-9,"ck"],[0,-9,"ck2"],[-9,0,"ck2"],[0,0,"ck"]].forEach(([cx,cy,c])=>S("rect",{class:c,x:cx,y:cy,width:9,height:9},fin));
     S("line",{class:"pole",x1:9,y1:9,x2:9,y2:-38},fin);S("path",{class:"flag",d:"M9 -38 L30 -31 L9 -24 Z"},fin);
+    /* ponta luminosa do progresso (embaixo das estações, para não cobrir o número) */
+    const tip=S("circle",{class:"s20-tip",r:5,cx:x0,cy:y},svg);
     /* estações numeradas (clicáveis) */
     const st=xs.map((x,k)=>{const gk=S("g",{class:"s20-st",transform:`translate(${x.toFixed(1)} ${y})`},svg);S("circle",{class:"s20-rg",r:17},gk);S("circle",{r:17},gk);T(gk,0,1,String(WV[k].n));
       gk.addEventListener("click",e=>{e.stopPropagation();stopAuto();set(k)});return gk});
-    const tip=S("circle",{class:"s20-tip",r:5,cx:x0,cy:y},svg);
     /* indicadores embaixo das estações */
     ms.forEach((m,k)=>{m.style.left=xs[k].toFixed(1)+"px"});
     G={Wd,Hh,xs,y,x0,bed,L,SL:SL_,prog,tiles,st,cn,tip,pos:0};place(G.pos);return G}
 
   /* posição do mascote na trilha: ele para um pouco antes da estação, para o número continuar à vista */
-  const OFF=58;
+  const OFF=66;
   const target=k=>k<0?0:Math.max(0,G.SL[k]-OFF);
   function place(l){if(!G)return;G.pos=l;const p=G.bed.getPointAtLength(l);
     pawn.style.transform=`translate(${(p.x-PW/2).toFixed(1)}px,${(p.y-PH+3).toFixed(1)}px)`;

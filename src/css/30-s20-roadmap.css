@@ -60,7 +60,7 @@
 .slide[data-s="20"] .s20-wg p b{font-weight:700;color:#fff}
 
 /* ---------- tabuleiro: a trilha (casas, estações, mascote, indicadores) ---------- */
-.slide[data-s="20"] .s20-trail{position:relative;flex:none;height:116px;margin-top:9px}
+.slide[data-s="20"] .s20-trail{position:relative;flex:none;height:130px;margin-top:9px}
 .slide[data-s="20"] .s20-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .slide[data-s="20"] .s20-bed{fill:none;stroke:rgba(157,187,217,.12);stroke-width:30;stroke-linecap:round}
 .slide[data-s="20"] .s20-cn{stroke:rgba(157,187,217,.38);stroke-width:1.5;stroke-dasharray:3 4;transition:stroke .3s}
@@ -92,7 +92,7 @@
 .slide[data-s="20"] .s20-m.lit{color:#fff}
 .slide[data-s="20"] .s20-m.lit::before{border-color:var(--orange-l);box-shadow:0 0 0 3px rgba(247,140,22,.2)}
 /* mascote na trilha e a fala do fim */
-.slide[data-s="20"] .s20-pawn{position:absolute;left:0;top:0;width:76px;z-index:3;pointer-events:none;will-change:transform}
+.slide[data-s="20"] .s20-pawn{position:absolute;left:0;top:0;width:88px;z-index:3;pointer-events:none;will-change:transform}
 .slide[data-s="20"] .s20-pawn.walk .am-masc{animation:s20-hop .34s ease-in-out infinite alternate}
 @keyframes s20-hop{from{transform:translateY(0)}to{transform:translateY(-5px)}}
 .slide[data-s="20"] .s20-fala{position:absolute;left:0;top:0;z-index:4;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s var(--ease);pointer-events:none}

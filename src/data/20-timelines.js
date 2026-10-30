@@ -60,11 +60,11 @@ const NM_PRODS=[["Tech Maturity & Value Assessment","1.1"],["Digital Strategy & 
    só abre quando a anterior cumpre a condição "av". Prazo, preço e meta de cada produto saem dos pilotos (slide 18).
    n = número da onda · s = nome · q = quando, em palavras (sequência, não data) · t = o que a onda faz (uma linha) ·
    it = o que entra (código de produto vira link para a ficha; texto livre aceita códigos) · av = avança quando
-   (na última onda, a chegada) · m = como medir (nome do indicador; a meta é calibrada nos pilotos). */
+   (na última onda, a chegada; aceita códigos) · m = como medir (nome do indicador; a meta é calibrada nos pilotos). */
 const TL_LAUNCH=[
  {n:0,s:"Fundação",q:"começa agora",t:"Liga a fábrica e responde às janelas de 2027",
   it:["Donos, fichas e a Plataforma de Dados e AI","2.2","1.5"],
-  av:"os dois primeiros produtos são vendidos como produto, com ficha e dono",
+  av:"o 2.2 e o 1.5 já são vendidos no formato de produto, com ficha e dono",
   m:"conversão de diagnóstico em execução"},
  {n:1,s:"Núcleo Signature",q:"em seguida",t:"Põe IA no método do que a A&M já vence",
   it:["3.1","2.4","1.3"],
