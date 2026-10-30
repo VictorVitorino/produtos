@@ -101,8 +101,8 @@ PRODUCTS.push(
  ev:"Catálogo, simulador e preço por fase são proposta\u00a0nossa."},
 
 {id:"tech-spend-optimization",code:"1.5",pillar:1,st:"ai",sig:true,name:"Tech Spend Optimization & Spend Radar",from:"Tech Spend Optimization",
- tagline:"Cortar contratos, licenças e nuvem que não se pagam e impedir que o custo volte",
- pitch:"Programa de redução do gasto de tecnologia (contratos, licenças, nuvem, terceiros e projetos) com <b>economia validada por Finanças</b>, seguido de um radar com IA que impede o custo de\u00a0voltar.",
+ tagline:"Cortar contratos, licenças e nuvem que não se pagam e vigiar para o custo não voltar",
+ pitch:"Programa de redução do gasto de tecnologia (contratos, licenças, nuvem, terceiros e projetos) com <b>economia validada por Finanças</b>, seguido de um radar com IA que avisa antes de o custo\u00a0voltar.",
  meta:["Formato: programa de redução e radar\u00a0contínuo","Comprador: CFO, CIO e fundos de private\u00a0equity","Modelo comercial: fixo reduzido e parte da\u00a0economia","Encaixe: integra com 4.3; radar por\u00a0assinatura"],
  kpis:[["60%","dos grandes contratos de serviços de TI terão, até 2027, cláusula de devolução de ganhos com\u00a0IA","clawback-contratos-60"],
        ["25%","do gasto planejado com IA em 2026 deve ficar para\u00a02027","gasto-ia-adiado-25"]],
@@ -149,7 +149,7 @@ PRODUCTS.push(
 
 {id:"ai-value-governance-office",code:"1.7",pillar:1,st:"new",sig:false,name:"AI Value & Governance Office",from:"Novo · produto com IA",
  tagline:"Do piloto ao resultado: quem decide que IA escala, que IA para e quanto ela custa",
- pitch:"Escritório instalado e operado pela A&M que governa a <b>carteira de IA</b> da empresa: prioriza, mede retorno, controla o custo de modelos e agentes e garante uso responsável, dentro da\u00a0LGPD.",
+ pitch:"Escritório instalado e operado pela A&M que governa a <b>carteira de IA</b> da empresa: prioriza, mede retorno, controla o custo de modelos e agentes e responde pelo uso responsável, dentro da\u00a0LGPD.",
  meta:["Formato: escritório operado pela A&M, por\u00a0assinatura","Comprador: CEO, CFO, CIO e diretor de\u00a0riscos","Modelo comercial: assinatura por nível de\u00a0serviço","Encaixe: nasce do 1.2; dialoga com 1.1 e\u00a01.5"],
  kpis:[["27%","das empresas no Brasil dizem ter governança madura para agentes de IA; no mundo,\u00a021%","governanca-agentes-br-27"],
        ["> 40%","dos projetos de agentes de IA devem ser cancelados até o fim de\u00a02027","agentic-cancelados-40"]],

@@ -16,7 +16,7 @@
      v:"A McKinsey conta <span data-fato=\"mckinsey-agentes-25-mil\">25 mil</span> agentes de IA na força de trabalho; tecnologia e IA já passam de <span data-fato=\"bcg-tech-ia-40\">40%</span> da receita do BCG.",
      p:"Não vamos disputar plataforma: o espaço é escolher e combinar ferramentas, sem vender licença, e responder pelo resultado."},
     {n:2,t:"O preço começa a sair da hora",
-     v:"Cerca de <span data-fato=\"mckinsey-honorarios-resultado-25\">25%</span> dos honorários da McKinsey dependem de resultado, a Deloitte vende seus agentes por assinatura e a Accenture já vê preço menor.",
+     v:"A McKinsey liga cerca de <span data-fato=\"mckinsey-honorarios-resultado-25\">25%</span> dos honorários a resultado, a Deloitte vende agentes por assinatura e a Accenture já vê preço menor.",
      p:"Vendendo hora, damos a eficiência da IA de graça. Cobrar pelo resultado exige método repetível e uma medida combinada com o cliente."},
     {n:3,t:"A diligência ficou mais barata",
      v:"Agentes de voz entrevistam clientes do alvo, a PwC adota uma plataforma de IA de diligência e a Bain replica o software do alvo.",

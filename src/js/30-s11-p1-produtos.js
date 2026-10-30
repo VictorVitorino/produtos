@@ -13,7 +13,7 @@ PCFG[1].produtos={
     "1.2":["Plano digital sem caso de negócio: diz o que fazer, mas não quanto custa nem quanto devolve","Plano que o conselho aprova: casos de uso priorizados, ordem de execução e retorno previsto"],
     "1.3":["Quatro ofertas de liderança disputam o mesmo comprador e a mesma rede de executivos","Um só produto: o executivo assume o cargo e responde pelo resultado, com a IA de apoio"],
     "1.4":["Desenha a área por projeto ou por torre, sem prever o trabalho dividido com agentes de IA","Estrutura, papéis e custo da TI com pessoas e agentes, e um plano de transição com dono"],
-    "1.5":["Corte pontual: sem vigilância, o custo volta na renovação seguinte","Economia validada por Finanças e um radar com IA que impede o custo de voltar"],
+    "1.5":["Corte pontual: sem vigilância, o custo volta na renovação seguinte","Economia validada por Finanças e um radar com IA que avisa antes de o custo voltar"],
     "1.6":["Dois serviços fiscais para o mesmo comprador, vendidos em separado","Um ciclo anual: Lei do Bem, capitalização de software e dossiê técnico lido com IA"],
     "1.7":["Ninguém responde pelo valor, pelo risco e pelo custo da IA da empresa","Escritório que decide que IA escala, que IA para e quanto custa, e presta contas ao conselho"],
     "4.5":["Resiliência é decisão de arquitetura e de infraestrutura, não de estratégia","Muda para o Pilar 4 e ganha simulação de crise e plano de recuperação testado"]

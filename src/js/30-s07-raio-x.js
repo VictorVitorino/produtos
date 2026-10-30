@@ -134,7 +134,7 @@
      ev:`<span data-fato="ibm-consultoria-ativos" data-modo="txt"></span>`,src:"IBM (2025)"},
     {k:"Caminho 3 · Disruptivo",h:"A DTS vira plataforma por assinatura",p:"Serviços entregues por software: radares, escritórios e agentes de IA vendidos por assinatura.",
      pro:["Receita recorrente, que não depende de horas","Os dados de vários clientes viram um ativo próprio"],
-     con:["Exige engenharia, dados e parcerias que a DTS ainda não tem",`Agentes ainda falham: mais de <span data-fato="agentic-cancelados-40"></span> dos projetos devem ser cancelados até o fim de 2027`],
+     con:["Exige engenharia, dados e parcerias que a DTS ainda não tem",`Risco alto: mais de <span data-fato="agentic-cancelados-40"></span> dos projetos de agentes de IA devem ser cancelados até o fim de 2027`],
      rx:"Pula o raio-X: deixa os 29 serviços como estão enquanto constrói outro negócio ao lado.",
      ev:`Serviços entregues por software podem virar um mercado de mais de <span data-fato="servicos-como-software-15-tri"></span> até 2035; pares compram engenharia, como a AlixPartners com a Artium`,src:"HFS Research, projeção (02/2026) · AlixPartners (08/2026) · Gartner (06/2025)"}];
   const li=(L,c)=>L.map(x=>`<li class="${c}"><i class="s07-pk ${c}" aria-hidden="true"></i><span>${x}</span></li>`).join("");

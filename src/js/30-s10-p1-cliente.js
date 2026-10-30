@@ -31,15 +31,15 @@ PCFG[1].cliente={
     {f:"EY",ia:"Lançou uma plataforma própria de agentes de IA e pôs <span data-fato=\"ey-agentes-tributos-150\"></span> agentes para apoiar os seus profissionais de tributos",
      l:"Usa agentes de IA nos impostos: disputa incentivos fiscais e o redesenho da área de TI",p:["1.6","1.4"]},
     {f:"KPMG",ia:"Primeira entidade internacional das quatro grandes certificada na norma internacional de gestão de IA",
-     l:"Governança de IA vira credencial de venda: quem não prova controle perde a conversa com o conselho",p:["1.7"]},
+     l:"Governança de IA vira credencial: sem prova de controle, não se fala com o conselho",p:["1.7"]},
     {f:"McKinsey · BCG",ia:"A McKinsey já liga cerca de <span data-fato=\"mckinsey-honorarios-resultado-25\"></span> dos honorários a resultados; no BCG, tecnologia e IA passam de <span data-fato=\"bcg-tech-ia-40\"></span> da receita",
-     l:"Levam a estratégia de IA ao CEO e já cobram por resultado: o preço por resultado deixa de ser diferencial",p:["1.1","1.2"]},
+     l:"Disputam o CEO e já cobram por resultado: cobrar assim deixa de ser diferencial",p:["1.1","1.2"]},
     {f:"AlixPartners",ia:"Comprou a Artium, consultoria de engenharia com agentes de IA (ago/2026)",
      l:"O par mais próximo da A&amp;M compra capacidade de IA em vez de construir",p:["1.4","1.5"]}
   ],
   /* onde a DTS ganha (título, texto, produto) e a ameaça a monitorar */
   ws:{it:[
-      ["Assumir o cargo","A A&amp;M global já assume cargos interinos de direção em crise e transição; o 1.3 leva esse modelo à TI, sem o conflito de quem audita.","1.3"],
+      ["Assumir o cargo","A A&amp;M global já assume cargos interinos de direção em crise e transição; o 1.3 leva esse modelo à TI e responde pelo resultado.","1.3"],
       ["Custo com risco compartilhado","O mercado já cobra por resultado; a DTS liga o honorário à economia validada por Finanças e vigia as renovações com IA.","1.5"],
       ["Valor, risco e custo da IA num só lugar","O Gartner prevê que mais de <span data-fato=\"agentic-cancelados-40\"></span> dos projetos de agentes de IA sejam cancelados até o fim de 2027, por custo, valor pouco claro e risco.","1.7"],
       ["Incentivo com leitura técnica","A IA lê projetos e código e sustenta o dossiê da Lei do Bem; a área tributária da A&amp;M responde pelo enquadramento.","1.6"]

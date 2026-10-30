@@ -67,7 +67,7 @@ const FX={};
    um tour automático faz o mesmo a cada 2,6 s até alguém passar o cursor.
    ===================================================================== */
 FX["03"]=(host,K)=>{const fx=prep(host,"cx1");const P=PL();if(!P.length)return;
-  const C={x:1272,y:434},POS=[[-146,-166],[146,-166],[-146,166],[146,166]];
+  const C={x:1278,y:452},POS=[[-146,-142],[146,-142],[-146,142],[146,142]];
   const cnt=P.map(p=>SV().filter(o=>o.p===p.n).length||p.was||0),tot=cnt.reduce((a,b)=>a+b,0);
   const gap=1.7,steps=tot+gap*P.length;let k=0,dots="",di=0;
   P.forEach((p,i)=>{for(let j=0;j<cnt[i];j++)dots+=`<i class="cx1-dot" data-p="${i}" style="--a:${(((k+j)/steps)*360-90).toFixed(2)}deg;--k:${di++}"></i>`;k+=cnt[i]+gap});
@@ -87,6 +87,8 @@ FX["03"]=(host,K)=>{const fx=prep(host,"cx1");const P=PL();if(!P.length)return;
         <span class="cx1-tx"><em>${ICO(PIC[i],4+i)}Pilar ${p.n} · ${MOM[i][0]}</em><b>${X(p.name)}</b></span></div>
       <div class="cx1-tip"><b>${MOM[i][0]}:</b> ${MOM[i][1]}</div></div>`).join("")}`;
   if(typeof fixPaths==="function")fixPaths(fx);
+  /* nomes dos pilares: todos no mesmo corpo, o maior que deixa o nome mais longo numa linha dentro do cartão */
+  const nms=[...fx.querySelectorAll(".cx1-tx b")];nms.forEach(b=>fitW(b,280-12-16-50-12-2,17));const mn=Math.min(...nms.map(b=>parseFloat(getComputedStyle(b).fontSize)));nms.forEach(b=>b.style.fontSize=mn+"px");
   const cards=[...fx.querySelectorAll(".cx1-card")],lines=[...fx.querySelectorAll(".cx1-links line")],dotEls=[...fx.querySelectorAll(".cx1-dot")];
   let act=-1,hover=-1,lastHover=-1e9;
   const set=i=>{act=i;cards.forEach((c,j)=>c.classList.toggle("on",j===i));lines.forEach((l,j)=>l.classList.toggle("on",j===i));dotEls.forEach(d=>d.classList.toggle("on",+d.dataset.p===i))};
@@ -120,7 +122,9 @@ FX["05"]=(host,K)=>{const fx=prep(host,"cx2");
   const gr=(a)=>{const s=g.createLinearGradient(X0,0,1100,0);s.addColorStop(0,`rgba(126,161,195,0)`);s.addColorStop(1,`rgba(126,161,195,${a})`);return s};
   const strokes=Array.from({length:NL},(_,i)=>gr(i%4===0?.30:.13));
   const band=(()=>{const s=g.createLinearGradient(X0,0,1200,0);s.addColorStop(0,"rgba(31,50,99,0)");s.addColorStop(1,"rgba(42,74,128,.30)");return s})();
-  const thr=(x,t)=>455+40*Math.cos(x/1600*Math.PI*1.4)-140*(x/1600)*(x/1600)+34*Math.sin(x*.0062+t*.55)+15*Math.sin(x*.017-t*.8);
+  const sm=(a,b,x)=>{const k=Math.max(0,Math.min(1,(x-a)/(b-a)));return k*k*(3-2*k)};
+  /* o fio passa atrás do título (altura do miolo das letras) e sobe pela direita entre os faróis */
+  const thr=(x,t)=>370+70*sm(700,1100,x)-170*sm(1050,1620,x)+(9+30*sm(650,1150,x))*(.75*Math.sin(x*.0062+t*.55)+.45*Math.sin(x*.017-t*.8));
   function draw(t){g.setTransform(R,0,0,R,0,0);g.clearRect(0,0,1600,900);
     const Y=[];for(let i=0;i<NL;i++){const row=[],y0=118+i*42;for(let x=X0;x<=1620;x+=XS)row.push(y0+28*Math.sin(x*.0041+t*.33+i*.55)+16*Math.sin(x*.0102-t*.47+i*1.27)+10*Math.sin(x*.0021+t*.21+i*.9));Y.push(row)}
     for(let i=1;i<NL-1;i+=4){g.beginPath();Y[i].forEach((y,j)=>{const x=X0+j*XS;j?g.lineTo(x,y):g.moveTo(x,y)});for(let j=Y[i+1].length-1;j>=0;j--)g.lineTo(X0+j*XS,Y[i+1][j]);g.closePath();g.fillStyle=band;g.fill()}
@@ -141,7 +145,7 @@ FX["05"]=(host,K)=>{const fx=prep(host,"cx2");
 FX["07"]=(host,K)=>{const fx=prep(host,"cx3");const P=PL(),S=SV();if(!P.length||!S.length)return;
   const cnt={};S.forEach(o=>cnt[o.d]=(cnt[o.d]||0)+1);
   const SPK='<svg viewBox="0 0 24 24"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>';
-  const cell=(o,c,r)=>{const p=prodOf(o.to),dst=p?`${p.code} · ${X(p.name)}`:o.to;const t0=.7+1.7*((c*39+17)/388)-.38+r*.03;
+  const cell=(o,c,r)=>{const p=prodOf(o.to),dst=p?`${p.code} · ${X(p.name)}`:o.to;const t0=.7+1.7*((c*41+18)/405)-.38+r*.03;
     const th=`<span class='tl'><b>Decisão</b>${DEC[o.d]||o.d}</span><span class='tl'><b>${o.d==="cut"?"Absorvido por":"Vai para"}</b>${dst.replace(/'/g,"&#39;")}</span>`;
     return `<i class="cx3-c ${o.d}" data-d="${o.d}" style="--hd:${t0.toFixed(2)}s" data-tv="${X(o.n)}" data-th="${th.replace(/"/g,"&quot;")}">${o.d==="ai"?SPK:""}</i>`};
   fx.innerHTML=`<div class="cx3-box"><div class="cx3-hd"><span>Raio-X · ${S.length} serviços em ${P.length} pilares</span><span>uma célula por serviço</span></div>
@@ -160,10 +164,10 @@ FX["07"]=(host,K)=>{const fx=prep(host,"cx3");const P=PL(),S=SV();if(!P.length||
    ===================================================================== */
 FX["08"]=(host,K)=>{const fx=prep(host,"cx4");const ps=PR().slice().sort(byCode);if(!ps.length)return;
   const was=SV().length||29,now=ps.length,sc={keep:0,ai:0,new:0};ps.forEach(p=>sc[p.st]=(sc[p.st]||0)+1);
-  let u=0;const U=ps.map((p,i)=>{if(i&&p.pillar!==ps[i-1].pillar)u+=1.3;const v=u;u+=1;return v});u-=1;const A=21;
+  let u=0;const U=ps.map((p,i)=>{if(i&&p.pillar!==ps[i-1].pillar)u+=.8;const v=u;u+=1;return v});u-=1;const A=22;
   fx.innerHTML=`<div class="cx4-top"><div class="cx4-ct"><span class="cx4-k k0"><b>${was}</b><small>serviços hoje</small></span><span class="cx4-ar">→</span><span class="cx4-k k1"><b data-k>${RM?now:was}</b><small>produtos</small></span></div>
       <div class="cx4-lg">${["keep","ai","new"].map(s=>`<span style="--sc:${SC[s]}"><i></i><b>${sc[s]||0}</b>${s==="keep"?"manter":s==="ai"?"aprimorar com IA":"criar com IA"}</span>`).join("")}</div></div>
-    <div class="cx4-fan"><div class="cx4-tilt">${ps.map((p,i)=>`<a class="cx4-card" href="#p=${p.id}" data-pd="${p.id}" data-i="${i}" aria-label="${X(p.code+" · "+p.name)}" style="--a:${(-A+2*A*U[i]/u).toFixed(2)}deg;--sc:${SC[p.st]};--dl:${(.3+i*.032).toFixed(3)}s;z-index:${i+1}">
+    <div class="cx4-fan"><div class="cx4-tilt">${ps.map((p,i)=>`<a class="cx4-card" href="#p=${p.id}" data-pd="${p.id}" data-i="${i}" aria-label="${X(p.code+" · "+p.name)}" style="--a:${(-A+2*A*U[i]/u).toFixed(2)}deg;--sc:${SC[p.st]};--dl:${(.3+i*.032).toFixed(3)}s;z-index:${i+1}"${i===ps.length-1?' data-last=""':""}>
       <span class="cx4-sh"></span><span class="cx4-cap"></span><span class="cx4-code">${p.code}</span>${p.sig?'<span class="cx4-sig" title="A&amp;M Signature">★</span>':""}<span class="cx4-ic">${PICO(p.code,6)}</span><span class="cx4-pl">Pilar ${p.pillar}</span></a>`).join("")}</div></div>
     <div class="cx4-ro" aria-live="polite"></div>`;
   if(typeof fixPaths==="function")fixPaths(fx);
@@ -200,11 +204,13 @@ function pilar(n){return(host,K)=>{const fx=prep(host,"cxp");host.classList.add(
   const was=own.length||pl.was,now=ps.length,sc={keep:0,ai:0,new:0};ps.forEach(p=>sc[p.st]=(sc[p.st]||0)+1);
   const TH=32,TG=6,PH=48,PG=Math.min(10,Math.max(6,Math.floor((410-ps.length*PH)/Math.max(1,ps.length-1)))),slot=c=>ps.findIndex(p=>p.code===c);
   const yT=i=>i*(TH+TG),yP=j=>j*(PH+PG);
+  /* bloco da direita centrado na altura do texto: emblema (104) + legenda + campo (o maior entre cartões cinza e produtos) */
+  const fH=Math.max(own.length*(TH+TG)-TG,ps.length*(PH+PG)-PG),top=Math.max(118,Math.round(452-(104+16+22+18+fH)/2));
   const srcOf=p=>S.filter(o=>o.to===p.code);
-  fx.innerHTML=`<div class="cxp-top"><span class="cxp-em"><svg class="cxp-ring" viewBox="0 0 104 104"><circle class="r0" cx="52" cy="52" r="47"/><circle class="r1" cx="52" cy="52" r="47" pathLength="1"/></svg><span class="cxp-mk"><i></i></span><span class="cxp-ic">${ICO(PIC[n-1],1)}</span></span>
+  fx.innerHTML=`<div class="cxp-top" style="top:${top}px"><span class="cxp-em"><svg class="cxp-ring" viewBox="0 0 104 104"><circle class="r0" cx="52" cy="52" r="47"/><circle class="r1" cx="52" cy="52" r="47" pathLength="1"/></svg><span class="cxp-mk"><i></i></span><span class="cxp-ic">${ICO(PIC[n-1],1)}</span></span>
       <span class="cxp-ct"><span class="cxp-nums"><span class="k0">${was}</span><span class="ar">→</span><b class="k1" data-k>${RM?now:was}</b></span><span class="cxp-lab">serviços hoje → produtos</span></span></div>
-    <div class="cxp-lg">${["keep","ai","new"].map(s=>sc[s]?`<span style="--sc:${SC[s]}"><i></i><b>${sc[s]}</b>${s==="keep"?"manter":s==="ai"?"aprimorar com IA":"criar com IA"}</span>`:"").join("")}</div>
-    <div class="cxp-field">
+    <div class="cxp-lg" style="top:${top+104+16}px">${["keep","ai","new"].map(s=>sc[s]?`<span style="--sc:${SC[s]}"><i></i><b>${sc[s]}</b>${s==="keep"?"manter":s==="ai"?"aprimorar com IA":"criar com IA"}</span>`:"").join("")}</div>
+    <div class="cxp-field" style="top:${top+104+16+22+18}px;height:${fH}px">
       ${RM?"":own.map((o,i)=>{const out=pil(o.to)!==n;return `<div class="cxp-tl" data-to="${o.to}"${out?` data-out="${pil(o.to)}"`:""} style="top:${yT(i)}px;--dl:${(.35+i*.06).toFixed(2)}s"><i></i>${X(o.n)}${out?`<em>vai para o Pilar ${pil(o.to)}</em>`:""}</div>`}).join("")+
         inc.map(o=>`<div class="cxp-tl in" data-to="${o.to}" data-in="${o.p}" style="top:${yP(slot(o.to))+(PH-TH)/2}px;opacity:0"><i></i>${X(o.n)}<em>vem do Pilar ${o.p}</em></div>`).join("")}
       ${ps.map((p,j)=>{const src=srcOf(p),from=src.length?src.map(o=>o.n+(o.p!==n?` (Pilar ${o.p})`:"")).join("; "):"produto novo, com IA desde o desenho";
@@ -233,11 +239,11 @@ function pilar(n){return(host,K)=>{const fx=prep(host,"cxp");host.classList.add(
    chegar e fica acesa. Depois, o token segue circulando pelo fluxo. Cada etapa leva ao slide dela.
    ===================================================================== */
 FX["18"]=(host,K)=>{const fx=prep(host,"cx5");
-  const XT=1150,TW=330,TX=XT-TW/2,GX=1435,GY=546,EY=668,SY=222,TA=262,TB=384,TC=506,TH=80;
-  const T=[{y:TA,ic:"check",b:"Fábrica de produtos",g:7,c:"dm",s:"sete portões",go:18},{y:TB,ic:"people",b:"Jogos de entrada",g:4,c:"cd",s:"um por pilar",go:19},{y:TC,ic:"route",b:"Ondas do roadmap",g:4,c:"wv",s:"da fundação à recorrência",go:20}];
+  const XT=1168,TW=292,TX=XT-TW/2,GX=1438,GY=548,EY=662,SY=262,TA=296,TB=404,TC=512,TH=72;
+  const T=[{y:TA,ic:"check",b:"Fábrica de produtos",g:7,c:"dm",s:"sete portões",go:18},{y:TB,ic:"people",b:"Jogos de entrada",g:4,c:"cd",s:"um por pilar",go:19},{y:TC,ic:"route",b:"Ondas do roadmap",g:4,c:"wv",s:"fundação → recorrência",go:20}];
   const arw=(x,y,d)=>d==="d"?`M${x-5} ${y-8} L${x} ${y} L${x+5} ${y-8} Z`:`M${x-8} ${y-5} L${x} ${y} L${x-8} ${y+5} Z`;
   const CN=[[[XT,SY+15],[XT,TA-2],"d"],[[XT,TA+TH],[XT,TB-2],"d"],[[XT,TB+TH],[XT,TC-2],"d"],[[TX+TW,GY],[GX-28,GY],"r"],[[GX,GY+26],[GX,EY-17],"d"]];
-  fx.innerHTML=`<div class="cx5-pool"><span class="cx5-lh" style="left:18px">Raia · DTS</span><span class="cx5-lh" style="left:378px">Raia · Comitê</span><i class="cx5-hr"></i><i class="cx5-lane" style="left:362px"></i></div>
+  fx.innerHTML=`<div class="cx5-pool"><span class="cx5-lh" style="left:16px">Raia · DTS</span><span class="cx5-lh" style="left:338px">Raia · Comitê</span><i class="cx5-hr"></i><i class="cx5-lane" style="left:320px"></i></div>
     <svg class="cx5-svg" viewBox="0 0 1600 900">
       ${CN.map(([a,b,d],i)=>`<path class="fl" data-c="${i}" d="M${a[0]} ${a[1]} L${b[0]} ${b[1]}" pathLength="1"/><path class="ar" data-c="${i}" d="${arw(b[0],b[1]+(d==="d"?2:0),d)}"/>`).join("")}
       <circle class="ev st" cx="${XT}" cy="${SY}" r="15"/>
@@ -245,9 +251,9 @@ FX["18"]=(host,K)=>{const fx=prep(host,"cx5");
       <path class="gw" d="M${GX} ${GY-26} L${GX+26} ${GY} L${GX} ${GY+26} L${GX-26} ${GY} Z"/><text class="gq" x="${GX}" y="${GY+7}">?</text>
       <circle class="ev end" cx="${GX}" cy="${EY}" r="15"/></svg>
     ${T.map((t,i)=>`<button type="button" class="cx5-t" data-go-ch="${t.go}" style="left:${TX}px;top:${t.y}px;--dl:${(.35+i*.12).toFixed(2)}s" title="Abrir: ${t.b}"><span class="ix">${ICO(t.ic,3+i)}</span><span class="tx"><b>${t.b}</b><span class="gl">${Array.from({length:t.g},()=>`<s class="${t.c}"></s>`).join("")}<span>${t.s}</span></span></span></button>`).join("")}
-    <button type="button" class="cx5-gl" data-go-ch="20" style="left:${GX}px;top:${GY-86}px;--dl:.8s" title="Abrir: Roadmap e decisões"><b>Decisão do comitê</b><span>o que pedimos hoje</span></button>`;
+    <button type="button" class="cx5-gl" data-go-ch="20" style="left:${GX}px;top:${GY-88}px;--dl:.8s" title="Abrir: Roadmap e decisões"><b>Decisão do comitê</b><span>o que pedimos hoje</span></button>`;
   if(typeof fixPaths==="function")fixPaths(fx);
-  fx.querySelectorAll(".cx5-t .gl").forEach(g=>fitW(g,TW-16-14-42-13,11));
+  fx.querySelectorAll(".cx5-t .gl").forEach(g=>fitW(g,TW-16-14-38-12,11));
   const q=s=>fx.querySelector(s),qa=s=>[...fx.querySelectorAll(s)];
   const fl=qa("path.fl"),ar=qa("path.ar"),tk=q(".tk"),tasks=qa(".cx5-t"),gw=q(".gw"),gl=q(".cx5-gl"),st=q(".ev.st"),en=q(".ev.end");
   const lightCn=(i,p)=>{fl[i].style.setProperty("--o",String(1-p));ar[i].style.setProperty("--ao",p>.96?"1":"0")};
