@@ -43,7 +43,7 @@
   const prdOf=n=>PR.filter(p=>p.pillar===n);
   const LN=n=>[Math.ceil(svcOf(n).length/2),Math.ceil(prdOf(n).length/2)];
   const W8=PILLARS.map(p=>Math.max(...LN(p.n),2));
-  const rows=`26px ${W8.map(w=>w+"fr").join(" ")}`;
+  const rows=`24px ${W8.map(w=>w+"fr").join(" ")}`;
   [gA,gT,pl].forEach(g=>g.style.gridTemplateRows=rows);
 
   /* dica de um serviço: destino em palavras + por que muda (OLD.w) */
@@ -76,7 +76,7 @@
   $("s08Leg").innerHTML=["keep","ai","new"].map(k=>`<span><i class="s08-sw ${k}"></i>${STATUS[k][0]} <b>${nst(k)}</b></span>`).join("")+`<span><i class="s08-st">★</i>A&amp;M Signature <b>${SIG}</b></span>`;
 
   /* a ponte, em palavras: quatro movimentos clicáveis (→ percorre) e a soma */
-  const MV=[["one",`${CNT.one}`,"seguem um a um, com nome de entrega"],["merge",`${CNT.mS}<i>→</i>${CNT.mP}`,"se fundem: mesmo comprador e mesmo método"],
+  const MV=[["one",`${CNT.one}`,"seguem um a um, com nome de entrega"],["merge",`${CNT.mS}<i>→</i>${CNT.mP}`,"se fundem: mesmo comprador e método"],
     ["cut",`${CNT.cut}`,"deixam de ser vendidos sozinhos"],["new",`${CNT.nw}`,"nascem como produtos novos com IA"]];
   $("s08Ponte").innerHTML=`<span class="s08-bl">A ponte, em palavras</span><div class="s08-pw"><div class="s08-mv">${MV.map(([k,v,t],i)=>`<button type="button" class="s08-m" data-k="${i}" data-f="${k}"><b>${v}</b><span>${t}</span></button>`).join("")}</div>
     <div class="s08-eq"><span>${CNT.one} + ${CNT.mP} + ${CNT.nw}</span><b>= ${CNT.one+CNT.mP+CNT.nw}</b><span>produtos</span></div></div>`;

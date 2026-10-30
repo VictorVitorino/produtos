@@ -1,44 +1,141 @@
 /* =====================================================================
-   SLIDE 20 · Roadmap e decisões · dono: slide 20
-   Regras novas: sempre escopadas em .slide[data-s="20"] (ver CONTRACT.md).
+   SLIDE 20 · Roadmap e decisões · dono: roadmap · fechamento do deck (palco escuro, .body.dk)
+   Janelas de 2027 (faixa de três fatos) · trilha de tabuleiro com as quatro ondas (Timeline Motion: casas que acendem,
+   estações numeradas e o mascote "bandeira" andando) · "O chamado" no modelo do último slide da APODI, com as decisões
+   como cartas na mesa e o próximo passo. Todas as regras escopadas em .slide[data-s="20"]; keyframes com prefixo s20-.
+   Laranja só como detalhe: números em laranja-claro apenas sobre o fundo escuro; cartas brancas com texto navy.
    ===================================================================== */
+.slide[data-s="20"] .head-r{flex-direction:column;align-items:flex-end;gap:7px}
+.slide[data-s="20"] .s20-leg{font-size:11.5px}
+.slide[data-s="20"] .s20-leg i{width:11px;height:11px;border-radius:50%;background:none;border:2px solid var(--orange-l);box-shadow:0 0 0 3px rgba(247,140,22,.18);margin-right:7px}
 
-/* ---------- regras herdadas da V5 (sem escopo; reescrever com escopo ao refazer o slide) ---------- */
-/* ---- de styles.css ---- */
-.rdm{display:flex;flex-direction:column;gap:14px;height:100%}
-#tlLaunch{position:relative;height:270px;flex:none}
-.rdm-row{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;flex:1;min-height:0}
-.rdm .card{border-radius:16px;padding:16px 20px}
-#decisions{margin:6px 0 0;padding-left:0;list-style:none;counter-reset:d;display:flex;flex-direction:column;gap:7px}
-#decisions li{counter-increment:d;display:grid;grid-template-columns:26px 1fr;gap:10px;font-size:13.2px;line-height:1.42;color:var(--steel-200)}
-#decisions li::before{content:counter(d,decimal-leading-zero);font-family:var(--fm);font-size:11px;color:var(--orange-400);padding-top:2px}
-#decisions li b{color:#fff}
-.kpis-ok{background:linear-gradient(160deg,rgba(247,140,22,.2),rgba(247,140,22,.04))!important;border-color:rgba(247,140,22,.45)!important}
-#kpisOK{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;margin-top:10px}
-#kpisOK b{display:block;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.04em;color:var(--orange-400)}
-#kpisOK span{display:block;font-size:12px;line-height:1.38;color:var(--steel-200);margin-top:4px}
-.caps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:none}
-.cap-i{position:relative;border-radius:14px;padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);overflow:hidden}
-.cap-i::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--orange-500),var(--steel-400))}
-.cap-i b{font-weight:800;font-size:14px;color:#fff}
-.cap-i p{font-size:12px;line-height:1.42;color:var(--steel-200);margin-top:3px}
-#decisions li{display:block;position:relative;padding-left:32px}
-#decisions li::before{position:absolute;left:0;top:1px}
+/* ---------- janelas de 2027 ---------- */
+.slide[data-s="20"] .s20-jan{flex:none;display:grid;grid-template-columns:172px repeat(3,minmax(0,1fr));gap:12px}
+.slide[data-s="20"] .s20-jl{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 4px 0 14px;border-left:3px solid var(--orange)}
+.slide[data-s="20"] .s20-je{font:700 11px var(--fb);letter-spacing:.16em;text-transform:uppercase;color:var(--orange-l);white-space:nowrap}
+.slide[data-s="20"] .s20-jl b{font:700 25px/1.05 var(--fh);color:#fff;white-space:nowrap}
+.slide[data-s="20"] .s20-j{display:flex;align-items:center;gap:14px;min-width:0;padding:9px 16px 10px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);transition:border-color .25s,background .25s}
+.slide[data-s="20"] .s20-j:hover{border-color:rgba(249,166,74,.7);background:rgba(255,255,255,.09)}
+.slide[data-s="20"] .s20-jy{flex:none;min-width:84px;display:flex;flex-direction:column;align-items:center;font:800 38px/1 var(--fh);letter-spacing:.01em;color:var(--orange-l);white-space:nowrap}
+.slide[data-s="20"] .s20-jy small{font:600 11px var(--fb);letter-spacing:.08em;text-transform:uppercase;color:#9DBBD9;margin-bottom:2px}
+.slide[data-s="20"] .s20-jx{flex:1;min-width:0}
+.slide[data-s="20"] .s20-jh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.slide[data-s="20"] .s20-jh>b{font:700 14.5px var(--fb);color:#fff;white-space:nowrap}
+.slide[data-s="20"] .s20-jo{flex:none;font:600 11.5px var(--fb);letter-spacing:.02em;color:#9DBBD9;white-space:nowrap}
+.slide[data-s="20"] .s20-jo .xr{color:#fff;text-decoration:underline;text-decoration-color:rgba(249,166,74,.7);text-underline-offset:2px}
+.slide[data-s="20"] .s20-jx p{margin-top:2px;font:400 13px/1.38 var(--fb);color:#C8DBEB;text-wrap:pretty}
 
-/* ---- de css/90-revisao.css ---- */
-.hd.hd-start{align-items:start}
-.hd.hd-start .hd-r{padding-top:2px}
-.tl-print{display:none}
+/* ---------- tabuleiro: cartões das ondas ---------- */
+.slide[data-s="20"] .s20-board{flex:1;min-height:0;display:flex;flex-direction:column}
+.slide[data-s="20"] .s20-waves{position:relative;flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.slide[data-s="20"] .s20-w{position:relative;display:flex;flex-direction:column;gap:5px;min-width:0;min-height:0;padding:11px 16px 11px;border-radius:14px;cursor:pointer;outline:none;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
+  transition:opacity .35s,transform .35s var(--ease),border-color .3s,background .3s,box-shadow .3s}
+/* fio que liga o cartão à sua estação na trilha */
+.slide[data-s="20"] .s20-w::after{content:"";position:absolute;left:50%;bottom:-9px;width:2px;height:8px;margin-left:-1px;border-radius:1px;background:rgba(157,187,217,.4);transition:background .3s}
+.slide[data-s="20"] .s20-w:hover{border-color:rgba(249,166,74,.6)}
+.slide[data-s="20"] .s20-w:focus-visible{border-color:var(--orange);box-shadow:0 0 0 3px rgba(247,140,22,.3)}
+.slide[data-s="20"] .s20-w.off{opacity:.5}
+.slide[data-s="20"] .s20-w.on{transform:translateY(-3px);background:rgba(255,255,255,.1);border-color:rgba(249,166,74,.85);box-shadow:0 0 0 1px rgba(247,140,22,.35),0 18px 40px rgba(0,0,0,.35)}
+.slide[data-s="20"] .s20-w.on::after{background:var(--orange-l)}
+.slide[data-s="20"] .s20-w.hl{opacity:1;border-color:var(--orange-l);box-shadow:0 0 0 2px rgba(247,140,22,.45),0 14px 30px rgba(0,0,0,.3)}
+.slide[data-s="20"] .s20-we{font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
+.slide[data-s="20"] .s20-we b{color:var(--orange-l);font-weight:800}
+.slide[data-s="20"] .s20-wt{font:700 25px/1.05 var(--fh);letter-spacing:.005em;color:#fff;white-space:nowrap}
+.slide[data-s="20"] .s20-wp{font:500 13px/1.3 var(--fb);color:#AFC2D6;white-space:nowrap}
+.slide[data-s="20"] .s20-wi{display:flex;flex-direction:column;gap:5px;margin-top:5px}
+/* produto que entra na onda: código + nome inteiro, numa linha; abre a ficha */
+.slide[data-s="20"] .s20-pr,.slide[data-s="20"] .s20-it{display:flex;align-items:center;gap:8px;min-width:0;padding:4px 9px 4px 4px;border-radius:8px;white-space:nowrap;font:600 13px/1.25 var(--fb);color:#fff}
+.slide[data-s="20"] .s20-pr{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);text-decoration:none;transition:border-color .2s,background .2s}
+.slide[data-s="20"] .s20-pr:hover{border-color:var(--orange-l);background:rgba(247,140,22,.16)}
+.slide[data-s="20"] .s20-pr i{flex:none;min-width:30px;text-align:center;font:700 11.5px/1 var(--fb);font-style:normal;padding:4px 6px;border-radius:5px;background:rgba(157,187,217,.24);color:#fff}
+.slide[data-s="20"] .s20-pr.keep i{background:rgba(223,232,240,.2)}
+.slide[data-s="20"] .s20-pr.new i{background:rgba(247,140,22,.32)}
+.slide[data-s="20"] .s20-it{font-weight:500;color:#DDEAF5;border:1px dashed rgba(157,187,217,.32)}
+.slide[data-s="20"] .s20-it>i{flex:none;width:30px;height:18px;display:grid;place-items:center}
+.slide[data-s="20"] .s20-it>i::before{content:"";width:7px;height:7px;border-radius:2px;transform:rotate(45deg);background:var(--orange-l)}
+.slide[data-s="20"] .s20-it .xr{color:#fff;text-decoration:underline;text-decoration-color:rgba(249,166,74,.7);text-underline-offset:2px}
+.slide[data-s="20"] .s20-wg{margin-top:auto;padding-top:8px;border-top:1px dashed rgba(255,255,255,.2)}
+.slide[data-s="20"] .s20-wg b{display:block;font:700 11px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
+.slide[data-s="20"] .s20-wg p{margin-top:2px;font:400 13px/1.38 var(--fb);color:#DDEAF5;text-wrap:pretty}
+
+/* ---------- tabuleiro: a trilha (casas, estações, mascote, indicadores) ---------- */
+.slide[data-s="20"] .s20-trail{position:relative;flex:none;height:110px;margin-top:9px}
+.slide[data-s="20"] .s20-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.slide[data-s="20"] .s20-bed{fill:none;stroke:rgba(157,187,217,.12);stroke-width:30;stroke-linecap:round}
+.slide[data-s="20"] .s20-edge{fill:none;stroke:rgba(157,187,217,.22);stroke-width:1;stroke-dasharray:2 6}
+.slide[data-s="20"] .s20-prog{fill:none;stroke:url(#s20Grad);stroke-width:4;stroke-linecap:round}
+.slide[data-s="20"] .s20-t{fill:#0E1C39;stroke:rgba(157,187,217,.42);stroke-width:1.2;transition:fill .3s,stroke .3s}
+.slide[data-s="20"] .s20-t.on{fill:#9DBBD9;stroke:#DFE8F0}
+.slide[data-s="20"] .s20-st circle{fill:#0E1C39;stroke:rgba(157,187,217,.6);stroke-width:2;transition:fill .3s,stroke .3s}
+.slide[data-s="20"] .s20-st text{font:800 19px var(--fh);fill:#9DBBD9;text-anchor:middle;dominant-baseline:central;transition:fill .3s}
+.slide[data-s="20"] .s20-st.done circle{fill:#DFE8F0;stroke:#fff}
+.slide[data-s="20"] .s20-st.done text{fill:#002B49}
+.slide[data-s="20"] .s20-st.on circle{fill:#F78C16;stroke:#F9A64A}
+.slide[data-s="20"] .s20-st.on text{fill:#fff}
+.slide[data-s="20"] .s20-st .s20-rg{fill:none;stroke:#F9A64A;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.slide[data-s="20"] .s20-st.on .s20-rg{animation:s20-ring 1.8s ease-out infinite}
+@keyframes s20-ring{from{opacity:.85;transform:scale(1)}to{opacity:0;transform:scale(1.9)}}
+.slide[data-s="20"] .s20-st{cursor:pointer}
+.slide[data-s="20"] .s20-tip{fill:#F9A64A;filter:drop-shadow(0 0 6px rgba(247,140,22,.9))}
+.slide[data-s="20"] .s20-go rect{fill:rgba(255,255,255,.08);stroke:rgba(157,187,217,.55);stroke-width:1.2}
+.slide[data-s="20"] .s20-go text{font:700 11px var(--fb);letter-spacing:.12em;fill:#DDEAF5;text-anchor:middle;dominant-baseline:central}
+.slide[data-s="20"] .s20-fin .ck{fill:#DFE8F0}.slide[data-s="20"] .s20-fin .ck2{fill:#122143}
+.slide[data-s="20"] .s20-fin .pole{stroke:#DFE8F0;stroke-width:2;stroke-linecap:round}
+.slide[data-s="20"] .s20-fin .flag{fill:#F78C16}
+/* indicador de cada onda, embaixo da estação */
+.slide[data-s="20"] .s20-ms{position:absolute;left:0;right:0;bottom:0;height:19px}
+.slide[data-s="20"] .s20-m{position:absolute;top:0;display:flex;align-items:center;gap:7px;transform:translateX(-50%);font:500 13px/19px var(--fb);color:#AFC2D6;white-space:nowrap;transition:color .3s}
+.slide[data-s="20"] .s20-m::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;border:2px solid #9DBBD9}
+.slide[data-s="20"] .s20-m.lit{color:#fff}
+.slide[data-s="20"] .s20-m.lit::before{border-color:var(--orange-l);box-shadow:0 0 0 3px rgba(247,140,22,.2)}
+/* mascote na trilha e a fala do fim */
+.slide[data-s="20"] .s20-pawn{position:absolute;left:0;top:0;width:70px;z-index:3;pointer-events:none;will-change:transform}
+.slide[data-s="20"] .s20-pawn.walk .am-masc{animation:s20-hop .34s ease-in-out infinite alternate}
+@keyframes s20-hop{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+.slide[data-s="20"] .s20-fala{position:absolute;left:0;top:0;z-index:4;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s var(--ease);pointer-events:none}
+.slide[data-s="20"] .s20-fala.on{opacity:1;transform:none}
+
+/* ---------- o chamado: decisões como cartas na mesa ---------- */
+.slide[data-s="20"] .s20-call{flex:none;display:grid;grid-template-columns:172px minmax(0,1fr) 318px;gap:12px;align-items:stretch;margin-top:12px}
+.slide[data-s="20"] .s20-cl{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:10px 16px;border-radius:14px;color:#fff;background:linear-gradient(135deg,#F78C16,#C96A05);box-shadow:0 10px 26px rgba(0,0,0,.28)}
+.slide[data-s="20"] .s20-cl svg{width:24px;height:24px;margin-bottom:3px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.slide[data-s="20"] .s20-cl b{font:800 29px/1 var(--fh);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.slide[data-s="20"] .s20-cl span{font:600 13px/1.25 var(--fb);white-space:nowrap}
+/* a mesa: feltro escuro com borda tracejada; as cartas ficam levemente tortas, como jogadas na mesa */
+.slide[data-s="20"] .s20-table{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:6px 8px;border-radius:14px;
+  background:radial-gradient(120% 140% at 50% 0%,rgba(94,138,180,.16),rgba(14,28,57,.25));border:1px dashed rgba(157,187,217,.28)}
+.slide[data-s="20"] .s20-dc{position:relative;display:flex;flex-direction:column;gap:4px;min-width:0;padding:9px 13px 10px;border-radius:10px;outline:none;background:#fff;color:var(--navy);
+  box-shadow:0 10px 22px rgba(0,0,0,.38),inset 0 0 0 4px #fff,inset 0 0 0 5px #D6DEE6;transform:rotate(var(--r,0deg));
+  transition:transform .28s var(--ease),box-shadow .28s}
+.slide[data-s="20"] .s20-dc:hover,.slide[data-s="20"] .s20-dc:focus-visible,.slide[data-s="20"] .s20-dc.hl{z-index:2;transform:translateY(-6px) rotate(0deg);
+  box-shadow:0 18px 34px rgba(0,0,0,.45),inset 0 0 0 4px #fff,inset 0 0 0 6px var(--orange)}
+.slide[data-s="20"] .s20-ix{position:absolute;left:12px;top:9px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.slide[data-s="20"] .s20-ix b{font:800 22px/1 var(--fh);color:var(--navy)}
+.slide[data-s="20"] .s20-ix i{width:7px;height:7px;background:var(--orange);transform:rotate(45deg)}
+.slide[data-s="20"] .s20-dt{display:block;padding-left:22px;font:700 19px/1.15 var(--fh);letter-spacing:.005em;color:var(--navy);white-space:nowrap}
+.slide[data-s="20"] .s20-dx p{margin-top:4px;padding-left:22px;font:400 13px/1.38 var(--fb);color:var(--ink2);text-wrap:pretty}
+.slide[data-s="20"] .s20-dx .xr{color:var(--navy);font-weight:700;text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:2px}
+/* entrada: as cartas são distribuídas a partir do bloco "O chamado" */
+.slide[data-s="20"].play .s20-dc{animation:s20-deal .62s cubic-bezier(.2,.75,.25,1) both;animation-delay:calc(var(--i,0)*120ms + 700ms)}
+@keyframes s20-deal{from{opacity:0;transform:translate(-120px,26px) rotate(-14deg)}to{opacity:1;transform:rotate(var(--r,0deg))}}
+.slide[data-s="20"] .s20-nx{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:14px;background:rgba(247,140,22,.12);border:1.5px solid var(--orange)}
+.slide[data-s="20"] .s20-nx svg{flex:none;width:26px;height:26px;margin-top:1px;fill:none;stroke:var(--orange-l);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.slide[data-s="20"] .s20-nx b{display:block;font:800 12.5px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--orange-l);white-space:nowrap}
+.slide[data-s="20"] .s20-nx span{display:block;margin-top:3px;font:400 13.5px/1.4 var(--fb);color:#fff;text-wrap:pretty}
+.slide[data-s="20"] .s20-nx .xr{color:#fff;font-weight:700;text-decoration:underline;text-decoration-color:var(--orange-l);text-underline-offset:2px}
+
+/* ---------- movimento reduzido e impressão: estado final estático ---------- */
+@media (prefers-reduced-motion:reduce){
+  .slide[data-s="20"] .s20-dc{animation:none!important;opacity:1!important}
+  .slide[data-s="20"] .s20-st .s20-rg,.slide[data-s="20"] .s20-pawn.walk .am-masc{animation:none!important}
+  .slide[data-s="20"] .s20-w,.slide[data-s="20"] .s20-t,.slide[data-s="20"] .s20-fala{transition:none!important}
+}
 @media print{
-  .tl-all .tl-card{display:none!important}
-  .tl-all .tl-dot{background:var(--steel-300)!important;border-color:var(--steel-300)!important;transform:none!important}
-  .tl-all .tl-dot::after{display:none}
-  .tl-all .tl-date,.tl-all .tl-lab{color:#fff!important}
-  .tl-print{display:grid;position:absolute;left:0;right:0;top:0;height:178px;grid-template-columns:repeat(5,1fr);gap:12px}
-  .tl-print>div{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:12px;background:linear-gradient(155deg,#16396B 0%,#0B2545 60%,#071A33 100%);border:1px solid rgba(255,255,255,.14);color:#fff;overflow:hidden}
-  .tl-print .d{font-family:var(--fm);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-400)}
-  .tl-print h4{font-size:14px;font-weight:800;line-height:1.2}
-  .tl-print p{font-size:11.5px;line-height:1.38;color:var(--steel-200)}
-  .tl-print p b{color:#fff}
-  .tl-print .tg{margin-top:auto;font-family:var(--fm);font-size:9.5px;color:var(--steel-300)}
+  .slide[data-s="20"] .s20-dc{animation:none!important;opacity:1!important;box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 5px #D6DEE6!important}
+  .slide[data-s="20"] .s20-st .s20-rg{display:none!important}
+  .slide[data-s="20"] .s20-pawn.walk .am-masc{animation:none!important}
+  .slide[data-s="20"] .s20-w.off{opacity:1!important}
+  .slide[data-s="20"] .s20-w,.slide[data-s="20"] .s20-cl,.slide[data-s="20"] .s20-nx{box-shadow:none!important}
+  .slide[data-s="20"] .s20-tip{filter:none!important}
 }
