@@ -1,32 +1,22 @@
 <!-- ===================================================== 01 · Capa (Abertura) -->
 <section class="slide cv" data-s="01" data-t="Capa" data-bare data-nofoot>
-  <div class="ps" id="ps">
+  <div class="ps" id="s01ps">
     <div class="ps__bg"></div>
     <canvas class="ps__cv" aria-hidden="true"></canvas>
     <div class="ps__shade"></div>
-    <div class="cv-floor" aria-hidden="true"></div>
+    <!-- monograma A&M desconstruído (constelação): src/js/07-monograma.js monta o estado final; o ENTER toca a entrada -->
+    <div class="am-mono s01-mono" data-w="820" data-anim="false"></div>
     <div class="ps__title">
-      <b class="cv-h">Planejamento<br>Estratégico</b>
-      <span class="cv-sub"><b class="cv-s1">Produtos, Serviços e Inteligência Artificial</b><span class="cv-s2">Digital &amp; Technology Services · Alvarez &amp; Marsal Brasil</span></span>
+      <b class="cv-h" aria-label="Planejamento Estratégico"><span class="s01-w" style="--i:0">Planejamento</span><br><span class="s01-w" style="--i:1">Estratégico</span></b>
+      <span class="cv-sub"><b class="cv-s1"><span class="s01-u" style="--i:0">Produtos,</span> <span class="s01-u" style="--i:1">Serviços</span> <span class="s01-u" style="--i:2">e</span> <span class="s01-u" style="--i:3">Inteligência</span> <span class="s01-u" style="--i:4">Artificial</span></b><span class="cv-s2">Digital &amp; Technology Services · Alvarez &amp; Marsal Brasil</span></span>
       <span class="cv-meta">Outubro de 2026</span>
     </div>
-    <div class="cv-masc">
-      <div class="am-fala">Em cada página, vire para ver de onde vêm os dados.</div>
-      <div class="am-masc" data-pose="aceno" style="--s:290px"></div>
+    <div class="cv-logos" id="s01Logos"></div>
+    <div class="s01-hud" data-ui>
+      <span class="s01-lbl">Cursor</span>
+      <button type="button" class="s01-tg is-on" data-mode="repel" aria-pressed="true">Repelir</button>
+      <button type="button" class="s01-tg" data-mode="attract" aria-pressed="false">Atrair</button>
     </div>
-    <div class="cv-logos" id="cvLogos"></div>
     <div class="cv-tag" data-ui><i></i>mova o cursor · clique para um pulso</div>
-    <div class="ps__read" aria-hidden="true"><span>partículas</span><b data-n>90</b><span>conexões</span><b data-links>0</b><span>fps</span><b data-fps>60</b></div>
-    <div class="ps__ctl" data-ui>
-      <span class="ps__lbl">Densidade</span>
-      <button type="button" class="ps__tg" data-density="45">Baixa</button>
-      <button type="button" class="ps__tg is-on" data-density="90">Média</button>
-      <button type="button" class="ps__tg" data-density="160">Alta</button>
-      <span class="ps__sep"></span>
-      <span class="ps__lbl">Cursor</span>
-      <button type="button" class="ps__tg is-on" data-mode="repel">Repelir</button>
-      <button type="button" class="ps__tg" data-mode="attract">Atrair</button>
-      <button type="button" class="ps__run" data-pulse>◎ Pulso</button>
-    </div>
   </div>
 </section>

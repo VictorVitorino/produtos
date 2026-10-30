@@ -73,7 +73,7 @@
 #chap .cx2-dot s{position:absolute;left:10px;top:10px;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(249,166,74,.85);opacity:0;animation:cx2-ring 5.4s cubic-bezier(.2,.6,.3,1) infinite;animation-delay:calc(1.2s + var(--i)*.9s + var(--r)*.38s)}
 @keyframes cx2-ring{0%{transform:scale(1);opacity:.95}26%{transform:scale(4.4);opacity:0}100%{transform:scale(4.4);opacity:0}}
 #chap .cx2-bc:hover .cx2-dot s{animation-duration:1.6s;animation-delay:calc(var(--r)*.4s)}
-#chap .cx2-lb{display:flex;align-items:center;gap:10px;white-space:nowrap;height:36px;padding:0 15px 0 12px;border-radius:999px;background:rgba(7,26,51,.62);border:1px solid rgba(157,187,217,.26);transition:background-color .25s,border-color .25s}
+#chap .cx2-lb{display:flex;align-items:center;gap:10px;white-space:nowrap;height:36px;padding:0 15px 0 12px;border-radius:999px;background:rgba(9,28,56,.9);border:1px solid rgba(157,187,217,.3);transition:background-color .25s,border-color .25s}
 #chap .cx2-lb em{font:600 12px var(--fm);font-style:normal;color:#9DBBD9;letter-spacing:.06em}
 #chap .cx2-lb b{font:600 16px var(--fb);color:#fff}
 #chap .cx2-bc:hover .cx2-lb{border-color:rgba(249,166,74,.75);background:rgba(247,140,22,.16)}
@@ -132,7 +132,9 @@
 #chap .cx4-fan{position:absolute;left:940px;top:364px;width:620px;height:330px;perspective:1300px;perspective-origin:50% 60%;pointer-events:auto}
 #chap .cx4-tilt{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
 #chap .cx4-card{--ly:0px;position:absolute;left:244px;top:28px;width:132px;height:184px;border-radius:12px;transform-origin:66px 692px;transform:rotate(var(--a)) translateY(var(--ly));transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s;
-  background:linear-gradient(160deg,#284579 0%,#15295A 48%,#0B1C3C 100%);border:1px solid rgba(190,210,235,.28);box-shadow:-6px 10px 22px rgba(4,12,28,.45);overflow:hidden;color:#fff;text-decoration:none;pointer-events:auto;cursor:pointer}
+  background:linear-gradient(160deg,#284579 0%,#15295A 48%,#0B1C3C 100%);border:1px solid rgba(190,210,235,.28);box-shadow:-6px 10px 22px rgba(4,12,28,.45);overflow:hidden;color:#fff;text-decoration:none;pointer-events:none}
+#chap .cx4-fan{cursor:pointer}
+#chap .cx4-card:focus-visible{outline:2px solid #F9A64A;outline-offset:2px}
 #chap.play .cx4-card{animation:cx4-deal .75s cubic-bezier(.2,.8,.2,1) var(--dl) backwards}
 @keyframes cx4-deal{from{transform:rotate(0deg) translateY(330px);opacity:0}}
 #chap .cx4-cap{position:absolute;left:0;right:0;top:0;height:5px;background:var(--sc)}

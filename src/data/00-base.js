@@ -9,7 +9,7 @@ const Hy=t=>`<span class="hy">${t||"Hipótese"}</span>`;
    sem renomear pilares, pedido do usuário) · short (o pilar em poucas palavras) · def (a proposta do pilar em uma frase, sem
    promessa nem sigla: divisórias, one-page) · def_as e when (textos do portfólio oficial) · was/now/nnew (contagens estruturais) */
 const PILLARS=[
-  {n:1,name:"IT Advisory",official:"IT Advisory",to:"IT Advisory",short:"Estratégia, liderança e valor de tecnologia",
+  {n:1,name:"IT Advisory",official:"IT Advisory",to:"IT Advisory · Strategy, Leadership & Value",short:"Estratégia, liderança e valor de tecnologia",
    def:"Ajudamos conselho e diretoria a decidir onde a tecnologia e a IA devolvem resultado: diagnóstico, plano, liderança interina, modelo operacional e custo.",
    def_as:"Apoiamos líderes na tomada de decisões estratégicas por meio de soluções de TI que integram diagnóstico, transformação e governança, acelerando resultados, mitigando riscos e gerando valor.",
    when:"Empresas que enfrentam desafios na transformação da área de TI, custos elevados com tecnologia ou necessidade de redefinir sua direção tecnológica.",
@@ -19,12 +19,12 @@ const PILLARS=[
    def_as:"Apoiamos na execução de projetos estratégicos complexos, garantindo implementações bem-sucedidas e alinhamento entre tecnologia e objetivos de negócio.",
    when:"Empresas que executam projetos estratégicos e transformacionais de TI, com alto risco e impacto para o negócio.",
    was:7,now:6,nnew:1},
-  {n:3,name:"Tech M&A",official:"Technology M&A Advisory & Transformation",to:"Tech M&A",short:"Tecnologia em toda a transação",
+  {n:3,name:"Tech M&A",official:"Technology M&A Advisory & Transformation",to:"Tech M&A & Value Creation",short:"Tecnologia em toda a transação",
    def:"Cuidamos da tecnologia da assinatura à saída: diligência com IA, primeiro dia, integração e separação, sinergias e acompanhamento das empresas dos fundos.",
    def_as:"Oferecemos suporte estratégico e especializado em todo o ciclo de M&A, com foco em tecnologia, garantindo excelência na execução e aproveitamento de sinergias para maximizar o valor da transação.",
    when:"Fundos de investimento e empresas em processos de aquisição ou venda, da definição da estratégia à execução da transição.",
    was:8,now:5,nnew:1},
-  {n:4,name:"Modernization",official:"Technological Modernization & Digital Evolution",to:"Modernization",short:"Arquitetura, legado, infraestrutura e resiliência",
+  {n:4,name:"Modernization",official:"Technological Modernization & Digital Evolution",to:"Modernization & AI-Ready Technology",short:"Arquitetura, legado, infraestrutura e resiliência",
    def:"Modernizamos arquitetura, aplicações e infraestrutura para a era da IA, com custo sob controle, migração revisada e resiliência testada em simulação.",
    def_as:"Entregamos soluções em arquitetura de TI e governança, modernizando sistemas e infraestruturas para garantir alinhamento estratégico e sustentabilidade a longo prazo.",
    when:"Empresas que precisam avaliar e modernizar suas arquiteturas e infraestruturas de TI, otimizando custos e aumentando a eficiência operacional.",

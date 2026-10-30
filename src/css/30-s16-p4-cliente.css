@@ -1,4 +1,10 @@
 /* =====================================================================
-   SLIDE 16 · Pilar 4 · Cliente e mercado · dono: slide 16
-   Regras novas: sempre escopadas em .slide[data-s="16"] (ver CONTRACT.md).
+   SLIDE 16 · Pilar 4 · Modernization · Cliente e mercado · dono: pilar-4
+   As peças (matriz "quem decide", tabela do mercado, "onde a DTS ganha") vêm do motor dos pilares (25-pilares.css);
+   aqui só o arranjo das vistas deste slide. Regras escopadas em .slide[data-s="16"].
    ===================================================================== */
+/* vista 2: tabela do mercado à esquerda, "onde a DTS ganha" à direita */
+.slide[data-s="16"] .s16-mk{display:grid;grid-template-columns:minmax(0,1fr) 492px;gap:16px}
+.slide[data-s="16"] .s16-mk .pl-mk th.c-f{width:132px}
+.slide[data-s="16"] .s16-mk .pl-mk th.c-l{width:344px}
+.slide[data-s="16"] .s16-mk .pl-mk th.c-p{width:118px}

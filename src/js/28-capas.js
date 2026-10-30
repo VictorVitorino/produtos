@@ -175,19 +175,26 @@ FX["08"]=(host,K)=>{const fx=prep(host,"cx4");const ps=PR().slice().sort(byCode)
   const idle=`<small>${now} cartas, uma por produto · passe o cursor numa carta</small>`;
   const show=i=>{cards.forEach((c,j)=>c.classList.toggle("up",j===i));if(i<0){ro.innerHTML=idle;return}const p=ps[i];
     ro.innerHTML=`<em>${p.code}</em><span>${X(p.name)}</span><small>· ${ST[p.st]||""}</small>${p.sig?"<small>· ★ A&amp;M Signature</small>":""}`;ro.style.fontSize="";fitW(ro,620,13)};
-  let hov=false,last=-1e9;const news=ps.map((p,i)=>p.st==="new"?i:-1).filter(i=>i>=0);
-  cards.forEach((c,i)=>K.on(c,"pointerenter",()=>{hov=true;show(i)}));
-  K.on(fan,"pointerleave",()=>{hov=false;last=performance.now();tilt.style.transform="";show(-1)});
-  if(RM){show(news[0]!=null?news[0]:0);return}
-  ro.innerHTML=idle;
-  K.on(fan,"pointermove",e=>{const r=fan.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+  let hov=false,last=-1e9,cur=-1;const news=ps.map((p,i)=>p.st==="new"?i:-1).filter(i=>i>=0);
+  const ang=cards.map(c=>parseFloat(c.style.getPropertyValue("--a")));
+  /* a carta sob o cursor é escolhida pelo ângulo a partir do pivô do leque (não pelo empilhamento): assim a carta que
+     subiu não esconde as vizinhas e dá para percorrer as 24 deslizando o cursor */
+  const pick=e=>{const r=fan.getBoundingClientRect(),k=r.width/620,dx=(e.clientX-r.left)/k-310,dy=(e.clientY-r.top)/k-720,d=Math.hypot(dx,dy);
+    if(d<470||d>800)return -1;const a=Math.atan2(dx,-dy)*180/Math.PI;let bi=-1,bd=9;ang.forEach((v,i)=>{const q=Math.abs(v-a);if(q<bd){bd=q;bi=i}});return bd<2.4?bi:-1};
+  const sel=i=>{if(i===cur)return;cur=i;show(i)};
+  cards.forEach((c,i)=>K.on(c,"focus",()=>{hov=true;sel(i)}));
+  K.on(fan,"pointerleave",()=>{hov=false;last=performance.now();tilt.style.transform="";sel(-1)});
+  K.on(fan,"click",e=>{if(e.target.closest(".cx4-card"))return;const i=cur>=0?cur:pick(e);if(i<0)return;e.preventDefault();e.stopPropagation();cards[i].click()});
+  K.on(fan,"pointermove",e=>{hov=true;sel(pick(e));if(RM)return;const r=fan.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
     tilt.style.transform=`rotateX(${((.5-py)*7).toFixed(2)}deg) rotateY(${((px-.5)*9).toFixed(2)}deg)`;fan.style.setProperty("--mx",px.toFixed(3))});
+  if(RM){sel(news[0]!=null?news[0]:0);return}
+  ro.innerHTML=idle;
   /* contador 29 → 24 enquanto as cartas são distribuídas */
   K.at(500,()=>countInt(fx.querySelector("[data-k]"),was,now,1300));
   /* folheio: as cartas sobem uma a uma; depois o tour mostra as quatro novas */
   const t1=Math.round((.3+ps.length*.032+.75)*1000);
   cards.forEach((c,i)=>{K.at(t1+i*45,()=>{if(!hov)c.classList.add("rf")});K.at(t1+i*45+240,()=>c.classList.remove("rf"))});
-  let ti=0;K.at(t1+ps.length*45+300,()=>{const tour=()=>{if(hov||performance.now()-last<5000||!news.length)return;show(news[ti%news.length]);ti++};tour();K.every(2600,tour)})};
+  let ti=0;K.at(t1+ps.length*45+300,()=>{const tour=()=>{if(hov||performance.now()-last<5000||!news.length)return;sel(news[ti%news.length]);ti++};tour();K.every(2600,tour)})};
 
 /* =====================================================================
    10 · 12 · 14 · 16 · ABERTURAS DOS PILARES · fx 01 Motion Graphics + fx 02 Icon Motion + fx 12 Counter
@@ -208,7 +215,7 @@ function pilar(n){return(host,K)=>{const fx=prep(host,"cxp");host.classList.add(
   const fH=Math.max(own.length*(TH+TG)-TG,ps.length*(PH+PG)-PG),top=Math.max(118,Math.round(452-(104+16+22+18+fH)/2));
   const srcOf=p=>S.filter(o=>o.to===p.code);
   fx.innerHTML=`<div class="cxp-top" style="top:${top}px"><span class="cxp-em"><svg class="cxp-ring" viewBox="0 0 104 104"><circle class="r0" cx="52" cy="52" r="47"/><circle class="r1" cx="52" cy="52" r="47" pathLength="1"/></svg><span class="cxp-mk"><i></i></span><span class="cxp-ic">${ICO(PIC[n-1],1)}</span></span>
-      <span class="cxp-ct"><span class="cxp-nums"><span class="k0">${was}</span><span class="ar cx-late">→</span><b class="k1 cx-late" data-k>${RM?now:was}</b></span><span class="cxp-lab">serviços hoje → produtos</span></span></div>
+      <span class="cxp-ct"><span class="cxp-nums"><span class="k0">${was}</span><span class="ar cx-late">→</span><b class="k1 cx-late" data-k>${RM?now:was}</b></span><span class="cxp-lab">serviços hoje<span class="cx-late"> → produtos</span></span></span></div>
     <div class="cxp-lg" style="top:${top+104+16}px">${["keep","ai","new"].map(s=>sc[s]?`<span style="--sc:${SC[s]}"><i></i><b>${sc[s]}</b>${s==="keep"?"manter":s==="ai"?"aprimorar com IA":"criar com IA"}</span>`:"").join("")}</div>
     <div class="cxp-field" style="top:${top+104+16+22+18}px;height:${fH}px">
       ${RM?"":own.map((o,i)=>{const out=pil(o.to)!==n;return `<div class="cxp-tl" data-to="${o.to}"${out?` data-out="${pil(o.to)}"`:""} style="top:${yT(i)}px;--dl:${(.35+i*.06).toFixed(2)}s"><i></i>${X(o.n)}${out?`<em>vai para o Pilar ${pil(o.to)}</em>`:""}</div>`}).join("")+

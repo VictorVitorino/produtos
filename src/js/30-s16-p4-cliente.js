@@ -1,42 +1,50 @@
 /* =====================================================================
-   SLIDE 16 · Pilar 4 · Modernization · Cliente e mercado · dono: slide 16
-   Registra o conteúdo do pilar em PCFG[4].cliente; quem desenha é src/js/25-pilares.js (no boot).
-   Conteúdo herdado da V5: será revisto pelo time de conteúdo (siglas, números e fontes — ver SPEC 4 e 5).
+   SLIDE 16 · Pilar 4 · Modernization · Cliente e mercado · dono: pilar-4
+   Só registra o conteúdo em PCFG[4].cliente; quem desenha é src/js/25-pilares.js (no boot):
+   · vista 1 (.quem): quem decide · a pergunta · o gatilho · a prova (fato verificado) · quem responde; → acende um decisor por vez
+   · vista 2 (table.mk + .ws): o que o mercado já faz com IA (só fatos com fonte; dado de fornecedor dito como tal) e onde a DTS ganha
+   Números só por data-fato (FATOS "verificado"; os do pilar em src/data/06-fatos-pilar-4.js); fontes completas no verso
+   (src/versos/16-p4-cliente.html).
    ===================================================================== */
+(function(){
 PCFG[4].cliente={
-  /* quem compra e o que pergunta: [papel, pergunta, [produtos]] */
-  pers:[
-    ["CIO · CTO","Por onde começo a modernizar o legado e quanto custa?",["4.1","4.6"]],
-    ["CFO","Quanto pago em virtualização, nuvem e sistemas redundantes?",["4.2","4.3"]],
-    ["CRO · COO","Aguentamos um ataque ou a falha de um terceiro?",["4.5"]],
-    ["Conselho","A migração vai dar certo? Quem garante?",["4.4"]]
+  /* vista 1 · quem decide: papel, o que decide, pergunta (a dor), gatilho, fato que prova a dor, produtos que respondem */
+  quem:[
+    {r:"CIO e CTO",d:"escolhem a rota",q:"Por onde começo a modernizar o legado sem parar a operação?",
+     g:"Fim de suporte, sistema que ninguém mais entende ou IA que esbarra nos dados antigos",
+     f:"pilar4-bancos-nuvem-30",ft:"de alta no gasto dos bancos no Brasil com migração para a nuvem em 2026",p:["4.6","4.1"]},
+    {r:"CFO",d:"paga a conta",q:"Quanto pago em nuvem, licenças e sistemas sem uso — e o que dá para desligar?",
+     g:"Renovação da VMware ou conta de nuvem que cresce sem dono",
+     f:"pilar4-vmware-europa-1500",fq:"até",ft:"de aumento no preço da VMware depois da compra pela Broadcom, relatado por provedores europeus",p:["4.3","4.2"]},
+    {r:"Riscos e operações",d:"respondem pela continuidade",q:"Se um fornecedor de TI for atacado, em quanto tempo a operação volta?",
+     g:"Ataque a um terceiro de TI ou regra nova do Conselho Monetário Nacional",
+     f:"pilar4-sinqia-710",ft:"em transações não autorizadas no Pix da Sinqia, com acessos legítimos de fornecedores de TI",p:["4.5"]},
+    {r:"Conselho",d:"aprova a virada",q:"A migração vai entregar o prometido — e quem, sem conflito, diz se dá para virar?",
+     g:"Migração de ERP, de núcleo bancário ou de dados com data marcada",
+     f:"pilar2-erp-caso-negocio-70",fq:"mais de",ft:"das iniciativas recentes de ERP não devem cumprir todo o caso de negócio até 2027 (previsão)",p:["4.4","4.6"]}
   ],
-  /* o que o mercado faz: [firma, como chamam a oferta, o que fazem com IA, leitura para a DTS, "E"] */
+  /* vista 2 · o que o mercado faz: quem, o que já faz com IA (fato), o que isso muda para a DTS (leitura nossa), produtos em disputa */
   mk:[
-    ["McKinsey","LegacyX (QuantumBlack)","SAS → Python com squads de agentes: ~90% de precisão, cronograma −80%","Plataforma própria de modernização","E"],
-    ["Accenture","GenWizard; Anthropic Business Group","Gemini para mainframe; 30 mil pessoas treinadas em Claude","Escala de fábrica","E"],
-    ["IBM","watsonx Code Assistant for Z; Bob; Enterprise Advantage","~45% de ganho interno com Bob (dado do fornecedor)","Dona do mainframe","E"],
-    ["AWS · Microsoft · Google","AWS Transform; GitHub Copilot app modernization; Mainframe Rewrite","Migração sem custo (AWS); até 4× mais rápido em .NET","A ferramenta vira commodity","E"],
-    ["Deloitte · EY","Technology Strategy & Architecture; arquitetura corporativa","Agentes em ferramentas de EA (SAP LeanIX, Ardoq)","EA tradicional ganha automação","E"],
-    ["Anthropic","Claude Code","COBOL ‘em trimestres, não anos’ (fev/2026); ação da IBM caiu no anúncio","Laboratórios vão direto ao cliente","E"]
+    {f:"AWS",ia:"Oferece sem custo os agentes de IA que migram VMware, mainframe e aplicações .NET (dado do fornecedor)",
+     l:"A ferramenta de migração ficou de graça: quem a oferece ganha com a nuvem de destino",p:["4.3","4.6"]},
+    {f:"Microsoft",ia:"O GitHub Copilot passou a atualizar e modernizar aplicações Java e .NET para a nuvem",
+     l:"Modernizar aplicação vira recurso da ferramenta do programador: a execução perde preço",p:["4.2","4.6"]},
+    {f:"McKinsey",ia:"Tem plataforma própria, o LegacyX, com equipes de agentes de IA que documentam e reescrevem código antigo",
+     l:"A consultoria de estratégia chega com plataforma: disputa o raio-X do legado",p:["4.6","4.1"]},
+    {f:"Accenture",ia:"Criou um grupo de negócios com a Anthropic e vai treinar cerca de <span data-fato=\"pilar4-accenture-claude-30-mil\"></span> profissionais no Claude",
+     l:"Escala de fábrica com IA: vende a rota e a execução no mesmo contrato",p:["4.6","4.4"]},
+    {f:"IBM",ia:"Vende um assistente de IA que traduz programas em COBOL do mainframe para Java",
+     l:"O dono da plataforma também vende a saída dela: a escolha da rota tem conflito",p:["4.6"]},
+    {f:"Anthropic",ia:"Diz que o Claude Code automatiza a análise de sistemas em COBOL; no dia, a ação da IBM caiu <span data-fato=\"pilar4-cobol-ibm-13\"></span>",
+     l:"O fabricante do modelo de IA fala direto com o CIO: ler código antigo deixa de ser o gargalo",p:["4.6","4.1"]}
   ],
-  /* sobreposição por linha de mk: A alta · M média · B baixa · X ativo A&M */
-  heat:["M","M","M","A","M","A"],
-  /* onde a DTS ganha: it = [título, texto, produto, "E"|"H"]; th = [ameaça, "E"|"H"] */
+  /* onde a DTS ganha (título, texto, produto) e a ameaça a monitorar */
   ws:{it:[
-      ["Raio-X neutro + business case","A&M seleciona e garante; não revende ferramenta nem fábrica.","4.6","H"],
-      ["Assurance independente","O integrador não deve avaliar o próprio trabalho.","4.4","H"],
-      ["Economia de infraestrutura","VMware, nuvem e GPU com TCO e FinOps.","4.3","E"],
-      ["Resiliência pós-incidente","Cadeia do Pix e CMN 5.274.","4.5","E"]
+      ["Rota antes do gasto","A IA lê o código e mede o risco de cada módulo; a DTS recomenda manter, reescrever ou trocar, sem revender ferramenta.","4.6"],
+      ["Revisão sem conflito","Quem executa a migração não deve atestar o próprio trabalho: a DTS revisa e o conselho decide seguir ou adiar a virada.","4.4"],
+      ["Custo total, não destino","Provedor de nuvem e integrador ganham com a migração; a DTS compara nuvem, data center e VMware pelo custo total.","4.3"],
+      ["Crise ensaiada","Os ataques de 2025 à cadeia do Pix entraram por acessos de terceiros de TI; a A&amp;M já atua em crises e leva o ensaio à TI.","4.5"]
     ],
-    th:["Sem plataforma própria comparável a LegacyX ou GenWizard, vender horas de modernização é perder para ferramentas cobradas por minuto.","H"]},
-  /* jornada comercial: [etapa, título, [produtos], nota] */
-  jr:[
-    ["Gatilho","Renovação VMware · incidente · legado sem dono",[],"custo ou risco explícito"],
-    ["Entrada · sprint","Raio-X do legado ou TCO",["4.6","4.3"],"4–10 semanas, fixo ou fixo + % de economia"],
-    ["Expansão · execução","Arquitetura, racionalização, assurance",["4.1","4.2","4.4"],"rota e garantia"],
-    ["Recorrência","Resiliência e arquitetura vivas",["4.5","4.1"],"exercícios anuais e repositório"]
-  ],
-  /* posicionamento proposto (HTML curto) */
-  pos:"Para <b>CIOs e CFOs</b> presos a legado caro e arriscado, o DTS é <em>quem escolhe a rota e garante a modernização</em>, usando IA para ler o legado, neutro em fornecedor. Diferente de hyperscalers e fábricas, <b>não revendemos ferramenta</b>: respondemos pelo business case."
+    th:"Sem plataforma própria, a DTS não disputa execução: se o cliente comprar a rota e a migração no mesmo contrato, decide quem vende o destino."}
 };
+})();

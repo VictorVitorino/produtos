@@ -1,38 +1,64 @@
 /* =====================================================================
-   SLIDE 01 · Capa · dono: slide 01
-   Modelo: capa da APODI (título Barlow 800 112 px, fio laranja curto, logos embaixo à esquerda,
-   mascote à direita) sobre o Particle System (repelir e atrair). Regras escopadas em .slide[data-s="01"].
+   SLIDE 01 · Capa · dono: abertura
+   Modelo: capa da APODI (título Barlow 800 112 px, fio laranja curto, logos embaixo à esquerda) sobre o
+   fx 30 Particle System (repelir e atrair). Herói à direita: o monograma A&M desconstruído (constelação,
+   window.AMMono, caixa de 820 × 900). Título com fx 11 Animated Typography: palavra a palavra, fio laranja
+   que se desenha, subtítulo palavra a palavra. Sem mascote (ele estreia no Sumário).
+   Animações só com .play (a fundação liga ao entrar); sem .play, na impressão e com movimento reduzido,
+   fica o estado final. Regras escopadas em .slide[data-s="01"].
    ===================================================================== */
 .slide[data-s="01"]{background:#071A33}
 .slide[data-s="01"] .ps{position:absolute;inset:0;overflow:hidden}
-.slide[data-s="01"] .ps__bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 85% 90%,rgba(247,140,22,.10),transparent 60%),radial-gradient(ellipse 70% 60% at 15% 20%,#13315C,transparent 70%),linear-gradient(160deg,#0B2545,#071A33)}
+.slide[data-s="01"] .ps__bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 85% 90%,rgba(247,140,22,.08),transparent 60%),radial-gradient(ellipse 70% 60% at 15% 20%,#13315C,transparent 70%),linear-gradient(160deg,#0B2545,#071A33)}
 .slide[data-s="01"] .ps__cv{position:absolute;inset:0;width:1600px;height:900px;display:block;cursor:crosshair;touch-action:none;z-index:1}
 .slide[data-s="01"] .ps__shade{position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(7,26,51,.82),rgba(7,26,51,.45) 42%,rgba(7,26,51,0) 64%)}
-.slide[data-s="01"] .cv-floor{position:absolute;left:880px;top:700px;width:720px;height:1px;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(163,184,214,0),rgba(163,184,214,.28) 14%,rgba(163,184,214,.28) 84%,rgba(163,184,214,0))}
-.slide[data-s="01"] .ps__title{position:absolute;left:120px;top:196px;max-width:960px;display:flex;flex-direction:column;gap:14px;color:#fff;pointer-events:none;z-index:2;opacity:0}
-.slide[data-s="01"] .cv-h{font:800 112px/.95 var(--fh);letter-spacing:-.02em}
+
+/* monograma: lado direito do palco, por cima das partículas; não captura o cursor (o campo continua reagindo) */
+.slide[data-s="01"] .s01-mono{position:absolute;left:780px;top:0;width:820px;height:900px;z-index:2;pointer-events:none}
+
+/* título (APODI: left 120; Barlow 800 112 px; fio laranja 72 × 4; subtítulo Inter 700 34 px) */
+.slide[data-s="01"] .ps__title{position:absolute;left:120px;top:196px;max-width:760px;display:flex;flex-direction:column;gap:14px;color:#fff;pointer-events:none;z-index:3}
+.slide[data-s="01"] .cv-h{display:block;font:800 112px/.95 var(--fh);letter-spacing:-.02em;color:#fff}
+.slide[data-s="01"] .s01-w,.slide[data-s="01"] .s01-u{display:inline-block;white-space:nowrap}
 .slide[data-s="01"] .cv-sub{position:relative;display:flex;flex-direction:column;gap:6px;padding-top:24px;margin-top:10px}
-.slide[data-s="01"] .cv-sub::before{content:"";position:absolute;left:0;top:0;width:72px;height:4px;border-radius:2px;background:var(--orange)}
+.slide[data-s="01"] .cv-sub::before{content:"";position:absolute;left:0;top:0;width:72px;height:4px;border-radius:2px;background:var(--orange);transform-origin:left center}
 .slide[data-s="01"] .cv-s1{display:block;font:700 34px/1.15 var(--fb);letter-spacing:-.018em;color:#fff;white-space:nowrap}
 .slide[data-s="01"] .cv-s2{display:block;font:500 23px/1.3 var(--fb);letter-spacing:-.003em;color:#C9D6E8;white-space:nowrap}
 .slide[data-s="01"] .cv-meta{margin-top:22px;font:500 17px/1.4 var(--fb);letter-spacing:.07em;color:#A3B8D6}
-.slide[data-s="01"] .cv-logos{position:absolute;left:120px;bottom:52px;display:flex;align-items:center;gap:22px;z-index:2;pointer-events:none}
+
+/* logos A&M e DTS embaixo à esquerda (APODI: left 120, bottom 52) */
+.slide[data-s="01"] .cv-logos{position:absolute;left:120px;bottom:52px;display:flex;align-items:center;gap:22px;z-index:3;pointer-events:none}
 .slide[data-s="01"] .cv-logos i{width:1px;height:42px;background:rgba(255,255,255,.25)}
-.slide[data-s="01"] .cv-tag{position:absolute;right:28px;bottom:52px;font:500 12px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:#A3B8D6;display:flex;gap:8px;align-items:center;z-index:2;opacity:.75;pointer-events:none}
+
+/* dica e controle do campo (só na tela): Repelir | Atrair */
+.slide[data-s="01"] .cv-tag{position:absolute;right:28px;bottom:52px;font:500 12px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:#A3B8D6;display:flex;gap:8px;align-items:center;z-index:3;opacity:.8;pointer-events:none}
 .slide[data-s="01"] .cv-tag i{width:6px;height:6px;border-radius:50%;background:var(--orange)}
-/* mascote AM à direita, com a fala acima */
-.slide[data-s="01"] .cv-masc{position:absolute;left:1130px;top:250px;width:330px;height:460px;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:16px;pointer-events:none}
-.slide[data-s="01"] .cv-masc .am-masc{pointer-events:auto}
-.slide[data-s="01"] .cv-masc .am-fala{position:absolute;left:-150px;top:-30px;max-width:300px}
-/* telemetria fora de cena; controles de demonstração no canto superior direito, só no hover */
-.slide[data-s="01"] .ps__read{display:none}
-.slide[data-s="01"] .ps__ctl{position:absolute;right:28px;top:22px;display:flex;align-items:center;gap:6px;z-index:4;opacity:0;transition:opacity .3s}
-.slide[data-s="01"] .ps:hover .ps__ctl,.slide[data-s="01"] .ps__ctl:focus-within{opacity:.9}
-.slide[data-s="01"] .ps__lbl{font:700 10.5px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:#A3B8D6;margin:0 4px 0 6px}
-.slide[data-s="01"] .ps__sep{width:1px;height:20px;background:rgba(255,255,255,.18);margin:0 6px}
-.slide[data-s="01"] .ps__tg{height:30px;padding:0 12px;border-radius:999px;border:1px solid rgba(157,187,217,.38);background:rgba(7,26,51,.7);font:600 12px var(--fb);color:#DFE8F0;transition:all .2s}
-.slide[data-s="01"] .ps__tg:hover{border-color:rgba(255,255,255,.6)}
-.slide[data-s="01"] .ps__tg.is-on{background:#fff;border-color:#fff;color:var(--navy)}
-.slide[data-s="01"] .ps__run{height:30px;padding:0 14px;border-radius:999px;background:var(--orange);color:#0E1C39;font:700 12px var(--fb);margin-left:6px}
-@media print{.slide[data-s="01"] .ps__ctl,.slide[data-s="01"] .cv-tag{display:none!important}.slide[data-s="01"] .ps__title{opacity:1!important;transform:none!important}}
-@media (prefers-reduced-motion:reduce){.slide[data-s="01"] .ps__title{opacity:1!important}}
+.slide[data-s="01"] .s01-hud{position:absolute;right:28px;top:22px;display:flex;align-items:center;gap:6px;z-index:4;opacity:.72;transition:opacity .3s}
+.slide[data-s="01"] .s01-hud:hover,.slide[data-s="01"] .s01-hud:focus-within{opacity:1}
+.slide[data-s="01"] .s01-lbl{font:600 11px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:#A3B8D6;margin-right:4px}
+.slide[data-s="01"] .s01-tg{height:30px;padding:0 13px;border-radius:999px;border:1px solid rgba(157,187,217,.38);background:rgba(7,26,51,.7);font:600 12px var(--fb);color:#DFE8F0;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.slide[data-s="01"] .s01-tg:hover{border-color:rgba(255,255,255,.6)}
+.slide[data-s="01"] .s01-tg.is-on{background:#fff;border-color:#fff;color:var(--navy)}
+.slide[data-s="01"] .s01-tg:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+
+/* ---- fx 11 Animated Typography: palavra a palavra; o fio laranja se desenha; depois subtítulo, linha da área, data, logos ---- */
+.slide[data-s="01"].play .s01-w{animation:s01-word .75s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--i)*160ms + 180ms)}
+.slide[data-s="01"].play .cv-sub::before{animation:s01-bar .55s cubic-bezier(.22,.61,.36,1) .62s both}
+.slide[data-s="01"].play .s01-u{animation:s01-up .5s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(var(--i)*70ms + 760ms)}
+.slide[data-s="01"].play .cv-s2{animation:s01-fade .55s ease 1.18s both}
+.slide[data-s="01"].play .cv-meta{animation:s01-fade .5s ease 1.36s both}
+.slide[data-s="01"].play .cv-logos{animation:s01-fade .6s ease 1.45s both}
+.slide[data-s="01"].play .s01-hud,.slide[data-s="01"].play .cv-tag{animation:s01-hud .6s ease 2.6s both}
+@keyframes s01-word{from{opacity:0;transform:translateY(.42em);filter:blur(6px)}60%{filter:blur(0)}to{opacity:1;transform:none;filter:none}}
+@keyframes s01-up{from{opacity:0;transform:translateY(.6em)}to{opacity:1;transform:none}}
+@keyframes s01-bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes s01-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes s01-hud{from{opacity:0}}
+
+@media (prefers-reduced-motion:reduce){
+  .slide[data-s="01"] .s01-w,.slide[data-s="01"] .s01-u,.slide[data-s="01"] .cv-sub::before,.slide[data-s="01"] .cv-s2,.slide[data-s="01"] .cv-meta,.slide[data-s="01"] .cv-logos,.slide[data-s="01"] .s01-hud,.slide[data-s="01"] .cv-tag{animation:none!important;opacity:1;transform:none;filter:none}
+}
+@media print{
+  .slide[data-s="01"] .s01-hud,.slide[data-s="01"] .cv-tag{display:none!important}
+  .slide[data-s="01"] .s01-w,.slide[data-s="01"] .s01-u,.slide[data-s="01"] .cv-sub::before,.slide[data-s="01"] .cv-s2,.slide[data-s="01"] .cv-meta,.slide[data-s="01"] .cv-logos{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}
+}

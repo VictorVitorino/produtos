@@ -138,7 +138,7 @@ const JOGOS={
     id:"exercicio-de-crise",
     nome:"Exercício de Crise",
     pilar:4,
-    tipo:"Exercício de mesa",
+    tipo:"Simulação de crise",
     duracao:"uma manhã",
     pergunta:"Se um sistema crítico parar hoje, quem decide e quando a operação volta?",
     promessa:"Ensaiar a crise na mesa, com o plano e os contratos reais, para não improvisar quando ela chegar.",

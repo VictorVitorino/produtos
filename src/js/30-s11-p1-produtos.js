@@ -27,7 +27,7 @@ PCFG[1].produtos={
     a5:"Estratégia digital é oferta comum: vira plano de tecnologia e IA com caso de negócio (1.2).",
     a6:"Reestruturação é força da A&M: passa a desenhar a área com pessoas e agentes de IA (1.4).",
     a7:"Resiliência é decisão de arquitetura: muda para o Pilar 4, como 4.5.",
-    a8:"Custo de TI é onde a A&M mais pesa: ganha um radar com IA contra a volta do custo (1.5).",
+    a8:"Custo de TI é frente forte da A&M em turnaround: ganha um radar com IA contra a volta do custo (1.5).",
     a9:"Nicho fiscal: fica mais forte junto com os incentivos e com a área tributária da A&M (1.6).",
     a10:"A Lei do Bem pede dossiê técnico sólido: a IA lê projetos e código (1.6).",
     b7:"Alocação de perfil, com pouca diferenciação: o papel passa para a liderança embarcada (1.3)."
