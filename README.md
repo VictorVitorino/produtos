@@ -179,7 +179,7 @@ Resultado na entrega da V6 (30/10/2026):
 ## O que fica para o comitê ou para validar
 
 - **As quatro decisões do slide 20 ("O chamado"):**
-  1. Aprovar os 24 produtos (5 · 15 · 4, com os 4 Signature à frente) e os nomes propostos dos pilares.
+  1. Aprovar os 24 produtos (5 manter, 15 aprimorar e 4 criar com IA, com os 4 A&M Signature à frente) e os nomes propostos dos pilares.
   2. Dar um dono para cada produto.
   3. Abrir a Onda 0, com 2.2 e 1.5 a tempo da primeira apuração da CBS e do orçamento de IA de 2027.
   4. Investir na Plataforma de Dados e AI em etapas, com o custo de cada etapa voltando ao comitê.

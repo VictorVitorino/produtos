@@ -1,6 +1,6 @@
 # Passagem de bastão · DTS Planejamento Estratégico 2027 (versão V6)
 
-Escrito em 30/10/2026, às 00h10, durante a sessão do Claude Code; seções 2, 3, 7 e 9 atualizadas às 03h30, na integração final da V6. Quem continuar (outra IA ou pessoa) deve ler este arquivo,
+Escrito em 30/10/2026, às 00h10, durante a sessão do Claude Code; seções 2, 3, 7 e 9 atualizadas às 03h30, na integração final da V6; seções 2, 3, 7, 9, 10 e 11 atualizadas às 04h25, no fechamento depois das correções. Quem continuar (outra IA ou pessoa) deve ler este arquivo,
 depois `SPEC.md` (o que dizer e como o deck deve ser) e `CONTRACT.md` (como montar cada slide). Os pedidos originais do usuário,
 na ordem em que foram feitos, estão em `pedidos_do_usuario.txt`.
 
@@ -19,7 +19,7 @@ O usuário é líder da DTS, fala português do Brasil e quer linguagem executiv
 ## 2. Onde está o código
 
 - GitHub: `VictorVitorino/produtos`, branch **`claude/pensive-fermat-fijb3d`** (não abrir PR sem o usuário pedir).
-- O entregável é a **V6**, em `DTS_Portfolio_Estrategico_2027.html` e `.pdf`. Os dois foram gerados em 30/10, às 03h24, por `python3 build.py --final` e `tools/pdf.js --ordem`: 20 slides, 20 versos, 9 capas e 24 fichas; o PDF tem 84 páginas. A V5, com PDF de 56 páginas, fica só no histórico do git.
+- O entregável é a **V6**, em `DTS_Portfolio_Estrategico_2027.html` e `.pdf`. Os dois foram gerados em 30/10, às 04h20 (fechamento depois das correções), por `python3 build.py --final` e `tools/pdf.js --ordem`: 20 slides, 20 versos, 9 capas e 24 fichas; o PDF tem 84 páginas. A V5, com PDF de 56 páginas, fica só no histórico do git.
 - `python3 build.py --out caminho.html` gera o HTML a partir de `src/`. O build **recusa rodar sem `--out`**; `python3 build.py --final` é o único que sobrescreve o arquivo principal (usar só na integração).
 - `src/`: `slides/NN-*.html` (um por slide), `versos/NN-*.html` (verso de cada slide), `css/` e `js/` (um módulo `30-sNN-*` por slide, mais `02-componentes.css`, `25-pilares.*` para os pilares, `40-fichas.*`, `07-verso.*`, `06-mascote.*`, `07-monograma.*`), `data/` (`00-base.js` pilares e 29 serviços, `05-fontes.js` registro de fontes e fatos, `06-fatos-<dono>.js` fatos que cada autor verificou, `11…14-produtos-pN.js` as 24 fichas, `20-timelines.js`, `30-jogos.js`, `01-capitulos.js`), `core.js`/`engine.js`/`styles.css` (moldura, navegação, impressão), `assets/` (logos A&M e DTS, fontes Barlow Condensed).
 - Também no repositório, sem relação com o deck: `prototipo-ciclo-agentico/` (protótipo em Python de um ciclo com agente, 32 testes) e `pesquisa/` (4 relatórios de pesquisa de mercado, com URLs e datas).
@@ -30,7 +30,7 @@ O usuário é líder da DTS, fala português do Brasil e quer linguagem executiv
 2. V1 a V4: capa com Particle System (repelir e atrair), slide com Shimmer/Holographic Sweep e escudo DTS, spotlight por pilar, forças, benchmark, raio-X, três caminhos, 29→24, one-page, pilares (Morphing, antes e depois), fábrica (Card Stack), roadmap (Timeline Motion). Várias rodadas de feedback: sem quebra de linha em rótulos, sem texto cortado, sem espaços vazios, textos executivos e lúdicos.
 3. V5: o usuário mostrou o deck "DTS Tech M&A" (referência) e 4 telas favoritas; o deck foi refeito nesse padrão, com revisão adversarial (100 correções). Entregue em HTML e PDF.
 4. Análise paralela: o usuário enviou uma proposta de terceiros de automação agêntica de um ciclo de custos e perguntou se a A&M entrega isso e se é viável com Claude. Resposta dada: a A&M não tem esse produto; entraria como **2.7 Agentic Process Automation** (25º produto, no Pilar 2) ou dentro do 2.6; viável tecnicamente (cerca de 35% do esforço é código; o resto é acesso, regras, aprovações e adoção); um protótipo sintético foi construído em `prototipo-ciclo-agentico/`. **Decisão do usuário (tomada na V6):** o 2.7 é **módulo do 2.6** (AI-Native IT Productivity), "Automação agêntica de processos", e não um 25º produto. O portfólio continua com 24 produtos (5 · 15 · 4). O módulo aparece na one-page (09), no slide 13 e na ficha 2.6.
-5. **V6 (pronta em 30/10, às 03h30; falta commit e push)**: o usuário enviou o deck da **APODI** como modelo de layout (margens, alturas, moldura) e pediu para refinar toda a apresentação (detalhes na seção 4).
+5. **V6 (pronta em 30/10, às 03h30, no commit `c3aecff`; correções do fechamento às 04h25, a versionar)**: o usuário enviou o deck da **APODI** como modelo de layout (margens, alturas, moldura) e pediu para refinar toda a apresentação (detalhes na seção 4).
 
 ## 4. O pedido atual (V6), nas palavras do usuário, e o que significa
 
@@ -80,7 +80,7 @@ Pedidos adicionados depois, ainda na V6:
 
 Capas de capítulo (Partes 1 a 5 e abertura de cada pilar): um efeito do guia por capa, definido em `SPEC.md` §2.1 (Floating Elements, Animated Shader + Pulse, Heatmap, Hologram 3D Cards + Counter, Motion Graphics + Icon Motion + Counter, BPMN Flow).
 
-## 7. Estado atual (30/10, 03h30): V6 pronta, falta commit e push
+## 7. Estado atual (30/10, 04h25): V6 pronta; integração no commit c3aecff, correções do fechamento a versionar
 
 **Tudo pronto.** Nesta sessão foram reescritos:
 - os 20 slides e os 20 versos;
@@ -90,17 +90,24 @@ Capas de capítulo (Partes 1 a 5 e abertura de cada pilar): um efeito do guia po
 
 Cada parte foi feita por um dono e conferida por um revisor independente. Depois vieram cinco lentes sobre o deck inteiro (sócio, fatos, design, funcional e conteúdo), cinco corretores e a integração final. Nenhum verso está "Em construção".
 
-**Entregáveis gerados na integração (03h24)**
-- `DTS_Portfolio_Estrategico_2027.html` (`build.py --final`): 1.355.089 bytes, 48 scripts e 4 ativos. É idêntico, byte a byte, ao deck auditado.
-- `DTS_Portfolio_Estrategico_2027.pdf` (`tools/pdf.js --ordem`): 84 páginas de 1600 × 900, com 16.669.170 bytes (cerca de 16 MB).
+**Correções do fechamento (depois de `c3aecff`, revisão do diff `3f00239..c3aecff`)**
+- Verso (`07-verso.css` e `07-verso.js`): a caixa "Leitura do AM" cresce quando o vão medido entre a lista de fontes e a caixa passa de 60 px (antes: quando havia até 6 fontes). Em coluna, com o mascote grande (`.v-few`), se couber; senão em linha, centralizada (`.v-grow`).
+- Slide 09: margem menor no bloco das colunas do rodapé (`.s09-pc .sl`).
+- Slide 11: subtítulo "os serviços fiscais se juntam"; no antes e depois do 1.3, "a mesma rede de executivos".
+- Slide 20: a decisão 1 diz "5 manter, 15 aprimorar e 4 criar com IA; os 4 A&M Signature à frente e os nomes dos pilares".
+- Ficha 3.1: fontes com a página do A&M Assist (`pilar3-am-assist-ma`). Ficha 4.4: "dos grandes contratos de serviços de TI".
+
+**Entregáveis gerados no fechamento (04h15 o HTML, 04h20 o PDF)**
+- `DTS_Portfolio_Estrategico_2027.html` (`build.py --final`): 1.355.866 bytes, 48 scripts e 4 ativos. É o próprio arquivo auditado.
+- `DTS_Portfolio_Estrategico_2027.pdf` (`tools/pdf.js --ordem`): 84 páginas de 1600 × 900, com 16.833.207 bytes (cerca de 16 MB).
   - Composição: 20 frentes, 9 segundas vistas (07 e 10 a 17), 20 versos, 11 páginas de detalhe e 24 fichas.
   - Cada verso vem logo depois da sua frente.
   - As 10 fontes vão embutidas.
   - Nenhuma página em branco e nenhuma com o corpo vazio.
 - `README.md` reescrito para a V6.
 
-**Testes da integração (deck auditado = arquivo final)**
-- `audit.js` com fichas e `offline`:
+**Testes do fechamento (deck auditado = arquivo final)**
+- `audit.js` com fichas, com rede e `offline` (mesmo resultado nos dois):
   - **0 apontamentos** em 73 vistas: 20 slides, 9 segundas vistas, 20 versos e 24 fichas.
   - Zero erros e zero avisos de console.
   - Versos com 334 a 379 palavras, todos na letra padrão de 15 px.
@@ -116,8 +123,8 @@ Cada parte foi feita por um dono e conferida por um revisor independente. Depois
 - `resp.js`: 87 de 87.
 - `fichas.js`: 17 ok e 0 falhas.
 - `buildcheck.py`: ok (só o Google Fonts fica externo; sem fotos de pessoas).
-- `pdf.js --ordem` e `pdf.js --ctrlp`: 84 páginas nos dois, sem página em branco, sem corpo vazio e sem erro de console.
-- As capturas das 9 capas, da capa, do sumário e dos slides 09, 18, 19 e 20 saíram sem erro de console.
+- `pdf.js --ordem` e `pdf.js --ctrlp`: 84 páginas nos dois, na mesma sequência, com as 10 fontes embutidas, sem página em branco, sem corpo vazio e sem erro de console. `pdfcheck.py` à parte, no PDF final: o mesmo resultado.
+- Na integração (03h24), as capturas das 9 capas, da capa, do sumário e dos slides 09, 18, 19 e 20 saíram sem erro de console.
 
 **Fundação e conteúdo-base** (sem mudança de estrutura desde `c4ca436`):
 - moldura APODI, navegação, índice, abas, "Virar a página" e impressão intercalada;
@@ -167,9 +174,9 @@ Feito nesta sessão (itens antigos 1 a 7):
 
 O que falta:
 
-1. **Commit e push** do estado atual: `src/`, `docs/handoff-v6/`, `README.md`, `DTS_Portfolio_Estrategico_2027.html` e `.pdf`. Não versionar pastas `*_check/` geradas pelo `pdf.js`.
+1. **Commit e push** das correções do fechamento (a integração já está no GitHub, no commit `c3aecff`; confira com `git status -sb`): `src/`, `docs/handoff-v6/`, `README.md`, `DTS_Portfolio_Estrategico_2027.html` e `.pdf`. Não versionar pastas `*_check/` geradas pelo `pdf.js`.
 2. **Apresentar ao comitê as quatro decisões do slide 20** ("O chamado"):
-   - aprovar os 24 produtos (5 · 15 · 4, com os 4 Signature à frente) e os nomes propostos dos pilares;
+   - aprovar os 24 produtos (5 manter, 15 aprimorar e 4 criar com IA, com os 4 A&M Signature à frente) e os nomes propostos dos pilares;
    - dono para cada produto;
    - abrir a Onda 0 (2.2 e 1.5);
    - investir na Plataforma de Dados e AI em etapas.
@@ -188,7 +195,7 @@ O que falta:
 
 ## 10. O que acontece com os agentes em andamento
 
-Em 30/10, às 03h30, não há agente em andamento: autores, revisores, lentes e corretores terminaram e a integração gerou os entregáveis. As mudanças desta sessão estão **no working tree, sem commit**. Até o commit e push (§9, item 1), elas se perdem se a sessão acabar.
+Em 30/10, às 04h25, não há agente em andamento: autores, revisores, lentes e corretores terminaram, a integração está no commit `c3aecff` (no GitHub) e o fechamento gerou de novo os entregáveis. As correções do fechamento ficam **no working tree** até o commit e push (§9, item 1); se a sessão acabar antes, elas se perdem.
 Os agentes do Claude Code escrevem **direto nos arquivos** de `src/`. Numa rodada nova com vários agentes, cada dono de slide só pode editar seus próprios arquivos (tabela em `CONTRACT.md` §2), para não haver conflito. Faça commit antes de trocar de IA.
 
 ## 11. Armadilhas e lições
@@ -199,7 +206,7 @@ Os agentes do Claude Code escrevem **direto nos arquivos** de `src/`. Numa rodad
 - Fatos divergentes ou fracos do registro: não usar como número (lista na seção 7). Antes de usar qualquer fato "a verificar", confirme na fonte e registre com status "verificado" e a observação do que foi visto.
 - Correções de fatos da V5 que os textos novos devem respeitar: 274 negócios de TI são do 1º semestre de 2025; sinergias da MBRF são R$ 805 mi/ano; 23% de pilotos escalados é Brasil (25% é mundo); 53% da KPMG é talento para transformação digital; PwC–ToltIQ não é exclusiva; a empresa de serviços de IA dos fundos com a Anthropic foi anunciada em 04/05/2026.
 - O Inter (fonte do texto) não vai embutido (como no modelo APODI); sem internet cai para Helvetica/Arial.
-- O PDF não é leve. Na integração de 30/10, às 03h24, o PDF de 84 páginas saiu com 15,9 MB (16.669.170 bytes) pelo `tools/pdf.js --ordem` e com 15,9 MB pelo `--ctrlp`; o Ctrl+P do navegador pode dar de 16 a 18 MB. Inter e JetBrains Mono vão embutidas como Type 3, com Inter e JetBrains Mono embutidas como Type 3 (cerca de 100 subconjuntos). O `pdf.js` só injeta fontes estáticas se existir `docs/fonts/pdf-fonts.css`; hoje o arquivo não existe e ele avisa. Para um PDF menor, versione esse arquivo com Inter e JetBrains Mono estáticas em TTF (rasterizar as páginas fica fora).
+- O PDF não é leve. No fechamento de 30/10, às 04h20, o PDF de 84 páginas saiu com 16,1 MB (16.833.207 bytes) pelo `tools/pdf.js --ordem` e com 16,0 MB (16.828.841 bytes) pelo `--ctrlp`; o Ctrl+P do navegador pode dar de 16 a 18 MB. Inter e JetBrains Mono vão embutidas como Type 3 (cerca de 100 subconjuntos). O `pdf.js` só injeta fontes estáticas se existir `docs/fonts/pdf-fonts.css`; hoje o arquivo não existe e ele avisa. Para um PDF menor, versione esse arquivo com Inter e JetBrains Mono estáticas em TTF (rasterizar as páginas fica fora).
 
 ### Fatos verificados só por busca (reler quando a rede liberar)
 

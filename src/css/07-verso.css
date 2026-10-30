@@ -50,8 +50,13 @@
 .vsheet .v-amt{min-width:0}
 .vsheet .v-amt .eye{margin:0 0 3px}
 .vsheet .v-amt p{font:600 14px/1.42 var(--fb);color:var(--navy);text-wrap:pretty}
-/* poucas fontes (até 6, classe posta por fitSheet): a caixa cresce, ocupa o vão e centraliza mascote e frase */
-.vsheet .v-r.v-few .v-amb{flex:1 1 auto;margin-top:22px;flex-direction:column;justify-content:center;text-align:center;gap:16px;padding:24px 28px;border-left:1px solid var(--line);border-top:4px solid var(--orange)}
+/* vão grande entre as fontes e a caixa (classe posta por fitSheet, medindo o vão): a caixa cresce e ocupa o vão;
+   .v-few = em coluna, mascote e frase centralizados; .v-grow = em linha, centralizada (quando a coluna não cabe) */
+.vsheet .v-r.v-few .v-amb,.vsheet .v-r.v-grow .v-amb{flex:1 1 auto;margin-top:22px}
+.vsheet .v-r.v-grow .v-amb{justify-content:center;gap:20px;padding:18px 28px}
+.vsheet .v-r.v-grow .v-amb .am-masc{--s:112px}
+.vsheet .v-r.v-grow .v-amt p{font-size:16px}
+.vsheet .v-r.v-few .v-amb{flex-direction:column;justify-content:center;text-align:center;gap:16px;padding:18px 28px;border-left:1px solid var(--line);border-top:4px solid var(--orange)}
 .vsheet .v-r.v-few .v-amb .am-masc{--s:140px}
 .vsheet .v-r.v-few .v-amt p{font-size:17px}
 

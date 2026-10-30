@@ -102,7 +102,7 @@
 .slide[data-s="09"] .s09-pc{min-width:0;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);font:500 15px/1.5 var(--fb);color:#C8DBEB}
 .slide[data-s="09"] .s09-pck{display:block;font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
 .slide[data-s="09"] .s09-pct{display:block;font:700 21px/1.1 var(--fh);color:#fff;padding-bottom:6px;border-bottom:3px solid var(--orange);white-space:nowrap}
-.slide[data-s="09"] .s09-pc .sl{display:block;margin-top:14px}
+.slide[data-s="09"] .s09-pc .sl{display:block;margin-top:10px}
 .slide[data-s="09"] .s09-pc .sl b{display:block;margin-bottom:2px;font:700 11px var(--fb);letter-spacing:.1em;text-transform:uppercase;color:var(--orange-l)}
 
 @media print{

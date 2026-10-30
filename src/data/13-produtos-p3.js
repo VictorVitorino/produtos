@@ -29,7 +29,7 @@ PRODUCTS.push(
  prodz:["Une diligência de comprador e vendedor","Níveis com escopo e preço fechados","Programa contínuo para fundos","Cada diligência abre 3.2, 3.4 e 3.5"],
  bench:"<b>Mercado:</b> diligência com IA virou oferta corrente das grandes firmas. <b>Diferencial A&M:</b> o que vem depois. O mesmo time segue na separação (3.2 e 3.3), na captura de valor (3.4) e, se preciso, na gestão interina de tecnologia (1.3).",
  jogo:"jogo-do-dia-1",
- fontes:["pwc-toltiq-2026","decoder-bain-vibecoding-2026","portfolio-dts"],
+ fontes:["pwc-toltiq-2026","decoder-bain-vibecoding-2026","pilar3-am-assist-ma","portfolio-dts"],
  ev:"Prazo e preço: proposta da DTS."},
 
 {id:"integration-separation-blueprint",code:"3.2",pillar:3,st:"ai",sig:false,

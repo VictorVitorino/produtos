@@ -70,12 +70,17 @@ const VERSO=(()=>{
   const over=el=>!!el&&el.scrollHeight>el.clientHeight+1;
   function setL(sh,k){const c=sh.querySelector(".v-l");if(c){c.style.setProperty("--vf",LV_L[k][0]+"px");c.style.setProperty("--vlh",LV_L[k][1])}}
   function setR(sh,k){const c=sh.querySelector(".v-r");if(c){c.style.setProperty("--vs",LV_R[k][0]+"px");c.style.setProperty("--vslh",LV_R[k][1])}}
+  /* vão medido entre as fontes e a caixa do AM: acima de 60 px a caixa cresce e ocupa o vão (continua no pé);
+     em coluna, com o mascote grande, se couber (.v-few); senão em linha, centralizada (.v-grow) */
+  function grow(R){const b=R&&R.querySelector(".v-amb"),a=b&&b.previousElementSibling;if(!a)return;
+    if(b.offsetTop-a.offsetTop-a.offsetHeight<=60)return;
+    R.classList.add("v-few");if(!over(R))return;R.classList.replace("v-few","v-grow");if(over(R))R.classList.remove("v-grow")}
   function fitSheet(sh,nn){const L=sh.querySelector(".v-l"),R=sh.querySelector(".v-r");if(!L||!L.offsetHeight)return FIT[nn]||null;
-    /* poucas fontes: a caixa do AM cresce e ocupa o vão da coluna (continua no pé) */
-    const R0=sh.querySelector(".v-r");if(R0)R0.classList.toggle("v-few",sh.querySelectorAll(".v-src>li").length<=6);
+    if(R)R.classList.remove("v-few","v-grow");
     let l=0,r=0;setL(sh,0);setR(sh,0);
     while(over(L)&&l<LV_L.length-1)setL(sh,++l);
     while(over(R)&&r<LV_R.length-1)setR(sh,++r);
+    grow(R);
     const ov=over(L)||over(R);sh.classList.toggle("v-over",ov);
     if(ov)warn("o:"+nn,`[verso] slide ${nn}: o texto do verso não cabe na página nem no menor degrau (${over(L)?"contexto":"fontes"}). Encurte o texto ou a lista de fontes.`);
     else if(l>0)console.info(`[verso] slide ${nn}: contexto ajustado para ${LV_L[l][0]}px para caber (padrão 15px)`);

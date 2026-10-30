@@ -862,8 +862,13 @@ h4{text-wrap:balance}
 .vsheet .v-amt{min-width:0}
 .vsheet .v-amt .eye{margin:0 0 3px}
 .vsheet .v-amt p{font:600 14px/1.42 var(--fb);color:var(--navy);text-wrap:pretty}
-/* poucas fontes (até 6, classe posta por fitSheet): a caixa cresce, ocupa o vão e centraliza mascote e frase */
-.vsheet .v-r.v-few .v-amb{flex:1 1 auto;margin-top:22px;flex-direction:column;justify-content:center;text-align:center;gap:16px;padding:24px 28px;border-left:1px solid var(--line);border-top:4px solid var(--orange)}
+/* vão grande entre as fontes e a caixa (classe posta por fitSheet, medindo o vão): a caixa cresce e ocupa o vão;
+   .v-few = em coluna, mascote e frase centralizados; .v-grow = em linha, centralizada (quando a coluna não cabe) */
+.vsheet .v-r.v-few .v-amb,.vsheet .v-r.v-grow .v-amb{flex:1 1 auto;margin-top:22px}
+.vsheet .v-r.v-grow .v-amb{justify-content:center;gap:20px;padding:18px 28px}
+.vsheet .v-r.v-grow .v-amb .am-masc{--s:112px}
+.vsheet .v-r.v-grow .v-amt p{font-size:16px}
+.vsheet .v-r.v-few .v-amb{flex-direction:column;justify-content:center;text-align:center;gap:16px;padding:18px 28px;border-left:1px solid var(--line);border-top:4px solid var(--orange)}
 .vsheet .v-r.v-few .v-amb .am-masc{--s:140px}
 .vsheet .v-r.v-few .v-amt p{font-size:17px}
 
@@ -2473,7 +2478,7 @@ h4{text-wrap:balance}
 .slide[data-s="09"] .s09-pc{min-width:0;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);font:500 15px/1.5 var(--fb);color:#C8DBEB}
 .slide[data-s="09"] .s09-pck{display:block;font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
 .slide[data-s="09"] .s09-pct{display:block;font:700 21px/1.1 var(--fh);color:#fff;padding-bottom:6px;border-bottom:3px solid var(--orange);white-space:nowrap}
-.slide[data-s="09"] .s09-pc .sl{display:block;margin-top:14px}
+.slide[data-s="09"] .s09-pc .sl{display:block;margin-top:10px}
 .slide[data-s="09"] .s09-pc .sl b{display:block;margin-bottom:2px;font:700 11px var(--fb);letter-spacing:.1em;text-transform:uppercase;color:var(--orange-l)}
 
 @media print{
@@ -3620,7 +3625,7 @@ a.pd-xref:hover{color:var(--steel)}
     <header class="head" data-a="fade">
       <div>
         <h2 class="tc">IT Advisory: 10 serviços viram 7 produtos que terminam em decisão, não em relatório</h2>
-        <p class="sub">Três ofertas de liderança e o IT Business Partner viram uma, os fiscais se juntam, a resiliência vai ao Pilar 4 e nasce o 1.7</p>
+        <p class="sub">Três ofertas de liderança e o IT Business Partner viram uma, os serviços fiscais se juntam, a resiliência vai ao Pilar 4 e nasce o 1.7</p>
       </div>
       <div class="head-r"><div class="pp-ctl" data-pillar="1" data-a="fade" style="--d:3"></div></div>
     </header>
@@ -4019,7 +4024,7 @@ a.pd-xref:hover{color:var(--steel)}
       <div class="s20-table" id="s20Table">
         <div class="s20-dc" data-w="0,1,2,3" style="--i:0;--r:-2deg" tabindex="0">
           <span class="s20-ix" aria-hidden="true"><b>1</b><i></i></span>
-          <div class="s20-dx"><b class="s20-dt">Aprovar os 24 produtos</b><p>5 · 15 · 4, com os 4 Signature à frente, e os nomes propostos dos pilares</p></div>
+          <div class="s20-dx"><b class="s20-dt">Aprovar os 24 produtos</b><p>5 manter, 15 aprimorar e 4 criar com IA; os 4 A&amp;M Signature à frente e os nomes dos pilares</p></div>
         </div>
         <div class="s20-dc" data-w="0" style="--i:1;--r:1.4deg" tabindex="0">
           <span class="s20-ix" aria-hidden="true"><b>2</b><i></i></span>
@@ -5945,7 +5950,7 @@ PRODUCTS.push(
  prodz:["Une diligência de comprador e vendedor","Níveis com escopo e preço fechados","Programa contínuo para fundos","Cada diligência abre 3.2, 3.4 e 3.5"],
  bench:"<b>Mercado:</b> diligência com IA virou oferta corrente das grandes firmas. <b>Diferencial A&M:</b> o que vem depois. O mesmo time segue na separação (3.2 e 3.3), na captura de valor (3.4) e, se preciso, na gestão interina de tecnologia (1.3).",
  jogo:"jogo-do-dia-1",
- fontes:["pwc-toltiq-2026","decoder-bain-vibecoding-2026","portfolio-dts"],
+ fontes:["pwc-toltiq-2026","decoder-bain-vibecoding-2026","pilar3-am-assist-ma","portfolio-dts"],
  ev:"Prazo e preço: proposta da DTS."},
 
 {id:"integration-separation-blueprint",code:"3.2",pillar:3,st:"ai",sig:false,
@@ -6137,7 +6142,7 @@ PRODUCTS.push(
  tagline:"Uma voz independente do integrador para decidir a virada",
  pitch:"Revisão independente de migrações de ERP, dados, nuvem e sistemas centrais: qualidade, reconciliação de dados e prontidão. O conselho decide seguir ou adiar com critérios objetivos.",
  meta:["Formato: revisão independente durante a migração","Comprador: CIO, CFO e conselho","Modelo comercial: honorário mensal por fase","Encaixe: complementa 2.2, 3.3 e 4.6"],
- kpis:[["60%","dos grandes contratos de TI terão, até 2027, cláusula que devolve parte do ganho da IA (previsão)","clawback-contratos-60"]],
+ kpis:[["60%","dos grandes contratos de serviços de TI terão, até 2027, cláusula que devolve parte do ganho da IA (previsão)","clawback-contratos-60"]],
  who:["Quem migra o ERP","Bancos e seguradoras","Empresas após uma fusão","Quem migra dados críticos"],
  pain:["O integrador avalia o próprio trabalho","Dados se perdem ou chegam inconsistentes, e a entrada em operação vira aposta","O conselho só descobre o problema depois da virada"],
  deliv:["Critérios de aceite combinados","Reconciliação de origem e destino","Revisões de qualidade e de testes","Decisão de seguir ou adiar a virada","Relatório independente ao comitê"],
@@ -7814,12 +7819,17 @@ const VERSO=(()=>{
   const over=el=>!!el&&el.scrollHeight>el.clientHeight+1;
   function setL(sh,k){const c=sh.querySelector(".v-l");if(c){c.style.setProperty("--vf",LV_L[k][0]+"px");c.style.setProperty("--vlh",LV_L[k][1])}}
   function setR(sh,k){const c=sh.querySelector(".v-r");if(c){c.style.setProperty("--vs",LV_R[k][0]+"px");c.style.setProperty("--vslh",LV_R[k][1])}}
+  /* vão medido entre as fontes e a caixa do AM: acima de 60 px a caixa cresce e ocupa o vão (continua no pé);
+     em coluna, com o mascote grande, se couber (.v-few); senão em linha, centralizada (.v-grow) */
+  function grow(R){const b=R&&R.querySelector(".v-amb"),a=b&&b.previousElementSibling;if(!a)return;
+    if(b.offsetTop-a.offsetTop-a.offsetHeight<=60)return;
+    R.classList.add("v-few");if(!over(R))return;R.classList.replace("v-few","v-grow");if(over(R))R.classList.remove("v-grow")}
   function fitSheet(sh,nn){const L=sh.querySelector(".v-l"),R=sh.querySelector(".v-r");if(!L||!L.offsetHeight)return FIT[nn]||null;
-    /* poucas fontes: a caixa do AM cresce e ocupa o vão da coluna (continua no pé) */
-    const R0=sh.querySelector(".v-r");if(R0)R0.classList.toggle("v-few",sh.querySelectorAll(".v-src>li").length<=6);
+    if(R)R.classList.remove("v-few","v-grow");
     let l=0,r=0;setL(sh,0);setR(sh,0);
     while(over(L)&&l<LV_L.length-1)setL(sh,++l);
     while(over(R)&&r<LV_R.length-1)setR(sh,++r);
+    grow(R);
     const ov=over(L)||over(R);sh.classList.toggle("v-over",ov);
     if(ov)warn("o:"+nn,`[verso] slide ${nn}: o texto do verso não cabe na página nem no menor degrau (${over(L)?"contexto":"fontes"}). Encurte o texto ou a lista de fontes.`);
     else if(l>0)console.info(`[verso] slide ${nn}: contexto ajustado para ${LV_L[l][0]}px para caber (padrão 15px)`);
@@ -9472,7 +9482,7 @@ PCFG[1].produtos={
   ba:{
     "1.1":["O retrato de maturidade termina em relatório, e a IA já produz esse retrato mais barato","Termina numa lista curta de decisões, com valor em reais e um dono para cada uma"],
     "1.2":["Plano digital sem caso de negócio: diz o que fazer, mas não quanto custa nem quanto devolve","Plano que o conselho aprova: casos de uso priorizados, ordem de execução e retorno previsto"],
-    "1.3":["Três ofertas de liderança e o IT Business Partner disputam o mesmo comprador e a mesma rede","Um só produto: o executivo assume o cargo e responde pelo resultado, com a IA de apoio"],
+    "1.3":["Três ofertas de liderança e o IT Business Partner disputam o mesmo comprador e a mesma rede de executivos","Um só produto: o executivo assume o cargo e responde pelo resultado, com a IA de apoio"],
     "1.4":["Desenha a área por projeto ou por torre, sem prever o trabalho dividido com agentes de IA","Estrutura, papéis e custo da TI com pessoas e agentes, e um plano de transição com dono"],
     "1.5":["Corte pontual: sem vigilância, o custo volta na renovação seguinte","Economia validada por Finanças e um radar com IA que avisa antes de o custo voltar"],
     "1.6":["Dois serviços fiscais para o mesmo comprador, vendidos em separado","Um ciclo anual: Lei do Bem, capitalização de software e dossiê técnico lido com IA"],

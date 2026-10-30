@@ -86,7 +86,7 @@ PRODUCTS.push(
  tagline:"Uma voz independente do integrador para decidir a virada",
  pitch:"Revisão independente de migrações de ERP, dados, nuvem e sistemas centrais: qualidade, reconciliação de dados e prontidão. O conselho decide seguir ou adiar com critérios objetivos.",
  meta:["Formato: revisão independente durante a migração","Comprador: CIO, CFO e conselho","Modelo comercial: honorário mensal por fase","Encaixe: complementa 2.2, 3.3 e 4.6"],
- kpis:[["60%","dos grandes contratos de TI terão, até 2027, cláusula que devolve parte do ganho da IA (previsão)","clawback-contratos-60"]],
+ kpis:[["60%","dos grandes contratos de serviços de TI terão, até 2027, cláusula que devolve parte do ganho da IA (previsão)","clawback-contratos-60"]],
  who:["Quem migra o ERP","Bancos e seguradoras","Empresas após uma fusão","Quem migra dados críticos"],
  pain:["O integrador avalia o próprio trabalho","Dados se perdem ou chegam inconsistentes, e a entrada em operação vira aposta","O conselho só descobre o problema depois da virada"],
  deliv:["Critérios de aceite combinados","Reconciliação de origem e destino","Revisões de qualidade e de testes","Decisão de seguir ou adiar a virada","Relatório independente ao comitê"],
