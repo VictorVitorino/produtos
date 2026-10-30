@@ -54,7 +54,7 @@ const PDX=(()=>{
     if(!ids.length&&!P.ev)["portfolio-dts","proposta-dts-2027"].forEach(id=>{if(FONTE(id))add(id)});
     return ids.map(id=>{const s=FONTE(id);if(!s){warn("pf"+id,`[ficha] ${P.code}: fonte ${id} não existe no registro (FONTES)`);return `<li><span class="ref-miss">fonte não encontrada: ${esc(id)}</span></li>`}
       const lab=`${esc(s.org||"")}${s.data?` <i>${esc(s.data)}</i>`:""}`;
-      return `<li title="${esc(s.titulo||"")}">${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${lab}<span class="ar">↗</span></a>`:`<span>${lab}</span>`}</li>`})}
+      return `<li title="${esc(s.titulo||"")}">${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.org||"")}${s.data?" ":""}<span class="nwr">${s.data?`<i>${esc(s.data)}</i>`:""}<span class="ar">↗</span></span></a>`:`<span>${lab}</span>`}</li>`})}
   /* meta "Chave: valor" → linhas da carta; itens sem chave entram como "Formato" */
   function metaRows(P){const rows=[],loose=[];(P.meta||[]).forEach(m=>{const s=clean(m),i=s.indexOf(":");if(i>0&&i<26)rows.push([s.slice(0,i).trim(),s.slice(i+1).trim()]);else loose.push(s)});
     if(loose.length){const r=rows.find(r=>/^formato$/i.test(r[0]));if(r)r[1]+=" · "+loose.join(" · ");else rows.unshift(["Formato",loose.join(" · ")])}

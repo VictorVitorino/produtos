@@ -91,7 +91,7 @@ const JOGOS={
     leva:"A lista das causas prováveis de fracasso, cada uma com sinal de alerta, dono e ação no plano",
     produtos:["2.2","2.3","2.4"],
     ponte:{
-      "2.2":"Causas ligadas ao ERP e à Reforma Tributária viram o diagnóstico de prontidão",
+      "2.2":"Causas ligadas ao ERP e à Reforma viram o escopo da virada e da primeira apuração",
       "2.3":"Os sinais de alerta do jogo viram o painel do escritório de transformação",
       "2.4":"Se o jogo mostra que o fracasso já começou, o resgate entra antes de a crise chegar ao conselho"
     },

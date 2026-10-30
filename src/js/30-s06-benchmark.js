@@ -13,7 +13,7 @@
   /* os quatro sinais: o que vimos (fatos do registro) e o que isso significa para nós (leitura DTS, sem nomes de produtos) */
   const SIG=[
     {n:1,t:"A IA virou plataforma e receita",
-     v:"A McKinsey conta <span data-fato=\"mckinsey-agentes-25-mil\">25 mil</span> agentes de IA na força de trabalho; tecnologia e IA já passam de <span data-fato=\"bcg-tech-ia-40\">40%</span> da receita do BCG.",
+     v:"A McKinsey conta cerca de <span data-fato=\"mckinsey-agentes-25-mil\">25 mil</span> agentes de IA na força de trabalho; tecnologia e IA já passam de <span data-fato=\"bcg-tech-ia-40\">40%</span> da receita do BCG.",
      p:"Não vamos disputar plataforma: o espaço é escolher e combinar ferramentas, sem vender licença, e responder pelo resultado."},
     {n:2,t:"O preço começa a sair da hora",
      v:"A McKinsey liga cerca de <span data-fato=\"mckinsey-honorarios-resultado-25\">25%</span> dos honorários a resultado, a Deloitte vende agentes por assinatura e a Accenture já vê preço menor.",

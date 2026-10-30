@@ -1,18 +1,4 @@
 
-/* ---------- TIMELINE · IA nas consultorias (benchmark) ---------- */
-const TL_MARKET=[
- {d:"Set 2023",s:"EY.ai",t:"EY lança EY.ai após investir US$ 1,4 bi",x:"Plataforma e assistente interno (EYQ). Começa a corrida das Big Four por plataformas próprias de IA.",src:"ICMIF, set/2023",tag:"Big Four"},
- {d:"Mar 2025",s:"Zora · agent OS",t:"Deloitte Zora AI, PwC agent OS e EY.ai Agentic",x:"Agentes por função vendidos por <b>assinatura</b> (Deloitte), orquestração multi-fornecedor (PwC) e 150 agentes de tributos (EY).",src:"SiliconANGLE 18/03/2025; PwC e EY, mar/2025",tag:"Big Four"},
- {d:"Mai 2025",s:"AWS Transform",t:"Modernização agêntica chega ao mercado",x:"AWS Transform (mainframe, VMware, .NET) em disponibilidade geral. Hoje: migração sem custo e US$ 0,035 por minuto de agente em transformações customizadas.",src:"SiliconANGLE 15/05/2025; preços set/2026",tag:"Hyperscaler"},
- {d:"Jun 2025",s:"KPMG Workbench",t:"KPMG Workbench: plataforma multiagente",x:"Base das plataformas de entrega Velocity (Advisory), Digital Gateway (Tax) e Clara (auditoria).",src:"KPMG International, 17/06/2025",tag:"Big Four"},
- {d:"Jan 2026",s:"McKinsey 25k",t:"McKinsey: 25 mil agentes e honorários por resultado",x:"~25 mil agentes ao lado de ~40 mil pessoas; ~25% dos honorários globais atrelados a resultado (nov/2025).",src:"BI/HBR jan/2026; Yahoo/BI nov/2025",tag:"Estratégia"},
- {d:"Mai 2026",s:"A&M AI Board",t:"A&M cria o Global AI Board",x:"Meta de <b>50% da receita ligada a IA até 2028</b> (até US$ 3,5 bi) e até 200 contratações. Ferramentas: A&M Assist e DiligenceGPT.",src:"A&M press release 05/05/2026; Bloomberg 04/05/2026",tag:"A&M"},
- {d:"Jun 2026",s:"PwC × ToltIQ",t:"Due diligence com IA vira disputa por exclusividade",x:"PwC passa a ser a única firma de serviços profissionais da ToltIQ; já havia lançado ‘Harvey, powered by PwC’ para deals.",src:"PwC US, jun/2026; PwC Global, jul/2025",tag:"M&A"},
- {d:"Jul 2026",s:"Ode · Bain",t:"Laboratórios de IA entram no canal de PE",x:"Ode with Anthropic (Blackstone, H&F) leva engenheiros às investidas; Bain replica o software do alvo com Claude Code na DD.",src:"BusinessWire jul/2026; FT jul/2026",tag:"PE"},
- {d:"Ago 2026",s:"AlixPartners",t:"AlixPartners compra a Artium (engenharia agêntica)",x:"O par mais comparável à A&M compra capacidade de IA pronta: 80+ pessoas, parceira de OpenAI e Anthropic.",src:"AlixPartners, 04/08/2026",tag:"Par direto"},
- {d:"Set 2026",s:"Falconi · CI&T",t:"Consultorias brasileiras viram ‘AI-native’",x:"Falconi investe R$&nbsp;100&nbsp;mi em IA (80% dos projetos com agentes); CI&T monetiza IA pela plataforma Flow.",src:"Jornal do Comércio set/2026; IT Forum 2026",tag:"Brasil"}
-];
-
 /* ---------- TIMELINE · 2026, IA nas consultorias (dono: benchmark, slide 06) ----------
    Só eventos de 2026, um por mês (jan–out), cada um com fato verificado no registro (05-fontes.js / 06-fatos-benchmark.js).
    d = mês · s = organização (rótulo curto da linha) · t = título · x = texto (números só por data-fato) ·
@@ -43,17 +29,13 @@ const TL_2026=[
  {d:"Ago 2026",s:"AlixPartners",sig:4,tag:"Pares compram capacidade",t:"AlixPartners compra a Artium, de engenharia com agentes",
   x:"A consultoria americana constrói agentes de IA sob medida para empresas e é parceira da OpenAI e da Anthropic; segue como unidade própria, com equipe e método mantidos.",
   src:"AlixPartners, 04/08/2026",f:["alixpartners-artium-2026"]},
- {d:"Set 2026",s:"Falconi",sig:4,tag:"Brasil",t:"No Brasil, a Falconi põe agentes de IA na maior parte dos projetos",
-  x:"A consultoria investiu <span data-fato=\"benchmark-falconi-ia-100\">R$ 100 milhões</span> em infraestrutura própria de IA desde 2022; <span data-fato=\"benchmark-falconi-agentes-80\">80%</span> dos projetos em andamento automatizam processos com agentes.",
+ {d:"Set 2026",s:"Falconi",sig:4,tag:"Brasil",t:"Falconi põe agentes de IA na maior parte dos projetos de tecnologia",
+  x:"A consultoria investiu <span data-fato=\"benchmark-falconi-ia-100\">R$ 100 milhões</span> em infraestrutura própria de IA desde 2022; <span data-fato=\"pilar2-falconi-agentes-80\">80%</span> dos projetos de tecnologia em andamento automatizam processos com agentes.",
   src:"Jornal do Comércio, 29/09/2026 (dados da Falconi)",f:["jc-falconi-2026"]},
  {d:"Out 2026",s:"Accenture",sig:2,tag:"Preço",t:"Accenture registra preço menor em várias áreas do negócio",
   x:"No balanço do ano fiscal, a firma informa preços menores no trimestre de junho a agosto e diz que as oportunidades da IA superam o efeito da eficiência da IA sobre o próprio negócio.",
   src:"Accenture, relatório anual e teleconferência de 01/10/2026",f:["benchmark-accenture-10k-2026","benchmark-fool-accenture-q4-2026"]}
 ];
-
-/* ---------- NOMENCLATURA · possível configuração ---------- */
-const NM_MARKET=[["Technology Strategy & Transformation · CIO Advisory","IT Advisory · Strategy, Leadership & Value",null],["Office of the CIO · IT Finance · TBM","Tech Spend Optimization & Spend Radar","1.5"],["Tech Due Diligence · Transaction Technology","AI-Powered Tech Due Diligence","3.1"],["Separation & Carve-out · TSA · Dia 1","Integration & Separation Blueprint","3.2"],["Trusted AI · Trustworthy AI · AI governance","AI Value & Governance Office","1.7"],["LegacyX · GenWizard · AWS Transform","Legacy X-Ray & AI Modernization","4.6"]];
-const NM_PRODS=[["Tech Maturity & Value Assessment","1.1"],["Digital Strategy & Roadmapping","1.2"],["Interim CIO / CTO Leadership + Embedded Tech Leadership + C-Level Tech Enablement","1.3"],["Strategic Tech Tax + Innovation Tax Incentives","1.6"],["ERP Readiness & Gap Analysis","2.2"],["TMO + Modelo de Implantação e Governança","2.3"],["IT Due Diligence (Buy Side) + (Sell Side)","3.1"],["IT Integration Management Office + IT Separation Management Office","3.3"],["Strategy Architecture","4.1"],["Strategy Application","4.2"],["Infrastructure Management","4.3"],["Complex Migrations Support","4.4"]];
 
 /* ---------- ROADMAP · quatro ondas de lançamento (dono: roadmap, slide 20) ----------
    Proposta DTS (fato proposta-4-ondas), sem trimestres, prazos nem metas numéricas: a ordem é de sequência, e cada onda
@@ -66,9 +48,9 @@ const TL_LAUNCH=[
   it:["Donos, fichas e a Plataforma de Dados e AI","2.2","1.5"],
   av:"o 2.2 e o 1.5 já são vendidos no formato de produto, com ficha e dono",
   m:"conversão de diagnóstico em execução"},
- {n:1,s:"Núcleo Signature",q:"em seguida",t:"Põe IA no método do que a A&M já vence",
+ {n:1,s:"Núcleo Signature",q:"em seguida",t:"Leva IA ao kit do que a A&M já vence",
   it:["3.1","2.4","1.3"],
-  av:"os quatro Signature saem com IA no método e outra equipe entrega com o mesmo kit",
+  av:"o 3.1 sai com IA no método, o 2.4 e o 1.3 com IA de apoio, e outra equipe repete a entrega",
   m:"tempo de entrega de diagnósticos e diligências"},
  {n:2,s:"Novos produtos com IA",q:"com pilotos",t:"Testa as apostas com clientes selecionados",
   it:["1.7","2.6","4.6"],

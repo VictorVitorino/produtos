@@ -194,7 +194,7 @@ const PILARX=(()=>{
       R.push({ha:`<div class="pl-chips">${r.L.length?r.L.map(chip).join(""):'<span class="pl-chip none">Não existe hoje</span>'}</div><p class="pl-why">${nw(b[0]||(prim?whyOf(n,prim):strip((p.pain||[])[0]||"")))}</p>`,
         hb:`<div class="pl-dcs">${r.L.length?decs(r.L):'<span class="pl-dc nw">Produto novo</span>'}</div><p class="pl-go">Vira <b>${p.code} ${p.name}</b></p>`,
         pa:`<div class="pl-gets">${gets(p)}</div><p class="pl-iaq"><b>${IAL[p.st]||"IA"}</b>${nw(iaOf(n,p))}</p>`,
-        pb:`<a class="pl-pn" href="#p=${p.id}" data-pd="${p.id}"><b class="pl-pc">${p.code}</b><b class="pl-pnm">${p.name}</b>${p.sig?'<span class="pl-sig">★ Signature</span>':""}${stTag(p.st)}</a><p class="pl-chg">${nw(b[1]||p.tagline)}</p>`})});
+        pb:`<a class="pl-pn" href="#p=${p.id}" data-pd="${p.id}"><b class="pl-pc">${p.code}</b><b class="pl-pnm">${p.name}</b>${p.sig?'<span class="pl-sig">★ A&amp;M Signature</span>':""}${stTag(p.st)}</a><p class="pl-chg">${nw(b[1]||p.tagline)}</p>`})});
     outs.forEach(o=>{const d=PBY(o.to),b=BA[d.code]||[],dp=PILLARS[d.pillar-1];
       R.push({x:1,ha:`<div class="pl-chips">${chip(o)}</div><p class="pl-why">${nw(b[0]||whyOf(n,o))}</p>`,
         hb:`<div class="pl-dcs"><span class="pl-dc">${o.d==="cut"?"Deixa de ser vendido sozinho":"Muda de pilar"}</span></div><p class="pl-go">Vai para <b>${d.code} ${d.name}</b> · Pilar ${d.pillar}</p>`,

@@ -5,7 +5,7 @@
    Quando o cliente nos chama · O que entregamos · Onde somos fortes · Onde há sobreposição.
    As linhas livres das colunas mostram o que o nome dos serviços diz (a oferta fala a língua de serviços).
    Ganchos: ENTER["04"] (volta à visão geral), STEP["04"] (→ percorre P1…P4), PRINT (página extra com a leitura).
-   Sem siglas fora da lista da SPEC 5 (TMO aparece só como nome oficial do serviço, explicado) e sem números novos.
+   Sem siglas fora da lista da SPEC 5 (o serviço oficial TMO aparece por extenso, Transformation Management Office) e sem números novos.
    ===================================================================== */
 (function(){const sec=SL("04");if(!sec||typeof PILLARS==="undefined"||typeof OLD==="undefined")return;
   const host=$("pfHost"),grid=$("pfGrid"),seg=$("pfSeg");
@@ -36,8 +36,8 @@
     3:[["O que o nome diz","A fase da transação, não o valor que o comprador quer proteger até a saída."]],
     4:[["O que o nome diz","A área (arquitetura, aplicações, infraestrutura), não a entrega."],
        ["O que o cliente quer","Uma rota para o legado e uma migração que não para a operação."]]};
-  /* nome oficial que é sigla fora da lista da SPEC 5: mostrado com a explicação */
-  const DN={"TMO":"TMO (escritório de transformação)"};
+  /* nome oficial que é sigla fora da lista da SPEC 5: mostrado por extenso, como nos slides 08, 09 e 13 */
+  const DN={"TMO":"Transformation Management Office"};
   const ROWS=Math.max(...PILLARS.map(pl=>OLD.filter(o=>o.p===pl.n).length));
   const esc2=t=>String(t).replace(/"/g,"&quot;");
   PILLARS.forEach(pl=>{const own=OLD.filter(o=>o.p===pl.n),grp={};own.forEach(o=>(grp[o.to]=grp[o.to]||[]).push(o));

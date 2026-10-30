@@ -113,6 +113,8 @@
   ENTER["20"]=()=>{stopAuto();build();if(goLast||REDMO)set(LAST,true);else play()};
   STEP["20"]=d=>{stopAuto();if(d>0){if(cur<LAST){set(cur+1);return true}return false}if(cur>0){set(cur-1);return true}return false};
   addEventListener("resize",()=>{if(G&&sec.classList.contains("active")){G=null;build();place(target(cur));placeFala()}});
+  /* saída do slide: para a trilha automática e o passo do mascote (o ENTER refaz o estado ao voltar) */
+  new MutationObserver(()=>{if(!sec.classList.contains("active")){stopAuto();cancelAnimationFrame(raf)}}).observe(sec,{attributes:true,attributeFilter:["class"]});
   /* impressão: tudo aceso, mascote na última estação, fala visível (a página já mostra toda a informação) */
   PRINT.push(()=>{stopAuto();cancelAnimationFrame(raf);set(LAST,true)});
 })();

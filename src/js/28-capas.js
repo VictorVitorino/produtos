@@ -25,8 +25,8 @@ const SV=()=>typeof OLD!=="undefined"?OLD:[];
 const X=s=>typeof esc==="function"?esc(s):String(s);
 const ICO=(n,d)=>typeof icoSvg==="function"?icoSvg(n,d):"";
 const PICO=(c,d)=>typeof picoSvg==="function"?picoSvg(c,d):ICO("spark",d);
-/* nome de serviço com sigla fora da lista (SPEC §5): escrito como no slide 04 */
-const SNM={"TMO":"TMO (escritório de transformação)"};const sn=o=>SNM[o.n]||o.n;
+/* nome de serviço com sigla fora da lista (SPEC §5): escrito por extenso, como nos slides 04, 08 e 13 */
+const SNM={"TMO":"Transformation Management Office"};const sn=o=>SNM[o.n]||o.n;
 const byCode=(a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true});
 const prodOf=c=>PR().find(p=>p.code===c)||null;
 const ST={keep:"Manter",ai:"Aprimorar com IA",new:"Criar com IA"};
@@ -55,7 +55,7 @@ function prep(host,cls){host.classList.add("cx",cls);
   host.insertBefore(fx,host.querySelector(".ch-txt"));return fx}
 /* títulos e subtítulo da capa numa linha que não cruza o efeito à direita */
 function fitText(host){const tx=host.querySelector(".ch-txt"),h=host.querySelector(".ch-h"),s=host.querySelector(".ch-sub");
-  if(h){h.style.fontSize="";let fs=parseFloat(getComputedStyle(h).fontSize)||120;while(h.offsetWidth>790&&fs>64){fs-=2;h.style.fontSize=fs+"px"}}
+  if(h){h.style.fontSize="";let fs=parseFloat(getComputedStyle(h).fontSize)||120;while(h.offsetWidth>750&&fs>64){fs-=2;h.style.fontSize=fs+"px"}}
   if(s){s.style.display="inline-block";fitW(s,790,19)}
   if(tx)tx.style.maxWidth="820px"}
 
@@ -225,7 +225,7 @@ function pilar(n){return(host,K)=>{const fx=prep(host,"cxp");host.classList.add(
       ${ps.map((p,j)=>{const src=srcOf(p),from=src.length?src.map(o=>sn(o)+(o.p!==n?` (Pilar ${o.p})`:"")).join("; "):"produto novo, com IA desde o desenho";
         const th=`<span class='tl'><b>Status</b>${ST[p.st]||""}${p.sig?" · ★ A&amp;M Signature":""}</span><span class='tl'><b>Origem</b>${X(from).replace(/'/g,"&#39;")}</span>`;
         return `<a class="cxp-pc ${p.st}${p.st==="new"?" glow":""}" href="#p=${p.id}" data-pd="${p.id}" style="top:${yP(j)}px;--dl:${RM?0:(p.st==="new"?2.75:2.15+j*.07).toFixed(2)}s" data-tv="${X(p.code+" · "+p.name)}" data-th="${th.replace(/"/g,"&quot;")}">
-          <span class="cd">${p.code}</span>${PICO(p.code,8+j)}<span class="nm">${X(p.name)}</span><span class="rt">${p.st==="new"?'<span class="tg">Novo</span>':`<span class="pp">${src.map(()=>"<i></i>").join("")}</span>`}${p.sig?'<span class="sg" title="A&amp;M Signature">★</span>':""}</span></a>`}).join("")}
+          <span class="cd">${p.code}</span>${PICO(p.code,8+j)}<span class="nm">${X(p.name)}</span><span class="rt">${p.st==="new"?'<span class="tg">Criar com IA</span>':`<span class="pp">${src.map(()=>"<i></i>").join("")}</span>`}${p.sig?'<span class="sg" title="A&amp;M Signature">★</span>':""}</span></a>`}).join("")}
     </div>`;
   if(typeof fixPaths==="function")fixPaths(fx);
   fx.querySelectorAll(".cxp-pc .nm").forEach(el=>{const pc=el.closest(".cxp-pc"),rt=pc.querySelector(".rt");fitW(el,540-14-8-6-38-12-21-12-12-(rt?rt.offsetWidth:0),15)});

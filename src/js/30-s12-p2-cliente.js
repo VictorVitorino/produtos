@@ -46,6 +46,6 @@ PCFG[2].cliente={
       ["Resgate com comando","Mais de <span data-fato=\"pilar2-erp-caso-negocio-70\"></span> das iniciativas recentes de ERP não devem cumprir todo o caso de negócio; turnaround é parte da A&amp;M.","2.4"],
       ["Agente com controle","Um agente executa o ciclo do processo com regras, aprovação humana e trilha de auditoria, e o ganho é medido.","2.6"]
     ],
-    th:"Até 2027, <span data-fato=\"clawback-contratos-60\"></span> dos grandes contratos de serviços de TI devem devolver ao cliente parte do ganho com IA: implantação e acompanhamento por hora perdem preço."}
+    th:"Até 2027, <span data-fato=\"clawback-contratos-60\"></span> dos grandes contratos de serviços de TI terão cláusula que devolve ao cliente parte do ganho com IA, prevê o Gartner: implantação e acompanhamento por hora perdem preço."}
 };
 })();

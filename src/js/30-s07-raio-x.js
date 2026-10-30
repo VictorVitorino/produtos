@@ -10,7 +10,7 @@
    Vista 2 · Três caminhos: prós e contras em palavras, o que cada caminho faz com o raio-X e a recomendação.
    Ganchos: ENTER["07"] (volta à visão geral), STEP["07"] (→ P1…P4, depois a vista 2; ← de volta), PRINT (páginas extras com
    a leitura serviço a serviço, que na tela só aparece na dica). Sem números fora da política (SPEC 4) e sem siglas fora da lista
-   (TMO só como nome oficial, explicado). Tudo dentro de IIFE; ids com prefixo rx.
+   (o serviço oficial TMO aparece por extenso, Transformation Management Office). Tudo dentro de IIFE; ids com prefixo rx.
    ===================================================================== */
 (function(){const sec=SL("07");if(!sec||typeof PILLARS==="undefined"||typeof OLD==="undefined")return;
   const LVD={A:"Alta",M:"Média",B:"Baixa"},LVV={A:"Alto",M:"Médio",B:"Baixo"};
@@ -52,11 +52,11 @@
   const PIL={
     1:"Núcleo em custo de TI e liderança interina. Diagnóstico e plano têm procura, mas pouco diferencial; três ofertas de liderança e duas fiscais se sobrepõem.",
     2:"Resgate de projetos é o núcleo. A janela de 2027 puxa a prontidão de ERP e o escritório de transformação, que se sobrepõe ao modelo de implantação.",
-    3:"Diligência de compra e sinergias são o núcleo, perto dos fundos. Seis serviços formam três pares do mesmo método em direções opostas.",
+    3:"Diligência de compra e sinergias são o núcleo, perto dos fundos. Seis serviços formam três pares com o mesmo método.",
     4:"Há procura em nuvem, licenças e migração, mas o direito de vencer é médio ou baixo: o diferencial é decidir a rota e revisar o integrador."};
   /* rótulo das células dos cantos (zonas do quadro) */
   const ZONE={AA:"Núcleo da A&M · escalar",AB:"Demanda sem diferencial próprio",BB:"Pouca demanda, pouco diferencial",BA:"Forte, mas sem procura"};
-  const DN={"TMO":"TMO (escritório de transformação)"};
+  const DN={"TMO":"Transformation Management Office"};
   const nmOf=o=>DN[o.n]||o.n;
   const att=s=>String(s==null?"":s).replace(/&(?![#\w]+;)/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
   const tl=(k,v)=>`<span class="tl"><b>${k}</b>${v}</span>`;
@@ -126,13 +126,13 @@
   const PATHS=[
     {k:"Caminho 1 · Incremental",h:"IA dentro dos serviços de hoje",p:"Mantém os 29 serviços e os nomes de hoje; a IA vira uma ferramenta interna da equipe.",
      pro:["Começa já, sem mexer na oferta nem no catálogo","Pede pouco investimento e traz pouco risco de execução"],
-     con:["As 12 sobreposições e os nomes de serviço continuam","O preço segue por hora, e o ganho da IA volta ao cliente"],
-     rx:"Não mexe nas 12 sobreposições; os 13 serviços que pedem IA no método ganham só produtividade interna.",
+     con:["As sobreposições e os nomes de serviço continuam","O preço segue por hora, e o ganho da IA volta ao cliente"],
+     rx:"Não mexe nos 12 serviços que se sobrepõem ou não se vendem sozinhos; os 13 que pedem IA no método ganham só produtividade interna.",
      ev:`Até 2027, <span data-fato="clawback-contratos-60"></span> dos grandes contratos de serviços de TI terão cláusulas que devolvem ao cliente parte dos ganhos com IA`,src:"Previsão do Gartner, citada pela ARN (2025)"},
     {k:"Caminho 2 · Transformacional",rec:true,h:"Serviços viram produtos com IA no método",p:"Reorganiza os 29 serviços em produtos de escopo fechado, com método, IA, dados e um formato que o cliente entende.",
      pro:["Funde as sobreposições e dá a cada produto um dono","A IA no método muda prazo, preço e a prova de resultado","Uma base comum de dados, modelos e guias serve a todos"],
      con:["Exige disciplina de produto: preço e prazo saem de pilotos","Muda como os sócios vendem e como a equipe entrega"],
-     rx:"Fecha as 12 sobreposições, leva IA ao método dos 13 que pedem e preserva os 4 que se mantêm. E incuba desde já duas apostas novas, criadas com IA.",
+     rx:"Resolve os 12 que se sobrepõem ou não se vendem sozinhos, leva IA aos 13 que pedem, preserva os 4 e cria 4 produtos novos com IA.",
      ev:`<span data-fato="ibm-consultoria-ativos" data-modo="txt"></span>`,src:"IBM (2025)"},
     {k:"Caminho 3 · Disruptivo",h:"A DTS vira plataforma por assinatura",p:"Serviços entregues por software: radares, escritórios e agentes de IA vendidos por assinatura.",
      pro:["Receita recorrente, que não depende de horas","Os dados de vários clientes viram um ativo próprio"],

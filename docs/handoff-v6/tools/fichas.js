@@ -4,6 +4,7 @@ const { chromium } = require("/opt/node22/lib/node_modules/playwright");
 const path = require("path"), fs = require("fs");
 const [, , deck, outTxt, shotDir] = process.argv;
 const R = [], errs = [], warns = [];
+const N = s => String(s || "").replace(/\s+/g, " ").trim(); /* normaliza espaços (inclui o não separável que os textos ganham) */
 const ok = (n, c, x) => { R.push(`${c ? "ok   " : "FALHA"} ${n}${x !== undefined ? " · " + (typeof x === "string" ? x : JSON.stringify(x)) : ""}`); return c };
 (async () => {
   let b; try { b = await chromium.launch() } catch (e) { b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" }) }
@@ -57,7 +58,7 @@ const ok = (n, c, x) => { R.push(`${c ? "ok   " : "FALHA"} ${n}${x !== undefined
     pdMeasureAll(true); DECK.ficha(backup.id); await sleep(150);
     const pd = document.getElementById("pd");
     const r = { fid, fidBad, fon, sig: !!pd.querySelector(".st.sig"), st: (pd.querySelector(".pd-tags .st") || {}).textContent, kp: [...pd.querySelectorAll(".pd-k")].map(k => k.textContent.replace(/\s+/g, " ").trim()),
-      jogo: (pd.querySelector(".pd-jogo p") || {}).textContent, fontes: [...pd.querySelectorAll(".pd-fon li")].map(l => ({ t: l.textContent.trim(), href: (l.querySelector("a") || {}).href || "", tgt: (l.querySelector("a") || {}).target || "" })),
+      jogo: (pd.querySelector(".pd-jogo p") || {}).textContent, prom: (typeof JOGOS !== "undefined" && JOGOS["mesa-do-conselho"] || {}).promessa || "", fontes: [...pd.querySelectorAll(".pd-fon li")].map(l => ({ t: l.textContent.trim(), href: (l.querySelector("a") || {}).href || "", tgt: (l.querySelector("a") || {}).target || "" })),
       ev: (pd.querySelector(".pd-ev") || {}).textContent, from: (pd.querySelector(".pd-from dd") || {}).textContent, meta: [...pd.querySelectorAll(".pd-kv>div:not(.pd-who):not(.pd-from) dt")].map(d => d.textContent),
       steps: [...pd.querySelectorAll(".pd-s b")].map(e => e.textContent), over: pdOverflow(pd), level: PDX.st.level };
     PRODUCTS[0] = backup; if (created) delete window.JOGOS; pdMeasureAll(true); closePD(true); return r;
@@ -65,7 +66,7 @@ const ok = (n, c, x) => { R.push(`${c ? "ok   " : "FALHA"} ${n}${x !== undefined
   if (shotDir) { /* captura da ficha no formato novo */ }
   ok("formato novo: ★ A&M Signature e etiqueta 'Aprimorar com IA'", novo.sig && /Aprimorar com IA/.test(novo.st), { sig: novo.sig, st: novo.st });
   ok("formato novo: kpi com id de FATOS verificado aparece com a fonte; fato não verificado é omitido", novo.kp.length === 1 && /Fonte|\(|\d{4}/.test(novo.kp[0]), novo.kp);
-  ok("formato novo: jogo de entrada com nome e promessa de JOGOS", /Mesa do Conselho/.test(novo.jogo || "") && /orçamento limitado/.test(novo.jogo || ""), novo.jogo);
+  ok("formato novo: jogo de entrada com nome e promessa de JOGOS", N(novo.jogo).includes("Mesa do Conselho") && !!N(novo.prom) && N(novo.jogo).includes(N(novo.prom)), { jogo: novo.jogo, promessa: novo.prom });
   ok("formato novo: fontes do registro com link ↗ em nova aba (+ fonte do fato do kpi)", novo.fontes.length >= 2 && novo.fontes.filter(f => f.href).every(f => /^https?:/.test(f.href) && f.tgt === "_blank"), novo.fontes);
   ok("formato novo: nota ev, origem 'Evolui de A + B', meta Chave: valor, etapas sem prazo", /calibrados no piloto/.test(novo.ev || "") && /Evolui de Tech Maturity/.test(novo.from || "") && novo.meta.join("|") === "Formato|Comprador|Modelo comercial|Encaixe" && novo.steps.every(s => !/sem\.|S\d/.test(s)), { ev: novo.ev, from: novo.from, meta: novo.meta, steps: novo.steps });
   ok("formato novo: cabe no corpo", !novo.over, { level: novo.level });
@@ -90,10 +91,11 @@ const ok = (n, c, x) => { R.push(`${c ? "ok   " : "FALHA"} ${n}${x !== undefined
   ok("formato antigo: E()/Hy() e [E · …]/[H] viram '(fonte: …)' ou somem", !velho.marks && velho.fn.some(t => /fonte: Gartner 2025/.test(t)) && velho.fn.some(t => /fonte: PwC 2026/.test(t)), { fn: velho.fn });
   ok("formato antigo: kpi de 2 elementos só com marca de fonte; número sem fonte omitido", velho.kp.length === 1 && /40%/.test(velho.kp[0]) && /Gartner/.test(velho.kp[0]), velho.kp);
   ok("formato antigo: etapas S1–2/M1 sem prazo (número = posição) e palavra 'Mensal' vira etiqueta", velho.steps[0].startsWith("1Coleta") && velho.steps[1].startsWith("2Ciclo") && /Revisão.*Mensal/.test(velho.steps[2]), velho.steps);
-  ok("formato antigo: sem sig/jogo/fontes/skills não quebra (jogo do pilar, fontes internas, 'Produto novo com IA')", velho.jogo === "Mesa do Conselho" && velho.fontes.length >= 1 && /Produto novo com IA/.test(velho.from || "") && !velho.over, { jogo: velho.jogo, fontes: velho.fontes, from: velho.from, over: velho.over });
+  ok("formato antigo: sem sig/jogo/fontes/skills não quebra (jogo do pilar, fontes internas, 'Produto novo com IA')", N(velho.jogo) === "Mesa do Conselho" && velho.fontes.length >= 1 && /Produto novo com IA/.test(velho.from || "") && !velho.over, { jogo: velho.jogo, fontes: velho.fontes, from: velho.from, over: velho.over });
   ok("formato antigo: meta sem chave entra em 'Formato'", velho.meta.some(m => /^Formato\s*Preço fixo por porte/.test(m)), velho.meta);
   if (shotDir) { await p.evaluate(() => DECK.ficha(PRODUCTS[12].id)); await p.waitForTimeout(400); await p.screenshot({ path: path.join(shotDir, "f3_ficha_" + (await p.evaluate(() => PRODUCTS[12].code)).replace(".", "_") + ".png") }); }
-  const unexpected = warns.filter(w => !/^\[ficha\] \d\.\d: número sem fato/.test(w) && !/\[fatos\]|\[verso\]/.test(w));
+  const unexpected = warns.filter(w => !/^\[ficha\] \d\.\d: número sem fato/.test(w) && !/\[fatos\]|\[verso\]/.test(w)
+    && !(novo.fidBad && w.startsWith(`[ficha] 1.1: fato ${novo.fidBad} `))); /* o fato não verificado que o teste do formato novo injeta de propósito */
   fs.writeFileSync(outTxt, R.join("\n") + "\n" + (errs.length ? "ERROS DE CONSOLE:\n  " + errs.join("\n  ") : "SEM ERROS DE CONSOLE") + "\navisos de console (fora os de número omitido): " + JSON.stringify([...new Set(unexpected)]) + "\n");
   console.log(R.join("\n")); console.log(errs.length ? "ERROS DE CONSOLE:\n  " + errs.join("\n  ") : "SEM ERROS DE CONSOLE"); console.log("avisos (fora número omitido): " + JSON.stringify([...new Set(unexpected)]));
   console.log(`resumo: ${R.filter(x => x.startsWith("ok")).length} ok · ${R.filter(x => x.startsWith("FALHA")).length} falhas`);

@@ -88,6 +88,7 @@
 .sowhat .k{flex:none;font:800 17px/1 var(--fh);letter-spacing:.06em;text-transform:uppercase;color:var(--orange-l);white-space:nowrap}
 .sowhat p{font:400 17px/1.42 var(--fb);color:#fff}
 .sowhat p b{font-weight:700}
+.body.dk > .sowhat{background:linear-gradient(100deg,#24406D 0%,#1A3159 60%,#152A4E 100%);border:1px solid rgba(255,255,255,.16)}
 .hl{color:inherit;font-weight:inherit}
 .dk .hl{color:var(--orange-l)}
 

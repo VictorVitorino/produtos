@@ -14,7 +14,7 @@ PCFG[2].produtos={
   /* antes e depois, por produto: [hoje · por que muda, proposta · o que muda]; "1.3" = linha do IT Business Partner, que sai do pilar */
   ba:{
     "2.1":["Seleção conduzida à mão: concorrência longa e decisão difícil de auditar","Requisitos e propostas lidos com IA, decisão defensável e contrato protegido em preço e saída"],
-    "2.2":["Prontidão do ERP vendida como análise de lacunas, sem dono para a virada","Virada da CBS estabilizada, primeira apuração conferida e a decisão do ERP tomada"],
+    "2.2":["Prontidão do ERP vendida como análise de lacunas, sem dono para a virada","Virada tributária estabilizada, primeira apuração conferida e a decisão do ERP tomada"],
     "2.3":["Dois serviços para o mesmo comprador: o escritório que reporta e o modelo de implantação","Um só escritório que lê o andamento com IA, avisa antes do atraso e acompanha o valor"],
     "2.4":["Resgate de projetos em crise, vendido caso a caso","Diagnóstico forense curto, decisão do conselho com cenários e comando até a operação"],
     "2.5":["Gestão de mudança medida pelo treinamento dado, não pelo uso","Adoção de sistemas e de IA medida pelo uso real, com apoio por perfil de usuário"],
@@ -24,7 +24,7 @@ PCFG[2].produtos={
   /* motivo de cada serviço, na dica do grafo (Decisão · Vira · Por quê) */
   why:{
     b1:"A IA encurta requisitos, concorrência e avaliação; o valor passa a ser a independência na escolha e na negociação (2.1).",
-    b2:"A CBS passa a ser cobrada em 2027 e a manutenção padrão da versão antiga do ERP da SAP acaba no fim do ano: vira o 2.2.",
+    b2:"A CBS, novo tributo federal sobre consumo, passa a ser cobrada em 2027 e a manutenção padrão da versão antiga do ERP da SAP acaba no fim do ano: vira o 2.2.",
     b3:"Escritório que só reporta andamento perde valor; com IA, avisa antes do atraso e acompanha o valor prometido (2.3).",
     b4:"A mudança passa a ser medida pelo uso real de sistemas e de IA, e não pelo treinamento dado (2.5).",
     b5:"Mesmo comprador e mesmo método do escritório de transformação: os dois viram o 2.3.",

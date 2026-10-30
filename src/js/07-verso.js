@@ -71,6 +71,8 @@ const VERSO=(()=>{
   function setL(sh,k){const c=sh.querySelector(".v-l");if(c){c.style.setProperty("--vf",LV_L[k][0]+"px");c.style.setProperty("--vlh",LV_L[k][1])}}
   function setR(sh,k){const c=sh.querySelector(".v-r");if(c){c.style.setProperty("--vs",LV_R[k][0]+"px");c.style.setProperty("--vslh",LV_R[k][1])}}
   function fitSheet(sh,nn){const L=sh.querySelector(".v-l"),R=sh.querySelector(".v-r");if(!L||!L.offsetHeight)return FIT[nn]||null;
+    /* poucas fontes: a caixa do AM cresce e ocupa o vão da coluna (continua no pé) */
+    const R0=sh.querySelector(".v-r");if(R0)R0.classList.toggle("v-few",sh.querySelectorAll(".v-src>li").length<=6);
     let l=0,r=0;setL(sh,0);setR(sh,0);
     while(over(L)&&l<LV_L.length-1)setL(sh,++l);
     while(over(R)&&r<LV_R.length-1)setR(sh,++r);
@@ -113,7 +115,11 @@ const VERSO=(()=>{
   function page(sec){const nn=keyOf(sec);
     const m=H("div",{class:"vsheet vmeasure","aria-hidden":"true"},stage);m.innerHTML=sheetHTML(sec,true);number(m);refFill(m);deckMasc(m);
     const f=fitSheet(m,nn);const html=m.innerHTML;m.remove();
-    const pg=H("section",{class:"slide vpage vsheet","data-vfor":nn,html});applyFit(pg,f);return pg}
+    const pg=H("section",{class:"slide vpage vsheet","data-vfor":nn,html});applyFit(pg,f);
+    /* no PDF, a marca [n] leva à fonte n desta mesma página (e não à capa) */
+    pg.querySelectorAll(".v-src>li").forEach(li=>li.id=`vp-${nn}-${li.dataset.n}`);
+    pg.querySelectorAll("a.v-ref").forEach(a=>a.setAttribute("href",`#vp-${nn}-${(a.dataset.r||"").split(",")[0]}`));
+    return pg}
 
   /* fatos e fontes: preenche tudo no boot e de novo ao entrar num slide (conteúdo desenhado pelo ENTER) */
   BOOT.push(()=>{refFill(stage);refFill($("versos"))});

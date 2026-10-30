@@ -12,7 +12,8 @@
 #chap.cx .ch-txt{max-width:800px;pointer-events:none}
 #chap.cx .ch-chips{pointer-events:auto}
 #chap.cx .ch-sub{white-space:nowrap;font-size:26px;max-width:none}
-#chap.cx.pil .ch-h{font-size:104px}
+#chap.cx .ch-h{font-size:96px}
+#chap.cx.pil .ch-h{font-size:76px}
 #chap.cx.pil .ch-sub{font-size:25px;max-width:none}
 #chap.cx .ch-tag{white-space:nowrap}
 #chap.cx .ch-tag b{color:#fff;font-weight:600}

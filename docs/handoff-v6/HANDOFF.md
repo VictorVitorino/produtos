@@ -1,6 +1,6 @@
 # Passagem de bastão · DTS Planejamento Estratégico 2027 (versão V6)
 
-Escrito em 30/10/2026, às 00h10, durante a sessão do Claude Code. Quem continuar (outra IA ou pessoa) deve ler este arquivo,
+Escrito em 30/10/2026, às 00h10, durante a sessão do Claude Code; seções 2, 3, 7 e 9 atualizadas às 03h30, na integração final da V6. Quem continuar (outra IA ou pessoa) deve ler este arquivo,
 depois `SPEC.md` (o que dizer e como o deck deve ser) e `CONTRACT.md` (como montar cada slide). Os pedidos originais do usuário,
 na ordem em que foram feitos, estão em `pedidos_do_usuario.txt`.
 
@@ -19,7 +19,7 @@ O usuário é líder da DTS, fala português do Brasil e quer linguagem executiv
 ## 2. Onde está o código
 
 - GitHub: `VictorVitorino/produtos`, branch **`claude/pensive-fermat-fijb3d`** (não abrir PR sem o usuário pedir).
-- O entregável antigo, **V5**, continua em `DTS_Portfolio_Estrategico_2027.html` e `.pdf` (20 slides; PDF de 56 páginas). **Ele ainda não foi substituído pela V6.**
+- O entregável é a **V6**, em `DTS_Portfolio_Estrategico_2027.html` e `.pdf`. Os dois foram gerados em 30/10, às 03h24, por `python3 build.py --final` e `tools/pdf.js --ordem`: 20 slides, 20 versos, 9 capas e 24 fichas; o PDF tem 84 páginas. A V5, com PDF de 56 páginas, fica só no histórico do git.
 - `python3 build.py --out caminho.html` gera o HTML a partir de `src/`. O build **recusa rodar sem `--out`**; `python3 build.py --final` é o único que sobrescreve o arquivo principal (usar só na integração).
 - `src/`: `slides/NN-*.html` (um por slide), `versos/NN-*.html` (verso de cada slide), `css/` e `js/` (um módulo `30-sNN-*` por slide, mais `02-componentes.css`, `25-pilares.*` para os pilares, `40-fichas.*`, `07-verso.*`, `06-mascote.*`, `07-monograma.*`), `data/` (`00-base.js` pilares e 29 serviços, `05-fontes.js` registro de fontes e fatos, `06-fatos-<dono>.js` fatos que cada autor verificou, `11…14-produtos-pN.js` as 24 fichas, `20-timelines.js`, `30-jogos.js`, `01-capitulos.js`), `core.js`/`engine.js`/`styles.css` (moldura, navegação, impressão), `assets/` (logos A&M e DTS, fontes Barlow Condensed).
 - Também no repositório, sem relação com o deck: `prototipo-ciclo-agentico/` (protótipo em Python de um ciclo com agente, 32 testes) e `pesquisa/` (4 relatórios de pesquisa de mercado, com URLs e datas).
@@ -29,8 +29,8 @@ O usuário é líder da DTS, fala português do Brasil e quer linguagem executiv
 1. Pedido inicial: revisar os 29 serviços, pesquisar o mercado brasileiro e as consultorias (nomes, IA, ferramentas), separar evidência de hipótese, propor o novo portfólio e uma one-page com ficha por produto; usar a paleta A&M, logos A&M e DTS, os efeitos do guia de design DTS e storytelling, em no máximo 20 slides.
 2. V1 a V4: capa com Particle System (repelir e atrair), slide com Shimmer/Holographic Sweep e escudo DTS, spotlight por pilar, forças, benchmark, raio-X, três caminhos, 29→24, one-page, pilares (Morphing, antes e depois), fábrica (Card Stack), roadmap (Timeline Motion). Várias rodadas de feedback: sem quebra de linha em rótulos, sem texto cortado, sem espaços vazios, textos executivos e lúdicos.
 3. V5: o usuário mostrou o deck "DTS Tech M&A" (referência) e 4 telas favoritas; o deck foi refeito nesse padrão, com revisão adversarial (100 correções). Entregue em HTML e PDF.
-4. Análise paralela: o usuário enviou uma proposta de terceiros de automação agêntica de um ciclo de custos e perguntou se a A&M entrega isso e se é viável com Claude. Resposta dada: a A&M não tem esse produto; entraria como **2.7 Agentic Process Automation** (25º produto, no Pilar 2) ou dentro do 2.6; viável tecnicamente (cerca de 35% do esforço é código; o resto é acesso, regras, aprovações e adoção); um protótipo sintético foi construído em `prototipo-ciclo-agentico/`. **Decisão pendente do usuário:** 2.7 como 25º produto ou dentro do 2.6.
-5. **V6 (em andamento)**: o usuário enviou o deck da **APODI** como modelo de layout (margens, alturas, moldura) e pediu para refinar toda a apresentação (detalhes na seção 4).
+4. Análise paralela: o usuário enviou uma proposta de terceiros de automação agêntica de um ciclo de custos e perguntou se a A&M entrega isso e se é viável com Claude. Resposta dada: a A&M não tem esse produto; entraria como **2.7 Agentic Process Automation** (25º produto, no Pilar 2) ou dentro do 2.6; viável tecnicamente (cerca de 35% do esforço é código; o resto é acesso, regras, aprovações e adoção); um protótipo sintético foi construído em `prototipo-ciclo-agentico/`. **Decisão do usuário (tomada na V6):** o 2.7 é **módulo do 2.6** (AI-Native IT Productivity), "Automação agêntica de processos", e não um 25º produto. O portfólio continua com 24 produtos (5 · 15 · 4). O módulo aparece na one-page (09), no slide 13 e na ficha 2.6.
+5. **V6 (pronta em 30/10, às 03h30; falta commit e push)**: o usuário enviou o deck da **APODI** como modelo de layout (margens, alturas, moldura) e pediu para refinar toda a apresentação (detalhes na seção 4).
 
 ## 4. O pedido atual (V6), nas palavras do usuário, e o que significa
 
@@ -80,34 +80,72 @@ Pedidos adicionados depois, ainda na V6:
 
 Capas de capítulo (Partes 1 a 5 e abertura de cada pilar): um efeito do guia por capa, definido em `SPEC.md` §2.1 (Floating Elements, Animated Shader + Pulse, Heatmap, Hologram 3D Cards + Counter, Motion Graphics + Icon Motion + Counter, BPMN Flow).
 
-## 7. Estado atual (30/10, 00h10)
+## 7. Estado atual (30/10, 03h30): V6 pronta, falta commit e push
 
-**Pronto e verificado**
-- **Fundação** (commit `c4ca436`): moldura APODI, navegação (teclas e botões), índice, abas de capítulo, "Virar a página" em 3D com verso, impressão com frente e verso intercalados (PDF de teste com 78 páginas), divisórias no modelo APODI, fichas de produto no novo padrão, escala responsiva (1280×720 a 2560×1440). Testes: navegação 70/70, responsividade 87/87, 24 fichas cabem sem rolagem, zero erro de console.
-- **Mascote AM** (`src/js/06-mascote.js`, `src/css/06-mascote.css`): API `window.AMMasc`, 10 poses (aceno, aponta, pensa, lupa, lanterna, capacete, apresentador, bandeira, livro, comemora), baseado no monograma A&M da imagem do usuário.
-- **Registro de fontes e fatos** (`src/data/05-fontes.js` + `src/data/06-fatos-<dono>.js`): hoje **186 fatos e 163 fontes**; **85 verificados** (usáveis como número), **94 "a verificar"** (não usar), **4 fracos** (só em texto, com ressalva: `genai-sem-impacto-95`, `comprar-vs-construir-67`, `alixpartners-cio-interino`, `erp-apuracao-no-erp-53`) e **3 divergentes** (não usar: `agentes-investem-br-40`, `barreira-conhecimento-44`, `lei-do-bem-2024`). Os autores dos slides acrescentam fatos que eles mesmos verificaram na web. Relatório da auditoria inicial em `fatos_verificados.md` (175 fatos, 68 verificados naquele momento).
-- **24 fichas reescritas** (`src/data/11…14-produtos-pN.js`) sem siglas desconhecidas nem números sem fonte; **4 jogos de entrada** em `src/data/30-jogos.js`.
-- **Auditoria do deck V5** em `auditoria.md` (296 números classificados, 283 siglas, 123 frases genéricas, 98 problemas de lógica).
+**Tudo pronto.** Nesta sessão foram reescritos:
+- os 20 slides e os 20 versos;
+- as 9 capas de capítulo;
+- o monograma da capa, agora em constelação;
+- as 24 fichas.
 
-**Reescrita dos slides (feita por agentes; autor + revisor independente por dono)**
+Cada parte foi feita por um dono e conferida por um revisor independente. Depois vieram cinco lentes sobre o deck inteiro (sócio, fatos, design, funcional e conteúdo), cinco corretores e a integração final. Nenhum verso está "Em construção".
 
-| Dono | Slides | Situação em 00h10 |
-|---|---|---|
-| partida | 03, 04 | autor terminou; **revisão pendente** |
-| forcas | 05 | autor terminou; **revisão pendente** |
-| benchmark | 06 | autor reiniciado agora; falta tudo |
-| posicao | 07 e textos de `src/data/00-base.js` | autor reiniciado agora; falta tudo |
-| portfolio | 08, 09 | começando agora; falta tudo |
-| capas | divisórias | começando agora; falta tudo |
-| abertura | 01, 02 | começando agora (a capa depende do novo monograma) |
-| pilar-1 (também o motor `25-pilares.*`) | 10, 11 | autor na verificação final; revisão pendente |
-| pilar-2, pilar-3, pilar-4 | 12–17 | não começaram (dependem do motor do pilar 1) |
-| fabrica-jogos | 18, 19 | autor terminou; **revisão pendente** |
-| roadmap | 20 | autor em andamento |
+**Entregáveis gerados na integração (03h24)**
+- `DTS_Portfolio_Estrategico_2027.html` (`build.py --final`): 1.355.089 bytes, 48 scripts e 4 ativos. É idêntico, byte a byte, ao deck auditado.
+- `DTS_Portfolio_Estrategico_2027.pdf` (`tools/pdf.js --ordem`): 84 páginas de 1600 × 900, com 16.669.170 bytes (cerca de 16 MB).
+  - Composição: 20 frentes, 9 segundas vistas (07 e 10 a 17), 20 versos, 11 páginas de detalhe e 24 fichas.
+  - Cada verso vem logo depois da sua frente.
+  - As 10 fontes vão embutidas.
+  - Nenhuma página em branco e nenhuma com o corpo vazio.
+- `README.md` reescrito para a V6.
 
-Versos escritos até agora: 03, 04, 05, 10, 11, 18, 19. **Ainda "Em construção": 01, 02, 06, 07, 08, 09, 12 a 17 e 20.**
+**Testes da integração (deck auditado = arquivo final)**
+- `audit.js` com fichas e `offline`:
+  - **0 apontamentos** em 73 vistas: 20 slides, 9 segundas vistas, 20 versos e 24 fichas.
+  - Zero erros e zero avisos de console.
+  - Versos com 334 a 379 palavras, todos na letra padrão de 15 px.
+  - 19 avisos "? a conferir", que não contam como apontamento:
+    - nomes de tributos: CBS, IBS, PIS, ICMS e ISS;
+    - nomes de empresas e organizações: TOTVS, CI&T, BRF, IG4, HFS, CISPE, C&M Software e Diário do Grande ABC;
+    - nomes técnicos: ECC, .NET, COBOL e EBITDA;
+    - "AM", o nome do mascote;
+    - "[1–11]", a faixa de fontes citada no verso 06.
 
-**Monograma da capa**: a versão 3D fiel (`src/js/07-monograma.js`, API `window.AMMono` com `mount/play/stop/svg`) foi **reprovada**. Três conceitos novos estão sendo criados (constelação de partículas, planos geométricos, traço técnico/blueprint); um diretor de criação escolhe, lapida e instala com a mesma API, para a capa não precisar mudar.
+    Os donos conferiram e mantiveram esses avisos. CBS, IBS, ECC e EBITDA são explicados na primeira menção (SPEC §5).
+- `nav.js`: 70 de 70.
+- `resp.js`: 87 de 87.
+- `fichas.js`: 17 ok e 0 falhas.
+- `buildcheck.py`: ok (só o Google Fonts fica externo; sem fotos de pessoas).
+- `pdf.js --ordem` e `pdf.js --ctrlp`: 84 páginas nos dois, sem página em branco, sem corpo vazio e sem erro de console.
+- As capturas das 9 capas, da capa, do sumário e dos slides 09, 18, 19 e 20 saíram sem erro de console.
+
+**Fundação e conteúdo-base** (sem mudança de estrutura desde `c4ca436`):
+- moldura APODI, navegação, índice, abas, "Virar a página" e impressão intercalada;
+- mascote AM (`window.AMMasc`, 10 poses);
+- monograma em constelação (`window.AMMono`; a versão 3D fiel foi reprovada);
+- motor dos pilares (`25-pilares.*`);
+- capas (`28-capas.*`);
+- fichas (`40-fichas.*`).
+
+**Registro de fontes e fatos** (`src/data/05-fontes.js` + `src/data/06-fatos-<dono>.js`)
+- **199 fontes e 229 fatos.** O verso 02 lê essa contagem do registro.
+- **128 verificados**, os únicos que viram número.
+- **94 "a verificar"**, que não se usam.
+- **4 fracos**, só em texto e com ressalva: `genai-sem-impacto-95`, `comprar-vs-construir-67`, `alixpartners-cio-interino` e `erp-apuracao-no-erp-53`.
+- **3 divergentes**, que não se usam: `agentes-investem-br-40`, `barreira-conhecimento-44` e `lei-do-bem-2024`.
+- Desde o commit `182b24a` entraram 43 fatos novos, todos verificados. Em 42 deles a conferência foi só por trechos de busca (lista na §11).
+- A auditoria inicial está em `fatos_verificados.md` (175 fatos, 68 verificados naquele momento). A auditoria do deck V5 está em `auditoria.md`.
+
+**Decisões do usuário registradas**
+- **2.7 Agentic Process Automation = módulo do 2.6** ("Automação agêntica de processos", dentro do AI-Native IT Productivity). Não é 25º produto; seguem 24 produtos, 5 · 15 · 4.
+- **Nomes propostos dos pilares** (`PILLARS.to` em `00-base.js`) continuam como proposta da V5. O deck mostra cada um como "Nome proposto, a aprovar" no 09 (Pilares 1, 3 e 4), na carta 1 do 20 e no verso 20.
+- Nenhuma pessoa da A&M; nenhum número sem fato verificado; só as siglas permitidas; uma linha por título e rótulo; 20 slides; layout APODI; monograma em constelação na capa.
+
+**O que restou** (nada bloqueia a entrega; detalhes na §9):
+- reler na fonte os 42 fatos conferidos só por busca;
+- limpar as duplicatas do registro;
+- PDF menor, com fontes estáticas;
+- as decisões do comitê.
 
 ## 8. Por que está demorando (resposta ao usuário)
 
@@ -118,17 +156,40 @@ Versos escritos até agora: 03, 04, 05, 10, 11, 18, 19. **Ainda "Em construção
 
 ## 9. Próximos passos, em ordem
 
-1. Esperar ou refazer os agentes em andamento (ver seção 10) e colocar os slides restantes no padrão do slide 04 (`src/slides/04-portfolio-atual.html`, `src/css/30-s04-…`, `src/js/30-s04-…`), seguindo `CONTRACT.md`.
-2. Escrever os 13 versos que faltam (`CONTRACT.md` §13) com fontes `<li data-f="id">` do registro; verificar fatos novos na web antes de usar (registrar em `src/data/06-fatos-<dono>.js`).
-3. Instalar o monograma desconstruído na capa (`window.AMMono`) e conferir a capa com Particle System.
-4. Capas de capítulo novas (`SPEC.md` §2.1), sem o blob.
-5. Revisão global (sócio, fatos, design) nos 20 slides, nas duas vistas, nos versos e nas 24 fichas: `audit.js` sem apontamentos, `nav.js`, `resp.js`, `fichas.js`, `pdf.js --ordem`.
-6. `python3 build.py --final`, gerar o PDF (`tools/pdf.js`), atualizar `README.md` (ainda descreve a V5), commit e push.
-7. Perguntar ao usuário a decisão pendente do 2.7 (25º produto ou dentro do 2.6).
+Feito nesta sessão (itens antigos 1 a 7):
+- slides no padrão do 04;
+- os versos que faltavam;
+- monograma em constelação;
+- capas novas;
+- revisão global;
+- `build.py --final`, PDF e `README.md`;
+- decisão do 2.7 (módulo do 2.6).
+
+O que falta:
+
+1. **Commit e push** do estado atual: `src/`, `docs/handoff-v6/`, `README.md`, `DTS_Portfolio_Estrategico_2027.html` e `.pdf`. Não versionar pastas `*_check/` geradas pelo `pdf.js`.
+2. **Apresentar ao comitê as quatro decisões do slide 20** ("O chamado"):
+   - aprovar os 24 produtos (5 · 15 · 4, com os 4 Signature à frente) e os nomes propostos dos pilares;
+   - dono para cada produto;
+   - abrir a Onda 0 (2.2 e 1.5);
+   - investir na Plataforma de Dados e AI em etapas.
+
+   Se o comitê aprovar os nomes, trocar `PILLARS.name` por `PILLARS.to` em `00-base.js`, tirar os blocos "Nome proposto, a aprovar" (09 e 20) e rodar de novo `audit.js`. Nomes mais longos podem quebrar linha nas capas, abas e cabeçalhos.
+3. **Reler na fonte os fatos verificados só por busca** (lista na §11): primeiro os 18 que mostram número, depois os outros 24. Acrescentar "página lida em dd/mm/aaaa" na obs. Se algum não se confirmar, mudar o status e tirar o número do deck (`audit.js` aponta o uso de fato não verificado).
+4. **Validar com sócios e pilotos** o que o deck já marca como proposta:
+   - prazo, preço, metas e indicadores de cada produto e de cada onda ("a calibrar nos pilotos");
+   - os níveis do raio-X;
+   - o uso do A&M Assist no Brasil (3.1 e one-page);
+   - o honorário ligado a marcos do 3.3;
+   - se os nomes em inglês dizem o que entregam.
+5. **PDF menor** (opcional): versionar `docs/fonts/pdf-fonts.css` com Inter e JetBrains Mono estáticas e gerar o PDF de novo (§11).
+6. Revisão global (sócio, fatos, design) depois de qualquer mudança: `audit.js` sem apontamentos, `nav.js`, `resp.js`, `fichas.js`, `pdf.js --ordem` e `pdf.js --ctrlp` (nenhuma página com corpo vazio nos dois); depois `build.py --final` e PDF.
+7. Limpeza do registro (duplicatas entre fatos verificados; não muda o que o deck mostra, mas infla a contagem do verso 02 e abre risco de divergência). Já feito na integração: o 80% da Falconi ficou só em `pilar2-falconi-agentes-80` (slide 06, ficha 2.6 e slide 12) e `benchmark-falconi-agentes-80` saiu de `06-fatos-benchmark.js`. Falta: fundir `posicao-am-cargos-interinos` com `pilar1-am-cargos-interinos`, `benchmark-alixpartners-artium` com `pilar1-alix-artium` e `benchmark-diligencia-voz` com `pilar3-diligencia-comercial-agentes` (nenhum é usado como número); no verso 07, trocar a fonte `posicao-am-interim` por `pilar1-am-interim` (mesma página da Alvarez & Marsal); e acertar o `txt` de `jogos-simulacao-aprendizado` (o id existe em `05-fontes.js`, a verificar, e em `06-fatos-fabrica-jogos.js`, verificado, com textos diferentes; o verificado cita 20% e 14%, mas o 14% tem fato próprio, `jogos-simulacao-pratica-14`).
 
 ## 10. O que acontece com os agentes em andamento
 
-Os agentes do Claude Code escrevem **direto nos arquivos** de `src/`. Se a sessão acabar, o que não foi commitado se perde. Por isso, antes de trocar de IA, convém fazer um commit e push do estado atual (feito junto com este documento). O que está pela metade (versos "Em construção", slides ainda no formato V5 dentro da moldura nova) funciona e não quebra o build, mas ainda mostra texto da V5. Cada dono de slide só pode editar seus próprios arquivos (tabela em `CONTRACT.md` §2), para não haver conflito.
+Em 30/10, às 03h30, não há agente em andamento: autores, revisores, lentes e corretores terminaram e a integração gerou os entregáveis. As mudanças desta sessão estão **no working tree, sem commit**. Até o commit e push (§9, item 1), elas se perdem se a sessão acabar.
+Os agentes do Claude Code escrevem **direto nos arquivos** de `src/`. Numa rodada nova com vários agentes, cada dono de slide só pode editar seus próprios arquivos (tabela em `CONTRACT.md` §2), para não haver conflito. Faça commit antes de trocar de IA.
 
 ## 11. Armadilhas e lições
 
@@ -138,7 +199,50 @@ Os agentes do Claude Code escrevem **direto nos arquivos** de `src/`. Se a sess�
 - Fatos divergentes ou fracos do registro: não usar como número (lista na seção 7). Antes de usar qualquer fato "a verificar", confirme na fonte e registre com status "verificado" e a observação do que foi visto.
 - Correções de fatos da V5 que os textos novos devem respeitar: 274 negócios de TI são do 1º semestre de 2025; sinergias da MBRF são R$ 805 mi/ano; 23% de pilotos escalados é Brasil (25% é mundo); 53% da KPMG é talento para transformação digital; PwC–ToltIQ não é exclusiva; a empresa de serviços de IA dos fundos com a Anthropic foi anunciada em 04/05/2026.
 - O Inter (fonte do texto) não vai embutido (como no modelo APODI); sem internet cai para Helvetica/Arial.
-- O PDF fica leve se imprimir sem sombras e desfoques (`tools/pdf.js` já faz isso).
+- O PDF não é leve. Na integração de 30/10, às 03h24, o PDF de 84 páginas saiu com 15,9 MB (16.669.170 bytes) pelo `tools/pdf.js --ordem` e com 15,9 MB pelo `--ctrlp`; o Ctrl+P do navegador pode dar de 16 a 18 MB. Inter e JetBrains Mono vão embutidas como Type 3, com Inter e JetBrains Mono embutidas como Type 3 (cerca de 100 subconjuntos). O `pdf.js` só injeta fontes estáticas se existir `docs/fonts/pdf-fonts.css`; hoje o arquivo não existe e ele avisa. Para um PDF menor, versione esse arquivo com Inter e JetBrains Mono estáticas em TTF (rasterizar as páginas fica fora).
+
+### Fatos verificados só por busca (reler quando a rede liberar)
+
+Os fatos novos desta sessão (30/10/2026) são 43 ids em `src/data/06-fatos-*.js` (contados contra o commit `182b24a`, desta passagem de bastão), todos com status "verificado". Em 42 deles a conferência foi feita só por trechos de resultados de busca (WebSearch), sem abrir a página, porque a rede bloqueou a leitura direta; a obs de cada fato diz o trecho visto. O único com outro método é `pilar2-prototipo-ciclo-5-passos`, conferido no código local de `prototipo-ciclo-agentico/`. Status e arquivos de dados ficam como estão. Quando a rede liberar, abra a página de cada fonte, confira o trecho citado na obs e acrescente "página lida em dd/mm/aaaa". Comece pelos 18 que mostram número no deck. Os fatos de 29/10 seguem o critério do cabeçalho de `05-fontes.js` (página lida ou trechos vistos na busca); a obs de cada um diz qual.
+
+A lente de fatos chegou a outra contagem: 44 fatos novos, 43 conferidos por busca e 19 com número. A integração recontou às 03h30 e confirmou 43, 42 e 18:
+- o 80% da Falconi tinha dois ids, e `benchmark-falconi-agentes-80` saiu;
+- `pilar2-prototipo-ciclo-5-passos` foi conferido no código local.
+
+As correções da lente de fatos estão todas aplicadas:
+- ficha 2.2: "Em 2027 a CBS passa a ser cobrada";
+- 80% da Falconi "dos projetos de tecnologia";
+- Gartner "terão cláusula…, prevê o Gartner" no 12;
+- "(previsão)" ou "prevista" nas fichas 1.5, 2.1, 4.3 e 4.4 e no 16;
+- "no mundo" ou "no Brasil" nas fichas 1.4, 2.3, 2.6, 3.5 e 4.1 e no verso 13.
+
+**Mostram número no deck (18)**: id · número · onde aparece (levantamento de 30/10, 03h)
+- `benchmark-falconi-ia-100` · R$ 100 milhões · slide 06 e página de detalhe do 06
+- `benchmark-am-contratacoes-200` · 200 · slide 06 (linha do tempo, mês de maio) e página de detalhe do 06
+- `pilar2-cbs-decreto-2026` · 30/04/2026 · slide 12
+- `pilar2-icms-iss-2033` · 2033 · slide 12
+- `pilar2-kpmg-orcamento-72` · 72% · slide 12, verso 12, ficha 2.2
+- `pilar2-erp-caso-negocio-70` · 70% · slides 12 e 16, versos 12 e 16
+- `pilar2-falconi-agentes-80` · 80% dos projetos de tecnologia · slide 06 (linha do tempo, mês de setembro), página de detalhe do 06, slide 12, ficha 2.6
+- `pilar3-ma-1s26-menos-negocios` · −35% · slide 14, verso 14
+- `pilar3-pe-vc-metade-2025` · 50% · slide 14, verso 14, ficha 3.5
+- `pilar3-ti-lidera-ma-1s25` · 274 · verso 14, ficha 3.1
+- `pilar3-mbrf-sinergias-805` · R$ 805 mi · slide 14, verso 14, ficha 3.4
+- `pilar3-raizen-duas-empresas` · 2 · slide 14, ficha 3.2
+- `pilar4-vmware-europa-1500` · 1.500% · slide 16, verso 16
+- `pilar4-accenture-claude-30-mil` · 30 mil · slide 16, verso 16
+- `pilar4-cobol-ibm-13` · 13% · slide 16, versos 16 e 17
+- `pilar4-sinqia-710` · R$ 710 mi · slide 16, ficha 4.5
+- `pilar4-bancos-nuvem-30` · 30% · slide 16, verso 16, ficha 4.3
+- `pilar4-nuvem-desperdicio-29` · 29% · ficha 4.3
+
+**Sem número no deck (24)**: texto qualitativo, fonte do verso ou fato registrado sem uso
+- Benchmark: `benchmark-alixpartners-artium`, `benchmark-diligencia-voz`, `benchmark-accenture-preco`.
+- Fábrica e jogos: `compra-orcamento-limitado-metodo`.
+- Pilar 1 e posição: `pilar1-am-cargos-interinos`, `posicao-am-cargos-interinos`.
+- Pilar 2: `pilar2-apuracao-assistida`, `pilar2-ey-beyondtax`, `pilar2-totvs-assistente-reforma`, `pilar2-cit-flow`, `pilar2-nfe-sem-rejeicao` (a data 31/07/2026 está no registro, sem uso no deck).
+- Pilar 3: `pilar3-ma-1s26-megadeals` (85% no registro, sem uso no deck), `pilar3-braskem-ig4`, `pilar3-diligencia-comercial-agentes`, `pilar3-ode-investidas`, `pilar3-deloitte-dia1-separacao`, `pilar3-am-assist`, `pilar3-sinergias-ti-mais-metade` ("mais da metade", em palavras no verso 15).
+- Pilar 4: `pilar4-aws-migracao-sem-custo`, `pilar4-copilot-modernizacao`, `pilar4-mckinsey-legacyx`, `pilar4-ibm-cobol-java`, `pilar4-ataques-pix-terceiros`, `pilar4-bradesco-mainframe`.
 
 ## 12. Arquivos que o usuário precisa levar para a outra IA (não estão no repositório)
 
@@ -148,4 +252,4 @@ Os agentes do Claude Code escrevem **direto nos arquivos** de `src/`. Se a sess�
 
 ## 13. Prompt sugerido para colar na outra IA
 
-> Você vai continuar a versão V6 da apresentação "Planejamento Estratégico · Produtos, Serviços e Inteligência Artificial" da DTS (Alvarez & Marsal Brasil). Repositório: github.com/VictorVitorino/produtos, branch `claude/pensive-fermat-fijb3d`. Leia, nesta ordem, `docs/handoff-v6/HANDOFF.md`, `SPEC.md` e `CONTRACT.md`. Use `python3 build.py --out /tmp/x.html` para gerar o deck e as ferramentas de `docs/handoff-v6/tools/` para capturar telas e auditar. Regras que não podem ser quebradas: nada de pessoas da A&M; nenhum número sem fato verificado; só as siglas permitidas; uma linha por título e rótulo, sem corte nem vazio grande; no máximo 20 slides; layout no modelo da APODI. Comece pelos slides que ainda estão no formato antigo e pelos versos "Em construção", copiando o padrão do slide 04, e termine com revisão global, `python3 build.py --final`, PDF e README.
+> Você vai continuar a versão V6 da apresentação "Planejamento Estratégico · Produtos, Serviços e Inteligência Artificial" da DTS (Alvarez & Marsal Brasil). Repositório: github.com/VictorVitorino/produtos, branch `claude/pensive-fermat-fijb3d`. Leia, nesta ordem, `docs/handoff-v6/HANDOFF.md`, `SPEC.md` e `CONTRACT.md`. Use `python3 build.py --out /tmp/x.html` para gerar o deck e as ferramentas de `docs/handoff-v6/tools/` para capturar telas e auditar. Regras que não podem ser quebradas: nada de pessoas da A&M; nenhum número sem fato verificado; só as siglas permitidas; uma linha por título e rótulo, sem corte nem vazio grande; no máximo 20 slides; layout no modelo da APODI. A V6 está pronta (seção 7): os 20 slides, os 20 versos, as 9 capas e as 24 fichas estão no padrão e passam em todos os testes. O 2.7 é módulo do 2.6 (decisão tomada). Siga a seção 9: commit e push, as decisões do comitê, reler na fonte os fatos verificados só por busca e a limpeza do registro. Depois de qualquer mudança, refaça a revisão global, `python3 build.py --final` e o PDF.

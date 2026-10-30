@@ -12,8 +12,6 @@
 .pl-ovk::before{left:0}.pl-ovk::after{left:6px;background:rgba(94,138,180,.25)}
 .dk .pl-ovk::before,.dk .pl-ovk::after{border-color:#9DBBD9}
 .dk .pl-ovk::after{background:rgba(157,187,217,.25)}
-/* "E daí?" sobre o corpo escuro das vistas de produto */
-.body.dk:has(> .pl-pp) > .sowhat,.body.dk:has(> .pl-bap) > .sowhat{background:linear-gradient(100deg,#24406D 0%,#1A3159 60%,#152A4E 100%);border:1px solid rgba(255,255,255,.16)}
 
 /* =====================================================================
    CLIENTE · matriz "quem decide" (vista 1)

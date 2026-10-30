@@ -67,6 +67,8 @@
 
   /* saída do slide: para o campo, monograma no estado final */
   new MutationObserver(()=>{if(!sec.classList.contains("active")){stop();monoOut()}}).observe(sec,{attributes:true,attributeFilter:["class"]});
+  /* verso aberto: a capa fica escondida, o campo para; ao voltar à frente, retoma */
+  new MutationObserver(()=>{if(!sec.classList.contains("active"))return;stage.classList.contains("flipped")?stop():start()}).observe(stage,{attributes:true,attributeFilter:["class"]});
   ENTER["01"]=()=>{start();monoIn()};
   PRINT.push(()=>{cursor=null;pulses.length=0;if(!running)draw(0);if(pim&&!pim.getAttribute("src"))snap();monoOut()});
 })();

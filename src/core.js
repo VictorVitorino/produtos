@@ -198,24 +198,31 @@ stage.addEventListener("click",e=>{const a=e.target.closest("[data-go]");if(!a)r
    logo depois o VERSO (contexto e fontes, página estática gerada por VERSO.page) e então as páginas extras de detalhe
    criadas pelos ganchos PRINT dos slides (sec.after(clone)); no fim, as 24 fichas de produto.
    Idempotente: os ganchos PRINT rodam a cada chamada; as páginas só são criadas uma vez. */
-function buildPrint(){if(isFlipped())safe(()=>window.unflipPage());if(chapOn)hideChapter(false);if(pdOpen)closePD(true);
+function buildPrint(){if(!buildPrint.st)buildPrint.st={flip:isFlipped(),pd:pdOpen};
+  if(isFlipped())safe(()=>window.unflipPage());if(chapOn)hideChapter(false);if(pdOpen)closePD(true);
+  /* a frente de cada slide de duas vistas sai na vista 1; a vista em uso (P.k0) volta no afterprint */
+  Object.values(PANE).forEach(P=>{if(P.k0==null)P.k0=P.k;setPane(P.s,0)});
   PRINT.forEach(f=>safe(f));
   stage.querySelectorAll(":scope > .slide:not(.pd-print) a[data-pd]").forEach(a=>{if(a.dataset.h0==null)a.dataset.h0=a.getAttribute("href")||"";a.setAttribute("href","#pdp-"+a.dataset.pd)});
   if(stage.querySelector(":scope > .pd-print,:scope > .vpage"))return;
   /* vistas extras: cada vista depois da primeira vira uma página logo após o slide */
   Object.values(PANE).forEach(P=>{for(let k=P.panes.length-1;k>=1;k--){const c=P.s.cloneNode(true);c.classList.add("pane-print","pane-view");c.classList.remove("active","entering","back");[...c.querySelectorAll(":scope > .body.pane")].forEach((x,j)=>{if(j!==k)x.remove();else x.classList.add("on")});
-      const pn=P.panes[k],fs=c.querySelector(":scope > .foot .s");if(fs&&pn.dataset.paneSrc)fs.textContent=pn.dataset.paneSrc;c.querySelectorAll(".pseg button").forEach((b,j)=>b.classList.toggle("on",j===k));P.s.after(c)}
-    P.panes.forEach((x,j)=>x.classList.toggle("on",j===0));P.btns.forEach((b,j)=>b.classList.toggle("on",j===0));
-    const fs0=P.s.querySelector(":scope > .foot .s"),src0=P.panes[0].dataset.paneSrc||P.s.dataset.src||"";if(fs0){fs0.textContent=src0;fs0.title=src0}});
+      const pn=P.panes[k],fs=c.querySelector(":scope > .foot .s");if(fs&&pn.dataset.paneSrc)fs.textContent=pn.dataset.paneSrc;c.querySelectorAll(".pseg button").forEach((b,j)=>b.classList.toggle("on",j===k));P.s.after(c)}});
   /* verso de cada slide, logo depois da frente (e das vistas dela) */
   if(typeof VERSO!=="undefined"&&VERSO&&typeof VERSO.page==="function")slides.forEach(s=>{let at=s;while(at.nextElementSibling&&at.nextElementSibling.classList.contains("pane-view")&&at.nextElementSibling.dataset.s===s.dataset.s)at=at.nextElementSibling;
     const v=safe(()=>VERSO.page(s));if(v)at.after(v)});
-  /* fichas de produto */
+  /* fichas de produto (no PDF, "ver os jogos" [data-go] leva à página do slide, e não à capa) */
+  slides.forEach(s=>{if(!s.id)s.id="pg-"+keyOf(s)});
   if(typeof PRODUCTS!=="undefined"&&typeof pdHTML==="function")PRODUCTS.forEach((P,k)=>{const sec=H("section",{class:"pd-print slide",id:"pdp-"+P.id,html:safe(()=>pdHTML(P,k+1))||""},stage);plainBadges(sec);sec.classList.add("play");
-    sec.querySelectorAll("a[data-pd]").forEach(a=>a.setAttribute("href","#pdp-"+a.dataset.pd))});
+    sec.querySelectorAll("a[data-pd]").forEach(a=>a.setAttribute("href","#pdp-"+a.dataset.pd));
+    sec.querySelectorAll("a[data-go]").forEach(a=>{const t=slides[+a.dataset.go-1];if(t)a.setAttribute("href","#"+t.id)})});
   if(typeof refFill==="function")safe(()=>refFill(stage));deckMasc(stage)}
 addEventListener("beforeprint",buildPrint);
-addEventListener("afterprint",()=>stage.querySelectorAll("a[data-h0]").forEach(a=>{a.setAttribute("href",a.dataset.h0);delete a.dataset.h0}));
+addEventListener("afterprint",()=>{stage.querySelectorAll("a[data-h0]").forEach(a=>{a.setAttribute("href",a.dataset.h0);delete a.dataset.h0});
+  /* a tela volta como estava: a vista de cada slide, o verso virado ou a ficha aberta */
+  Object.values(PANE).forEach(P=>{if(P.k0!=null){setPane(P.s,P.k0);delete P.k0}});
+  const st=buildPrint.st;buildPrint.st=null;
+  if(st&&st.pd)safe(()=>openPD(st.pd));else if(st&&st.flip)safe(()=>typeof VERSO!=="undefined"&&VERSO&&VERSO.flip?VERSO.flip(true,false):window.flipPage(true))});
 
 /* --- tilt suave (cards hologram) --- */
 function tilt(el){if(REDMO||!el)return;el.classList.add("tilt");el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;el.style.transform=`perspective(1100px) rotateX(${(0.5-py)*6}deg) rotateY(${(px-0.5)*6}deg)`});el.addEventListener("pointerleave",()=>{el.style.transform=""})}

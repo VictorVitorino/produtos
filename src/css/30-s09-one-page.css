@@ -43,10 +43,10 @@
 .slide[data-s="09"] .s09-t.keep .s09-cd{background:#DFE8F0;color:var(--navy)}
 .slide[data-s="09"] .s09-t.ai .s09-cd{background:#5E8AB4;color:#fff}
 .slide[data-s="09"] .s09-t.new .s09-cd{background:var(--orange);color:var(--navy)}
-.slide[data-s="09"] .s09-tt{min-width:0;display:flex;flex-direction:column;gap:1px}
-.slide[data-s="09"] .s09-nm{display:block;min-width:0;font:700 16.5px/1.08 var(--fh);letter-spacing:.01em;color:#fff;white-space:nowrap}
+.slide[data-s="09"] .s09-tt{min-width:0;display:flex;flex-direction:column;gap:0}
+.slide[data-s="09"] .s09-nm{display:block;min-width:0;font:700 16.5px/1 var(--fh);letter-spacing:.01em;color:#fff;white-space:nowrap}
 .slide[data-s="09"] .s09-sg{font-style:normal;font-size:13px;color:var(--orange-l);margin-left:5px}
-.slide[data-s="09"] .s09-tx{display:block;font:500 12px/1.24 var(--fb);color:#B9CCE0;text-wrap:pretty}
+.slide[data-s="09"] .s09-tx{display:block;font:500 13px/1.12 var(--fb);color:#B9CCE0;text-wrap:pretty}
 .slide[data-s="09"] .v2{display:none}
 .slide[data-s="09"].s09-org .v1{display:none}
 .slide[data-s="09"].s09-org .v2{display:inline}
@@ -95,7 +95,6 @@
 /* legenda do spotlight */
 .slide[data-s="09"] .spot-cap{width:420px;max-width:420px}
 .slide[data-s="09"] .spot-cap .sl{text-wrap:pretty}
-.slide[data-s="09"] .sowhat{padding-top:9px;padding-bottom:9px}
 .slide[data-s="09"] .sowhat p{white-space:nowrap}
 
 /* página extra da impressão: a leitura de cada pilar e da base */

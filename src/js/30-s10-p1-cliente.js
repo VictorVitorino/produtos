@@ -40,7 +40,7 @@ PCFG[1].cliente={
   /* onde a DTS ganha (título, texto, produto) e a ameaça a monitorar */
   ws:{it:[
       ["Assumir o cargo","A A&amp;M global já assume cargos interinos de direção em crise e transição; o 1.3 leva esse modelo à TI e responde pelo resultado.","1.3"],
-      ["Custo com risco compartilhado","O mercado já cobra por resultado; a DTS liga o honorário à economia validada por Finanças e vigia as renovações com IA.","1.5"],
+      ["Custo com risco compartilhado","O mercado já cobra por resultado; no 1.5, a DTS passa a ligar o honorário à economia validada por Finanças e a vigiar as renovações com IA.","1.5"],
       ["Valor, risco e custo da IA num só lugar","O Gartner prevê que mais de <span data-fato=\"agentic-cancelados-40\"></span> dos projetos de agentes de IA sejam cancelados até o fim de 2027, por custo, valor pouco claro e risco.","1.7"],
       ["Incentivo com leitura técnica","A IA lê projetos e código e sustenta o dossiê da Lei do Bem; a área tributária da A&amp;M responde pelo enquadramento.","1.6"]
     ],

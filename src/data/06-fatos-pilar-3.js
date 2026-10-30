@@ -22,7 +22,7 @@ Object.assign(FONTES,{
   "pilar3-bloomberglinea-braskem":{org:"Bloomberg Línea",titulo:"IG4 fecha acordo para assumir o controle da Braskem após meses de incerteza",data:"04/2026",url:"https://www.bloomberglinea.com.br/negocios/ig4-fecha-acordo-para-assumir-o-controle-da-braskem-apos-meses-de-incerteza/",tipo:"imprensa"},
   "pilar3-cxo-diligencesquared":{org:"CXO Digital Pulse",titulo:"DiligenceSquared Raises $5M to Bring AI-Driven Commercial Due Diligence to Private Equity",data:"03/2026",url:"https://www.cxodigitalpulse.com/diligencesquared-raises-5m-to-bring-ai-driven-commercial-due-diligence-to-private-equity/",tipo:"imprensa"},
   "pilar3-businesswire-ode":{org:"Business Wire",titulo:"Anthropic, Blackstone, and Hellman & Friedman Introduce Ode with Anthropic, an Enterprise AI Services Firm",data:"15/07/2026",url:"https://www.businesswire.com/news/home/20260715205134/en/",tipo:"empresa"},
-  "pilar3-deloitte-ma-us":{org:"Deloitte (EUA)",titulo:"Mergers and acquisitions (página de serviços)",data:"s/d",url:"https://www.deloitte.com/us/en/what-we-do/capabilities/mergers-acquisitions/services/mergers-and-acquisitions.html",tipo:"empresa"},
+  "pilar3-deloitte-ma-us":{org:"Deloitte (Estados Unidos)",titulo:"Mergers and acquisitions (página de serviços)",data:"s/d",url:"https://www.deloitte.com/us/en/what-we-do/capabilities/mergers-acquisitions/services/mergers-and-acquisitions.html",tipo:"empresa"},
   "pilar3-am-assist-ma":{org:"Alvarez & Marsal",titulo:"Revolutionize Your M&A Journey with A&M Assist",data:"s/d",url:"https://www.alvarezandmarsal.com/content/revolutionize-your-ma-journey-am-assist-0",tipo:"empresa"}
 });
 Object.assign(FATOS,{

@@ -12,7 +12,7 @@ PCFG[4].cliente={
   quem:[
     {r:"CIO e CTO",d:"escolhem a rota",q:"Por onde começo a modernizar o legado sem parar a operação?",
      g:"Fim de suporte, legado sem dono ou IA que esbarra nos dados antigos",
-     f:"pilar4-bancos-nuvem-30",ft:"de alta no gasto dos bancos no Brasil com migração para a nuvem em 2026",p:["4.6","4.1"]},
+     f:"pilar4-bancos-nuvem-30",ft:"de alta prevista no gasto dos bancos no Brasil com migração para a nuvem em 2026",p:["4.6","4.1"]},
     {r:"CFO",d:"paga a conta",q:"Quanto pago em nuvem, licenças e sistemas sem uso — e o que dá para desligar?",
      g:"Renovação da VMware ou conta de nuvem que cresce sem dono",
      f:"pilar4-vmware-europa-1500",fq:"até",ft:"de aumento no preço da VMware após a compra pela Broadcom, segundo provedores europeus",p:["4.3","4.2"]},

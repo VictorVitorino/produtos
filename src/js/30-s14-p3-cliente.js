@@ -22,7 +22,7 @@ PCFG[3].cliente={
      f:"pilar3-mbrf-sinergias-805",ft:"por ano de sinergias mapeadas na fusão de Marfrig e BRF; parte vem de unificar estruturas e sistemas",p:["3.3","3.4"]},
     {r:"Grupo vendedor",d:"separa um negócio para vender",q:"Como separamos a TI sem parar a operação nem ficar preso ao antigo dono na transição?",
      g:"Cisão ou venda de controle dentro de uma reestruturação, como Raízen e Braskem",
-     f:"pilar3-raizen-duas-empresas",ft:"empresas saem da Raízen no plano de reestruturação homologado em 2026, até o fim de 2027",p:["3.2","3.3"]}
+     f:"pilar3-raizen-duas-empresas",ft:"empresas nascem da divisão da Raízen no plano de reestruturação homologado em 2026, até o fim de 2027",p:["3.2","3.3"]}
   ],
   /* vista 2 · o que o mercado faz: quem, o que já faz com IA (fato), o que isso muda para a DTS (leitura nossa), produtos em disputa */
   mk:[
@@ -39,7 +39,7 @@ PCFG[3].cliente={
   ],
   /* onde a DTS ganha (título, texto, produto) e a ameaça a monitorar */
   ws:{it:[
-      ["Diligência com IA da A&amp;M global","A A&amp;M global já usa o A&amp;M Assist, agente de IA para diligência; no método da DTS, ele baixa o custo e libera o time para pôr preço no risco.","3.1"],
+      ["Diligência com IA da A&amp;M global","Se liberado no Brasil, o A&amp;M Assist, agente de IA da A&amp;M global para diligência, entra no método da DTS: baixa o custo e libera o time para pôr preço no risco.","3.1"],
       ["Separação dentro da reestruturação","Cisões e vendas de controle nascem de reestruturações, como Raízen e Braskem: terreno conhecido da A&amp;M, em que a TI decide se o Dia 1 acontece.","3.2"],
       ["Do Dia 1 à economia, a mesma equipe","Quem diagnosticou comanda o Dia 1 e a saída da transição e responde pela economia, com parte do honorário ligada aos marcos.","3.3"],
       ["Leitura contínua do portfólio","A pesquisa não achou no Brasil quem acompanhe a tecnologia de todas as investidas de um fundo: o Playbook vira assinatura.","3.5"]

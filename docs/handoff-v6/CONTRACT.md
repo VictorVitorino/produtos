@@ -32,7 +32,7 @@ Ferramentas (`$V/tools/`, Node + Playwright; viewport 1600×900):
 |---|---|
 | `node $V/tools/shot.js <html> <prefixo> "<itens>" [espera_ms]` | capturas. Itens separados por `;`: `N` · `N:pane=2` · `N:step=K` · `N:verso` · `ficha:<id>` · `chap:N` · `js:<código>` · `all` (1–20). Saída `<prefixo>NN.png`, `NN_pane2`, `NN_step3`, `NN_verso`, `ficha_<id>`, `chap_NN`. Imprime erros de console (sai com código 2 se houver). |
 | `node $V/tools/audit.js <html> <pasta> [fichas] [sem-versos] [offline]` | auditoria por slide e por vista: conteúdo que passa do `.body`, texto cortado, reticências, rótulos curtos quebrados em 2+ linhas, vazio > 60 px no fim do corpo, rodapé truncado, fontes carregadas, erros **e avisos** de console. **Verso de cada slide** (vira a página): palavras do contexto (meta 250–450), fontes listadas, frase do AM, letra usada (15 px = padrão), texto que não cabe, fonte/fato fora do registro (vermelho) e marcas [n] sem fonte. **Também (parte 3):** letra abaixo de 11 px (SPEC 3; inclui texto SVG escalado) e texto laranja sobre fundo claro (marca A&M) contam como apontamento; siglas fora da lista da SPEC 5 e números com unidade (%, R$, prazo, faixa, ≥, ×) fora de `data-fato` aparecem como `? … a conferir`, assim como texto corrido abaixo de 13 px (heurística: confira e decida; não contam como apontamento). `offline` bloqueia o Google Fonts (como numa máquina sem internet: a Barlow embutida assume; Inter cai para Helvetica/Arial, como na APODI). Gera `audit.json` e `audit.txt`. Com `fichas`, audita também as 24 fichas. Roda com movimento reduzido (mede o estado final). |
-| `node $V/tools/pdf.js <html> <saida.pdf> [--ordem]` | PDF pelo caminho de impressão (`DECK.print()` = `buildPrint`): frente → verso → páginas de detalhe, por slide; no fim, as 24 fichas. Mostra o total de páginas, a contagem por tipo, confere se cada verso vem logo depois da sua frente (`--ordem` imprime a sequência) e lista erros e avisos. Confere ainda as **fontes embutidas** (`pdffonts`) e **páginas em branco** (`pdfcheck.py`, que gera `<saida>_check/folha.png`). Injeta Inter/JetBrains Mono estáticas para um PDF menor. |
+| `node $V/tools/pdf.js <html> <saida.pdf> [--ordem] [--ctrlp]` | PDF pelo caminho de impressão (`DECK.print()` = `buildPrint`): frente → verso → páginas de detalhe, por slide; no fim, as 24 fichas. Mostra o total de páginas, a contagem por tipo, confere se cada verso vem logo depois da sua frente (`--ordem` imprime a sequência) e lista erros e avisos. Confere ainda as **fontes embutidas** (`pdffonts`), **páginas em branco** e **páginas com corpo vazio** (`pdfcheck.py`, que gera `<saida>_check/folha.png`). `--ctrlp` imprime como o Ctrl+P real: sem `emulateMedia`, sem `DECK.print()` e sem espera, só o `beforeprint` (§15). Injeta Inter/JetBrains Mono estáticas só se existir `docs/fonts/pdf-fonts.css` (hoje não existe: avisa, e o PDF sai com cerca de 15 MB). |
 | `python3 -I $V/tools/sheet.py <saida.png> <colunas> <img…>` | folha de contato das capturas (miniaturas 800×450). |
 
 Verificação da fundação (parte 3; úteis na integração e na revisão final, não no dia a dia do slide):
@@ -44,7 +44,7 @@ Verificação da fundação (parte 3; úteis na integração e na revisão final
 | `node $V/tools/fichas.js <html> <saida.txt> [pasta]` | as 24 fichas (abrem, mesmo degrau, sem corte nem rolagem) e a tolerância aos formatos novo (SPEC 10.2) e antigo (V5) |
 | `node $V/tools/apodi_cmp.js <apodi.html> <html> <pasta>` | medidas da moldura contra o modelo APODI (palco, cabeçalho, faixa, corpo, rodapé, barra, fontes) e capturas lado a lado |
 | `python3 -I $V/tools/buildcheck.py <repo> <html>` | build: um `<script>` por arquivo e na ordem, versos em `#versos[hidden]`, ativos embutidos (só o Google Fonts fica externo), Barlow embutida, sem fotos de pessoas, tamanho |
-| `python3 -I $V/tools/pdfcheck.py <pdf> <pasta> [sequência]` | páginas, tamanho, fontes embutidas, páginas em branco e folha de contato (o `pdf.js` já chama) |
+| `python3 -I $V/tools/pdfcheck.py <pdf> <pasta> [sequência]` | páginas, tamanho, fontes embutidas, páginas em branco, páginas com corpo vazio (miolo com desvio padrão < 12) e folha de contato (o `pdf.js` já chama) |
 
 Exemplo de rotina de um agente de slide:
 ```bash
@@ -427,6 +427,10 @@ Ordem das páginas (`buildPrint` em `core.js`, também no evento `beforeprint`):
   `<section>`, `classList.add("pane-print","sNN-print","play")`, troque o miolo e `sec.after(clone)` (ela sai depois do verso). Exemplo completo:
   o `PRINT` do slide 04. O gancho roda a cada impressão: proteja a página extra contra duplicata (`if(stage.querySelector(".sNN-print"))return`).
 - Teste: `node $V/tools/pdf.js $V/build/<agente>.html $V/<agente>.pdf --ordem` (mostra páginas por tipo e confere a ordem frente → verso).
+- **Pronto exige os dois caminhos de impressão**, cada um com zero páginas em branco e zero páginas com corpo vazio: o preparado (`pdf.js --ordem`:
+  `DECK.print()`, `emulateMedia` print e espera) e o do Ctrl+P real (`pdf.js --ctrlp`: `page.pdf` logo depois da carga, só o `beforeprint` monta as
+  páginas). O `pdfcheck.py` mede o miolo de cada página (3–97 % da largura, 30–83 % da altura) e marca "corpo vazio" com desvio padrão < 12;
+  a moldura sozinha (cabeçalho, faixa e rodapé) passa no teste da página inteira, por isso o teste do miolo é o que pega slide impresso sem conteúdo.
 
 ---
 
@@ -496,7 +500,7 @@ Verificar: `node $V/tools/audit.js <html> <pasta> fichas` (cada ficha: passa do 
 | Responde "E daí?"; liga com o slide anterior e o seguinte | barra `.sowhat` ou frase equivalente |
 | Verso escrito (250–450 palavras), fontes completas com link, frase do AM, cabe sem rolagem | `audit.js` (linha `NN/verso`) e `shot.js "N:verso"` |
 | Interações (passos, vistas, spotlight, cartas, links para fichas) sem erro no console | `shot.js` (sem erros) e teste manual com → / ← |
-| Impressão com todas as informações (frente e verso) | `pdf.js --ordem` e conferência das páginas |
+| Impressão com todas as informações (frente e verso) | `pdf.js --ordem` **e** `pdf.js --ctrlp` (§15): zero páginas em branco e zero com corpo vazio nos dois, e conferência das páginas |
 | Rodapé numa linha | `audit.js`: "fonte do rodapé truncada" |
 | Nenhum aviso `[fontes]`, `[fatos]`, `[verso]` ou `[ficha]` do seu slide | `audit.js`: "Avisos de console" |
 

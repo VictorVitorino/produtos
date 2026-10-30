@@ -34,7 +34,7 @@
     2:{d:"Como entregar o programa crítico de tecnologia no prazo e no valor prometido.",
        s:"; o IT Business Partner passa ao 1.3",
        c:"O 2.1 escolhe o fornecedor, o 2.2 prepara a virada fiscal e do ERP, o 2.3 avisa antes do atraso, o 2.4 resgata, o 2.5 faz usar e o 2.6 leva a IA à própria TI.",
-       n:"Da escolha (2.1) ao uso medido (2.5), com alerta antes do atraso (2.3) e resgate (2.4)."},
+       n:"Da escolha (2.1) ao uso (2.5): virada (2.2), alerta (2.3), resgate (2.4) e agentes (2.6)."},
     3:{d:"O que a tecnologia muda no preço, no primeiro dia e na saída do investimento.",
        s:"; o playbook vira ativo interno do 3.5",
        c:"O 3.1 entra antes da assinatura e abre o 3.2; o 3.3 comanda o primeiro dia e a transição; o 3.4 segue até a venda; o 3.5 acompanha todas as empresas do fundo."},
@@ -110,7 +110,7 @@
   /* spotlight: um passo por pilar e um para a base */
   const st=PILLARS.map(pl=>{const ps=PR.filter(p=>p.pillar===pl.n),nw=ps.filter(p=>p.st==="new"),sg2=ps.filter(p=>p.sig),L=LEIT[pl.n]||{},own=OL.filter(o=>o.p===pl.n).length||pl.was;
     return{sel:`#s09c${pl.n}`,btn:"Pilar "+pl.n,pad:6,title:`Pilar ${pl.n} · ${pl.name}`,
-      text:`<span class="sl"><b>A decisão do cliente</b>${L.d||""}</span><span class="sl"><b>De serviços a produtos</b>${own} serviços viram ${ps.length} produtos${L.s||""}.</span><span class="sl"><b>Como se encadeia</b>${L.c||""}</span>`+
+      text:`${pl.to!==pl.name?`<span class="sl"><b>Nome proposto, a aprovar</b>${pl.to}</span>`:""}<span class="sl"><b>A decisão do cliente</b>${L.d||""}</span><span class="sl"><b>De serviços a produtos</b>${own} serviços viram ${ps.length} produtos${L.s||""}.</span><span class="sl"><b>Como se encadeia</b>${L.c||""}</span>`+
         (sg2.length?`<span class="sl"><b>★ A&amp;M Signature</b>${sg2.map(p=>`${p.code} ${p.name}`).join(" · ")}</span>`:"")+(nw.length?`<span class="sl"><b>Novo com IA</b>${nw.map(p=>`${p.code} ${p.name}${MOD[p.code]?`, que ${MOD[p.code]}`:""}`).join(" · ")}</span>`:"")}});
   st.push({sel:"#s09Base",btn:"Base",pad:6,title:"Plataforma de Dados e AI",text:PLAT.map(([k,v])=>`<span class="sl"><b>${k}</b>${v}</span>`).join("")});
   const sp=Spotlight(host,st,sg,{capW:420});segSync(sg);
@@ -132,10 +132,10 @@
     /* página 2: nome de hoje */
     const o=mk("s09-org");const ot=o.querySelector(".tc");if(ot)ot.innerHTML="Nome de hoje: de qual serviço oficial nasce cada um dos 24 produtos";
     const os=o.querySelector(".sub");if(os)os.innerHTML="Os nomes oficiais de hoje no lugar da proposta de valor";
-    /* página 3: a leitura de cada pilar e da base */
+    /* página 3: a leitura de cada pilar e da base (letra de 14 px, para caber o nome proposto de cada pilar) */
     const r=mk("s09-lp");const rt=r.querySelector(".tc");if(rt)rt.innerHTML="Pilar a pilar: a decisão do cliente e como os produtos se encadeiam";
     const rs=r.querySelector(".sub");if(rs)rs.innerHTML="A leitura de cada pilar e da base comum, a Plataforma de Dados e AI";
-    const g=H("div",{class:"s09-pg"});g.innerHTML=st.map((s,i)=>`<div class="s09-pc"><span class="s09-pck">${i<PILLARS.length?`Pilar ${PILLARS[i].n}`:"A base comum"}</span><b class="s09-pct">${i<PILLARS.length?PILLARS[i].name:"Plataforma de Dados e AI"}</b>${s.text}</div>`).join("");
+    const g=H("div",{class:"s09-pg"});g.innerHTML=st.map((s,i)=>`<div class="s09-pc" style="font-size:14px;line-height:1.4"><span class="s09-pck">${i<PILLARS.length?`Pilar ${PILLARS[i].n}`:"A base comum"}</span><b class="s09-pct">${i<PILLARS.length?PILLARS[i].name:"Plataforma de Dados e AI"}</b>${s.text}</div>`).join("");
     const h=r.querySelector(".s09-host");if(h)h.replaceWith(g);const lg=r.querySelector(".s09-leg");if(lg)lg.remove();
     sec.after(o);o.after(r)});
 })();

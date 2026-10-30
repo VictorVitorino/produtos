@@ -314,6 +314,7 @@ body.bar-nodots #dots{display:none}
   .slide{position:relative;display:block!important;height:900px;break-after:page;overflow:hidden}
   .slide [data-a],.play [data-a],[data-a]{opacity:1!important;animation:none!important}
   .slide.entering>.body{animation:none!important}
+  .body.pane.on{animation:none!important;opacity:1!important}
   .dr{stroke-dashoffset:0!important;animation:none!important}
   .flow{animation:none!important}
   .sr-band small{display:none!important}

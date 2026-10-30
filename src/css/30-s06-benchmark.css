@@ -47,7 +47,7 @@
 .slide[data-s="06"] .s06-ms:hover .s06-dot{border-color:var(--steel);color:var(--navy)}
 .slide[data-s="06"] .s06-ms:focus-visible .s06-dot{box-shadow:0 0 0 3px rgba(247,140,22,.35)}
 .slide[data-s="06"] .s06-ms.done .s06-dot{background:var(--navy-d);border-color:var(--navy-d);color:#fff}
-.slide[data-s="06"] .s06-ms.cur .s06-dot{background:var(--orange);border-color:var(--orange);color:#fff;transform:scale(1.15);box-shadow:0 6px 14px rgba(247,140,22,.35)}
+.slide[data-s="06"] .s06-ms.cur .s06-dot{background:var(--orange);border-color:var(--orange);color:var(--navy-dd);transform:scale(1.15);box-shadow:0 6px 14px rgba(247,140,22,.35)}
 /* marco da Alvarez & Marsal global: ponto navy com miolo laranja */
 .slide[data-s="06"] .s06-ms.am .s06-dot{border-color:var(--navy);background:radial-gradient(circle,var(--orange) 0 4px,#fff 5px)}
 .slide[data-s="06"] .s06-ms.am.done .s06-dot{background:radial-gradient(circle,var(--orange) 0 4px,var(--navy) 5px)}
@@ -95,7 +95,7 @@
 .slide[data-s="06"] .s06-s.on::before{background:var(--orange)}
 .slide[data-s="06"] .s06-sh{display:flex;align-items:center;gap:10px;white-space:nowrap}
 .slide[data-s="06"] .s06-sh i{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--navy-d);color:#fff;font:700 12px/1 var(--fb);font-style:normal;transition:background .25s}
-.slide[data-s="06"] .s06-s.on .s06-sh i{background:var(--orange)}
+.slide[data-s="06"] .s06-s.on .s06-sh i{background:var(--orange);color:var(--navy-dd)}
 .slide[data-s="06"] .s06-sh b{font:700 21px/1.1 var(--fh);letter-spacing:.005em;color:var(--navy)}
 .slide[data-s="06"] .s06-sl{display:block;margin-top:8px;font:700 11px var(--fb);letter-spacing:.1em;text-transform:uppercase;color:var(--steel);white-space:nowrap}
 .slide[data-s="06"] .s06-sv{margin-top:2px;font:400 13.5px/1.42 var(--fb);color:var(--ink2);text-wrap:pretty}

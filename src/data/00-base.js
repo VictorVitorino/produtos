@@ -5,8 +5,8 @@
 const E=t=>`<span class="ev">${t?"E · "+t:"Evidência"}</span>`;
 const Hy=t=>`<span class="hy">${t||"Hipótese"}</span>`;
 
-/* PILLARS · name (como o deck chama o pilar) · official (nome no portfólio oficial) · to (nome na proposta: igual ao de hoje,
-   sem renomear pilares, pedido do usuário) · short (o pilar em poucas palavras) · def (a proposta do pilar em uma frase, sem
+/* PILLARS · name (como o deck chama o pilar) · official (nome no portfólio oficial) · to (nome proposto na V5, a aprovar pelo comitê;
+   no Pilar 2 igual ao de hoje) · short (o pilar em poucas palavras) · def (a proposta do pilar em uma frase, sem
    promessa nem sigla: divisórias, one-page) · def_as e when (textos do portfólio oficial) · was/now/nnew (contagens estruturais) */
 const PILLARS=[
   {n:1,name:"IT Advisory",official:"IT Advisory",to:"IT Advisory · Strategy, Leadership & Value",short:"Estratégia, liderança e valor de tecnologia",
@@ -57,7 +57,7 @@ const OLD=[
  {id:"a9",p:1,n:"Strategic Tech Tax / Accounting Planning",dm:"B",dv:"B",d:"merge",to:"1.6",w:"Nicho fiscal que fica mais forte junto com os incentivos à inovação: vira um só produto"},
  {id:"a10",p:1,n:"Innovation Tax Incentives Advisory",dm:"M",dv:"B",d:"merge",to:"1.6",w:"Mesmo comprador do planejamento fiscal; a IA passa a ler projetos e código para o dossiê"},
  {id:"b1",p:2,n:"IT Sourcing (Software & Vendor) Selection",dm:"M",dv:"M",d:"ai",to:"2.1",w:"A IA encurta a escolha de fornecedor; o diferencial vira independência e negociação"},
- {id:"b2",p:2,n:"ERP Readiness & Gap Analysis",dm:"A",dv:"M",d:"ai",to:"2.2",w:"A janela de 2027 junta ERP e Reforma Tributária: a prontidão passa a cobrir as duas"},
+ {id:"b2",p:2,n:"ERP Readiness & Gap Analysis",dm:"A",dv:"M",d:"ai",to:"2.2",w:"A janela de 2027 junta ERP e Reforma: a entrega passa a ser a virada e a primeira apuração"},
  {id:"b3",p:2,n:"TMO",dm:"A",dv:"M",d:"ai",to:"2.3",w:"Escritório que só acompanha vira commodity; passa a prever atraso e custo com IA"},
  {id:"b4",p:2,n:"Gestão de Mudanças Tech",dm:"M",dv:"B",d:"ai",to:"2.5",w:"Mudança genérica vira adoção de IA, medida pelo uso real das ferramentas"},
  {id:"b5",p:2,n:"Modelo de Implantação e Governança",dm:"B",dv:"M",d:"merge",to:"2.3",w:"Mesmo comprador e mesmo método do escritório de transformação: os dois viram um"},
