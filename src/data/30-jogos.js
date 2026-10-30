@@ -66,10 +66,10 @@ const JOGOS={
     },
     quando:"Antes de fechar o orçamento do ano ou quando o conselho cobra o retorno da IA",
     ia:"A IA prepara as cartas com o orçamento e os contratos que o cliente compartilha e resume a mesa em decisões com dono.",
-    metodo:"Jogo de decisão para executivos, com a mecânica dos jogos de guerra de negócios (McKinsey Quarterly, 2011). Jogos de simulação ensinam mais quando complementam outros métodos (Personnel Psychology, 2011): aqui, o produto.",
-    selo:{m:"Jogos de guerra de negócios",f:"McKinsey Quarterly, 2011"},
-    fontes:["mckinsey-war-games-2011","fj-personnel-psych-2011"],
-    fatos:["jogos-de-guerra-executivos","jogos-simulacao-aprendizado","ceo-sem-retorno-ia-56","ia-ligada-resultado-um-terco"],
+    metodo:"Compra com orçamento limitado, como no Buy a Feature (livro Innovation Games, 2006): ninguém compra tudo sozinho, e a negociação revela as prioridades. Poucas escolhas e jogadores certos (McKinsey Quarterly, 2011).",
+    selo:{m:"Compra com orçamento limitado",f:"livro Innovation Games, 2006"},
+    fontes:["fj-innovation-games-2006","mckinsey-war-games-2011"],
+    fatos:["compra-orcamento-limitado-metodo","jogos-de-guerra-executivos","ceo-sem-retorno-ia-56","ia-ligada-resultado-um-terco"],
     validar:"Se a diretoria aceita levar os próprios números para a mesa e se a lista do que ninguém soube medir vira pedido de diagnóstico."
   },
   "pre-mortem-2027":{
@@ -128,10 +128,10 @@ const JOGOS={
     },
     quando:"Na diligência, para testar a tese e o preço, ou entre a assinatura e o fechamento",
     ia:"A IA lê os contratos e o inventário do alvo e transforma o que acha em cartas, como uma cláusula de mudança de controle.",
-    metodo:"Ensaio do Dia 1: testar sob pressão o plano da virada antes do fechamento, como recomendam guias de integração da EY e da Deloitte, com a mecânica dos jogos de guerra de negócios (McKinsey Quarterly, 2011).",
+    metodo:"Ensaio do Dia 1: sessões de prontidão e simulações nas semanas antes do fechamento (EY) e pontos de prontidão que testam o plano da virada sob pressão (Deloitte).",
     selo:{m:"Ensaio do Dia 1",f:"guias de integração da EY e da Deloitte"},
-    fontes:["ey-integracao-nove-passos","deloitte-day-one","mckinsey-war-games-2011"],
-    fatos:["dia-1-simulacoes","dia-1-pontos-de-prontidao","jogos-de-guerra-executivos"],
+    fontes:["ey-integracao-nove-passos","deloitte-day-one"],
+    fatos:["dia-1-simulacoes","dia-1-pontos-de-prontidao"],
     validar:"Se as cartas refletem os sistemas e os contratos reais do alvo e se as lacunas chegam ao contrato de transição e ao preço."
   },
   "exercicio-de-crise":{

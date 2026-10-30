@@ -70,8 +70,7 @@
 
   /* ---------------- vista 1 · faixa das decisões (legenda + contagens estruturais 4 · 13 · 10 · 2) ---------------- */
   const decEl=$("rxDec"),board=$("rxBoard"),seg=$("rxSeg");
-  decEl.innerHTML=ORD.map(k=>`<div class="s07-t ${k}" data-dec="${k}"><i class="s07-sw ${k}" aria-hidden="true"></i><span class="s07-nb"><b class="s07-n">${cnt(0,k)}</b><em class="s07-of"></em></span><span class="s07-tl"><b>${DEC[k][0]}</b><small>${DEC[k][1]}</small></span></div>`).join("")
-    ;
+  decEl.innerHTML=ORD.map(k=>`<div class="s07-t ${k}" data-dec="${k}"><i class="s07-sw ${k}" aria-hidden="true"></i><span class="s07-nb"><b class="s07-n">${cnt(0,k)}</b><em class="s07-of"></em></span><span class="s07-tl"><b>${DEC[k][0]}</b><small>${DEC[k][1]}</small></span></div>`).join("");
   const tiles=[...decEl.querySelectorAll(".s07-t")];
 
   /* ---------------- vista 1 · quadro 3 × 3 ---------------- */
@@ -102,10 +101,13 @@
   function paint(){const p=cur+1;board.classList.toggle("flt",p>0||!!dHot);
     chips.forEach(c=>c.classList.toggle("on",(!p||+c.dataset.p===p)&&(!dHot||c.dataset.dec===dHot)));
     tiles.forEach(t=>t.classList.toggle("hot",t.dataset.dec===dHot))}
-  function set(k){const prev=cur;cur=k;const p=k+1;
+  /* contagem inteira que corre do valor anterior ao novo (a mais recente cancela a anterior); direta com movimento reduzido */
+  const tw=(el,a,b,inst)=>{el._tw=null;if(inst||REDMO||a===b){el.textContent=String(b);return}const t0=performance.now(),D=450;
+    const st=t=>{if(el._tw!==st)return;const k=Math.min(1,(t-t0)/D);el.textContent=String(Math.round(a+(b-a)*ease.out(k)));if(k<1)requestAnimationFrame(st)};el._tw=st;requestAnimationFrame(st)};
+  function set(k,inst){const prev=cur;cur=k;const p=k+1;
     [...seg.querySelectorAll("button")].forEach((b,j)=>b.classList.toggle("on",j===p));segSync(seg);
     tiles.forEach(t=>{const n=t.querySelector(".s07-n"),d=t.dataset.dec,to=cnt(p,d),from=cnt(prev+1,d);
-      if(from!==to&&typeof count==="function")count(n,from,to,"",500);else n.textContent=to;
+      tw(n,from,to,inst);
       t.querySelector(".s07-of").textContent=p?`de ${cnt(0,d)}`:"";t.classList.toggle("zero",p>0&&to===0)});
     if(p){const pl=PILLARS[p-1];cap.innerHTML=`<b class="tt">Pilar ${p} · ${pl.name}</b><p>${PIL[p]}</p>`;cap.classList.add("on")}else cap.classList.remove("on");
     paint()}
@@ -114,7 +116,7 @@
   tiles.forEach(t=>{t.addEventListener("pointerenter",()=>{dHot=t.dataset.dec;paint()});t.addEventListener("pointerleave",()=>{dHot=null;paint()})});
   board.addEventListener("click",e=>{if(cur>=0&&!e.target.closest(".s07-chip"))set(-1)});
   const paneK=()=>{const P=paneOf(sec);return P?P.k:0};
-  ENTER["07"]=()=>{dHot=null;set(-1);pack()};
+  ENTER["07"]=()=>{dHot=null;set(-1,true);pack()};
   document.addEventListener("deck:pane",e=>{if(e.detail&&e.detail.key==="07"&&e.detail.k===0)requestAnimationFrame(()=>safe(pack))});
   STEP["07"]=d=>{if(paneK()!==0){if(d<0)set(PILLARS.length-1);return false}
     if(d>0){if(cur<PILLARS.length-1){set(cur+1);return true}set(-1);return false}
@@ -149,7 +151,7 @@
 
   /* ---------------- impressão: visão geral na página principal + leitura serviço a serviço (o que a dica mostra) ---------------- */
   const PAGES=[[1],[2],[3,4]];
-  PRINT.push(()=>{dHot=null;set(-1);safe(pack);if(stage.querySelector(".s07-print"))return;let at=sec;
+  PRINT.push(()=>{dHot=null;set(-1,true);safe(pack);if(stage.querySelector(".s07-print"))return;let at=sec;
     PAGES.forEach((ps,pi)=>{const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","s07-print","play");
       [...c.querySelectorAll(":scope > .body.pane")].forEach((b,j)=>{if(j)b.remove();else b.classList.add("on")});
       c.querySelectorAll(".pseg button").forEach((b,j)=>b.classList.toggle("on",j===0));c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));

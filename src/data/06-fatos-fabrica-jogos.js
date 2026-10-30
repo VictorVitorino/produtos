@@ -2,7 +2,7 @@
    FATOS E FONTES VERIFICADOS · dono: fabrica-jogos (slides 18 e 19) · 29/10/2026
    Carrega depois de 05-fontes.js (ordem alfabética de src/data) e antes de 30-jogos.js.
    - Fontes novas, sem nome de pessoa no campo org (SPEC §0: cita-se a organização ou a publicação):
-     fj-hbr-premortem · fj-nist-800-84 · fj-personnel-psych-2011.
+     fj-hbr-premortem · fj-nist-800-84 · fj-personnel-psych-2011 · fj-innovation-games-2006 (revisão de 30/10/2026).
      As fontes antigas equivalentes (hbr-premortem-2007, nist-sp-800-84, sitzmann-2011) continuam no registro,
      mas trazem nomes de autores no org; os fatos abaixo passam a apontar para as fontes novas.
    - Fatos de método do slide 19 conferidos na fonte nesta data (antes "a verificar"): o mesmo id, agora "verificado",
@@ -12,10 +12,13 @@
 Object.assign(FONTES,{
   "fj-hbr-premortem":{org:"Harvard Business Review",titulo:"Performing a Project Premortem",data:"09/2007",
     url:"https://hbr.org/2007/09/performing-a-project-premortem",tipo:"primária"},
-  "fj-nist-800-84":{org:"Instituto Nacional de Padrões e Tecnologia dos Estados Unidos (NIST)",titulo:"Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities (SP 800-84)",data:"09/2006",
+  "fj-nist-800-84":{org:"Instituto Nacional de Padrões e Tecnologia dos Estados Unidos",titulo:"Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities (SP 800-84)",data:"09/2006",
     url:"https://csrc.nist.gov/pubs/sp/800/84/final",tipo:"oficial"},
   "fj-personnel-psych-2011":{org:"Personnel Psychology (revista científica)",titulo:"A meta-analytic examination of the instructional effectiveness of computer-based simulation games",data:"06/2011",
-    url:"https://onlinelibrary.wiley.com/doi/10.1111/j.1744-6570.2011.01190.x",tipo:"primária"}
+    url:"https://onlinelibrary.wiley.com/doi/10.1111/j.1744-6570.2011.01190.x",tipo:"primária"},
+  /* revisão rev-execucao (30/10/2026): o método da Mesa do Conselho é a compra com orçamento limitado (Buy a Feature), não o jogo de guerra */
+  "fj-innovation-games-2006":{org:"Addison-Wesley (livro Innovation Games)",titulo:"Innovation Games: Creating Breakthrough Products Through Collaborative Play",data:"2006",
+    url:"https://www.informit.com/store/innovation-games-creating-breakthrough-products-through-9780321437297",tipo:"primária"}
 });
 Object.assign(FATOS,{
   "premortem-metodo":{txt:"No pré-mortem, o time imagina que o projeto já fracassou e lista os motivos antes de começar",num:"",
@@ -45,5 +48,9 @@ Object.assign(FATOS,{
   "dia-1-pontos-de-prontidao":{txt:"A Deloitte recomenda “pontos de prontidão” que testam sob pressão o plano do Dia 1 antes do fechamento",num:"",
     fontes:["deloitte-day-one"],status:"verificado",tema:"metodos-ludicos",uso:["s19","p3.2"],
     nota:"Recomendação da própria Deloitte. No caso citado no documento, o teste revelou o plano de clonar sistemas sem limpar dados críticos de clientes, com risco regulatório.",
-    obs:"Verificado por fabrica-jogos em 29/10/2026 no PDF da Deloitte (Day One readiness; o endereço registrado redireciona para a versão em deloitte.com de 2024): “readiness certifications or Ready Checkpoints (RCPs)” que testam sob pressão (“pressure-testing”) atividades operacionais antes do fechamento; “Through pressure testing in RCPs, the corporation uncovered plans to not scrub critical customer data”."}
+    obs:"Verificado por fabrica-jogos em 29/10/2026 no PDF da Deloitte (Day One readiness; o endereço registrado redireciona para a versão em deloitte.com de 2024): “readiness certifications or Ready Checkpoints (RCPs)” que testam sob pressão (“pressure-testing”) atividades operacionais antes do fechamento; “Through pressure testing in RCPs, the corporation uncovered plans to not scrub critical customer data”."},
+  "compra-orcamento-limitado-metodo":{txt:"No jogo de compra com orçamento limitado (Buy a Feature), cada participante recebe uma parte do dinheiro para comprar itens com preço; ninguém compra tudo sozinho, e o grupo junta recursos e negocia o que fica",num:"",
+    fontes:["fj-innovation-games-2006"],status:"verificado",tema:"metodos-ludicos",uso:["s19"],
+    nota:"Jogo descrito no livro Innovation Games (Addison-Wesley, 2006), na parte dos jogos de priorização. É a mecânica da Mesa do Conselho: o orçamento não paga todas as apostas, e a negociação revela o que a diretoria valoriza. É método de priorização, não evidência de resultado.",
+    obs:"Verificado por rev-execucao em 30/10/2026 por busca na web (a leitura direta das páginas está bloqueada nesta sessão): registro de biblioteca (Universidade Técnica de Munique) do livro, Addison-Wesley, 2006, com “Buy a Feature” na Parte 2 (p. 76); verbete “Innovation game” da Wikipedia: “participants may also pool resources to buy features too expensive to be purchased with individual funds”; modelo da Lucidspark: “players can’t buy whatever features they want unilaterally, the players must discuss and haggle over what they want to buy”; página da InformIT (ISBN 9780321437297). Sem número: só método."}
 });

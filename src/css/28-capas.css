@@ -23,9 +23,9 @@
 @keyframes cx1-lk{to{opacity:.36}}
 #chap .cx1-links line.on{stroke:#F9A64A;stroke-width:1.6;opacity:.95!important}
 #chap .cx1-orb{position:absolute;width:0;height:0}
-#chap .cx1-track{position:absolute;left:-121px;top:-121px;width:242px;height:242px;border-radius:50%;border:1px dashed rgba(163,184,214,.2)}
+#chap .cx1-track{position:absolute;left:-100px;top:-100px;width:200px;height:200px;border-radius:50%;border:1px dashed rgba(163,184,214,.2)}
 #chap .cx1-rot{position:absolute;left:0;top:0;width:0;height:0;animation:cx1-spin 110s linear infinite}
-#chap .cx1-dot{position:absolute;left:-3.5px;top:-3.5px;width:7px;height:7px;border-radius:50%;background:#9DBBD9;opacity:.75;transform:rotate(var(--a)) translateX(121px);transition:background-color .3s,box-shadow .3s,opacity .3s}
+#chap .cx1-dot{position:absolute;left:-3.5px;top:-3.5px;width:7px;height:7px;border-radius:50%;background:#9DBBD9;opacity:.75;transform:rotate(var(--a)) translateX(100px);transition:background-color .3s,box-shadow .3s,opacity .3s}
 #chap.play .cx1-dot{animation:cx1-dot .7s cubic-bezier(.2,.8,.2,1) calc(.5s + var(--k)*18ms) backwards}
 @keyframes cx1-dot{from{opacity:0;transform:rotate(var(--a)) translateX(0)}}
 #chap .cx1-dot.on{background:#F9A64A;opacity:1;box-shadow:0 0 10px rgba(247,140,22,.75)}
@@ -39,7 +39,7 @@
 #chap .cx1-core .cx1-hx{transform-box:fill-box;transform-origin:center;animation:cx1-hx 3.6s ease-in-out infinite}
 @keyframes cx1-hx{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.08;transform:scale(1.14)}}
 #chap .cx1-card{position:absolute;width:280px;height:80px;margin:-40px 0 0 -140px;will-change:transform;pointer-events:auto;cursor:default}
-#chap .cx1-cin{position:absolute;inset:0;display:flex;align-items:center;gap:12px;padding:0 16px 0 12px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);box-shadow:0 14px 30px rgba(4,16,31,.45);transition:background-color .25s,border-color .25s,box-shadow .25s,transform .3s}
+#chap .cx1-cin{position:absolute;inset:0;display:flex;align-items:center;gap:12px;padding:0 16px 0 12px;border-radius:14px;background:linear-gradient(160deg,rgba(36,62,112,.97),rgba(16,34,68,.97));border:1px solid rgba(190,210,235,.3);box-shadow:0 14px 30px rgba(4,16,31,.45);transition:background-color .25s,border-color .25s,box-shadow .25s,transform .3s}
 #chap.play .cx1-cin{animation:cx1-in .85s cubic-bezier(.2,.8,.2,1) var(--dl,0s) backwards}
 @keyframes cx1-in{from{opacity:0;transform:translate(var(--fx),var(--fy)) scale(.4)}}
 #chap .cx1-n{display:flex;flex-direction:column;align-items:center;justify-content:center;width:50px;flex:none;align-self:stretch;border-right:1px solid rgba(255,255,255,.18);padding-right:10px;box-sizing:content-box}
@@ -81,30 +81,32 @@
 #chap.play .cx2-hd{animation:cx2-in .6s ease .5s backwards}
 
 /* ---------- Parte 3 · fx 14 Heatmap Animation: 29 serviços × decisão, do frio ao quente, varredura de raio-X ---------- */
-#chap .cx3-box{position:absolute;left:960px;top:226px;width:590px}
-#chap .cx3-hd{display:flex;justify-content:space-between;font:600 12px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9;margin-bottom:14px;white-space:nowrap}
+#chap .cx3-box{position:absolute;left:996px;top:234px;width:544px}
+#chap .cx3-hd{display:flex;justify-content:space-between;font:600 12px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9;margin-bottom:16px;white-space:nowrap}
 #chap.play .cx3-hd{animation:cx2-in .6s ease .3s backwards}
-#chap .cx3-grid{position:relative;display:grid;grid-template-columns:170px auto;column-gap:14px;row-gap:12px}
-#chap .cx3-rl{display:flex;flex-direction:column;justify-content:center;white-space:nowrap}
+#chap .cx3-grid{position:relative;display:flex;flex-direction:column;gap:14px}
+#chap .cx3-rw{display:flex;flex-direction:column;gap:7px}
+#chap .cx3-rl{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
 #chap .cx3-rl em{font:600 11px var(--fm);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9}
-#chap .cx3-rl b{font:700 19px/1.15 var(--fh);color:#fff;margin-top:3px}
+#chap .cx3-rl b{font:700 18px/1 var(--fh);color:#fff}
+#chap .cx3-rl span{font:500 13px var(--fb);color:#9DBBD9}
 #chap.play .cx3-rl{animation:cx2-in .5s ease calc(.25s + var(--r)*.08s) backwards}
-#chap .cx3-row{display:flex;gap:5px}
-#chap .cx3-c{position:relative;width:36px;height:70px;border-radius:5px;background:var(--dc);border:1px solid var(--db);pointer-events:auto;cursor:default;transition:opacity .3s,transform .25s,box-shadow .25s}
+#chap .cx3-row{display:flex;gap:6px}
+#chap .cx3-c{position:relative;width:49px;height:54px;border-radius:5px;background:var(--dc);border:1px solid var(--db);pointer-events:auto;cursor:default;transition:opacity .3s,transform .25s,box-shadow .25s}
 #chap .cx3-c.keep{--dc:#DFE8F0;--db:#DFE8F0}
 #chap .cx3-c.ai{--dc:#5E8AB4;--db:#7EA1C3}
 #chap .cx3-c.merge{--dc:#22406E;--db:#3E5F8E;background-image:repeating-linear-gradient(135deg,rgba(157,187,217,.22) 0 3px,transparent 3px 8px)}
 #chap .cx3-c.cut{--dc:transparent;--db:rgba(223,232,240,.6);border-style:dashed}
-#chap .cx3-c svg{position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;fill:#fff;opacity:.9}
+#chap .cx3-c svg{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;fill:#fff;opacity:.9}
 #chap.play .cx3-c{animation:cx3-heat .95s cubic-bezier(.3,.6,.3,1) var(--hd) backwards}
 @keyframes cx3-heat{0%{background-color:#12294A;border-color:rgba(157,187,217,.2)}42%{background-color:#F78C16;border-color:#F9A64A;box-shadow:0 0 18px rgba(247,140,22,.6)}100%{background-color:var(--dc);border-color:var(--db);box-shadow:none}}
 #chap .cx3-c:hover{transform:translateY(-3px);box-shadow:0 0 0 2px #F9A64A,0 10px 20px rgba(4,16,31,.5)}
 #chap .cx3-box.dim .cx3-c:not(.lit){opacity:.16}
-#chap .cx3-scan{position:absolute;top:-12px;bottom:-12px;left:182px;width:2px;border-radius:2px;background:#F9A64A;box-shadow:0 0 14px 4px rgba(247,140,22,.55);opacity:0;pointer-events:none}
+#chap .cx3-scan{position:absolute;top:-8px;bottom:-8px;left:-2px;width:2px;border-radius:2px;background:#F9A64A;box-shadow:0 0 14px 4px rgba(247,140,22,.55);opacity:0;pointer-events:none}
 #chap .cx3-scan::after{content:"";position:absolute;right:2px;top:0;bottom:0;width:70px;background:linear-gradient(90deg,rgba(247,140,22,0),rgba(247,140,22,.16))}
 #chap.play .cx3-scan{animation:cx3-scan 1.7s cubic-bezier(.45,.05,.55,.95) .7s both}
-@keyframes cx3-scan{0%{opacity:0;transform:translateX(0)}8%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateX(408px)}}
-#chap .cx3-lg{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;margin-top:24px;margin-left:184px}
+@keyframes cx3-scan{0%{opacity:0;transform:translateX(0)}8%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateX(548px)}}
+#chap .cx3-lg{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;margin-top:22px}
 #chap.play .cx3-lg{animation:cx2-in .6s ease 2.1s backwards}
 #chap .cx3-lg button{display:flex;align-items:center;gap:9px;height:34px;padding:0 12px 0 9px;border-radius:9px;border:1px solid rgba(157,187,217,.26);background:rgba(255,255,255,.05);color:#DFE8F0;font:600 13px var(--fb);white-space:nowrap;cursor:pointer;pointer-events:auto;transition:background-color .2s,border-color .2s}
 #chap .cx3-lg button i{width:14px;height:20px;border-radius:3px;flex:none;background:var(--dc);border:1px solid var(--db)}
@@ -241,6 +243,10 @@
 #chap .cx5-gl span{display:block;font:500 13px/1.2 var(--fb);color:#9DBBD9;margin-top:5px}
 #chap .cx5-gl.on b{color:#fff}
 #chap.play .cx5-gl{animation:cx2-fade .5s ease var(--dl) backwards}
+
+/* o número de chegada do contador aparece quando a contagem começa */
+#chap.play.cx4 .cx-late{animation:cx2-fade .35s ease .45s backwards}
+#chap.play.cxp .cx-late{animation:cx2-fade .35s ease 1.45s backwards}
 
 /* ---------- movimento reduzido: estado final, sem animação ---------- */
 @media (prefers-reduced-motion:reduce){

@@ -145,11 +145,11 @@ FX["05"]=(host,K)=>{const fx=prep(host,"cx2");
 FX["07"]=(host,K)=>{const fx=prep(host,"cx3");const P=PL(),S=SV();if(!P.length||!S.length)return;
   const cnt={};S.forEach(o=>cnt[o.d]=(cnt[o.d]||0)+1);
   const SPK='<svg viewBox="0 0 24 24"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>';
-  const cell=(o,c,r)=>{const p=prodOf(o.to),dst=p?`${p.code} · ${X(p.name)}`:o.to;const t0=.7+1.7*((c*41+18)/405)-.38+r*.03;
+  const cell=(o,c,r)=>{const p=prodOf(o.to),dst=p?`${p.code} · ${X(p.name)}`:o.to;const t0=.7+1.7*((c*55+24.5)/544)-.38+r*.03;
     const th=`<span class='tl'><b>Decisão</b>${DEC[o.d]||o.d}</span><span class='tl'><b>${o.d==="cut"?"Absorvido por":"Vai para"}</b>${dst.replace(/'/g,"&#39;")}</span>`;
     return `<i class="cx3-c ${o.d}" data-d="${o.d}" style="--hd:${t0.toFixed(2)}s" data-tv="${X(o.n)}" data-th="${th.replace(/"/g,"&quot;")}">${o.d==="ai"?SPK:""}</i>`};
   fx.innerHTML=`<div class="cx3-box"><div class="cx3-hd"><span>Raio-X · ${S.length} serviços em ${P.length} pilares</span><span>uma célula por serviço</span></div>
-    <div class="cx3-grid">${P.map((p,r)=>`<div class="cx3-rl" style="--r:${r}"><em>Pilar ${p.n}</em><b>${X(p.name)}</b></div><div class="cx3-row">${S.filter(o=>o.p===p.n).map((o,c)=>cell(o,c,r)).join("")}</div>`).join("")}<i class="cx3-scan"></i></div>
+    <div class="cx3-grid">${P.map((p,r)=>`<div class="cx3-rw"><div class="cx3-rl" style="--r:${r}"><em>Pilar ${p.n}</em><b>${X(p.name)}</b><span>${S.filter(o=>o.p===p.n).length} serviços</span></div><div class="cx3-row">${S.filter(o=>o.p===p.n).map((o,c)=>cell(o,c,r)).join("")}</div></div>`).join("")}<i class="cx3-scan"></i></div>
     <div class="cx3-lg">${["keep","ai","merge","cut"].map(d=>`<button type="button" class="${d}" data-d="${d}" style="--dc:${{keep:"#DFE8F0",ai:"#5E8AB4",merge:"#22406E",cut:"transparent"}[d]};--db:${{keep:"#DFE8F0",ai:"#7EA1C3",merge:"#3E5F8E",cut:"rgba(223,232,240,.6)"}[d]}"><i></i>${DEC[d]}<b>${cnt[d]||0}</b></button>`).join("")}</div></div>`;
   const box=fx.querySelector(".cx3-box"),cells=[...fx.querySelectorAll(".cx3-c")],btns=[...fx.querySelectorAll(".cx3-lg button")];let pin=null;
   const lite=d=>{box.classList.toggle("dim",!!d);cells.forEach(c=>c.classList.toggle("lit",c.dataset.d===d));btns.forEach(b=>b.classList.toggle("on",b.dataset.d===d))};
@@ -165,7 +165,7 @@ FX["07"]=(host,K)=>{const fx=prep(host,"cx3");const P=PL(),S=SV();if(!P.length||
 FX["08"]=(host,K)=>{const fx=prep(host,"cx4");const ps=PR().slice().sort(byCode);if(!ps.length)return;
   const was=SV().length||29,now=ps.length,sc={keep:0,ai:0,new:0};ps.forEach(p=>sc[p.st]=(sc[p.st]||0)+1);
   let u=0;const U=ps.map((p,i)=>{if(i&&p.pillar!==ps[i-1].pillar)u+=.8;const v=u;u+=1;return v});u-=1;const A=22;
-  fx.innerHTML=`<div class="cx4-top"><div class="cx4-ct"><span class="cx4-k k0"><b>${was}</b><small>serviços hoje</small></span><span class="cx4-ar">→</span><span class="cx4-k k1"><b data-k>${RM?now:was}</b><small>produtos</small></span></div>
+  fx.innerHTML=`<div class="cx4-top"><div class="cx4-ct"><span class="cx4-k k0"><b>${was}</b><small>serviços hoje</small></span><span class="cx4-ar cx-late">→</span><span class="cx4-k k1 cx-late"><b data-k>${RM?now:was}</b><small>produtos</small></span></div>
       <div class="cx4-lg">${["keep","ai","new"].map(s=>`<span style="--sc:${SC[s]}"><i></i><b>${sc[s]||0}</b>${s==="keep"?"manter":s==="ai"?"aprimorar com IA":"criar com IA"}</span>`).join("")}</div></div>
     <div class="cx4-fan"><div class="cx4-tilt">${ps.map((p,i)=>`<a class="cx4-card" href="#p=${p.id}" data-pd="${p.id}" data-i="${i}" aria-label="${X(p.code+" · "+p.name)}" style="--a:${(-A+2*A*U[i]/u).toFixed(2)}deg;--sc:${SC[p.st]};--dl:${(.3+i*.032).toFixed(3)}s;z-index:${i+1}"${i===ps.length-1?' data-last=""':""}>
       <span class="cx4-sh"></span><span class="cx4-cap"></span><span class="cx4-code">${p.code}</span>${p.sig?'<span class="cx4-sig" title="A&amp;M Signature">★</span>':""}<span class="cx4-ic">${PICO(p.code,6)}</span><span class="cx4-pl">Pilar ${p.pillar}</span></a>`).join("")}</div></div>
@@ -208,7 +208,7 @@ function pilar(n){return(host,K)=>{const fx=prep(host,"cxp");host.classList.add(
   const fH=Math.max(own.length*(TH+TG)-TG,ps.length*(PH+PG)-PG),top=Math.max(118,Math.round(452-(104+16+22+18+fH)/2));
   const srcOf=p=>S.filter(o=>o.to===p.code);
   fx.innerHTML=`<div class="cxp-top" style="top:${top}px"><span class="cxp-em"><svg class="cxp-ring" viewBox="0 0 104 104"><circle class="r0" cx="52" cy="52" r="47"/><circle class="r1" cx="52" cy="52" r="47" pathLength="1"/></svg><span class="cxp-mk"><i></i></span><span class="cxp-ic">${ICO(PIC[n-1],1)}</span></span>
-      <span class="cxp-ct"><span class="cxp-nums"><span class="k0">${was}</span><span class="ar">→</span><b class="k1" data-k>${RM?now:was}</b></span><span class="cxp-lab">serviços hoje → produtos</span></span></div>
+      <span class="cxp-ct"><span class="cxp-nums"><span class="k0">${was}</span><span class="ar cx-late">→</span><b class="k1 cx-late" data-k>${RM?now:was}</b></span><span class="cxp-lab">serviços hoje → produtos</span></span></div>
     <div class="cxp-lg" style="top:${top+104+16}px">${["keep","ai","new"].map(s=>sc[s]?`<span style="--sc:${SC[s]}"><i></i><b>${sc[s]}</b>${s==="keep"?"manter":s==="ai"?"aprimorar com IA":"criar com IA"}</span>`:"").join("")}</div>
     <div class="cxp-field" style="top:${top+104+16+22+18}px;height:${fH}px">
       ${RM?"":own.map((o,i)=>{const out=pil(o.to)!==n;return `<div class="cxp-tl" data-to="${o.to}"${out?` data-out="${pil(o.to)}"`:""} style="top:${yT(i)}px;--dl:${(.35+i*.06).toFixed(2)}s"><i></i>${X(o.n)}${out?`<em>vai para o Pilar ${pil(o.to)}</em>`:""}</div>`}).join("")+
@@ -228,7 +228,8 @@ function pilar(n){return(host,K)=>{const fx=prep(host,"cxp");host.classList.add(
     if(inn){K.at(1450,()=>{t.classList.add("mv");t.animate([{opacity:0,transform:"translateX(90px)"},{opacity:1,transform:"translateX(30px)",offset:.45},{opacity:1,transform:"translateX(0)",offset:.8},{opacity:0,transform:"translateX(0)"}],{duration:1150,easing:ease2,fill:"forwards"})});return}
     if(out){K.at(1250,()=>t.classList.add("mv"));K.at(1550,()=>t.animate([{transform:"translateX(0)",opacity:1},{transform:"translateX(140px)",opacity:0}],{duration:700,easing:"cubic-bezier(.5,0,.75,0)",fill:"forwards"}));return}
     const dy=yP(j)+(PH-TH)/2-y0,dl=1600+i*45;
-    K.at(dl,()=>t.animate([{transform:"translate(0,0)",opacity:1},{transform:`translate(0,${dy}px)`,opacity:1,offset:.78},{transform:`translate(0,${dy}px) scaleX(.97)`,opacity:0}],{duration:900,easing:ease2,fill:"forwards"}))})}}
+    K.at(dl,()=>t.animate([{transform:"translate(0,0)",opacity:1},{transform:`translate(0,${dy}px)`,opacity:1,offset:.78},{transform:`translate(0,${dy}px) scaleX(.97)`,opacity:0}],{duration:900,easing:ease2,fill:"forwards"}))});
+  K.at(3400,()=>tiles.forEach(t=>t.style.display="none"))}}
 [[10,1],[12,2],[14,3],[16,4]].forEach(([k,n])=>FX[String(k)]=pilar(n));
 
 /* =====================================================================
