@@ -63,7 +63,7 @@
   /* impressão: o Chromium imprime o canvas como imagem opaca (branca onde é transparente); a cópia em PNG entra no lugar dele */
   const pim=sec.querySelector(".s01-print");
   const snap=()=>{if(!pim||lost)return;try{pim.src=cv.toDataURL("image/png")}catch(e){}};
-  setTimeout(snap,1200);
+  setTimeout(()=>{(window.requestIdleCallback||(f=>setTimeout(f,0)))(snap)},3200);   /* depois da entrada, em momento ocioso */
 
   /* saída do slide: para o campo, monograma no estado final */
   new MutationObserver(()=>{if(!sec.classList.contains("active")){stop();monoOut()}}).observe(sec,{attributes:true,attributeFilter:["class"]});

@@ -28,12 +28,12 @@
   const CNT={one:nS("one"),mS:nS("merge"),mP:nP("merge"),cut:nS("cut"),nw:nP("new")};
 
   /* por que muda (Hoje) e o que muda (Proposta), pilar a pilar: leitura DTS sobre o portfólio oficial e a proposta 2027 */
-  const WHY={1:"Três ofertas de liderança disputam o mesmo comprador, dois serviços cuidam de impostos de tecnologia e a resiliência, decisão de arquitetura, está fora do lugar.",
+  const WHY={1:"Três ofertas de liderança disputam o mesmo comprador, dois serviços cuidam de impostos de tecnologia e a resiliência, que é decisão de arquitetura, fica no pilar da estratégia.",
     2:"O escritório de transformação e o modelo de implantação têm o mesmo comprador e o mesmo método; o IT Business Partner aloca uma pessoa sem entrega definida.",
     3:"Seis dos oito serviços formam três pares com o mesmo método: as duas diligências, os dois planejamentos e os dois escritórios; o playbook quase não se vende sozinho.",
-    4:"Os nomes descrevem a área (arquitetura, aplicações, infraestrutura), não a entrega; ninguém responde pela rota do legado nem pela resiliência testada."};
-  const WHAT={1:"As ofertas de liderança viram o 1.3, as duas fiscais viram o 1.6, a resiliência vai para o Pilar 4 e nasce o 1.7, que governa valor, risco e custo da IA.",
-    2:"O escritório e o modelo de implantação viram o 2.3, que avisa antes do atraso; o IT Business Partner passa ao 1.3; nasce o 2.6, com o módulo de automação agêntica.",
+    4:"Os nomes descrevem a área (arquitetura, aplicações, infraestrutura), não a entrega; nenhum serviço decide a rota do legado com IA, e a resiliência fica em outro pilar."};
+  const WHAT={1:"As três ofertas de liderança viram o 1.3, os dois serviços fiscais viram o 1.6, a resiliência vai para o Pilar 4 e nasce o 1.7, que governa valor, risco e custo da IA.",
+    2:"O escritório e o modelo de implantação viram o 2.3, que avisa antes do atraso; o IT Business Partner passa ao 1.3; nasce o 2.6, com o módulo de automação agêntica de processos.",
     3:"Os três pares viram 3.1, 3.2 e 3.3; o 3.4 mantém a essência; o playbook vira ativo interno do 3.5, que lê a tecnologia de todas as empresas do fundo.",
     4:"Os quatro serviços passam a dizer a entrega, a resiliência chega do Pilar 1 como 4.5 e nasce o 4.6, o raio-X do legado com IA antes do primeiro gasto."};
 
@@ -43,7 +43,7 @@
   const prdOf=n=>PR.filter(p=>p.pillar===n);
   const LN=n=>[Math.ceil(svcOf(n).length/2),Math.ceil(prdOf(n).length/2)];
   const W8=PILLARS.map(p=>Math.max(...LN(p.n),2));
-  const rows=`24px ${W8.map(w=>w+"fr").join(" ")}`;
+  const rows=`22px ${W8.map(w=>w+"fr").join(" ")}`;
   [gA,gT,pl].forEach(g=>g.style.gridTemplateRows=rows);
 
   /* dica de um serviço: destino em palavras + por que muda (OLD.w) */

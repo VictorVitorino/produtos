@@ -6,7 +6,7 @@
    Laranja só como detalhe: números em laranja-claro apenas sobre o fundo escuro; cartas brancas com texto navy.
    ===================================================================== */
 .slide[data-s="20"] .head-r{flex-direction:column;align-items:flex-end;gap:7px}
-.slide[data-s="20"] .s20-leg{font-size:11.5px}
+.slide[data-s="20"] .s20-leg{font-size:11.5px;gap:0}
 .slide[data-s="20"] .s20-leg i{width:11px;height:11px;border-radius:50%;background:none;border:2px solid var(--orange-l);box-shadow:0 0 0 3px rgba(247,140,22,.18);margin-right:7px}
 
 /* ---------- janelas de 2027 ---------- */
@@ -14,9 +14,9 @@
 .slide[data-s="20"] .s20-jl{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 4px 0 14px;border-left:3px solid var(--orange)}
 .slide[data-s="20"] .s20-je{font:700 11px var(--fb);letter-spacing:.16em;text-transform:uppercase;color:var(--orange-l);white-space:nowrap}
 .slide[data-s="20"] .s20-jl b{font:700 25px/1.05 var(--fh);color:#fff;white-space:nowrap}
-.slide[data-s="20"] .s20-j{display:flex;align-items:center;gap:14px;min-width:0;padding:9px 16px 10px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);transition:border-color .25s,background .25s}
+.slide[data-s="20"] .s20-j{display:flex;align-items:center;gap:12px;min-width:0;padding:7px 14px 8px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);transition:border-color .25s,background .25s}
 .slide[data-s="20"] .s20-j:hover{border-color:rgba(249,166,74,.7);background:rgba(255,255,255,.09)}
-.slide[data-s="20"] .s20-jy{flex:none;min-width:84px;display:flex;flex-direction:column;align-items:center;font:800 38px/1 var(--fh);letter-spacing:.01em;color:var(--orange-l);white-space:nowrap}
+.slide[data-s="20"] .s20-jy{flex:none;min-width:74px;display:flex;flex-direction:column;align-items:center;font:800 38px/1 var(--fh);letter-spacing:.01em;color:var(--orange-l);white-space:nowrap}
 .slide[data-s="20"] .s20-jy small{font:600 11px var(--fb);letter-spacing:.08em;text-transform:uppercase;color:#9DBBD9;margin-bottom:2px}
 .slide[data-s="20"] .s20-jx{flex:1;min-width:0}
 .slide[data-s="20"] .s20-jh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
@@ -28,41 +28,43 @@
 /* ---------- tabuleiro: cartões das ondas ---------- */
 .slide[data-s="20"] .s20-board{flex:1;min-height:0;display:flex;flex-direction:column}
 .slide[data-s="20"] .s20-waves{position:relative;flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.slide[data-s="20"] .s20-w{position:relative;display:flex;flex-direction:column;gap:5px;min-width:0;min-height:0;padding:11px 16px 11px;border-radius:14px;cursor:pointer;outline:none;
+.slide[data-s="20"] .s20-w{position:relative;display:flex;flex-direction:column;gap:4px;min-width:0;min-height:0;padding:10px 16px 10px;border-radius:14px;cursor:pointer;outline:none;
   background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
   transition:opacity .35s,transform .35s var(--ease),border-color .3s,background .3s,box-shadow .3s}
-/* fio que liga o cartão à sua estação na trilha */
-.slide[data-s="20"] .s20-w::after{content:"";position:absolute;left:50%;bottom:-9px;width:2px;height:8px;margin-left:-1px;border-radius:1px;background:rgba(157,187,217,.4);transition:background .3s}
+/* entrada dos cartões (preenchimento só para trás, para não prender o transform do estado .on) */
+.slide[data-s="20"].play .s20-w{animation:s20-in .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--k,0)*90ms + 240ms)}
+@keyframes s20-in{from{opacity:0;transform:translateY(16px)}}
 .slide[data-s="20"] .s20-w:hover{border-color:rgba(249,166,74,.6)}
 .slide[data-s="20"] .s20-w:focus-visible{border-color:var(--orange);box-shadow:0 0 0 3px rgba(247,140,22,.3)}
 .slide[data-s="20"] .s20-w.off{opacity:.5}
 .slide[data-s="20"] .s20-w.on{transform:translateY(-3px);background:rgba(255,255,255,.1);border-color:rgba(249,166,74,.85);box-shadow:0 0 0 1px rgba(247,140,22,.35),0 18px 40px rgba(0,0,0,.35)}
-.slide[data-s="20"] .s20-w.on::after{background:var(--orange-l)}
 .slide[data-s="20"] .s20-w.hl{opacity:1;border-color:var(--orange-l);box-shadow:0 0 0 2px rgba(247,140,22,.45),0 14px 30px rgba(0,0,0,.3)}
 .slide[data-s="20"] .s20-we{font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
 .slide[data-s="20"] .s20-we b{color:var(--orange-l);font-weight:800}
 .slide[data-s="20"] .s20-wt{font:700 25px/1.05 var(--fh);letter-spacing:.005em;color:#fff;white-space:nowrap}
 .slide[data-s="20"] .s20-wp{font:500 13px/1.3 var(--fb);color:#AFC2D6;white-space:nowrap}
-.slide[data-s="20"] .s20-wi{display:flex;flex-direction:column;gap:5px;margin-top:5px}
+.slide[data-s="20"] .s20-wi{display:flex;flex-direction:column;gap:5px;margin-top:6px}
 /* produto que entra na onda: código + nome inteiro, numa linha; abre a ficha */
-.slide[data-s="20"] .s20-pr,.slide[data-s="20"] .s20-it{display:flex;align-items:center;gap:8px;min-width:0;padding:4px 9px 4px 4px;border-radius:8px;white-space:nowrap;font:600 13px/1.25 var(--fb);color:#fff}
+.slide[data-s="20"] .s20-pr,.slide[data-s="20"] .s20-it{display:flex;align-items:center;gap:8px;min-width:0;padding:3px 9px 3px 3px;border-radius:8px;white-space:nowrap;font:600 13px/1.25 var(--fb);color:#fff}
 .slide[data-s="20"] .s20-pr{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);text-decoration:none;transition:border-color .2s,background .2s}
 .slide[data-s="20"] .s20-pr:hover{border-color:var(--orange-l);background:rgba(247,140,22,.16)}
-.slide[data-s="20"] .s20-pr i{flex:none;min-width:30px;text-align:center;font:700 11.5px/1 var(--fb);font-style:normal;padding:4px 6px;border-radius:5px;background:rgba(157,187,217,.24);color:#fff}
+.slide[data-s="20"] .s20-pr i{flex:none;min-width:30px;text-align:center;font:700 11.5px/1 var(--fb);font-style:normal;padding:3px 6px;border-radius:5px;background:rgba(157,187,217,.24);color:#fff}
 .slide[data-s="20"] .s20-pr.keep i{background:rgba(223,232,240,.2)}
 .slide[data-s="20"] .s20-pr.new i{background:rgba(247,140,22,.32)}
 .slide[data-s="20"] .s20-it{font-weight:500;color:#DDEAF5;border:1px dashed rgba(157,187,217,.32)}
 .slide[data-s="20"] .s20-it>i{flex:none;width:30px;height:18px;display:grid;place-items:center}
 .slide[data-s="20"] .s20-it>i::before{content:"";width:7px;height:7px;border-radius:2px;transform:rotate(45deg);background:var(--orange-l)}
 .slide[data-s="20"] .s20-it .xr{color:#fff;text-decoration:underline;text-decoration-color:rgba(249,166,74,.7);text-underline-offset:2px}
-.slide[data-s="20"] .s20-wg{margin-top:auto;padding-top:8px;border-top:1px dashed rgba(255,255,255,.2)}
-.slide[data-s="20"] .s20-wg b{display:block;font:700 11px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:#9DBBD9;white-space:nowrap}
-.slide[data-s="20"] .s20-wg p{margin-top:2px;font:400 13px/1.38 var(--fb);color:#DDEAF5;text-wrap:pretty}
+.slide[data-s="20"] .s20-wg{margin-top:auto;padding-top:7px;border-top:1px dashed rgba(255,255,255,.2)}
+.slide[data-s="20"] .s20-wg p{font:400 13px/1.38 var(--fb);color:#C8DBEB;text-wrap:pretty}
+.slide[data-s="20"] .s20-wg p b{font-weight:700;color:#fff}
 
 /* ---------- tabuleiro: a trilha (casas, estações, mascote, indicadores) ---------- */
-.slide[data-s="20"] .s20-trail{position:relative;flex:none;height:110px;margin-top:9px}
+.slide[data-s="20"] .s20-trail{position:relative;flex:none;height:116px;margin-top:9px}
 .slide[data-s="20"] .s20-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .slide[data-s="20"] .s20-bed{fill:none;stroke:rgba(157,187,217,.12);stroke-width:30;stroke-linecap:round}
+.slide[data-s="20"] .s20-cn{stroke:rgba(157,187,217,.38);stroke-width:1.5;stroke-dasharray:3 4;transition:stroke .3s}
+.slide[data-s="20"] .s20-cn.lit{stroke:rgba(249,166,74,.8)}
 .slide[data-s="20"] .s20-edge{fill:none;stroke:rgba(157,187,217,.22);stroke-width:1;stroke-dasharray:2 6}
 .slide[data-s="20"] .s20-prog{fill:none;stroke:url(#s20Grad);stroke-width:4;stroke-linecap:round}
 .slide[data-s="20"] .s20-t{fill:#0E1C39;stroke:rgba(157,187,217,.42);stroke-width:1.2;transition:fill .3s,stroke .3s}
@@ -90,14 +92,14 @@
 .slide[data-s="20"] .s20-m.lit{color:#fff}
 .slide[data-s="20"] .s20-m.lit::before{border-color:var(--orange-l);box-shadow:0 0 0 3px rgba(247,140,22,.2)}
 /* mascote na trilha e a fala do fim */
-.slide[data-s="20"] .s20-pawn{position:absolute;left:0;top:0;width:70px;z-index:3;pointer-events:none;will-change:transform}
+.slide[data-s="20"] .s20-pawn{position:absolute;left:0;top:0;width:76px;z-index:3;pointer-events:none;will-change:transform}
 .slide[data-s="20"] .s20-pawn.walk .am-masc{animation:s20-hop .34s ease-in-out infinite alternate}
 @keyframes s20-hop{from{transform:translateY(0)}to{transform:translateY(-5px)}}
 .slide[data-s="20"] .s20-fala{position:absolute;left:0;top:0;z-index:4;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s var(--ease);pointer-events:none}
 .slide[data-s="20"] .s20-fala.on{opacity:1;transform:none}
 
 /* ---------- o chamado: decisões como cartas na mesa ---------- */
-.slide[data-s="20"] .s20-call{flex:none;display:grid;grid-template-columns:172px minmax(0,1fr) 318px;gap:12px;align-items:stretch;margin-top:12px}
+.slide[data-s="20"] .s20-call{flex:none;display:grid;grid-template-columns:184px minmax(0,1fr) 312px;gap:12px;align-items:stretch;margin-top:12px}
 .slide[data-s="20"] .s20-cl{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:10px 16px;border-radius:14px;color:#fff;background:linear-gradient(135deg,#F78C16,#C96A05);box-shadow:0 10px 26px rgba(0,0,0,.28)}
 .slide[data-s="20"] .s20-cl svg{width:24px;height:24px;margin-bottom:3px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .slide[data-s="20"] .s20-cl b{font:800 29px/1 var(--fh);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
@@ -117,7 +119,7 @@
 .slide[data-s="20"] .s20-dx p{margin-top:4px;padding-left:22px;font:400 13px/1.38 var(--fb);color:var(--ink2);text-wrap:pretty}
 .slide[data-s="20"] .s20-dx .xr{color:var(--navy);font-weight:700;text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:2px}
 /* entrada: as cartas são distribuídas a partir do bloco "O chamado" */
-.slide[data-s="20"].play .s20-dc{animation:s20-deal .62s cubic-bezier(.2,.75,.25,1) both;animation-delay:calc(var(--i,0)*120ms + 700ms)}
+.slide[data-s="20"].play .s20-dc{animation:s20-deal .62s cubic-bezier(.2,.75,.25,1) backwards;animation-delay:calc(var(--i,0)*120ms + 700ms)}
 @keyframes s20-deal{from{opacity:0;transform:translate(-120px,26px) rotate(-14deg)}to{opacity:1;transform:rotate(var(--r,0deg))}}
 .slide[data-s="20"] .s20-nx{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:14px;background:rgba(247,140,22,.12);border:1.5px solid var(--orange)}
 .slide[data-s="20"] .s20-nx svg{flex:none;width:26px;height:26px;margin-top:1px;fill:none;stroke:var(--orange-l);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -127,11 +129,12 @@
 
 /* ---------- movimento reduzido e impressão: estado final estático ---------- */
 @media (prefers-reduced-motion:reduce){
-  .slide[data-s="20"] .s20-dc{animation:none!important;opacity:1!important}
+  .slide[data-s="20"] .s20-dc,.slide[data-s="20"] .s20-w{animation:none!important}
   .slide[data-s="20"] .s20-st .s20-rg,.slide[data-s="20"] .s20-pawn.walk .am-masc{animation:none!important}
   .slide[data-s="20"] .s20-w,.slide[data-s="20"] .s20-t,.slide[data-s="20"] .s20-fala{transition:none!important}
 }
 @media print{
+  .slide[data-s="20"] .s20-w{animation:none!important}
   .slide[data-s="20"] .s20-dc{animation:none!important;opacity:1!important;box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 5px #D6DEE6!important}
   .slide[data-s="20"] .s20-st .s20-rg{display:none!important}
   .slide[data-s="20"] .s20-pawn.walk .am-masc{animation:none!important}

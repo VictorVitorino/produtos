@@ -32,8 +32,8 @@
 .slide[data-s="08"] .s08-tobe{background:linear-gradient(160deg,#17325E 0%,#0F2147 55%,#0A1834 100%)}
 .slide[data-s="08"] .s08-g{grid-template-columns:1fr 1fr}
 .slide[data-s="08"] .s08-c0{min-width:0;min-height:0;display:flex;align-items:center;padding:2px 16px}
-.slide[data-s="08"] .s08-c0.ha,.slide[data-s="08"] .s08-c0.pa{padding-right:30px}
-.slide[data-s="08"] .s08-c0.hb,.slide[data-s="08"] .s08-c0.pb{padding-left:30px}
+.slide[data-s="08"] .s08-c0.ha,.slide[data-s="08"] .s08-c0.pa{padding-right:26px}
+.slide[data-s="08"] .s08-c0.hb,.slide[data-s="08"] .s08-c0.pb{padding-left:26px}
 .slide[data-s="08"] .s08-asis .s08-c0:not(.s08-hd){border-top:1px solid #DCE4EC}
 .slide[data-s="08"] .s08-tobe .s08-c0:not(.s08-hd){border-top:1px solid rgba(255,255,255,.1)}
 .slide[data-s="08"] .s08-hd{gap:10px;white-space:nowrap}
@@ -44,10 +44,10 @@
 .slide[data-s="08"] .s08-tobe .s08-kt{color:#AFC2D6}
 
 /* lista de cada lado: coluna por coluna, linhas da mesma altura */
-.slide[data-s="08"] .s08-ch{display:grid;grid-auto-flow:column;grid-template-rows:repeat(var(--ln,4),20px);grid-auto-columns:max-content;gap:3px 10px;align-content:center}
+.slide[data-s="08"] .s08-ch{display:grid;grid-auto-flow:column;grid-template-rows:repeat(var(--ln,4),20px);grid-auto-columns:max-content;gap:3px 8px;align-content:center}
 .slide[data-s="08"] .s08-c{transition:opacity .25s,box-shadow .25s,border-color .25s}
 /* serviço de hoje: nome oficial + produto de destino */
-.slide[data-s="08"] .s08-s{display:inline-flex;align-items:center;gap:7px;height:20px;padding:0 8px;border-radius:5px;background:#fff;border:1px solid var(--line);font:600 12px var(--fb);letter-spacing:-.005em;color:var(--navy);white-space:nowrap;cursor:default}
+.slide[data-s="08"] .s08-s{display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 7px;border-radius:5px;background:#fff;border:1px solid var(--line);font:600 12px var(--fb);letter-spacing:-.005em;color:var(--navy);white-space:nowrap;cursor:default}
 .slide[data-s="08"] .s08-s>i{flex:none;width:5px;height:5px;border-radius:50%;background:var(--steel)}
 .slide[data-s="08"] .s08-s em{font:700 11px var(--fb);font-style:normal;color:var(--steel);letter-spacing:.02em}
 .slide[data-s="08"] .s08-s.merge{border-style:dashed;border-color:#9FB4C9;background:#EEF3F8}
