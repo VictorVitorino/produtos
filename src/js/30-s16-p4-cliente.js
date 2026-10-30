@@ -11,14 +11,14 @@ PCFG[4].cliente={
   /* vista 1 · quem decide: papel, o que decide, pergunta (a dor), gatilho, fato que prova a dor, produtos que respondem */
   quem:[
     {r:"CIO e CTO",d:"escolhem a rota",q:"Por onde começo a modernizar o legado sem parar a operação?",
-     g:"Fim de suporte, sistema que ninguém mais entende ou IA que esbarra nos dados antigos",
+     g:"Fim de suporte, legado sem dono ou IA que esbarra nos dados antigos",
      f:"pilar4-bancos-nuvem-30",ft:"de alta no gasto dos bancos no Brasil com migração para a nuvem em 2026",p:["4.6","4.1"]},
     {r:"CFO",d:"paga a conta",q:"Quanto pago em nuvem, licenças e sistemas sem uso — e o que dá para desligar?",
      g:"Renovação da VMware ou conta de nuvem que cresce sem dono",
-     f:"pilar4-vmware-europa-1500",fq:"até",ft:"de aumento no preço da VMware depois da compra pela Broadcom, relatado por provedores europeus",p:["4.3","4.2"]},
+     f:"pilar4-vmware-europa-1500",fq:"até",ft:"de aumento no preço da VMware após a compra pela Broadcom, segundo provedores europeus",p:["4.3","4.2"]},
     {r:"Riscos e operações",d:"respondem pela continuidade",q:"Se um fornecedor de TI for atacado, em quanto tempo a operação volta?",
      g:"Ataque a um terceiro de TI ou regra nova do Conselho Monetário Nacional",
-     f:"pilar4-sinqia-710",ft:"em transações não autorizadas no Pix da Sinqia, com acessos legítimos de fornecedores de TI",p:["4.5"]},
+     f:"pilar4-sinqia-710",ft:"em transações não autorizadas no Pix da Sinqia, com acessos de fornecedores de TI",p:["4.5"]},
     {r:"Conselho",d:"aprova a virada",q:"A migração vai entregar o prometido — e quem, sem conflito, diz se dá para virar?",
      g:"Migração de ERP, de núcleo bancário ou de dados com data marcada",
      f:"pilar2-erp-caso-negocio-70",fq:"mais de",ft:"das iniciativas recentes de ERP não devem cumprir todo o caso de negócio até 2027 (previsão)",p:["4.4","4.6"]}

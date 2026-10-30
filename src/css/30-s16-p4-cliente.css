@@ -8,3 +8,5 @@
 .slide[data-s="16"] .s16-mk .pl-mk th.c-f{width:132px}
 .slide[data-s="16"] .s16-mk .pl-mk th.c-l{width:344px}
 .slide[data-s="16"] .s16-mk .pl-mk th.c-p{width:118px}
+/* vista 1: a coluna da prova ganha largura (valores como "até 1.500%" e "R$ 710 mi" são mais largos que os do pilar 1) */
+.slide[data-s="16"] .pl-quem{--qc:214px minmax(0,1.22fr) minmax(0,.98fr) minmax(0,1.62fr) 300px}

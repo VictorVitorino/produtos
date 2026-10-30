@@ -1,49 +1,88 @@
 <!-- ===================================================== 02 · Sumário (Abertura) -->
 <section class="slide ag" data-s="02" data-t="Sumário" data-bare data-nofoot>
-  <svg class="sm-art" viewBox="0 0 1600 900" aria-hidden="true">
+  <!-- ilustração (direita): o tabuleiro. Cinco paradas, da partida (embaixo) à execução (bandeira no horizonte) -->
+  <svg class="s02-art" viewBox="0 0 1600 900" aria-hidden="true">
     <defs>
-      <linearGradient id="smSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16467A"/><stop offset=".48" stop-color="#3F7DB4"/><stop offset=".8" stop-color="#9CC4E4"/><stop offset="1" stop-color="#C9DDEE"/></linearGradient>
-      <linearGradient id="smGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9D8E6"/><stop offset="1" stop-color="#8FA7BF"/></linearGradient>
-      <clipPath id="smClip"><polygon points="960,0 1600,0 1600,900 688,900"/></clipPath>
-      <filter id="smSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.2"/></filter>
+      <linearGradient id="s02Sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16467A"/><stop offset=".5" stop-color="#3F7DB4"/><stop offset=".86" stop-color="#9CC4E4"/><stop offset="1" stop-color="#C9DDEE"/></linearGradient>
+      <radialGradient id="s02Sun" cx=".82" cy=".1" r=".5"><stop offset="0" stop-color="#EAF4FB" stop-opacity=".28"/><stop offset="1" stop-color="#EAF4FB" stop-opacity="0"/></radialGradient>
+      <linearGradient id="s02Hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6C95BA"/><stop offset="1" stop-color="#8FB1CE"/></linearGradient>
+      <linearGradient id="s02Ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D3E1EE"/><stop offset="1" stop-color="#A3BACF"/></linearGradient>
+      <clipPath id="s02Clip"><polygon points="960,0 1600,0 1600,900 688,900"/></clipPath>
+      <mask id="s02Reveal" maskUnits="userSpaceOnUse" x="600" y="300" width="1000" height="620">
+        <path class="s02-mask" d="M905 912 C912 870 918 830 930 800 C1030 792 1160 772 1185 715 C1205 668 1040 676 985 625 C952 594 1100 590 1165 548 C1204 522 1092 508 1040 482" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" pathLength="1"/>
+      </mask>
     </defs>
-    <g clip-path="url(#smClip)">
-      <rect x="600" y="0" width="1000" height="900" fill="url(#smSky)"/>
-      <g class="sm-clouds" fill="#fff">
-        <g class="sm-cl c1" opacity=".92"><circle cx="1240" cy="96" r="30"/><circle cx="1278" cy="80" r="40"/><circle cx="1322" cy="96" r="30"/><rect x="1210" y="96" width="142" height="30" rx="15"/></g>
-        <g class="sm-cl c2" opacity=".85"><circle cx="1452" cy="190" r="24"/><circle cx="1484" cy="176" r="32"/><circle cx="1520" cy="190" r="24"/><rect x="1428" y="190" width="116" height="24" rx="12"/></g>
-        <g class="sm-cl c3" opacity=".7"><circle cx="1060" cy="210" r="18"/><circle cx="1086" cy="198" r="25"/><circle cx="1114" cy="210" r="18"/><rect x="1042" y="210" width="90" height="18" rx="9"/></g>
+    <g clip-path="url(#s02Clip)">
+      <rect x="600" y="0" width="1000" height="900" fill="url(#s02Sky)"/>
+      <rect x="600" y="0" width="1000" height="560" fill="url(#s02Sun)"/>
+      <g class="s02-clouds" fill="#fff">
+        <g class="s02-cl c1"><path transform="translate(1250 92) scale(1.05)" d="M-92,18 C-112,18 -112,-8 -90,-9 C-92,-34 -58,-44 -42,-28 C-34,-56 6,-62 20,-36 C38,-52 72,-38 66,-12 C92,-14 104,16 80,18 Z" opacity=".95"/></g>
+        <g class="s02-cl c2"><path transform="translate(1478 214) scale(.82)" d="M-92,18 C-112,18 -112,-8 -90,-9 C-92,-34 -58,-44 -42,-28 C-34,-56 6,-62 20,-36 C38,-52 72,-38 66,-12 C92,-14 104,16 80,18 Z" opacity=".9"/></g>
+        <g class="s02-cl c3"><path transform="translate(1066 212) scale(.55)" d="M-92,18 C-112,18 -112,-8 -90,-9 C-92,-34 -58,-44 -42,-28 C-34,-56 6,-62 20,-36 C38,-52 72,-38 66,-12 C92,-14 104,16 80,18 Z" opacity=".8"/></g>
+        <g class="s02-cl c4"><path transform="translate(1330 330) scale(.6)" d="M-92,18 C-112,18 -112,-8 -90,-9 C-92,-34 -58,-44 -42,-28 C-34,-56 6,-62 20,-36 C38,-52 72,-38 66,-12 C92,-14 104,16 80,18 Z" opacity=".7"/></g>
       </g>
-      <path d="M600 610 L1600 560 L1600 900 L600 900 Z" fill="url(#smGround)"/>
-      <path d="M600 610 L1600 560" stroke="#E8F0F7" stroke-width="2" opacity=".7"/>
-      <!-- trilha do tabuleiro: cinco paradas, da partida (embaixo) à execução (no alto) -->
-      <path class="sm-road" d="M1500 900 C1470 840 1330 830 1240 790 C1130 742 1180 680 1300 650 C1420 620 1480 560 1390 520 C1290 476 1160 470 1180 410 C1200 350 1330 360 1390 300" fill="none" stroke="#F4F7FB" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
-      <path class="sm-road-in" d="M1500 900 C1470 840 1330 830 1240 790 C1130 742 1180 680 1300 650 C1420 620 1480 560 1390 520 C1290 476 1160 470 1180 410 C1200 350 1330 360 1390 300" fill="none" stroke="#F78C16" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" pathLength="1000"/>
-      <g class="sm-stop" data-k="1" transform="translate(1240 790)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">1</text></g>
-      <g class="sm-stop" data-k="2" transform="translate(1300 650)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">2</text></g>
-      <g class="sm-stop" data-k="3" transform="translate(1390 520)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">3</text></g>
-      <g class="sm-stop" data-k="4" transform="translate(1180 410)"><circle r="27" fill="#fff" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">4</text></g>
-      <g class="sm-stop goal" data-k="5" transform="translate(1390 300)"><path d="M0 -26 V-96" stroke="#122143" stroke-width="4"/><path d="M2 -96 L52 -82 L2 -66 Z" fill="#F78C16"/><circle r="27" fill="#F78C16" stroke="#122143" stroke-width="5"/><text y="9" text-anchor="middle">5</text></g>
+      <!-- horizonte: morros ao longe -->
+      <path d="M600,500 C700,478 790,494 880,486 C980,476 1060,498 1160,488 C1260,478 1330,494 1440,482 C1500,476 1560,486 1600,484 V560 H600Z" fill="url(#s02Hill)" opacity=".8"/>
+      <path d="M600,512 C720,496 820,510 930,502 C1040,494 1120,512 1240,504 C1350,496 1440,510 1600,500 V560 H600Z" fill="#A9C3DA"/>
+      <!-- chão do tabuleiro, com a grade em perspectiva -->
+      <path d="M600,516 C760,506 900,512 1040,508 C1200,504 1400,512 1600,506 V900 H600Z" fill="url(#s02Ground)"/>
+      <g class="s02-grid" stroke="#fff" stroke-width="1" opacity=".38" fill="none">
+        <path d="M760 900 L1069 513 M960 900 L1097 513 M1160 900 L1126 513 M1360 900 L1154 513 M1560 900 L1182 513 M560 900 L1041 513"/>
+        <path d="M600 548 H1600 M600 598 H1600 M600 668 H1600 M600 762 H1600 M600 878 H1600"/>
+      </g>
+      <!-- a trilha: base, casas (traço tracejado) e o fio laranja que se desenha na entrada -->
+      <g class="s02-road" fill="none" stroke-linecap="round">
+        <path d="M905 912 C912 870 918 830 930 800" stroke="#B4C6D8" stroke-width="52"/>
+        <path d="M930 800 C1030 792 1160 772 1185 715" stroke="#B4C6D8" stroke-width="46"/>
+        <path d="M1185 715 C1205 668 1040 676 985 625" stroke="#B4C6D8" stroke-width="40"/>
+        <path d="M985 625 C952 594 1100 590 1165 548" stroke="#B4C6D8" stroke-width="34"/>
+        <path d="M1165 548 C1204 522 1092 508 1040 482" stroke="#B4C6D8" stroke-width="29"/>
+        <path d="M905 912 C912 870 918 830 930 800" stroke="#F6F9FC" stroke-width="44" stroke-dasharray="40 5" stroke-linecap="butt"/>
+        <path d="M930 800 C1030 792 1160 772 1185 715" stroke="#F6F9FC" stroke-width="39" stroke-dasharray="36 5" stroke-linecap="butt"/>
+        <path d="M1185 715 C1205 668 1040 676 985 625" stroke="#F6F9FC" stroke-width="33" stroke-dasharray="31 4.5" stroke-linecap="butt"/>
+        <path d="M985 625 C952 594 1100 590 1165 548" stroke="#F6F9FC" stroke-width="28" stroke-dasharray="26 4" stroke-linecap="butt"/>
+        <path d="M1165 548 C1204 522 1092 508 1040 482" stroke="#F6F9FC" stroke-width="23" stroke-dasharray="21 3.5" stroke-linecap="butt"/>
+        <path class="s02-prog" mask="url(#s02Reveal)" d="M905 912 C912 870 918 830 930 800 C1030 792 1160 772 1185 715 C1205 668 1040 676 985 625 C952 594 1100 590 1165 548 C1204 522 1092 508 1040 482" stroke="#F78C16" stroke-width="3.2" stroke-dasharray="1 11"/>
+      </g>
     </g>
-    <!-- borda diagonal entre o painel e a ilustração (fio laranja) -->
-    <polygon points="990,-10 940,-10 664,910 714,910" fill="#0E1C39" opacity=".55"/>
-    <path d="M962 0 L690 900" stroke="#F78C16" stroke-width="2"/>
   </svg>
   <div class="ag-left"></div>
-  <div class="sm-tags" aria-hidden="true">
-    <span style="left:1282px;top:810px">Partida</span><span style="left:1342px;top:668px">Mercado</span><span style="left:1430px;top:540px">Posição</span><span style="left:1032px;top:398px">Portfólio</span><span style="left:1432px;top:318px">Execução</span>
+  <!-- borda diagonal entre o painel e a ilustração (APODI: sombra, fio aço, fio laranja), por cima do painel -->
+  <svg class="s02-frm" viewBox="0 0 1600 900" aria-hidden="true">
+    <defs><linearGradient id="s02Cast" gradientUnits="userSpaceOnUse" x1="960" y1="0" x2="880" y2="-24"><stop offset="0" stop-color="#02101F" stop-opacity=".55"/><stop offset="1" stop-color="#02101F" stop-opacity="0"/></linearGradient></defs>
+    <polygon points="990,-100 910,-100 608,900 688,900" fill="url(#s02Cast)"/>
+    <path d="M960,0L688,900" stroke="#9CC0E4" stroke-width="2" opacity=".55" fill="none"/>
+    <path d="M938,0L666,900" stroke="#F78C16" stroke-width="1.6" opacity=".85" fill="none"/>
+    <path d="M949,0L677,900" stroke="#5E8AB4" stroke-width="7" opacity=".32" fill="none"/>
+  </svg>
+
+  <!-- paradas: clicáveis (levam ao primeiro slide de cada parte) -->
+  <svg class="s02-stops" viewBox="0 0 1600 900">
+    <g class="s02-stop" data-k="1" data-go="3" transform="translate(930 800)"><title>Parte 1 · O ponto de partida</title><g class="s02-dot"><circle class="s02-ring" r="30"/><circle class="s02-c" r="30" stroke-width="5"/><text y="10.5" font-size="30">1</text></g></g>
+    <g class="s02-stop" data-k="2" data-go="5" transform="translate(1185 715)"><title>Parte 2 · O que o mercado vive</title><g class="s02-dot"><circle class="s02-ring" r="27"/><circle class="s02-c" r="27" stroke-width="4.6"/><text y="9.5" font-size="27">2</text></g></g>
+    <g class="s02-stop" data-k="3" data-go="7" transform="translate(985 625)"><title>Parte 3 · Nossa posição</title><g class="s02-dot"><circle class="s02-ring" r="24"/><circle class="s02-c" r="24" stroke-width="4.2"/><text y="8.5" font-size="24">3</text></g></g>
+    <g class="s02-stop" data-k="4" data-go="8" transform="translate(1165 548)"><title>Parte 4 · O novo portfólio</title><g class="s02-dot"><circle class="s02-ring" r="21"/><circle class="s02-c" r="21" stroke-width="3.8"/><text y="7.5" font-size="21">4</text></g></g>
+    <g class="s02-stop goal" data-k="5" data-go="18" transform="translate(1040 482)"><title>Parte 5 · Como fazer acontecer</title><g class="s02-dot"><path class="s02-flag-pole" d="M0 -19 V-84" stroke="#122143" stroke-width="3.4" stroke-linecap="round"/><path class="s02-flag" d="M1.5 -84 L44 -72 L1.5 -60 Z"/><circle class="s02-ring" r="20"/><circle class="s02-c" r="20" stroke-width="3.6"/><text y="7" font-size="20">5</text></g></g>
+  </svg>
+  <div class="s02-tags">
+    <span class="s02-tag" data-k="1" style="left:810px;top:788px">Partida</span>
+    <span class="s02-tag" data-k="2" style="left:1222px;top:660px">Mercado</span>
+    <span class="s02-tag" data-k="3" style="left:868px;top:613px">Posição</span>
+    <span class="s02-tag" data-k="4" style="left:1196px;top:520px">Portfólio</span>
+    <span class="s02-tag" data-k="5" style="left:1074px;top:430px">Execução</span>
   </div>
+
   <div class="ag-wrap">
     <div class="ag-title" data-a="fade">Sumário</div>
-    <button class="ag-item" type="button" data-go="3" data-a="left" style="--d:1" title="Ir para a parte 1"><span class="ag-n">1</span><span class="ag-t">O ponto de partida</span></button>
-    <button class="ag-item" type="button" data-go="5" data-a="left" style="--d:2" title="Ir para a parte 2"><span class="ag-n">2</span><span class="ag-t">O que o mercado vive</span></button>
-    <button class="ag-item" type="button" data-go="7" data-a="left" style="--d:3" title="Ir para a parte 3"><span class="ag-n">3</span><span class="ag-t">Nossa posição</span></button>
-    <button class="ag-item" type="button" data-go="8" data-a="left" style="--d:4" title="Ir para a parte 4"><span class="ag-n">4</span><span class="ag-t">O novo portfólio</span></button>
-    <button class="ag-item" type="button" data-go="18" data-a="left" style="--d:5" title="Ir para a parte 5"><span class="ag-n">5</span><span class="ag-t">Como fazer acontecer</span></button>
+    <button class="ag-item" type="button" data-go="3" data-k="1" data-a="left" style="--d:1" title="Ir para a parte 1"><span class="ag-n">1</span><span class="ag-tx"><span class="ag-t">O ponto de partida</span><span class="ag-d">O que a DTS vende hoje: 4 pilares e 29 serviços</span></span></button>
+    <button class="ag-item" type="button" data-go="5" data-k="2" data-a="left" style="--d:2" title="Ir para a parte 2"><span class="ag-n">2</span><span class="ag-tx"><span class="ag-t">O que o mercado vive</span><span class="ag-d">Seis forças e o que as consultorias fizeram em 2026</span></span></button>
+    <button class="ag-item" type="button" data-go="7" data-k="3" data-a="left" style="--d:3" title="Ir para a parte 3"><span class="ag-n">3</span><span class="ag-tx"><span class="ag-t">Nossa posição</span><span class="ag-d">Raio-X dos 29 serviços e o caminho recomendado</span></span></button>
+    <button class="ag-item" type="button" data-go="8" data-k="4" data-a="left" style="--d:4" title="Ir para a parte 4"><span class="ag-n">4</span><span class="ag-tx"><span class="ag-t">O novo portfólio</span><span class="ag-d">29 serviços viram 24 produtos, com IA no método</span></span></button>
+    <button class="ag-item" type="button" data-go="18" data-k="5" data-a="left" style="--d:5" title="Ir para a parte 5"><span class="ag-n">5</span><span class="ag-tx"><span class="ag-t">Como fazer acontecer</span><span class="ag-d">Fábrica de produtos, jogos de entrada e roadmap</span></span></button>
   </div>
-  <div class="sm-masc">
-    <div class="am-fala">Cinco paradas. A pergunta é uma só: como vender o que o cliente passou a comprar?</div>
-    <div class="am-masc" data-pose="aponta" style="--s:300px"></div>
-  </div>
-  <div class="ag-hint" data-ui>clique numa parte para abrir</div>
+  <div class="ag-hint" data-ui>clique numa parte ou numa parada para abrir</div>
+
+  <!-- estreia do mascote: pose aponta, à direita da trilha -->
+  <div class="am-fala s02-fala" data-tail="bc"><b>Eu sou o AM.</b> Cinco paradas, uma pergunta: como vender o que o cliente passou a comprar?</div>
+  <div class="s02-masc"><div class="am-masc" data-pose="aponta" style="--s:270px"></div></div>
 </section>

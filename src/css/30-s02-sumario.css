@@ -1,35 +1,78 @@
 /* =====================================================================
-   SLIDE 02 · Sumário · dono: slide 02
-   Modelo: "Súmario Executivo" da APODI (painel navy em diagonal, partes numeradas em laranja,
-   ilustração à direita). Aqui a ilustração é a trilha do tabuleiro (cinco paradas) com o mascote.
-   Regras escopadas em .slide[data-s="02"].
+   SLIDE 02 · Sumário · dono: abertura
+   Modelo: "Súmario Executivo" da APODI (painel navy em diagonal, partes numeradas em laranja que levam ao
+   capítulo, ilustração à direita). Aqui a ilustração é o tabuleiro: uma trilha de casas com cinco paradas
+   (uma por parte), que acendem em sequência enquanto o fio laranja se desenha; o mascote AM estreia ao lado,
+   na pose aponta. Passar o cursor numa parte acende a parada (e vice-versa). Animações só com .play;
+   sem .play, na impressão e com movimento reduzido, fica o estado final. Regras escopadas em .slide[data-s="02"].
    ===================================================================== */
 .slide[data-s="02"]{background:#0B2545}
-.slide[data-s="02"] .sm-art{position:absolute;left:0;top:0;width:1600px;height:900px;display:block}
-.slide[data-s="02"] .ag-left{position:absolute;inset:0;background:linear-gradient(160deg,#0D2A4D 0%,#0B2545 50%,#081D38 100%);clip-path:polygon(0 0,60.1% 0,43.1% 100%,0 100%)}
-.slide[data-s="02"] .ag-wrap{position:absolute;left:120px;top:196px;width:720px;color:#fff;z-index:2}
-.slide[data-s="02"] .ag-title{font:600 54px/1.1 var(--fh);color:#8FB3D9;letter-spacing:.01em;margin-bottom:34px}
-.slide[data-s="02"] .ag-item{display:flex;align-items:center;gap:26px;width:100%;background:none;border:0;text-align:left;padding:12px 10px 12px 16px;border-radius:12px;position:relative;transition:transform .18s ease,background .18s ease;color:#fff}
-.slide[data-s="02"] .ag-item:hover,.slide[data-s="02"] .ag-item:focus-visible{transform:translateX(8px);background:rgba(255,255,255,.05);outline:none}
+.slide[data-s="02"] .s02-art,.slide[data-s="02"] .s02-frm,.slide[data-s="02"] .s02-stops{position:absolute;left:0;top:0;width:1600px;height:900px;display:block;overflow:visible}
+.slide[data-s="02"] .s02-frm{pointer-events:none;z-index:1}
+.slide[data-s="02"] .ag-left{position:absolute;inset:0;background:linear-gradient(160deg,#0D2A4D 0%,#0B2545 50%,#081D38 100%);clip-path:polygon(0 0,60% 0,43% 100%,0 100%)}
+
+/* ---- painel: título e cinco partes (APODI: left 120; título Barlow 600 54 px; número Barlow 600 58 px laranja; nome Inter 500 28 px) ---- */
+.slide[data-s="02"] .ag-wrap{position:absolute;left:120px;top:190px;width:640px;color:#fff;z-index:3}
+.slide[data-s="02"] .ag-title{font:600 54px/1.1 var(--fh);color:#8FB3D9;letter-spacing:.01em;margin-bottom:28px}
+.slide[data-s="02"] .ag-item{display:flex;align-items:center;gap:26px;width:100%;background:none;border:0;text-align:left;padding:11px 10px 11px 16px;border-radius:12px;position:relative;cursor:pointer;transition:transform .18s ease,background .18s ease;color:#fff}
+.slide[data-s="02"] .ag-item:hover,.slide[data-s="02"] .ag-item:focus-visible,.slide[data-s="02"] .ag-item.hk{transform:translateX(8px);background:rgba(255,255,255,.05);outline:none}
+.slide[data-s="02"] .ag-item:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 .slide[data-s="02"] .ag-item::before{content:"";position:absolute;left:2px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--orange);opacity:0;transition:opacity .18s}
-.slide[data-s="02"] .ag-item:hover::before,.slide[data-s="02"] .ag-item:focus-visible::before{opacity:1}
+.slide[data-s="02"] .ag-item:hover::before,.slide[data-s="02"] .ag-item:focus-visible::before,.slide[data-s="02"] .ag-item.hk::before{opacity:1}
 .slide[data-s="02"] .ag-n{font:600 58px/1 var(--fh);color:var(--orange);min-width:44px}
+.slide[data-s="02"] .ag-tx{display:flex;flex-direction:column;gap:5px;min-width:0}
 .slide[data-s="02"] .ag-t{font:500 28px/1.2 var(--fb);color:#fff;white-space:nowrap}
-.slide[data-s="02"] .ag-hint{position:absolute;left:146px;bottom:52px;font:500 12px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:#7F98B8;z-index:2}
-/* trilha: paradas numeradas e rótulos (os mesmos das abas da barra inferior) */
-.slide[data-s="02"] .sm-stop text{font:800 26px var(--fh);fill:#122143}
-.slide[data-s="02"] .sm-stop.goal text{fill:#0E1C39}
-.slide[data-s="02"] .sm-road-in{stroke-dashoffset:0}
-.slide[data-s="02"].play .sm-stop{animation:smPop .5s ease both}
-.slide[data-s="02"].play .sm-stop[data-k="1"]{animation-delay:.5s}.slide[data-s="02"].play .sm-stop[data-k="2"]{animation-delay:.65s}.slide[data-s="02"].play .sm-stop[data-k="3"]{animation-delay:.8s}.slide[data-s="02"].play .sm-stop[data-k="4"]{animation-delay:.95s}.slide[data-s="02"].play .sm-stop[data-k="5"]{animation-delay:1.1s}
-@keyframes smPop{from{opacity:0}to{opacity:1}}
-.slide[data-s="02"] .sm-cl{animation:smDrift 26s ease-in-out infinite alternate}
-.slide[data-s="02"] .sm-cl.c2{animation-duration:32s}.slide[data-s="02"] .sm-cl.c3{animation-duration:22s}
-@keyframes smDrift{to{transform:translateX(-46px)}}
-.slide[data-s="02"] .sm-tags span{position:absolute;z-index:1;padding:5px 11px;border-radius:999px;background:#fff;color:var(--navy);font:700 12px var(--fb);letter-spacing:.08em;text-transform:uppercase;box-shadow:0 6px 16px rgba(14,28,57,.18);white-space:nowrap}
-/* mascote apontando para a trilha, com a fala */
-.slide[data-s="02"] .sm-masc{position:absolute;left:820px;top:520px;width:300px;height:360px;z-index:2;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
-.slide[data-s="02"] .sm-masc .am-masc{pointer-events:auto}
-.slide[data-s="02"] .sm-masc .am-fala{position:absolute;left:-282px;top:22px;width:280px}
-@media (prefers-reduced-motion:reduce){.slide[data-s="02"] .sm-cl,.slide[data-s="02"].play .sm-stop{animation:none!important}}
-@media print{.slide[data-s="02"] .ag-hint{display:none!important}.slide[data-s="02"] .sm-cl,.slide[data-s="02"] .sm-stop{animation:none!important}}
+.slide[data-s="02"] .ag-d{font:500 16.5px/1.3 var(--fb);color:#A3B8D6;white-space:nowrap}
+.slide[data-s="02"] .ag-hint{position:absolute;left:146px;bottom:52px;font:500 12px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:#7F98B8;z-index:3}
+
+/* ---- tabuleiro: paradas, rótulos e o fio que se desenha ---- */
+.slide[data-s="02"] .s02-stops{pointer-events:none;z-index:2}
+.slide[data-s="02"] .s02-stop{pointer-events:auto;cursor:pointer}
+.slide[data-s="02"] .s02-dot{transform-box:fill-box;transform-origin:50% 100%;transition:transform .2s ease}
+.slide[data-s="02"] .s02-stop:not(.goal) .s02-dot{transform-origin:center}
+.slide[data-s="02"] .s02-c{fill:#fff;stroke:#122143}
+.slide[data-s="02"] .s02-stop text{font-family:var(--fh);font-weight:800;fill:#122143;text-anchor:middle}
+.slide[data-s="02"] .s02-stop.goal .s02-c{fill:#F78C16}
+.slide[data-s="02"] .s02-stop.goal text{fill:#0E1C39}
+.slide[data-s="02"] .s02-flag{fill:#F78C16}
+.slide[data-s="02"] .s02-ring{fill:none;stroke:#F78C16;stroke-width:3;opacity:0;transform-box:fill-box;transform-origin:center}
+.slide[data-s="02"] .s02-mask{stroke-dasharray:1 1;stroke-dashoffset:0}
+.slide[data-s="02"] .s02-tags{position:absolute;inset:0;pointer-events:none;z-index:2}
+.slide[data-s="02"] .s02-tag{position:absolute;padding:5px 11px;border-radius:999px;background:#fff;color:var(--navy);font:700 12px/1.2 var(--fb);letter-spacing:.08em;text-transform:uppercase;box-shadow:0 6px 16px rgba(14,28,57,.18);white-space:nowrap;transition:background .2s,color .2s}
+/* destaque cruzado: parte da lista ↔ parada da trilha */
+.slide[data-s="02"][data-hk="1"] .s02-stop[data-k="1"] .s02-dot,.slide[data-s="02"][data-hk="2"] .s02-stop[data-k="2"] .s02-dot,.slide[data-s="02"][data-hk="3"] .s02-stop[data-k="3"] .s02-dot,.slide[data-s="02"][data-hk="4"] .s02-stop[data-k="4"] .s02-dot,.slide[data-s="02"][data-hk="5"] .s02-stop[data-k="5"] .s02-dot{transform:scale(1.16)}
+.slide[data-s="02"][data-hk="1"] .s02-stop[data-k="1"] .s02-ring,.slide[data-s="02"][data-hk="2"] .s02-stop[data-k="2"] .s02-ring,.slide[data-s="02"][data-hk="3"] .s02-stop[data-k="3"] .s02-ring,.slide[data-s="02"][data-hk="4"] .s02-stop[data-k="4"] .s02-ring,.slide[data-s="02"][data-hk="5"] .s02-stop[data-k="5"] .s02-ring{opacity:1;transform:scale(1.3)}
+.slide[data-s="02"][data-hk="1"] .s02-tag[data-k="1"],.slide[data-s="02"][data-hk="2"] .s02-tag[data-k="2"],.slide[data-s="02"][data-hk="3"] .s02-tag[data-k="3"],.slide[data-s="02"][data-hk="4"] .s02-tag[data-k="4"],.slide[data-s="02"][data-hk="5"] .s02-tag[data-k="5"]{background:#122143;color:#fff}
+
+/* ---- mascote AM (estreia) e balão ---- */
+.slide[data-s="02"] .s02-masc{position:absolute;left:1302px;top:604px;width:270px;z-index:3;pointer-events:none}
+.slide[data-s="02"] .s02-masc .am-masc{pointer-events:auto}
+.slide[data-s="02"] .s02-fala{position:absolute;left:1262px;top:466px;--fala-w:310px;z-index:4}
+
+/* ---- entrada: o fio laranja corre a trilha; cada parada acende quando ele chega (--t vem do JS); nuvens à deriva ---- */
+.slide[data-s="02"].play .s02-mask{animation:s02-draw 1.9s cubic-bezier(.45,.05,.4,1) .45s both}
+.slide[data-s="02"].play .s02-dot{animation:s02-lit .45s cubic-bezier(.3,1.5,.5,1) backwards;animation-delay:var(--t,.6s)}
+.slide[data-s="02"].play .s02-ring{animation:s02-ring .9s ease-out backwards;animation-delay:var(--t,.6s)}
+.slide[data-s="02"].play .s02-tag{animation:s02-tag .4s ease backwards;animation-delay:calc(var(--t,.6s) + .12s)}
+.slide[data-s="02"].play .s02-fala{animation:s02-pop .5s cubic-bezier(.3,1.4,.5,1) 1.05s both}
+.slide[data-s="02"] .s02-cl{animation:s02-drift 26s ease-in-out infinite alternate}
+.slide[data-s="02"] .s02-cl.c2{animation-duration:32s}.slide[data-s="02"] .s02-cl.c3{animation-duration:22s}.slide[data-s="02"] .s02-cl.c4{animation-duration:29s}
+@keyframes s02-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes s02-lit{from{opacity:.3;transform:scale(.72)}to{opacity:1;transform:none}}
+@keyframes s02-ring{0%{opacity:0;transform:scale(1)}15%{opacity:.95}100%{opacity:0;transform:scale(2.1)}}
+@keyframes s02-tag{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes s02-pop{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes s02-drift{to{transform:translateX(-46px)}}
+
+@media (prefers-reduced-motion:reduce){
+  .slide[data-s="02"] .s02-cl,.slide[data-s="02"] .s02-mask,.slide[data-s="02"] .s02-dot,.slide[data-s="02"] .s02-ring,.slide[data-s="02"] .s02-tag,.slide[data-s="02"] .s02-fala{animation:none!important}
+  .slide[data-s="02"] .s02-dot{transition:none}
+}
+@media print{
+  .slide[data-s="02"] .ag-hint{display:none!important}
+  .slide[data-s="02"] .s02-cl,.slide[data-s="02"] .s02-mask,.slide[data-s="02"] .s02-dot,.slide[data-s="02"] .s02-ring,.slide[data-s="02"] .s02-tag,.slide[data-s="02"] .s02-fala{animation:none!important}
+  .slide[data-s="02"] .s02-mask{stroke-dashoffset:0!important}
+  .slide[data-s="02"] .s02-ring{opacity:0!important}
+  .slide[data-s="02"] .s02-dot{transform:none!important}
+  .slide[data-s="02"] .s02-tag{background:#fff!important;color:var(--navy)!important}
+}
