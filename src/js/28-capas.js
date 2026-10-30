@@ -25,6 +25,8 @@ const SV=()=>typeof OLD!=="undefined"?OLD:[];
 const X=s=>typeof esc==="function"?esc(s):String(s);
 const ICO=(n,d)=>typeof icoSvg==="function"?icoSvg(n,d):"";
 const PICO=(c,d)=>typeof picoSvg==="function"?picoSvg(c,d):ICO("spark",d);
+/* nome de serviço com sigla fora da lista (SPEC §5): escrito como no slide 04 */
+const SNM={"TMO":"TMO (escritório de transformação)"};const sn=o=>SNM[o.n]||o.n;
 const byCode=(a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true});
 const prodOf=c=>PR().find(p=>p.code===c)||null;
 const ST={keep:"Manter",ai:"Aprimorar com IA",new:"Criar com IA"};
@@ -147,7 +149,7 @@ FX["07"]=(host,K)=>{const fx=prep(host,"cx3");const P=PL(),S=SV();if(!P.length||
   const SPK='<svg viewBox="0 0 24 24"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>';
   const cell=(o,c,r)=>{const p=prodOf(o.to),dst=p?`${p.code} · ${X(p.name)}`:o.to;const t0=.7+1.7*((c*55+24.5)/544)-.38+r*.03;
     const th=`<span class='tl'><b>Decisão</b>${DEC[o.d]||o.d}</span><span class='tl'><b>${o.d==="cut"?"Absorvido por":"Vai para"}</b>${dst.replace(/'/g,"&#39;")}</span>`;
-    return `<i class="cx3-c ${o.d}" data-d="${o.d}" style="--hd:${t0.toFixed(2)}s" data-tv="${X(o.n)}" data-th="${th.replace(/"/g,"&quot;")}">${o.d==="ai"?SPK:""}</i>`};
+    return `<i class="cx3-c ${o.d}" data-d="${o.d}" style="--hd:${t0.toFixed(2)}s" data-tv="${X(sn(o))}" data-th="${th.replace(/"/g,"&quot;")}">${o.d==="ai"?SPK:""}</i>`};
   fx.innerHTML=`<div class="cx3-box"><div class="cx3-hd"><span>Raio-X · ${S.length} serviços em ${P.length} pilares</span><span>uma célula por serviço</span></div>
     <div class="cx3-grid">${P.map((p,r)=>`<div class="cx3-rw"><div class="cx3-rl" style="--r:${r}"><em>Pilar ${p.n}</em><b>${X(p.name)}</b><span>${S.filter(o=>o.p===p.n).length} serviços</span></div><div class="cx3-row">${S.filter(o=>o.p===p.n).map((o,c)=>cell(o,c,r)).join("")}</div></div>`).join("")}<i class="cx3-scan"></i></div>
     <div class="cx3-lg">${["keep","ai","merge","cut"].map(d=>`<button type="button" class="${d}" data-d="${d}" style="--dc:${{keep:"#DFE8F0",ai:"#5E8AB4",merge:"#22406E",cut:"transparent"}[d]};--db:${{keep:"#DFE8F0",ai:"#7EA1C3",merge:"#3E5F8E",cut:"rgba(223,232,240,.6)"}[d]}"><i></i>${DEC[d]}<b>${cnt[d]||0}</b></button>`).join("")}</div></div>`;
@@ -218,9 +220,9 @@ function pilar(n){return(host,K)=>{const fx=prep(host,"cxp");host.classList.add(
       <span class="cxp-ct"><span class="cxp-nums"><span class="k0">${was}</span><span class="ar cx-late">→</span><b class="k1 cx-late" data-k>${RM?now:was}</b></span><span class="cxp-lab">serviços hoje<span class="cx-late"> → produtos</span></span></span></div>
     <div class="cxp-lg" style="top:${top+104+16}px">${["keep","ai","new"].map(s=>sc[s]?`<span style="--sc:${SC[s]}"><i></i><b>${sc[s]}</b>${s==="keep"?"manter":s==="ai"?"aprimorar com IA":"criar com IA"}</span>`:"").join("")}</div>
     <div class="cxp-field" style="top:${top+104+16+22+18}px;height:${fH}px">
-      ${RM?"":own.map((o,i)=>{const out=pil(o.to)!==n;return `<div class="cxp-tl" data-to="${o.to}"${out?` data-out="${pil(o.to)}"`:""} style="top:${yT(i)}px;--dl:${(.35+i*.06).toFixed(2)}s"><i></i>${X(o.n)}${out?`<em>vai para o Pilar ${pil(o.to)}</em>`:""}</div>`}).join("")+
-        inc.map(o=>`<div class="cxp-tl in" data-to="${o.to}" data-in="${o.p}" style="top:${yP(slot(o.to))+(PH-TH)/2}px;opacity:0"><i></i>${X(o.n)}<em>vem do Pilar ${o.p}</em></div>`).join("")}
-      ${ps.map((p,j)=>{const src=srcOf(p),from=src.length?src.map(o=>o.n+(o.p!==n?` (Pilar ${o.p})`:"")).join("; "):"produto novo, com IA desde o desenho";
+      ${RM?"":own.map((o,i)=>{const out=pil(o.to)!==n;return `<div class="cxp-tl" data-to="${o.to}"${out?` data-out="${pil(o.to)}"`:""} style="top:${yT(i)}px;--dl:${(.35+i*.06).toFixed(2)}s"><i></i>${X(sn(o))}${out?`<em>vai para o Pilar ${pil(o.to)}</em>`:""}</div>`}).join("")+
+        inc.map(o=>`<div class="cxp-tl in" data-to="${o.to}" data-in="${o.p}" style="top:${yP(slot(o.to))+(PH-TH)/2}px;opacity:0"><i></i>${X(sn(o))}<em>vem do Pilar ${o.p}</em></div>`).join("")}
+      ${ps.map((p,j)=>{const src=srcOf(p),from=src.length?src.map(o=>sn(o)+(o.p!==n?` (Pilar ${o.p})`:"")).join("; "):"produto novo, com IA desde o desenho";
         const th=`<span class='tl'><b>Status</b>${ST[p.st]||""}${p.sig?" · ★ A&amp;M Signature":""}</span><span class='tl'><b>Origem</b>${X(from).replace(/'/g,"&#39;")}</span>`;
         return `<a class="cxp-pc ${p.st}${p.st==="new"?" glow":""}" href="#p=${p.id}" data-pd="${p.id}" style="top:${yP(j)}px;--dl:${RM?0:(p.st==="new"?2.75:2.15+j*.07).toFixed(2)}s" data-tv="${X(p.code+" · "+p.name)}" data-th="${th.replace(/"/g,"&quot;")}">
           <span class="cd">${p.code}</span>${PICO(p.code,8+j)}<span class="nm">${X(p.name)}</span><span class="rt">${p.st==="new"?'<span class="tg">Novo</span>':`<span class="pp">${src.map(()=>"<i></i>").join("")}</span>`}${p.sig?'<span class="sg" title="A&amp;M Signature">★</span>':""}</span></a>`}).join("")}

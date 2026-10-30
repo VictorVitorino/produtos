@@ -4,7 +4,7 @@
    do monograma A&M desconstruído (window.AMMono, src/js/07-monograma.js) à direita.
    ENTER["01"]: liga o campo e toca a entrada do monograma (≈ 2,3 s, depois laços leves e paralaxe suave).
    Ao sair: para o campo e deixa o monograma no estado final, sem laços nem paralaxe.
-   PRINT: desenha um quadro estático do campo e deixa o monograma no estado final.
+   PRINT: o campo sai como imagem estática (cópia PNG do canvas, .s01-print) e o monograma no estado final.
    ===================================================================== */
 (function(){const sec=SL("01");if(!sec)return;
   const root=sec.querySelector(".ps"),cv=root&&root.querySelector(".ps__cv"),mono=sec.querySelector(".s01-mono");if(!root||!cv)return;
@@ -60,9 +60,13 @@
   function start(){if(running)return;running=true;last=performance.now();raf=requestAnimationFrame(frame)}
   function stop(){running=false;cancelAnimationFrame(raf)}
   draw(0);   /* primeiro quadro estático: a capa nunca aparece vazia (nem antes do ENTER, nem na impressão) */
+  /* impressão: o Chromium imprime o canvas como imagem opaca (branca onde é transparente); a cópia em PNG entra no lugar dele */
+  const pim=sec.querySelector(".s01-print");
+  const snap=()=>{if(!pim||lost)return;try{pim.src=cv.toDataURL("image/png")}catch(e){}};
+  setTimeout(snap,1200);
 
   /* saída do slide: para o campo, monograma no estado final */
   new MutationObserver(()=>{if(!sec.classList.contains("active")){stop();monoOut()}}).observe(sec,{attributes:true,attributeFilter:["class"]});
   ENTER["01"]=()=>{start();monoIn()};
-  PRINT.push(()=>{cursor=null;pulses.length=0;draw(0);monoOut()});
+  PRINT.push(()=>{cursor=null;pulses.length=0;if(!running)draw(0);if(pim&&!pim.getAttribute("src"))snap();monoOut()});
 })();

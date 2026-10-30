@@ -55,11 +55,27 @@ const TL_2026=[
 const NM_MARKET=[["Technology Strategy & Transformation · CIO Advisory","IT Advisory · Strategy, Leadership & Value",null],["Office of the CIO · IT Finance · TBM","Tech Spend Optimization & Spend Radar","1.5"],["Tech Due Diligence · Transaction Technology","AI-Powered Tech Due Diligence","3.1"],["Separation & Carve-out · TSA · Dia 1","Integration & Separation Blueprint","3.2"],["Trusted AI · Trustworthy AI · AI governance","AI Value & Governance Office","1.7"],["LegacyX · GenWizard · AWS Transform","Legacy X-Ray & AI Modernization","4.6"]];
 const NM_PRODS=[["Tech Maturity & Value Assessment","1.1"],["Digital Strategy & Roadmapping","1.2"],["Interim CIO / CTO Leadership + Embedded Tech Leadership + C-Level Tech Enablement","1.3"],["Strategic Tech Tax + Innovation Tax Incentives","1.6"],["ERP Readiness & Gap Analysis","2.2"],["TMO + Modelo de Implantação e Governança","2.3"],["IT Due Diligence (Buy Side) + (Sell Side)","3.1"],["IT Integration Management Office + IT Separation Management Office","3.3"],["Strategy Architecture","4.1"],["Strategy Application","4.2"],["Infrastructure Management","4.3"],["Complex Migrations Support","4.4"]];
 
-/* ---------- ROADMAP de lançamento (closing) ---------- */
+/* ---------- ROADMAP · quatro ondas de lançamento (dono: roadmap, slide 20) ----------
+   Proposta DTS (fato proposta-4-ondas), sem trimestres, prazos nem metas numéricas: a ordem é de sequência, e cada onda
+   só abre quando a anterior cumpre a condição "av". Prazo, preço e meta de cada produto saem dos pilotos (slide 18).
+   n = número da onda · s = nome · q = quando, em palavras (sequência, não data) · t = o que a onda faz (uma linha) ·
+   it = o que entra (código de produto vira link para a ficha; texto livre aceita códigos) · av = avança quando
+   (na última onda, a chegada) · m = como medir (nome do indicador; a meta é calibrada nos pilotos). */
 const TL_LAUNCH=[
- {d:"4T 2026",s:"Onda 0 · Fundação",t:"Fábrica de produtos e quick wins",x:"Nomear donos de produto, padronizar fichas, ativar o LLM corporativo seguro. Lançar <b>ERP & Tax Reform Readiness</b> (janela da CBS em 01/01/2027) e <b>Tech Spend Optimization & Spend Radar</b> (orçamento 2027).",tag:"0–90 dias"},
- {d:"1T 2027",s:"Onda 1 · Signature",t:"Produtos A&M Signature com IA",x:"<b>AI-Powered Tech Due Diligence</b> (3 níveis), <b>Tech Project Rescue</b> com kit forense, <b>Interim & Embedded Tech Leadership</b> com bancada e copiloto.",tag:"Proteger o núcleo"},
- {d:"2T 2027",s:"Onda 2 · Novos IA",t:"Primeiros produtos novos",x:"<b>AI Value & Governance Office</b> (assinatura), <b>AI-Native IT Productivity</b> (piloto de 10 semanas) e <b>Legacy X-Ray & AI Modernization</b>, com 3–5 clientes-piloto cada e preço de lançamento.",tag:"Criar com IA"},
- {d:"3T 2027",s:"Onda 3 · Recorrência",t:"Plataformas e assinaturas",x:"<b>PE Tech Value Radar</b> com 1–2 fundos-âncora; <b>Spend Radar</b> como assinatura; benchmark DTS Brasil como ativo de dados.",tag:"Receita recorrente"},
- {d:"4T 2027",s:"Revisão",t:"Revisão do portfólio",x:"O comitê trimestral acompanha receita por produto, margem, recorrência e conversão; a revisão anual decide escalar, ajustar ou aposentar.",tag:"Ciclo anual"}
+ {n:0,s:"Fundação",q:"começa agora",t:"Liga a fábrica e responde às janelas de 2027",
+  it:["Donos, fichas e a Plataforma de Dados e AI","2.2","1.5"],
+  av:"os dois primeiros produtos são vendidos como produto, com ficha e dono",
+  m:"conversão de diagnóstico em execução"},
+ {n:1,s:"Núcleo Signature",q:"em seguida",t:"Põe IA no método do que a A&M já vence",
+  it:["3.1","2.4","1.3"],
+  av:"os quatro Signature saem com IA no método e outra equipe entrega com o mesmo kit",
+  m:"tempo de entrega de diagnósticos e diligências"},
+ {n:2,s:"Novos produtos com IA",q:"com pilotos",t:"Testa as apostas com clientes selecionados",
+  it:["1.7","2.6","4.6"],
+  av:"o piloto mostra ganho medido e define o prazo e o preço de cada produto",
+  m:"receita de produtos com IA no método"},
+ {n:3,s:"Recorrência",q:"com escala",t:"Vende acompanhamento contínuo, não só projetos",
+  it:["3.5","Radar do 1.5 e escritório do 1.7 por assinatura","Plataforma alimentada por cada projeto"],
+  av:"as assinaturas renovam e a base de comparação melhora a cada projeto",
+  m:"receita recorrente, por assinatura"}
 ];

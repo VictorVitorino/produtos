@@ -1,17 +1,76 @@
-<!-- ===================================================== 20 · Roadmap e decisões -->
-<section class="slide" data-s="20" data-t="Roadmap e decisões" data-p="5 · Como fazer acontecer" data-band="QUATRO ONDAS E AS DECISÕES DO COMITÊ" data-c="c-navy" data-bs="Use → para acender as ondas" data-src="Janelas: LC 214/2025 (CBS em 2027) e fim da manutenção padrão do SAP ECC (2027) · sequência: proposta DTS">
+<!-- ===================================================== 20 · Roadmap e decisões (Parte 5) · fechamento do deck
+     Trilha de tabuleiro (Timeline Motion): quatro ondas que acendem em sequência e o mascote (bandeira) andando na trilha.
+     Em cima, as janelas de 2027 (fatos verificados); embaixo, "O chamado" como no último slide da APODI, com as decisões
+     para o comitê como cartas na mesa. Ondas em src/data/20-timelines.js (TL_LAUNCH); desenho e ganchos em 30-s20-roadmap.js. -->
+<section class="slide" data-s="20" data-t="Roadmap e decisões" data-p="5 · Como fazer acontecer"
+  data-band="QUATRO ONDAS E AS DECISÕES DO COMITÊ" data-c="c-navy" data-bs="Use → para acender as ondas"
+  data-src="Janelas de 2027: Agência Senado (CBS), SAP (ECC) e Forrester (gasto com IA) · ondas, decisões e indicadores: proposta DTS, metas a calibrar nos pilotos">
   <div class="body dk">
-    <div class="hd hd-start">
-      <div class="hd-l"><div class="eyebrow">Roadmap de lançamento · decisões para o comitê</div><h2 class="h2 kin">Proteger o núcleo, <span class="hl">capturar 2027.</span></h2></div>
-      <div class="hd-r" data-a="fade" style="--d:4"><p class="lead" style="text-align:right">Lançar em ondas: proteger o núcleo Signature, capturar as janelas de 2027 e construir recorrência.</p><button class="btn-play clk" id="tl2Play">Reproduzir as ondas</button></div>
-    </div>
-    <div class="main rdm">
-      <div class="tl-wrap" id="tlLaunch"></div>
-      <div class="rdm-row">
-        <div class="card" data-a="up" style="--d:6"><span class="ttl">Decisões para o comitê</span><ol id="decisions"></ol></div>
-        <div class="card kpis-ok" data-a="up" style="--d:8"><span class="ttl">Como medir o sucesso · metas a calibrar</span><div id="kpisOK"></div></div>
+    <header class="head" data-a="fade">
+      <div>
+        <h2 class="tc">Começar protegendo o núcleo e aproveitando as <em>janelas de 2027</em></h2>
+        <p class="sub">Quatro ondas, da fundação às assinaturas, e as decisões que pedimos ao comitê hoje</p>
       </div>
-      <div class="caps" id="caps"></div>
+      <div class="head-r">
+        <span class="legend s20-leg"><i aria-hidden="true"></i>indicador de cada onda: meta a calibrar nos pilotos</span>
+        <button class="btn-play" id="s20Play" type="button" data-ui>Reproduzir a trilha</button>
+      </div>
+    </header>
+
+    <!-- por que agora: as três janelas de 2027 (números só por data-fato) -->
+    <div class="s20-jan" data-a="up" style="--d:2">
+      <div class="s20-jl"><span class="s20-je">Por que agora</span><b>Janelas de 2027</b></div>
+      <div class="s20-j" data-w="0">
+        <b class="s20-jy"><span data-fato="forcas-cbs-2027"></span></b>
+        <div class="s20-jx"><div class="s20-jh"><b>Reforma Tributária</b><span class="s20-jo">Onda 0 · 2.2</span></div>
+          <p>Começa a cobrança efetiva da CBS, novo tributo federal sobre consumo; PIS e Cofins deixam de existir</p></div>
+      </div>
+      <div class="s20-j" data-w="0">
+        <b class="s20-jy"><small>fim de</small><span data-fato="forcas-ecc-2027"></span></b>
+        <div class="s20-jx"><div class="s20-jh"><b>ERP da SAP (ECC)</b><span class="s20-jo">Onda 0 · 2.2</span></div>
+          <p>Termina a manutenção padrão da versão antiga do ERP da SAP; depois, só a estendida, mais cara</p></div>
+      </div>
+      <div class="s20-j" data-w="0,2">
+        <b class="s20-jy"><span data-fato="gasto-ia-adiado-25"></span></b>
+        <div class="s20-jx"><div class="s20-jh"><b>Orçamento de IA</b><span class="s20-jo">Onda 0 · 1.5</span></div>
+          <p>do gasto planejado com IA em 2026 fica para 2027, com o CFO cobrando retorno (previsão)</p></div>
+      </div>
+    </div>
+
+    <!-- trilha de tabuleiro: cartões das ondas (de TL_LAUNCH) e a trilha com casas, estações e o mascote -->
+    <div class="s20-board" id="s20Board">
+      <div class="s20-waves" id="s20Waves"></div>
+      <div class="s20-trail" id="s20Trail">
+        <svg class="s20-svg" id="s20Svg" aria-hidden="true"></svg>
+        <div class="s20-ms" id="s20Ms"></div>
+        <div class="s20-pawn" id="s20Pawn" aria-hidden="true"><div class="am-masc" data-pose="bandeira" style="--s:70px"></div></div>
+        <div class="am-fala am-fala--p s20-fala" id="s20Fala" data-tail="r">Primeiro o núcleo, depois as apostas.</div>
+      </div>
+    </div>
+
+    <!-- o chamado (como no último slide da APODI): as decisões como cartas na mesa e o próximo passo -->
+    <div class="s20-call" id="s20Call">
+      <div class="s20-cl" data-a="left" style="--d:6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h13l-3 4 3 4H5"/></svg><b>O chamado</b><span>4 decisões para o comitê</span></div>
+      <div class="s20-table" id="s20Table">
+        <div class="s20-dc" data-w="0,1,2,3" style="--i:0;--r:-2deg" tabindex="0">
+          <span class="s20-ix" aria-hidden="true"><b>1</b><i></i></span>
+          <div class="s20-dx"><b class="s20-dt">Aprovar os 24 produtos</b><p>5 manter, 15 aprimorar com IA e 4 criar com IA, com os 4 A&amp;M Signature à frente</p></div>
+        </div>
+        <div class="s20-dc" data-w="0" style="--i:1;--r:1.4deg" tabindex="0">
+          <span class="s20-ix" aria-hidden="true"><b>2</b><i></i></span>
+          <div class="s20-dx"><b class="s20-dt">Dono para cada produto</b><p>Responde pela ficha, pelo piloto e pela venda; o comitê de portfólio decide portão a portão</p></div>
+        </div>
+        <div class="s20-dc" data-w="0" style="--i:2;--r:-1deg" tabindex="0">
+          <span class="s20-ix" aria-hidden="true"><b>3</b><i></i></span>
+          <div class="s20-dx"><b class="s20-dt">Abrir a Onda 0 agora</b><p>Lançar o 2.2 e o 1.5 enquanto as janelas de 2027 ainda dão tempo de preparar o cliente</p></div>
+        </div>
+        <div class="s20-dc" data-w="0,3" style="--i:3;--r:1.8deg" tabindex="0">
+          <span class="s20-ix" aria-hidden="true"><b>4</b><i></i></span>
+          <div class="s20-dx"><b class="s20-dt">Investir na base comum</b><p>A Plataforma de Dados e AI: IA generativa em ambiente seguro e os dados de cada projeto</p></div>
+        </div>
+      </div>
+      <div class="s20-nx" data-a="right" style="--d:9"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg>
+        <div><b>Próximo passo</b><span>Com as quatro cartas aprovadas, a Onda 0 começa: donos nomeados, o 2.2 e o 1.5 em venda e os clientes-piloto escolhidos, incluindo fundos.</span></div></div>
     </div>
   </div>
 </section>

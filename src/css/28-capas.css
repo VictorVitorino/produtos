@@ -5,6 +5,9 @@
    Sem "bola"/blob e sem mascote. Tudo aqui vale só para #chap.cx (classe posta pelo 28-capas.js).
    Movimento reduzido: estado final, sem animação. Impressão: #chap não imprime (styles.css §7).
    ===================================================================== */
+/* enquanto uma capa está aberta, cada slide vira um contexto de empilhamento: nada de dentro dele (ex.: as cartas do
+   Card Stack do slide 18, com z-index até 100) passa por cima da capa (#chap, z-index 85), inclusive com movimento reduzido */
+#stage:has(> #chap.on) > .slide{isolation:isolate}
 #chap.cx .ch-m,#chap.cx .ch-floor{display:none}
 #chap.cx .ch-txt{max-width:800px;pointer-events:none}
 #chap.cx .ch-chips{pointer-events:auto}

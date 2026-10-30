@@ -12,7 +12,7 @@
 .slide[data-s="02"] .ag-left{position:absolute;inset:0;background:linear-gradient(160deg,#0D2A4D 0%,#0B2545 50%,#081D38 100%);clip-path:polygon(0 0,60% 0,43% 100%,0 100%)}
 
 /* ---- painel: título e cinco partes (APODI: left 120; título Barlow 600 54 px; número Barlow 600 58 px laranja; nome Inter 500 28 px) ---- */
-.slide[data-s="02"] .ag-wrap{position:absolute;left:120px;top:190px;width:640px;color:#fff;z-index:3}
+.slide[data-s="02"] .ag-wrap{position:absolute;left:120px;top:204px;width:640px;color:#fff;z-index:3}
 .slide[data-s="02"] .ag-title{font:600 54px/1.1 var(--fh);color:#8FB3D9;letter-spacing:.01em;margin-bottom:28px}
 .slide[data-s="02"] .ag-item{display:flex;align-items:center;gap:26px;width:100%;background:none;border:0;text-align:left;padding:11px 10px 11px 16px;border-radius:12px;position:relative;cursor:pointer;transition:transform .18s ease,background .18s ease;color:#fff}
 .slide[data-s="02"] .ag-item:hover,.slide[data-s="02"] .ag-item:focus-visible,.slide[data-s="02"] .ag-item.hk{transform:translateX(8px);background:rgba(255,255,255,.05);outline:none}
@@ -50,9 +50,9 @@
 .slide[data-s="02"] .s02-fala{position:absolute;left:1262px;top:466px;--fala-w:310px;z-index:4}
 
 /* ---- entrada: o fio laranja corre a trilha; cada parada acende quando ele chega (--t vem do JS); nuvens à deriva ---- */
-.slide[data-s="02"].play .s02-mask{animation:s02-draw 1.9s cubic-bezier(.45,.05,.4,1) .45s both}
+.slide[data-s="02"].play .s02-mask{animation:s02-draw 1.5s linear .4s both}
 .slide[data-s="02"].play .s02-dot{animation:s02-lit .45s cubic-bezier(.3,1.5,.5,1) backwards;animation-delay:var(--t,.6s)}
-.slide[data-s="02"].play .s02-ring{animation:s02-ring .9s ease-out backwards;animation-delay:var(--t,.6s)}
+.slide[data-s="02"].play .s02-ring{animation:s02-ring .8s ease-out backwards;animation-delay:var(--t,.6s)}
 .slide[data-s="02"].play .s02-tag{animation:s02-tag .4s ease backwards;animation-delay:calc(var(--t,.6s) + .12s)}
 .slide[data-s="02"].play .s02-fala{animation:s02-pop .5s cubic-bezier(.3,1.4,.5,1) 1.05s both}
 .slide[data-s="02"] .s02-cl{animation:s02-drift 26s ease-in-out infinite alternate}

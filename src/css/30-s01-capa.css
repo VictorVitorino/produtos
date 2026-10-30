@@ -11,6 +11,8 @@
 .slide[data-s="01"] .ps{position:absolute;inset:0;overflow:hidden}
 .slide[data-s="01"] .ps__bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 85% 90%,rgba(247,140,22,.08),transparent 60%),radial-gradient(ellipse 70% 60% at 15% 20%,#13315C,transparent 70%),linear-gradient(160deg,#0B2545,#071A33)}
 .slide[data-s="01"] .ps__cv{position:absolute;inset:0;width:1600px;height:900px;display:block;cursor:crosshair;touch-action:none;z-index:1}
+/* na impressão o canvas sai como imagem opaca (fundo branco): vai uma cópia em PNG no lugar dele (como a capa da APODI) */
+.slide[data-s="01"] .s01-print{display:none;position:absolute;inset:0;width:1600px;height:900px;z-index:1;pointer-events:none}
 .slide[data-s="01"] .ps__shade{position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(7,26,51,.82),rgba(7,26,51,.45) 42%,rgba(7,26,51,0) 64%)}
 
 /* monograma: lado direito do palco, por cima das partículas; não captura o cursor (o campo continua reagindo) */
@@ -59,6 +61,7 @@
   .slide[data-s="01"] .s01-w,.slide[data-s="01"] .s01-u,.slide[data-s="01"] .cv-sub::before,.slide[data-s="01"] .cv-s2,.slide[data-s="01"] .cv-meta,.slide[data-s="01"] .cv-logos,.slide[data-s="01"] .s01-hud,.slide[data-s="01"] .cv-tag{animation:none!important;opacity:1;transform:none;filter:none}
 }
 @media print{
-  .slide[data-s="01"] .s01-hud,.slide[data-s="01"] .cv-tag{display:none!important}
+  .slide[data-s="01"] .s01-hud,.slide[data-s="01"] .cv-tag,.slide[data-s="01"] .ps__cv{display:none!important}
+  .slide[data-s="01"] .s01-print[src]{display:block!important}
   .slide[data-s="01"] .s01-w,.slide[data-s="01"] .s01-u,.slide[data-s="01"] .cv-sub::before,.slide[data-s="01"] .cv-s2,.slide[data-s="01"] .cv-meta,.slide[data-s="01"] .cv-logos{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}
 }
