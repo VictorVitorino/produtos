@@ -32,6 +32,10 @@
 .slide[data-s="05"] .s05-sp.on .s05-n0{fill:var(--orange);stroke:var(--orange)}
 .slide[data-s="05"] .s05-sp.on .s05-n1{fill:var(--orange)}
 .slide[data-s="05"] .s05-sp.on .s05-pu{fill:var(--orange)}
+/* halo do nó ativo: anel laranja que se expande (como o is-active do Node Network do guia DTS) */
+.slide[data-s="05"] .s05-ha{fill:none;stroke:var(--orange);stroke-width:1.6;opacity:0;transform-box:fill-box;transform-origin:center}
+.slide[data-s="05"] .s05-sp.on .s05-ha{animation:s05-halo 1.6s ease-out infinite}
+@keyframes s05-halo{0%{transform:scale(1);opacity:.85}100%{transform:scale(3.2);opacity:0}}
 .slide[data-s="05"] .s05-net.sel .s05-sp:not(.on){opacity:.4}
 .slide[data-s="05"] .s05-net.sel .s05-sp:not(.on) .s05-fl,.slide[data-s="05"] .s05-net.sel .s05-sp:not(.on) .s05-pu{visibility:hidden}
 @keyframes s05-in{from{opacity:0}to{opacity:1}}
@@ -72,10 +76,11 @@
 .slide[data-s="05"] .s05-hv,.slide[data-s="05"] .s05-hd{position:relative;flex:1;min-height:0;display:flex;flex-direction:column}
 .slide[data-s="05"] .s05-eye{font:700 11.5px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:var(--orange-l);white-space:nowrap}
 /* visão geral */
-.slide[data-s="05"] .s05-hv{justify-content:center;gap:24px}
+.slide[data-s="05"] .s05-hv{justify-content:space-between;gap:20px;padding:6px 0 2px}
+.slide[data-s="05"] .s05-qs{display:flex;flex-direction:column;gap:30px}
 .slide[data-s="05"] .s05-q{display:flex;flex-direction:column;gap:6px}
-.slide[data-s="05"] .s05-ql{font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9}
-.slide[data-s="05"] .s05-q0 p{position:relative;align-self:flex-start;font:500 19px/1.35 var(--fb);color:#AFC2D6;white-space:nowrap}
+.slide[data-s="05"] .s05-ql{font:700 11.5px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:#9DBBD9}
+.slide[data-s="05"] .s05-q0 p{position:relative;align-self:flex-start;font:500 22px/1.35 var(--fb);color:#AFC2D6;white-space:nowrap}
 /* a pergunta antiga riscada (fio laranja-claro, detalhe sobre fundo escuro); na entrada o risco se desenha e a pergunta nova chega depois */
 .slide[data-s="05"] .s05-q0 p::after{content:"";position:absolute;left:-3px;right:-3px;top:54%;height:2px;border-radius:2px;background:var(--orange-l);opacity:.85;transform-origin:left center}
 .slide[data-s="05"].play .s05-ent .s05-q0 p::after{animation:s05-strike .55s cubic-bezier(.65,0,.35,1) .95s both}
@@ -83,8 +88,8 @@
 .slide[data-s="05"].play .s05-ent .s05-con{animation:s05-rise .6s cubic-bezier(.22,.61,.36,1) 1.6s both}
 @keyframes s05-strike{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes s05-rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.slide[data-s="05"] .s05-q1 p{font:700 35px/1.08 var(--fh);letter-spacing:.005em;color:#fff;text-wrap:balance}
-.slide[data-s="05"] .s05-con{padding-top:20px;border-top:1px solid rgba(255,255,255,.14);font:400 16.5px/1.45 var(--fb);color:#DDEAF5;text-wrap:pretty}
+.slide[data-s="05"] .s05-q1 p{font:700 44px/1.05 var(--fh);letter-spacing:.005em;color:#fff;text-wrap:balance}
+.slide[data-s="05"] .s05-con{padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font:400 17.5px/1.45 var(--fb);color:#DDEAF5;text-wrap:pretty}
 .slide[data-s="05"] .s05-con b{font-weight:700;color:#fff}
 .slide[data-s="05"] .s05-con em{font-style:normal;font-weight:700;color:var(--orange-l)}
 /* detalhe da força */
@@ -119,13 +124,13 @@
 .slide[data-s="05"] .s05-psrc{display:block;margin-top:2px;font:400 11px/1.35 var(--fb);color:var(--muted)}
 
 @media (prefers-reduced-motion:reduce){
-  .slide[data-s="05"] .s05-fl,.slide[data-s="05"] .s05-pu{display:none!important}
+  .slide[data-s="05"] .s05-fl,.slide[data-s="05"] .s05-pu,.slide[data-s="05"] .s05-ha{display:none!important}
   .slide[data-s="05"] .s05-ent .s05-q0 p::after,.slide[data-s="05"] .s05-ent .s05-q1,.slide[data-s="05"] .s05-ent .s05-con{animation:none!important;opacity:1!important;transform:none!important}
   .slide[data-s="05"] .s05-n0,.slide[data-s="05"] .s05-n1{animation:none!important;opacity:1!important}
   .slide[data-s="05"] .s05-f,.slide[data-s="05"] .s05-f:hover{transition:none;transform:none}
 }
 @media print{
-  .slide[data-s="05"] .s05-fl,.slide[data-s="05"] .s05-pu{display:none!important}
+  .slide[data-s="05"] .s05-fl,.slide[data-s="05"] .s05-pu,.slide[data-s="05"] .s05-ha{display:none!important}
   .slide[data-s="05"] .s05-ent .s05-q0 p::after,.slide[data-s="05"] .s05-ent .s05-q1,.slide[data-s="05"] .s05-ent .s05-con{animation:none!important;opacity:1!important;transform:none!important}
   .slide[data-s="05"] .s05-n0,.slide[data-s="05"] .s05-n1{animation:none!important;opacity:1!important}
   .slide[data-s="05"] .s05-f{transform:none!important}

@@ -79,7 +79,8 @@
 .slide[data-s="03"] .s03-sealsub{font:600 9.6px var(--fm);letter-spacing:.16em;fill:#F9A64A;text-anchor:middle}
 .slide[data-s="03"] .s03-bt{position:relative;z-index:2;font:800 19px/1.2 var(--fb);letter-spacing:-.01em;color:#fff;white-space:nowrap}
 .slide[data-s="03"] .s03-bs{position:relative;z-index:2;font:700 14px/1.2 var(--fb);color:var(--orange-l);white-space:nowrap}
-.slide[data-s="03"] .s03-bid{position:relative;z-index:2;margin-top:6px;padding-top:10px;border-top:1px solid rgba(163,184,214,.25);font:500 11.5px/1 var(--fm);letter-spacing:.06em;color:#9DBBD9;white-space:nowrap}
+/* os quatro momentos do cliente (ponte para o slide 04), em Inter para caber numa linha */
+.slide[data-s="03"] .s03-bid{position:relative;z-index:2;margin-top:6px;padding-top:10px;border-top:1px solid rgba(163,184,214,.25);font:600 12.5px/1 var(--fb);letter-spacing:.02em;color:#9DBBD9;white-space:nowrap}
 
 /* ---------- cadeia de valor da A&M ---------- */
 .slide[data-s="03"] .s03-chain{grid-column:1/-1;display:flex;align-items:stretch;gap:16px;padding:10px 14px;background:var(--ice2);border:1px solid var(--line);border-radius:12px}

@@ -1,7 +1,7 @@
 /* =====================================================================
    Produtos do pilar 3 · Tech M&A (fichas) · V6
    Regras (SPEC V6 §4, §5, §8 e §10.2): sem números inventados (prazo, preço, meta e escala em palavras);
-   kpis só com fatos "verificado" de src/data/05-fontes.js ([valor, texto, idFato]); sem siglas fora da lista;
+   kpis só com fatos "verificado" de src/data/05-fontes.js e src/data/06-fatos-pilar-3.js ([valor, texto, idFato]); sem siglas fora da lista;
    etapas numeradas pela posição; jogo de entrada do pilar: "jogo-do-dia-1"; fontes = ids de FONTES.
    Tamanhos medidos no degrau lv0 da ficha: itens de lista cabem numa linha; etapas em até duas.
    ===================================================================== */
@@ -12,8 +12,8 @@ PRODUCTS.push(
  tagline:"Riscos de tecnologia com custo estimado, a tempo de mudar o preço",
  pitch:"Diligência de tecnologia para quem compra e para quem vende. A IA lê o data room e o código; a equipe põe custo em cada risco. O comitê decide preço e contrato sabendo o que vai herdar.",
  meta:["Formato: escopo fechado, em níveis de profundidade","Comprador: fundos de private equity e áreas de M&A","Modelo comercial: preço fechado por nível","Encaixe: abre 3.2, 3.4 e 3.5"],
- kpis:[["PwC","firmou relação estratégica com a ToltIQ, plataforma de IA para diligência em transações","pwc-toltiq-2026"],
-       ["Bain","recria com IA partes do software do alvo para ver se é fácil de copiar","bain-replica-software-alvo"]],
+ kpis:[["274","operações de TI no 1º semestre de 2025: o setor com mais fusões e aquisições no Brasil","pilar3-ti-lidera-ma-1s25"],
+       ["PwC","firmou relação estratégica com a ToltIQ, plataforma de IA para diligência em transações","pwc-toltiq-2026"]],
  who:["Fundos de private equity","Áreas de M&A de empresas","Vendedores antes da venda","Bancos de investimento"],
  pain:["O comitê decide o preço com pouco tempo e um data room enorme","Dívida técnica, brechas de segurança, licenças e IA de fachada aparecem depois da assinatura"],
  deliv:["Alertas críticos com custo estimado","Ajuste sugerido de preço e contrato","Avaliação de código e arquitetura","Diligência da IA e dos dados do alvo","Plano dos primeiros meses do comprador","Dossiê de tecnologia para quem vende"],
@@ -37,7 +37,7 @@ PRODUCTS.push(
  tagline:"Cada sistema com destino, custo e dono antes da assinatura",
  pitch:"Desenha a TI do Dia 1, o primeiro dia sob o novo dono, e do estado final em fusões e separações: destino de cada sistema, serviços de transição pagos ao vendedor e custo de operar sozinha.",
  meta:["Formato: escopo fechado, antes da assinatura","Comprador: comprador, vendedor e fundos","Modelo comercial: preço fechado por complexidade","Encaixe: vem de 3.1 e abre 3.3"],
- kpis:[],
+ kpis:[["2","empresas saem da Raízen no plano de reestruturação de 2026: exemplo público de separação","pilar3-raizen-duas-empresas"]],
  who:["Compradores em fusões","Grupos vendendo uma divisão","Fundos comprando divisões","Empresas que se dividem"],
  pain:["Os sistemas das partes estão entrelaçados e o Dia 1 tem data marcada","Serviço de transição longo sai caro, e o custo de operar sozinha fica fora do preço"],
  deliv:["Estratégia de integração ou de separação","Destino e dono de cada sistema","Escopo e preço dos serviços de transição","Custo de operar sozinha e custos únicos","Contratos que pedem aceite do fornecedor","Plano do Dia 1 e do estado final"],
@@ -85,7 +85,8 @@ PRODUCTS.push(
  tagline:"Cada alavanca de tecnologia com dono, meta e data, até a venda",
  pitch:"Transforma a economia de tecnologia prometida na transação em plano com dono e meta, acompanha a captura no resultado operacional (EBITDA) e prepara a história de tecnologia para a venda.",
  meta:["Formato: plano de escopo fechado e acompanhamento","Comprador: fundos de private equity e compradores","Modelo comercial: preço fechado e êxito na captura","Encaixe: vem de 3.1 e continua em 3.5"],
- kpis:[["25%","dos honorários globais da McKinsey já estão atrelados a resultados, segundo a firma","mckinsey-honorarios-resultado-25"]],
+ kpis:[["R$ 805 mi","por ano de sinergias mapeadas na fusão de Marfrig e BRF, um exemplo de mercado","pilar3-mbrf-sinergias-805"],
+       ["25%","dos honorários globais da McKinsey já estão atrelados a resultados, segundo a firma","mckinsey-honorarios-resultado-25"]],
  who:["Fundos depois da compra","Empresas em integração","Empresas antes da venda"],
  pain:["A economia de tecnologia estimada na transação não tem plano de captura","Sem dono nem meta, ela fica na planilha","Na venda, o valor da tecnologia não aparece"],
  deliv:["Linha de base de custos e capacidades","Alavancas com valor em reais","Plano com donos, metas e datas","Painel de captura para o comitê","História de tecnologia para a venda"],
@@ -109,7 +110,7 @@ PRODUCTS.push(
  tagline:"A saúde de tecnologia e de IA de todo o fundo, numa só leitura",
  pitch:"Assinatura para fundos de private equity: acompanha tecnologia, segurança, custos e prontidão para IA de cada investida. O fundo decide onde agir antes que o problema apareça na venda.",
  meta:["Formato: assinatura por fundo, com revisão periódica","Comprador: sócios de operação dos fundos","Modelo comercial: preço por empresa acompanhada","Encaixe: aciona 3.1, 3.4, 1.5 e 1.3"],
- kpis:[],
+ kpis:[["50%","das fusões e aquisições de 2025 tiveram fundos de private equity ou venture capital","pilar3-pe-vc-metade-2025"]],
  who:["Sócios de operação de fundos","Family offices","Conselhos de holdings"],
  pain:["O fundo não vê a tecnologia das investidas com a mesma régua","Falha de segurança e dívida técnica aparecem tarde, na diligência do comprador","A preparação para a venda começa em cima da hora"],
  deliv:["Nota de saúde de tecnologia por investida","Alertas de segurança, contratos e pessoas-chave","Comparação entre as investidas","Plano de ação com o produto certo","Preparação para a venda"],

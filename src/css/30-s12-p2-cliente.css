@@ -1,19 +1,46 @@
 /* =====================================================================
-   SLIDE 12 · Pilar 2 · Cliente e mercado · dono: slide 12
-   Regras novas: sempre escopadas em .slide[data-s="12"] (ver CONTRACT.md).
+   SLIDE 12 · Pilar 2 · Technology Transformation · Cliente e mercado · dono: pilar-2
+   As peças (matriz "quem decide", tabela do mercado, "onde a DTS ganha") vêm do motor dos pilares (25-pilares.css);
+   aqui só a linha do tempo regulatória (Timeline Motion) e o arranjo das vistas deste slide. Regras escopadas em .slide[data-s="12"].
    ===================================================================== */
 
-/* ---------- regras herdadas da V5 (sem escopo; reescrever com escopo ao refazer o slide) ---------- */
-/* ---- de styles.css ---- */
-.rt{display:grid;grid-template-columns:repeat(5,1fr);position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 6px 12px}
-.rt::before{content:"";position:absolute;left:10%;right:10%;top:23px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--line-strong),var(--steel-400),var(--line-strong))}
-.rt-i{display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 8px}
-.rt-i i{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--steel-400);z-index:1}
-.rt-i.hot i{background:var(--orange-500);border-color:var(--orange-500);box-shadow:0 0 0 5px rgba(247,140,22,.2)}
-.rt-i b{font-weight:800;font-size:16px;letter-spacing:-.02em;color:var(--navy-800);margin-top:7px;white-space:nowrap}
-.rt-i span{font-size:11.3px;line-height:1.35;color:var(--grey-700);margin-top:2px}
+/* ---------- vista 1 · linha do tempo regulatória e de plataforma (uma linha por marco) ---------- */
+.slide[data-s="12"] .s12-tl{flex:none;position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) 128px repeat(4,minmax(0,1fr));
+  align-items:start;padding:12px 10px 10px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.slide[data-s="12"] .s12-ln{position:absolute;left:5%;right:5%;top:19px;height:3px;border-radius:2px;background:#E1E9F1;overflow:hidden}
+.slide[data-s="12"] .s12-ln b{position:absolute;inset:0;transform-origin:left center;background:linear-gradient(90deg,#5E8AB4 0%,#5E8AB4 30%,#1F3263 31%,#1F3263 100%)}
+.slide[data-s="12"] .s12-st{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:0 4px;min-width:0}
+.slide[data-s="12"] .s12-dt{width:17px;height:17px;border-radius:50%;background:#fff;border:3px solid var(--indigo);z-index:1;margin-bottom:3px}
+.slide[data-s="12"] .s12-st.past .s12-dt{border-color:var(--steel);background:var(--steel)}
+.slide[data-s="12"] .s12-st.hot .s12-dt{border-color:var(--orange);background:var(--orange);box-shadow:0 0 0 5px rgba(247,140,22,.18)}
+.slide[data-s="12"] .s12-st b{font:700 19px/1.05 var(--fh);letter-spacing:.01em;color:var(--navy);white-space:nowrap}
+.slide[data-s="12"] .s12-st b [data-fato]{font:inherit;color:inherit}
+.slide[data-s="12"] .s12-st>span{font:500 13px/1.3 var(--fb);color:var(--ink2);white-space:nowrap}
+.slide[data-s="12"] .s12-st.past b,.slide[data-s="12"] .s12-st.past>span{color:var(--muted)}
+/* marcador "hoje": pílula sobre a linha, entre o decreto e a cobrança */
+.slide[data-s="12"] .s12-now{position:relative;display:flex;justify-content:center;padding-top:9px;z-index:1}
+.slide[data-s="12"] .s12-now em{font:700 11px var(--fb);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--navy-d);
+  border-radius:999px;padding:4px 10px;white-space:nowrap;box-shadow:0 0 0 3px #fff}
+.slide[data-s="12"] .s12-now::after{content:"";position:absolute;left:50%;top:32px;width:1px;height:22px;background:repeating-linear-gradient(180deg,#8FA6BD 0 3px,transparent 3px 6px)}
+/* Timeline Motion: a linha se desenha da esquerda para a direita e os marcos acendem em sequência */
+.slide[data-s="12"].play .s12-ln b{animation:s12-draw 1.4s cubic-bezier(.3,.7,.2,1) .25s both}
+.slide[data-s="12"].play .s12-st .s12-dt,.slide[data-s="12"].play .s12-now em{animation:s12-pop .45s cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(.35s + var(--k)*.17s)}
+.slide[data-s="12"].play .s12-st.hot .s12-dt{animation:s12-pop .45s cubic-bezier(.3,1.5,.5,1) both,s12-beat 2.4s ease-in-out 2.2s infinite;animation-delay:calc(.35s + var(--k)*.17s),2.2s}
+.slide[data-s="12"] .s12-st[data-tv]{cursor:default}
+.slide[data-s="12"] .s12-st[data-tv]:hover b{color:var(--indigo)}
+@keyframes s12-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes s12-pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes s12-beat{0%,100%{box-shadow:0 0 0 5px rgba(247,140,22,.18)}50%{box-shadow:0 0 0 9px rgba(247,140,22,.06)}}
 
-/* ---- de css/90-revisao.css ---- */
-.rt{padding:20px 6px 18px}
-.rt-i b{font-size:18px}
-.rt-i span{font-size:13px}
+/* ---------- vista 2 · tabela do mercado à esquerda, "onde a DTS ganha" à direita ---------- */
+.slide[data-s="12"] .s12-mk{display:grid;grid-template-columns:minmax(0,1fr) 492px;gap:16px}
+.slide[data-s="12"] .s12-mk .pl-mk th.c-f{width:150px}
+.slide[data-s="12"] .s12-mk .pl-mk th.c-l{width:300px}
+.slide[data-s="12"] .s12-mk .pl-mk th.c-p{width:118px}
+
+@media print{
+  .slide[data-s="12"] .s12-ln b,.slide[data-s="12"] .s12-dt,.slide[data-s="12"] .s12-now em{animation:none!important;transform:none!important;opacity:1!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .slide[data-s="12"] .s12-ln b,.slide[data-s="12"] .s12-dt,.slide[data-s="12"] .s12-now em{animation:none!important;transform:none!important;opacity:1!important}
+}

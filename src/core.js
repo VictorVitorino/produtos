@@ -82,7 +82,8 @@ function showChapter(k,done){const m=CAP[k]||{};chapEl.className="";
   /* título numa linha que não cruza as faixas diagonais: até ~770 px de largura (desce de 4 em 4 px, mínimo 76 px) */
   const hh=chapEl.querySelector(".ch-h");if(hh){let fs=parseFloat(getComputedStyle(hh).fontSize)||120;while(hh.offsetWidth>770&&fs>76){fs-=4;hh.style.fontSize=fs+"px"}}
   deckMasc(chapEl);DECK_EV("deck:chapter",{key:k})}
-function hideChapter(run){if(!chapOn)return;const c=chapOn;chapOn=null;const a=chapEl.animate([{opacity:1},{opacity:0}],{duration:REDMO?1:380});a.onfinish=()=>{if(chapOn)return;chapEl.className="";chapEl.innerHTML="";safe(c.cleanup)};if(run)safe(c.done)}
+/* a limpeza do efeito (CHAPX) roda sempre, mesmo se outra divisória já entrou durante o esmaecimento (ela só para o próprio efeito) */
+function hideChapter(run){if(!chapOn)return;const c=chapOn;chapOn=null;const a=chapEl.animate([{opacity:1},{opacity:0}],{duration:REDMO?1:380});a.onfinish=()=>{safe(c.cleanup);if(chapOn)return;chapEl.className="";chapEl.innerHTML=""};if(run)safe(c.done)}
 chapEl.addEventListener("click",e=>{const ch=e.target.closest("[data-go-ch]");if(ch){e.stopPropagation();const i=+ch.dataset.goCh-1;hideChapter(true);if(i!==cur)go(i,true);return}if(e.target.closest("button,a"))return;hideChapter(true)});
 
 /* ---------- barra inferior: abas de capítulo (#dots) e controles ---------- */

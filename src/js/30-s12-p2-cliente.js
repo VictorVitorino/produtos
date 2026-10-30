@@ -1,45 +1,51 @@
 /* =====================================================================
-   SLIDE 12 · Pilar 2 · Technology Transformation · Cliente e mercado · dono: slide 12
-   Registra o conteúdo do pilar em PCFG[2].cliente; quem desenha é src/js/25-pilares.js (no boot).
-   Conteúdo herdado da V5: será revisto pelo time de conteúdo (siglas, números e fontes — ver SPEC 4 e 5).
+   SLIDE 12 · Pilar 2 · Technology Transformation · Cliente e mercado · dono: pilar-2
+   Registra o conteúdo em PCFG[2].cliente; quem desenha a matriz, a tabela e "onde a DTS ganha" é src/js/25-pilares.js (no boot):
+   · vista 1: linha do tempo regulatória e de plataforma (.s12-tl, HTML no slide; Timeline Motion no CSS deste slide)
+              + matriz "quem decide" (.quem): quem decide · a pergunta · o gatilho · a prova (fato verificado) · quem responde;
+              → acende um decisor por vez (passos do motor)
+   · vista 2 (table.mk + .ws): o que o mercado já faz (só fatos com fonte) e onde a DTS ganha
+   Números só por data-fato (FATOS "verificado"); fontes completas no verso (src/versos/12-p2-cliente.html).
    ===================================================================== */
+(function(){
 PCFG[2].cliente={
-  /* quem compra e o que pergunta: [papel, pergunta, [produtos]] */
-  pers:[
-    ["CFO · Head Tax","Meu ERP estará pronto para a CBS em 01/01/2027?",["2.2"]],
-    ["CIO · Compras","Qual fornecedor escolher e como contratar sem lock-in?",["2.1"]],
-    ["Sponsor · Conselho","Por que o programa atrasou e quanto custa terminar?",["2.3","2.4"]],
-    ["CHRO · CIO","Por que ninguém usa a IA que compramos?",["2.5","2.6"]]
+  /* vista 1 · quem decide: papel, o que decide, pergunta (a dor), gatilho, fato que prova a dor, produtos que respondem */
+  quem:[
+    {r:"CFO e diretor tributário",d:"respondem pelo imposto",q:"A primeira apuração da CBS fecha certo e o ERP aguenta dois sistemas?",
+     g:"Cobrança da CBS em 2027 e saldo da apuração assistida para conferir",
+     f:"pilar2-kpmg-orcamento-72",ft:"das empresas não tinham orçamento formalizado para a transição até 2033",p:["2.2","2.3"]},
+    {r:"CIO e Compras",d:"escolhem a plataforma",q:"Que ERP, que motor fiscal, que agente: quem escolhe sem vender a licença?",
+     g:"Fim da manutenção padrão do SAP ECC e ofertas de agentes de IA todo mês",
+     f:"agentes-fornecedores-reais-130",fq:"só cerca de",ft:"dos milhares que dizem vender agentes de IA são fornecedores reais",p:["2.1","2.2"]},
+    {r:"Patrocinador e conselho",d:"cobram a entrega",q:"O programa chega no prazo e no valor, e eu sei antes de ficar vermelho?",
+     g:"Marcos atrasados, custo subindo e disputa com o integrador",
+     f:"pilar2-erp-caso-negocio-70",fq:"mais de",ft:"das iniciativas recentes de ERP não vão cumprir todo o caso de negócio até 2027",p:["2.3","2.4"]},
+    {r:"CIO e diretor de RH",d:"levam a IA ao trabalho",q:"Pagamos IA: quem usa, quanto a TI ganhou e que processo já roda com agente?",
+     g:"Licenças de IA renovando sem medida de uso e pilotos parados",
+     f:"agentes-producao-11",ft:"das organizações têm agentes de IA rodando em produção",p:["2.5","2.6"]}
   ],
-  /* o que o mercado faz: [firma, como chamam a oferta, o que fazem com IA, leitura para a DTS, "E"] */
+  /* vista 2 · o que o mercado faz: quem, o que já faz (fato), o que isso muda para a DTS (leitura nossa), produtos em disputa */
   mk:[
-    ["Deloitte","Alianças de implementação (AWS até 2031; Google); Technology Center em Recife (~600 pessoas)","Zora AI integrada aos agentes SAP Joule","Escala de entrega e alianças","E"],
-    ["EY","Service Delivery Center em Recife (SAP, ServiceNow, IA, RPA)","EY Beyond Tax Analytics para a Reforma","Reforma entra pelo Tax","E"],
-    ["KPMG","Powered Enterprise; Consultoria Reforma Tributária","Thomson Reuters ONESOURCE; Workbench","Fiscal + tecnologia","E"],
-    ["CI&T · Falconi","Entrega AI-native; hiperautomação","CI&T Flow; Falconi: R$&nbsp;100&nbsp;mi em IA, 80% dos projetos com agentes","Comprimem preço de PMO e entrega","E"],
-    ["TOTVS · SAP","Jornada da Reforma Tributária; RISE / S/4HANA","Chatbot especialista em Reforma (TOTVS)","O fornecedor também ‘aconselha’: falta voz independente","E"],
-    ["Capgemini · Accenture · IBM","Recife: de 250 para 1.000 pessoas até o fim de 2026 (Capgemini); Accenture compra Tenbu","IBM Enterprise Advantage: consultoria baseada em ativos","Escala e ativos proprietários","E"]
+    {f:"EY",ia:"Software que lê as notas fiscais e mostra os itens que mudam de alíquota com a Reforma",
+     l:"Entra pelo imposto: o cálculo tem dono; o ERP, os dados e a virada, não",p:["2.2"]},
+    {f:"TOTVS",ia:"Assistente de IA especialista na Reforma Tributária para os clientes do seu ERP",
+     l:"O fornecedor do ERP orienta a adequação: falta quem compare as saídas sem vender licença",p:["2.1","2.2"]},
+    {f:"Deloitte",ia:"Vende agentes de IA prontos, a plataforma Zora AI, por assinatura, para finanças, compras e atendimento",
+     l:"Agente como produto de prateleira: disputa a automação de processos e a adoção",p:["2.6","2.5"]},
+    {f:"Falconi",ia:"Diz que <span data-fato=\"pilar2-falconi-agentes-80\"></span> dos projetos de tecnologia em andamento automatizam processos com agentes de IA",
+     l:"Leva agentes aos processos das empresas brasileiras: disputa a automação agêntica",p:["2.6"]},
+    {f:"CI&amp;T",ia:"Plataforma própria, a CI&amp;T Flow, liga modelos e agentes de IA ao desenvolvimento de software",
+     l:"Software feito com agentes baixa o preço de construir e de implantar",p:["2.6","2.3"]},
+    {f:"Accenture · IBM",ia:"A Accenture fechou acordo com a OpenAI para levar agentes às empresas; a IBM vende consultoria baseada em ativos",
+     l:"Implantação vendida junto com plataforma e ativos próprios: a escolha perde neutralidade",p:["2.1","2.3"]}
   ],
-  /* sobreposição por linha de mk: A alta · M média · B baixa · X ativo A&M */
-  heat:["M","M","A","A","M","B"],
-  /* onde a DTS ganha: it = [título, texto, produto, "E"|"H"]; th = [ameaça, "E"|"H"] */
+  /* onde a DTS ganha (título, texto, produto) e a ameaça a monitorar */
   ws:{it:[
-      ["Independência","Sem revenda de software nem de horas de fábrica.","2.1","H"],
-      ["Lado sistêmico da Reforma","Big Four entram pelo Tax; ERP, dados e cutover ficam descobertos.","2.2","H"],
-      ["Turnaround de programas","DNA A&M; >70% dos ERPs abaixo do business case (Gartner).","2.4","E"],
-      ["Adoção medida por uso","IA comprada e não usada vira custo.","2.5","H"]
+      ["Escolha sem conflito","Quem implanta ou licencia também recomenda. A DTS não revende software nem horas de implantação, e a escolha fica defensável no conselho.","2.1"],
+      ["Primeira apuração conferida","O cálculo do imposto já tem ferramenta; falta quem responda pelo ERP, pelos dados e pelo saldo, com a área tributária da A&amp;M.","2.2"],
+      ["Resgate com comando","Mais de <span data-fato=\"pilar2-erp-caso-negocio-70\"></span> das iniciativas recentes de ERP não devem cumprir todo o caso de negócio; turnaround é parte da A&amp;M.","2.4"],
+      ["Agente com controle","Um agente executa o ciclo do processo com regras, aprovação humana e trilha de auditoria, e o ganho é medido.","2.6"]
     ],
-    th:["Concorrentes nativos em IA (CI&T, Falconi) e centros de entrega no Recife comprimem o preço de PMO e implementação.","E"]},
-  /* jornada comercial: [etapa, título, [produtos], nota] */
-  jr:[
-    ["Gatilho","CBS em 01/01/2027 · go-live em risco · IA ociosa",[],"prazo fixo e risco alto"],
-    ["Entrada · sprint","Prontidão ou diagnóstico forense",["2.2","2.4"],"2–8 semanas, preço fixo"],
-    ["Expansão · execução","Governar, recuperar, contratar",["2.3","2.1"],"entrega garantida"],
-    ["Recorrência","IA na própria TI, em ondas",["2.6","2.5"],"ganho medido trimestre a trimestre"]
-  ],
-  /* posicionamento proposto (HTML curto) */
-  pos:"Para <b>CFOs, CIOs e sponsors</b> de programas obrigatórios e críticos, o DTS é <em>a voz independente que garante a entrega</em> (Reforma, ERP, IA). Diferente de integradores e fornecedores, <b>não vendemos software nem horas de fábrica</b>: respondemos por prazo e valor."
+    th:"Até 2027, <span data-fato=\"clawback-contratos-60\"></span> dos grandes contratos de serviços de TI devem devolver ao cliente parte do ganho com IA: implantação e acompanhamento por hora perdem preço."}
 };
-
-/* linha do tempo regulatória e de plataforma (Reforma Tributária e SAP ECC) */
-(function(){const st=[["2026","Alíquota-teste de 1% (CBS 0,9% + IBS 0,1%)"],["01/01/2027","CBS plena; PIS/Cofins extintos"],["2027","Fim da manutenção padrão do SAP ECC (extensível a 2030)"],["2029–32","ICMS/ISS recolhidos a 90% → 60% da alíquota atual"],["2033","ICMS e ISS extintos"]];const h=$("p2time");if(!h)return;h.innerHTML=`<div class="rt">${st.map(([d,t],i)=>`<div class="rt-i${i===1?" hot":""}"><i></i><b>${d}</b><span>${t}</span></div>`).join("")}</div>`})();
+})();

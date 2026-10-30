@@ -1,16 +1,12 @@
 /* =====================================================================
-   SLIDE 14 · Pilar 3 · Cliente e mercado · dono: slide 14
-   Regras novas: sempre escopadas em .slide[data-s="14"] (ver CONTRACT.md).
+   SLIDE 14 · Pilar 3 · Tech M&A · Cliente e mercado · dono: pilar-3
+   As peças (matriz "quem decide", tabela do mercado, "onde a DTS ganha") vêm do motor dos pilares (25-pilares.css);
+   aqui só o arranjo das vistas deste slide, no padrão do slide 10. Regras escopadas em .slide[data-s="14"].
    ===================================================================== */
-
-/* ---------- regras herdadas da V5 (sem escopo; reescrever com escopo ao refazer o slide) ---------- */
-/* ---- de styles.css ---- */
-.cases{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.cases .kpi-t{padding:12px 14px}
-.cases .nm{font-weight:800;font-size:19px;letter-spacing:-.025em;color:var(--navy-800);margin-top:8px;white-space:nowrap}
-.cases .l{font-size:11.5px}
-
-/* ---- de css/90-revisao.css ---- */
-.cases .kpi-t{padding:16px 16px}
-.cases .l{font-size:13px;line-height:1.42}
-.cases .nm{font-size:21px}
+/* vista 1: a prova ganha largura (os números do pilar são mais largos: "R$ 805 mi") */
+.slide[data-s="14"] .pl-quem{--qc:238px minmax(0,1.3fr) minmax(0,.95fr) minmax(0,1.5fr) 300px}
+/* vista 2: tabela do mercado à esquerda, "onde a DTS ganha" à direita */
+.slide[data-s="14"] .s14-mk{display:grid;grid-template-columns:minmax(0,1fr) 492px;gap:16px}
+.slide[data-s="14"] .s14-mk .pl-mk th.c-f{width:150px}
+.slide[data-s="14"] .s14-mk .pl-mk th.c-l{width:300px}
+.slide[data-s="14"] .s14-mk .pl-mk th.c-p{width:118px}

@@ -1,4 +1,10 @@
 /* =====================================================================
-   SLIDE 13 · Pilar 2 · Produtos · dono: slide 13
-   Regras novas: sempre escopadas em .slide[data-s="13"] (ver CONTRACT.md).
+   SLIDE 13 · Pilar 2 · Technology Transformation · Produtos · dono: pilar-2
+   As peças (serviços → cartas de produto, antes e depois linha a linha) vêm do motor dos pilares (25-pilares.css).
+   Aqui só a etiqueta do módulo do 2.6. Regras escopadas em .slide[data-s="13"].
    ===================================================================== */
+/* etiqueta "Módulo: automação agêntica de processos" na carta do 2.6 (fundo escuro: laranja-claro só no contorno e no +) */
+.slide[data-s="13"] .s13-mod{flex:none;display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--fb);letter-spacing:.01em;color:#DDE8F3;
+  white-space:nowrap;padding:4px 9px 4px 6px;border:1px dashed rgba(249,166,74,.6);border-radius:999px;background:rgba(247,140,22,.08)}
+.slide[data-s="13"] .s13-mod i{font:800 12px/1 var(--fb);font-style:normal;color:var(--orange-l)}
+.slide[data-s="13"] .pl-card:hover .s13-mod{border-style:solid;background:rgba(247,140,22,.16)}

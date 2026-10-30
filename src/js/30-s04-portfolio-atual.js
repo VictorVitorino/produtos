@@ -14,17 +14,17 @@
   /* leitura executiva de cada pilar, separada por assunto (fatos estruturais do portfólio oficial + leitura DTS, a calibrar com os sócios) */
   const TOP={
     1:{q:"O custo de TI pesa no resultado, a liderança de tecnologia saiu ou o conselho cobra uma nova direção para a TI.",
-       o:"Diagnóstico, estratégia e roteiro, liderança interina, modelo operacional, redução de custo e tributos de tecnologia.",
+       o:"Diagnóstico, estratégia, liderança interina, modelo operacional, continuidade, redução de custo e tributos de TI.",
        f:"Liderança interina e redução de custo de TI: o cliente recebe quem assume a cadeira e responde pelo número.",
        s:"Três ofertas de liderança disputam o mesmo comprador; dois serviços tratam de impostos e incentivos de tecnologia."},
     2:{q:"Um programa crítico de TI (troca de ERP, Reforma Tributária, novo fornecedor) começa ou sai do prazo e do orçamento.",
        o:"Escolha de fornecedor, prontidão de ERP, escritório de transformação, governança, mudança e resgate.",
        f:"Resgate de projetos que saíram do trilho: a lógica do turnaround, prática da A&amp;M, aplicada a um programa de TI.",
-       s:"O <span class=\"nw\">Modelo de Implantação e Governança</span> e o escritório de transformação têm o mesmo comprador e o mesmo método."},
+       s:"O <span class=\"nw\">Modelo de Implantação e Governança</span> e o escritório de transformação têm o mesmo comprador e o mesmo método; o IT Business Partner encosta na liderança do pilar 1."},
     3:{q:"Um fundo ou uma empresa vai comprar, vender ou separar um negócio, com data marcada para o fechamento.",
        o:"Diligência de compra e de venda, planejamento de integração e separação, escritórios de transição e sinergias.",
        f:"Separações de negócio e captura de sinergias, perto do trabalho da A&amp;M com fundos de private equity.",
-       s:"Seis dos oito serviços são três pares do mesmo método em direções opostas: compra e venda, integração e separação."},
+       s:"Seis dos oito serviços formam três pares com o mesmo método: as duas diligências (compra e venda), os dois planejamentos e os dois escritórios."},
     4:{q:"O legado ficou caro ou arriscado, a infraestrutura precisa de uma nova rota ou uma migração não pode falhar.",
        o:"Arquitetura, estratégia de aplicações, gestão de infraestrutura e apoio a migrações complexas.",
        f:"Migrações complexas, em que a A&amp;M pode atuar como revisão independente do trabalho do integrador.",
@@ -50,7 +50,8 @@
     own.forEach(o=>{const mates=grp[o.to].filter(x=>x!==o),ov=mates.length>0,nm=DN[o.n]||o.n;
       const d=H("div",{class:"pf-svc"+(ov?" ov":"")},list);
       d.innerHTML=`<i></i><span>${nm}</span>${ov?'<b class="pf-ovk" aria-hidden="true"></b>':""}`;
-      if(ov){d.dataset.tv=nm;d.dataset.th=`<span class="tl"><b>Sobrepõe-se a</b>${mates.map(x=>DN[x.n]||x.n).join(" · ")}</span>`}});
+      /* dica: um serviço por linha (nome inteiro, sem quebra) */
+      if(ov){d.dataset.tv=nm;d.dataset.th=`<span class="tl"><b>Sobrepõe-se a</b></span>${mates.map(x=>`<span class="tl" style="white-space:nowrap">${DN[x.n]||x.n}</span>`).join("")}`}});
     /* linhas livres da coluna: o que o nome diz (a oferta fala a língua de serviços) */
     const free=ROWS-own.length;
     if(free>0){const n=H("div",{class:"pf-note",style:`grid-row:span ${free}`},list);

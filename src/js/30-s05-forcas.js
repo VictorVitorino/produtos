@@ -20,7 +20,7 @@
      tok fato com o número de destaque ("" = sem número) · mud o que mudou, frase do centro (continua o número) · src fonte curta
      req o que o cliente passa a exigir · dts por que pesa para a DTS (leitura nossa) */
   const F=[
-    {ic:"ai",t:"IA em toda parte, retorno raro",
+    {ic:"ai",t:"IA na agenda, retorno por provar",
      fx:`${fato("ceo-sem-retorno-ia-56")} dos CEOs no mundo ainda não viram a IA aumentar a receita nem reduzir custos`,
      ex:"ganho medido no resultado",
      tok:"ceo-sem-retorno-ia-56",mud:"dos CEOs no mundo ainda não viram a IA aumentar a receita nem reduzir custos.",src:"PwC, pesquisa global com CEOs (jan/2026)",
@@ -33,27 +33,27 @@
      req:"Chegar a 2027 com fiscal e ERP prontos, com prazo e custo conhecidos antes de começar.",
      dts:"Prontidão de ERP e resgate de projetos já estão no portfólio; com data fixa, o cliente compra quem responde pela data."},
     {ic:"hand",t:"Fundos no centro das transações",
-     fx:"Os fundos ganharam espaço nas transações de 2025; tecnologia é uma das áreas de maior interesse deles",
-     ex:"resposta rápida e valor capturado",
-     tok:"",mud:"Os fundos de private equity e de venture capital ganharam espaço nas fusões e aquisições de 2025, e a tecnologia está entre as áreas de maior interesse deles.",src:"KPMG, pesquisa de fusões e aquisições de 2025 (mar/2026)",
+     fx:"No Brasil, fundos ganharam espaço nas transações de 2025, com a tecnologia entre seus maiores interesses",
+     ex:"custo antes de assinar, sinergia depois",
+     tok:"",mud:"Os fundos de private equity e de venture capital ganharam espaço nas fusões e aquisições de 2025 no Brasil, e a tecnologia está entre as áreas de maior interesse deles.",src:"KPMG, pesquisa de fusões e aquisições de 2025 (mar/2026)",
      req:"Saber, antes de assinar, quanto custa integrar ou separar a tecnologia, e ver a sinergia no resultado depois.",
      dts:"Os oito serviços de Tech M&A são fases do mesmo ciclo, vendidas em separado; o fundo quer um só responsável, da diligência ao valor."},
     {ic:"coin",t:"Preço por hora na mira",
-     fx:`Gartner prevê: até 2027, ${fato("clawback-contratos-60")} dos grandes contratos de serviços de TI vão devolver ao cliente ganhos da IA`,
+     fx:`Gartner prevê cláusula que devolve parte do ganho da IA em ${fato("clawback-contratos-60")} dos grandes contratos de serviços de TI`,
      ex:"preço por entrega, não por hora",
      tok:"clawback-contratos-60",mud:"dos grandes contratos de serviços de TI terão, até 2027, cláusulas que devolvem ao cliente parte dos ganhos com IA.",src:"previsão do Gartner (out/2025), noticiada pela imprensa",
      req:"Pagar por entrega ou por resultado, não por pessoa alocada, e ver no preço a eficiência que a IA traz.",
-     dts:"Os 29 serviços são vendidos por esforço; se a IA corta horas e o contrato devolve o ganho, a receita por hora encolhe."},
+     dts:"Os 29 serviços são vendidos por esforço; se a IA corta horas e o cliente cobra esse ganho no preço, quem fatura por hora fatura menos."},
     {ic:"shield",t:"Risco cibernético com regra nova",
      fx:"O regulador exige das instituições financeiras teste de intrusão anual e controle da nuvem",
      ex:"resiliência provada em teste",
      tok:"forcas-cmn-5274",mud:"foi o prazo para as instituições financeiras cumprirem a regra nova de segurança cibernética e de nuvem, com teste de intrusão ao menos uma vez por ano.",src:"Resolução 5.274 do Conselho Monetário Nacional (dez/2025)",
      req:"Provar em teste que a operação resiste e volta, inclusive nos fornecedores de tecnologia e de nuvem.",
      dts:"Continuidade de negócios ainda é vendida como plano; o cliente regulado quer recuperação testada e terceiros sob controle."},
-    {ic:"people",t:"Talento e liderança escassos",
-     fx:`${fato("talento-transformacao-53")} das empresas ainda não têm o talento para tirar do papel seus planos de transformação digital`,
+    {ic:"people",t:"Falta talento para executar",
+     fx:`${fato("talento-transformacao-53")} das empresas no mundo ainda não têm o talento para executar seus planos de transformação digital`,
      ex:"liderança que assume e entrega",
-     tok:"talento-transformacao-53",mud:"das empresas ainda não têm o talento necessário para tirar do papel seus planos de transformação digital.",src:"KPMG, pesquisa global com executivos (jan/2026)",
+     tok:"talento-transformacao-53",mud:"das empresas no mundo ainda não têm o talento necessário para tirar do papel seus planos de transformação digital.",src:"KPMG, pesquisa global com executivos (jan/2026)",
      req:"Alguém que assuma a tecnologia já, com mandato e metas, e deixe a equipe pronta para seguir.",
      dts:"Liderança interina é DNA de operador da A&amp;M e já está no portfólio; o cliente quer comando com resultado, não alocação de perfis."}];
 
@@ -75,8 +75,8 @@
   /* visão geral; na entrada do slide (ent) a pergunta antiga é riscada antes de a nova aparecer */
   const HUB0=ent=>`<div class="s05-hv${ent?" s05-ent":""}">
       <span class="s05-eye">A pergunta do cliente mudou</span>
-      <div class="s05-q s05-q0"><span class="s05-ql">Antes</span><p>Qual é a nossa estratégia digital?</p></div>
-      <div class="s05-q s05-q1"><span class="s05-ql">Agora</span><p>Quanto a tecnologia devolve, em que prazo e quem responde por isso?</p></div>
+      <div class="s05-qs"><div class="s05-q s05-q0"><span class="s05-ql">Antes</span><p>Qual é a nossa estratégia digital?</p></div>
+      <div class="s05-q s05-q1"><span class="s05-ql">Agora</span><p>Quanto a tecnologia devolve, em que prazo e quem responde por isso?</p></div></div>
       <p class="s05-con"><b>Seis forças, uma exigência:</b> <em>resultado comprovado</em>, com prazo, preço e dono.</p></div>`;
   const HUB=i=>{const f=F[i];return `<div class="s05-hd">
       <div class="s05-hh"><span class="s05-hic">${icoSvg(f.ic)}</span><span class="s05-eye">Força ${nn(i)} de ${nn(F.length-1)}</span></div>
@@ -104,6 +104,8 @@
       const g=S("g",{class:"s05-sp","data-k":i,style:`--d:${8+i}`},svg);
       S("path",{d,class:"s05-ln dr",pathLength:1},g);
       S("path",{d,class:"s05-fl",id:"s05p"+i},g);
+      /* halo do nó ativo (guia DTS, Node Network: o nó escolhido pulsa em laranja) */
+      S("circle",{cx:x1,cy:y1,r:6,class:"s05-ha"},g);
       S("circle",{cx:x1,cy:y1,r:5.5,class:"s05-n0"},g);
       S("circle",{cx:x2,cy:y2,r:4.5,class:"s05-n1"},g);
       /* sinal que corre até o centro (sem movimento reduzido; some na impressão) */
