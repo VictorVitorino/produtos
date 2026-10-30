@@ -1,0 +1,154 @@
+@"/root/.claude/uploads/157ea01b-5eac-590d-ab7a-107b53a7d9c9/691563fc-TMG_-_Cultura_e_Organiza__o.html" @"/root/.claude/uploads/157ea01b-5eac-590d-ab7a-107b53a7d9c9/786c3fa0-DTS_-_Guia_de_Design_para_apresenta__es.html" Atue como especialista de nível PhD em criação de produtos de consultoria, vendas, mercado de tecnologia , com foco em produtos de Digital and technologie service
+
+Revise os serviços atuais da área de DTS para apoiar o planejamento estratégico. Use o portfólio e os materiais fornecidos para avaliar quais serviços ainda têm espaço de mercado, quais precisam ser remodelados e quais novos produtos podemos desenvolver, especialmente com IA.
+
+Pesquise o mercado brasileiro e as principais consultorias: como realizam estes serviços e produtos, quais nomes utilizam para seus serviços, como se posicionam com esses produtos, o que elas tem feito com IA perante esses produtos  e quais ferramentas oferecem. 
+
+Analise fontes e diferencie evidências de hipóteses.
+
+Entenda esses produtos e me traga um posicionamento estrategico de produtos. 
+
+1. O que temos, o que podemos mudar, o que podemos retirar, o que podemos melhorar com ia e o que podemos criar com IA (novos produtos)
+
+
+Entregue uma one page executiva com o novo modelo de portfólio, indicando os produtos a manter, aprimorar ou criar. Cada produto deve ter um hiperlink para uma página de detalhamento, contendo:
+
+* Público-alvo, problema resolvido e entregáveis.
+* Método, etapas e aplicação das skills.
+* Ferramenta ou sistema necessário, dados utilizados e papel da IA.
+* Como transformar o serviço em um produto replicável e comercializável.
+
+
+Use linguagem executiva, simples e objetiva. Priorize propostas tangíveis, sustentadas pela pesquisa e pela capacidade de execução.
+
+
+Em anexo eu deixo um HTML como modelo de apresentação.
+
+1. Precisa ter a paleta de cores da alvarez
+2. Precisa ter a logo da Alvarez e de DTS (em anexo)
+3. Utilize exemplos dessa apresentação, moldes etc para realizar essa apresentação.
+4. Ela precisa ser organizada, contar um story telling. mas nao deve ser gigantesca.
+5. Basicamente deve ter um capa para cada pilar, um contexto para o pilar, uma visão de mercado (bench etc), e uma de produtos visando algum desginer de antes e depois ou alguma animação visando o que temos agora?
+
+
+Gostaria desses efeitos em algum lugar, se adapte
+Spotlight / Focus
+Morphing Shapes
+Shimmer / Holographic Sweep
+Card Stack
+Before / After Slider (Produto antes e depois)
+Timeline Motion (para benck se necessário) 
+Deixei em anexo um guai de efeitos e desginer. 
+
+
+Organize, ate pq eu tenho varias ideias, e veja o que faz sentido.
+
+=========== MSG ===========
+[Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/1.png] [Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/2.png] [Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/3.png] [Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/4.png]
+
+=========== MSG ===========
+[Image: original 4002x3384, displayed at 2000x1691. Multiply coordinates by 2.00 to map to original image.]
+
+=========== MSG ===========
+Basicamente precisamos refinar o storyteeling, mostrando o que temos de portifolio, quais produtos, forças do mercado, como mercado se posiciona (bench de ia nas consultorias, ), depois Raio x do portifolio atual ( pode melhorar principalmente o grafico (esse aqui se eu clico em P1, OS OUTROS NÃO DEVIAM FICAR TRANSPARENTES?)  
+
+1. Abertura
+
+c. A capa ficou horrivel. Vamos colocar a seguinte capa: Particle System (exemplo em anexo() deixei voce com o html dos desginer. Eu gostei dessa capa de forma signiticativa, identica. Vamos colocar - Planejamento Estrategico
+Produtos, Serviços e Inteligência Artificial.(Deixe os dois efeitos de repelir e atrair)
+
+b. A segunda pagina precisa ser totalmente reformulada, ficou pessima, Voce pode colocar o efeito (Shimmer / Holographic Sweep) com base no exemplo que tem em anexo, e dando um overview geral , de uma reformulada geral no segundo slide. (Tem muita informa;'ao.tem roteiro, tem o que temos, porque agora etc) Precisamos criar algo contextualizando com texto, numeros gerais do portifolio etc, colocar esse escudo de DTS, nao tem necessidade de trazer roteiro, onde apostar etc. Ainda nao precisamos mostrar isso.
+
+c. Slide 3 esta otimo por[em precisamos dar mais enfase, deixar a bordinha um pouco mais grossa para destacar as categorias., alem disso precisamos melhorar os nomes da sess'ao de plataformas.(O Nome Plataforma DTS de IA & dados precisa ser Plataforma de Dados e AI). Não é o momento ainda de apresentarmos essa informação do to be, e sim mostrar o que temos hoje atualmente e criar uma sessão visando iniciar a apresentação das coisas novas, ou seja criar primeiro uma sessão apresentando esse slide, com o modelo TO BE/ 50/50 (, e depois mostrar um pouco do que muda de nomenclaturas (interligei isso mais a baixo)
+
+c1. Quando clico na no spotlitgh precisamos melhorar o contexto do texto, Deixar mais executivo e contextualizando ou elhorar o posicionamento (quebrar  alinha por assunto Servico, Signature, Novo.
+
+d. Melhore o Slide de Seis forças, esta pessimo., muito texto desalinhado, com muito hiperlink etc, assim fica dificil, como explicar isso sem que as pessoas fiquem confusas. (Remova S$ 67,8 bi
+mercado de TI no Brasil em 2025 (+18,5%); 10º do mundo
+E · ABES/IDC mar/2026
+US$ 3,4 bi
+gasto com IA no Brasil em 2026 (+30%)
+E · IDC 2026
+1.581
+transações de M&A em 2025; 50% com PE/VC
+E · KPMG mar/2026
+17%
+das empresas (10+ empregados) usam IA; 50% das grandes
+E · Cetic.br 2025, ISSO dai ja sabemos), vamos focar nas forças
+
+e.Becnh, a frase a propria  A&M (isso é um nome interno) nao entendi o que vc quis dizer com isso, ou vc esta dizendo que essa area de mercado, esta focando em IA? O que é a sigla (E E A SIGLA H) vAMOS REFINAR ESSE SLIDE, ESTA PESSIMO,  dE UM CONTEXTO, com texto, apresente ess apossivel linha do tempo, coloque apenas 2026 , de uma melhorada nos textos, remova siglas que vao complicar mais ainda apresentação,  E nao é hora de mostrar como DTS vai chamar, precisamos separar isso, para um proximo slide, mostrando uma possivel configuração 
+
+F. rAIO X de serviços, precisamos realmente melhorar esse (DIREITO DE VENCER · A&M →
+Melhore quebre os  textos por assunto (ou seja quebre a linha do tooltip)
+
+=========== MSG ===========
+[Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/5.png] [Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/6.webp] [Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/7.png] [Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/8.png]
+
+=========== MSG ===========
+[Image: original 3335x752, displayed at 2000x451. Multiply coordinates by 1.67 to map to original image.]
+
+=========== MSG ===========
+Realize novamente a validação de todos os slides, visando preencher espaços em branco, visando não quebrar nomenclatura, não deixar traços gigantes que padronizam a construção que foi uma IA que fez. Melhore a tela, o posicionamento da tela, não crie coisas novas que eu não pedi, apenas melhore, deixe mais inovador, deixe mensagens mais lúdicas, mensagens mais executivas, como um storytelling de o que temos hoje, o que as empresas estão tendo, né? Qual que é o nosso posicionamento e o que podemos melhorar. Aí sim a gente entra com novos produtos, novos serviços e assim por diante. E eu não gosto de quebra de linha, então eu gosto sempre das informações na horizontal. Nesse sentido, se tiver, por exemplo, uma horizontal com seis palavras e a sexta você quebrou a linha, redefina para ser sempre na horizontal, sem quebra de linha, principalmente em texto, em palavras que pegam a, a, de ponta a ponta os slides, tá? Da ponta esquerda e da ponta direita, não. Eu quero que seja uma linha só.
+
+=========== MSG ===========
+This session's worker process was restarted. If your previous turn was already complete, take no action and wait for the next event. Otherwise, continue from where you left off.
+
+=========== MSG ===========
+29 slides é muita coisa. A gente precisa reduzir isso para, no máximo, 20 slides. Veja o que você consegue fazer sem perder qualidade, sem perder informação. Refaça novamente.
+
+=========== MSG ===========
+[Image: original 3000x1128, displayed at 2000x752. Multiply coordinates by 1.50 to map to original image.]
+
+=========== MSG ===========
+https://claude.ai/artifact/RVQ3AGZuwfDgwJcM4HvRMM
+
+Olha essa apresentação olha o designer
+
+=========== MSG ===========
+[Image: original 3000x2256, displayed at 2000x1504. Multiply coordinates by 1.50 to map to original image.]
+
+=========== MSG ===========
+Gostei desses modelos
+
+=========== MSG ===========
+Stop hook feedback:
+[~/.claude/stop-hook-git-check.sh]: There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+
+=========== MSG ===========
+Não pare. Após acabar os créditos volte assim que redefinir o tempo
+
+=========== MSG ===========
+Stop hook feedback:
+[~/.claude/stop-hook-git-check.sh]: There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+
+=========== MSG ===========
+[Image: original 3200x1582, displayed at 2000x989. Multiply coordinates by 1.60 to map to original image.]
+
+=========== MSG ===========
+@"/root/.claude/uploads/157ea01b-5eac-590d-ab7a-107b53a7d9c9/41cd1e97-proposal.html" Esse modelo de produto ou serviço a alvarez entrega? oLHANDO Nosso portifolio, se nao, aonde entraria? Como posso entregar esse serviço pronto e mostrar como colocar isso dentro do nosso portifolio?
+
+=========== MSG ===========
+Mas é simples de implementar isso que ele está falando? Ou é algo que nem com os claude
+Dá para fazer?
+
+=========== MSG ===========
+[Image: original 1280x5302, displayed at 483x2000. Multiply coordinates by 2.65 to map to original image.]
+
+=========== MSG ===========
+@"/root/.claude/uploads/157ea01b-5eac-590d-ab7a-107b53a7d9c9/1302ce27-DTS_Portfolio_Estrategico_2027.html" @"/root/.claude/uploads/157ea01b-5eac-590d-ab7a-107b53a7d9c9/a267d63c-AM_-_APODI_-_Resumo_Executivo.html" Preciso melhorar essa apresentação com base no contexto.
+
+Preciso refinar essa apresentação, primeiro colocando em um layout mais agradavel (arquitetura do layout, vou deixar o modelo da APO (na questão de margem, altura, modelo etc, coloque no modelo.)  
+
+Contexto:
+Preciso revisar esse planejamento estrategico, e trazer de forma executiva e nao generica as informações. Precisa ter logica.precisa ter contexto, precisa ter valor e nao estou falando de algo monetario, precisa ter peso.
+
+Melhore as descriçoes, nao traga siglas que nos nao sabemos,, nao invte numeros, tenha um botão para virar a pagina e demonstrar as fontes, o contexto detalhado (escrita mesmo) 
+
+Vamos refinar todo o material, preciso realmente criar propostas ludicas etc.
+(Personagem AM - Em anexo, construa um mascote com base na imagem que te passei) 
+Regras:Revise o story telling,
+
+=========== MSG ===========
+[Image: source: /tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/images/9.webp]

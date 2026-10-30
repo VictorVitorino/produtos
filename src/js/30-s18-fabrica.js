@@ -20,7 +20,7 @@
     {k:"Dor",kk:"que se repete",t:"Dor que se repete",ic:"target",
      q:"A mesma dor aparece em vários clientes, com o mesmo comprador?",
      p:["A dor se repete em clientes do mesmo perfil; não é um caso isolado","Há um comprador claro, que assina e responde pelo resultado","O gatilho é reconhecível: orçamento, troca de liderança, transação ou prazo legal"],
-     ex:["2.4","Projeto de ERP, sistema ou transformação em crise: a dor se repete e quem compra é sempre o CEO, o CFO ou o conselho."],
+     ex:["2.4","Projeto de ERP, sistema ou transformação em crise: a dor se repete, e quem compra é o CEO, o CFO ou o conselho."],
      no:"Segue como serviço sob medida: não ganha ficha nem kit."},
     {k:"Escopo",kk:"fechado",t:"Escopo fechado",ic:"doc",
      q:"O que entra, o que fica de fora e em que decisão o trabalho termina?",
@@ -115,7 +115,7 @@
     const sub=c.querySelector(".sub");if(sub)sub.textContent="Os sete portões em detalhe: a pergunta, o que o produto precisa mostrar, um exemplo do portfólio e o que acontece se não passa";
     const tb=H("table",{class:"tbl s18-tb"});
     tb.innerHTML=`<thead><tr><th>Portão</th><th>A pergunta</th><th>Para passar, o produto mostra</th><th>No portfólio</th><th>Se não passa</th></tr></thead><tbody>${G.map((g,i)=>`<tr>
-      <td class="s18-tg"><span class="s18-tn">${i+1}</span><b>${g.t}</b></td><td>${g.q}</td><td>${g.p.join(" · ")}</td><td><b>${pnm(g.ex[0])}</b> · ${g.ex[1]}</td><td>${g.no}</td></tr>`).join("")}
+      <td class="s18-tg"><span class="s18-tn">${i+1}</span><b>${g.t}</b></td><td>${g.q}</td><td>${g.p.join("\u00a0· ")}</td><td><b>${pnm(g.ex[0])}</b>\u00a0· ${g.ex[1]}</td><td>${g.no}</td></tr>`).join("")}
       <tr class="s18-tp"><td class="s18-tg"><span class="s18-tn">→</span><b>Piloto</b></td><td colspan="4">Com clientes selecionados: prazo e preço de cada produto saem daqui, não de estimativa. O dono leva o produto portão a portão; o comitê de portfólio da DTS aprova, devolve com ajuste ou arquiva e, depois do piloto, decide escalar, ajustar ou aposentar.</td></tr></tbody>`;
     const w=H("div",{class:"s18-pw"});w.appendChild(tb);
     const tr=c.querySelector(".s18-track");if(tr)tr.remove();const sw=c.querySelector(".sowhat");if(sw)sw.remove();

@@ -24,7 +24,7 @@
 .slide[data-s="19"] .s19-card.is-flipped .s19-front{display:none}
 .slide[data-s="19"] .s19-card.is-flipped .s19-back{display:flex}
 /* giro: o 3D liga só durante .is-turning (e na sugestão .nudge) */
-.slide[data-s="19"] .s19-card.is-turning .s19-lift,.slide[data-s="19"] .s19-card.nudge .s19-lift{perspective:1500px}
+.slide[data-s="19"] .s19-card.is-turning .s19-lift,.slide[data-s="19"] .s19-card.nudge .s19-lift{perspective:2400px}
 .slide[data-s="19"] .s19-card.is-turning .s19-in,.slide[data-s="19"] .s19-card.nudge .s19-in{transform-style:preserve-3d;will-change:transform}
 .slide[data-s="19"] .s19-card.is-turning .s19-in{transition:transform .7s cubic-bezier(.45,.05,.2,1)}
 .slide[data-s="19"] .s19-card.is-turning.no-tr .s19-in{transition:none}
@@ -94,8 +94,8 @@
 /* ---------- coluna do crupiê: balão, mascote e regras da casa ---------- */
 .slide[data-s="19"] .s19-dealer{position:relative;min-height:0;display:flex;flex-direction:column;align-items:center;gap:8px}
 .slide[data-s="19"] .s19-dealer .am-fala{--fala-w:236px;align-self:stretch;width:auto;font-size:15px;text-align:left}
-.slide[data-s="19"] .s19-dealer .am-masc{margin-top:4px}
-.slide[data-s="19"] .s19-rules{align-self:stretch;margin-top:auto;padding:13px 14px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,43,73,.06)}
+.slide[data-s="19"] .s19-dealer .am-masc{margin:auto 0}
+.slide[data-s="19"] .s19-rules{align-self:stretch;margin-top:0;padding:13px 14px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,43,73,.06)}
 .slide[data-s="19"] .s19-rl{display:block;margin-bottom:8px;font:700 11px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:var(--steel);white-space:nowrap}
 .slide[data-s="19"] .s19-rules ol{list-style:none;counter-reset:s19r;display:flex;flex-direction:column;gap:9px}
 .slide[data-s="19"] .s19-rules li{position:relative;padding-left:26px;font:500 14px/1.38 var(--fb);color:var(--navy);white-space:nowrap;counter-increment:s19r}

@@ -1,0 +1,40 @@
+/* =====================================================================
+   FATOS CONFERIDOS PELO DONO DO PILAR 1 (slides 10 e 11) · 29/10/2026
+   Complementa src/data/05-fontes.js (carrega depois dele, em ordem alfabética).
+   Ids com prefixo "pilar1-" para não colidir com o registro nem com os arquivos de outros donos.
+   Como foi conferido: nesta sessão a raspagem (Firecrawl) estava sem créditos e a leitura direta das páginas
+   (ifac.org, ethicsboard.org) foi bloqueada pela rede; os trechos abaixo foram vistos em resultados de busca
+   (WebSearch), que reproduzem o texto da página. A obs de cada fato diz o trecho visto e onde.
+   Regras: SPEC V6 §4 e §10.1 (só "verificado" vira número; aqui nenhum fato traz número novo).
+   ===================================================================== */
+if(typeof FONTES!=="undefined"&&typeof FATOS!=="undefined"){
+Object.assign(FONTES,{
+  "pilar1-cfc-nbc-pa-400":{org:"Conselho Federal de Contabilidade",titulo:"NBC PA 400, independência do auditor (revisão em consulta pública, item R400.13)",data:"2025",url:"https://www.gov.br/participamaisbrasil/revisao-nbc-xx-alteracoes-a-nbc-pa-400",tipo:"oficial"},
+  "pilar1-iesba-codigo":{org:"IESBA, Código Internacional de Ética (reproduzido pelo HKICPA)",titulo:"Code of Ethics for Professional Accountants · Part 4A, Section 400 (R400.20: management responsibility for an audit client)",data:"07/2024",url:"https://hkicpa.org.hk/-/media/HKICPA-Website/Members-Handbook/volumeI/313pie7.pdf",tipo:"oficial"},
+  "pilar1-am-transacoes":{org:"Alvarez & Marsal",titulo:"Transaction Advisory (página de serviços)",data:"2026",url:"https://www.alvarezandmarsal.com/taxonomy/term/2031",tipo:"empresa"},
+  "pilar1-deloitte-tsa":{org:"Deloitte Canadá",titulo:"Technology strategy and architecture",data:"s/d",url:"https://www2.deloitte.com/ca/en/pages/technology/solutions/technology-strategy-architecture.html",tipo:"empresa"},
+  "pilar1-ey-tst-vaga":{org:"EY (vaga publicada no site de carreiras)",titulo:"Financial Services Tech Strategy & Transformation – Senior Manager",data:"2026",url:"https://careers.ey.com/ey/job/New-York-Financial-Services-Tech-Strategy-&-Transformation-Senior-Manager-NYC-NY-10001-8604/1245740201",tipo:"empresa"},
+  "pilar1-dbta-kpmg-apptio":{org:"DBTA (Database Trends and Applications)",titulo:"KPMG and Apptio Partner to Help Track IT Costs",data:"03/2012",url:"https://dbta.com/Editorial/News-Flashes/KPMG-and-Apptio-Partner-to-Help-Track-IT-Costs-81684.aspx",tipo:"imprensa"},
+  "pilar1-alix-artium-imprensa":{org:"Consulting.us",titulo:"AlixPartners buys agentic AI consultancy Artium",data:"08/2026",url:"https://www.consulting.us/news/13821/alixpartners-buys-agentic-ai-consultancy-artium",tipo:"imprensa"}
+});
+Object.assign(FATOS,{
+  "pilar1-auditor-sem-gestao":{txt:"A firma de auditoria, e as firmas da mesma rede, não podem assumir responsabilidade de gestão numa empresa que auditam",num:"",fontes:["pilar1-cfc-nbc-pa-400","pilar1-iesba-codigo"],status:"verificado",tema:"independencia",uso:"s10 p1.3",
+    nota:"Regra de independência do auditor: no Código Internacional de Ética do IESBA e, no Brasil, na NBC PA 400 do Conselho Federal de Contabilidade. Vale para as empresas que a firma audita, não para todas as empresas. Dar recomendação à administração não é assumir a gestão, desde que a administração decida.",
+    obs:"Verificado por pilar-1 em 29/10/2026 em trechos de busca: (1) consulta pública do CFC no Participa + Brasil (Revisão NBC XX, alterações à NBC PA 400), item R400.13: “A firma ou a firma em rede não deve assumir uma responsabilidade da administração por um cliente de auditoria”; (2) manual do HKICPA que reproduz o código do IESBA (07/2024): “R400.20 A firm or a network firm shall not assume a management responsibility for an audit client.”; (3) nota do APESB (Austrália) dizendo que a proibição vale para todos os clientes de auditoria, de interesse público ou não. A numeração do item mudou entre edições (R400.13 → R400.20). A leitura direta de ifac.org e ethicsboard.org foi bloqueada pela rede da sessão."},
+  "pilar1-am-sem-conflito-auditoria":{txt:"A Alvarez & Marsal se apresenta como livre dos conflitos de quem faz auditoria",num:"",fontes:["pilar1-am-transacoes"],status:"verificado",tema:"am",uso:"s10",
+    nota:"Autodescrição da própria A&M nas páginas de assessoria em transações (“unrestricted by audit-based conflicts”); as mesmas páginas ligam a demanda por assessores sem vínculo de auditoria às regras europeias de rodízio de auditor.",
+    obs:"Verificado por pilar-1 em 29/10/2026 em trechos de busca de páginas do site da Alvarez & Marsal (várias versões de idioma): “Unrestricted by audit-based conflicts, we gather, synthesize and analyze the quality of a target's earnings…”. É material de marketing da própria firma."},
+  "pilar1-deloitte-estrategia-cio":{txt:"A Deloitte assessora CIOs e a diretoria em estratégia e arquitetura de tecnologia",num:"",fontes:["pilar1-deloitte-tsa","deloitte-tst-cy"],status:"verificado",tema:"oferta",uso:"s10",
+    nota:"Páginas de serviço da Deloitte em vários países (Technology Strategy & Architecture; Technology Strategy & Transformation). Uma delas descreve um laboratório de um dia para CIOs recém-nomeados.",
+    obs:"Verificado por pilar-1 em 29/10/2026 em trechos de busca das páginas da Deloitte (Canadá, Chipre, Holanda): “advises CIO's and other CxO's in developing and executing technology strategies that drive exceptional business value”; “exclusive one-day workshops for newly appointed CIOs of large organizations”."},
+  "pilar1-ey-escritorio-cio":{txt:"A EY vende ao CIO estratégia de TI, modelo operacional e funções do escritório do CIO, como finanças de TI e contratação de fornecedores",num:"",fontes:["pilar1-ey-tst-vaga","ey-tst-vaga"],status:"verificado",tema:"oferta",uso:"s10",
+    nota:"Descrição da área Technology Strategy & Transformation em vagas publicadas pela própria EY (não é página de serviço).",
+    obs:"Verificado por pilar-1 em 29/10/2026 em trechos de busca de vagas no site de carreiras da EY: “direct offerings for the CIO and CTO buyers encompassing IT Strategy, IT Operating Model Design & IT Function Transformation and Enterprise Architecture”; “Office of CIO functions (IT Finance, Sourcing, Project Portfolio Mgt.)”."},
+  "pilar1-kpmg-cio-custo-ti":{txt:"A KPMG vende consultoria ao CIO com gestão financeira de TI apoiada no software da Apptio, em aliança desde 2012",num:"",fontes:["pilar1-dbta-kpmg-apptio","kpmg-tbm-apptio"],status:"verificado",tema:"oferta",uso:"s10 p1.5",
+    nota:"Aliança KPMG–Apptio anunciada nos EUA em 2012 e levada a outros países (KPMG Singapura, 2021). A situação atual da aliança em cada país não foi conferida.",
+    obs:"Verificado por pilar-1 em 29/10/2026 em trechos de busca: DBTA (2012) “KPMG's CIO Advisory practitioners to offer clients market-leading Technology Business Management (TBM) services”; brochura da KPMG EUA “KPMG CIO Advisory Services leverage Apptio's TBM software”; parceria da KPMG Singapura com a Apptio (04/2021)."},
+  "pilar1-alix-artium":{txt:"A AlixPartners comprou a Artium, consultoria de engenharia com agentes de IA",num:"",fontes:["alixpartners-artium-2026","pilar1-alix-artium-imprensa"],status:"verificado",tema:"pares",uso:"s10",
+    nota:"Anúncio de 04/08/2026: a Artium passa a operar como “Artium by AlixPartners”, com os fundadores e a equipe; termos não divulgados. A Artium é parceira da OpenAI e da Anthropic.",
+    obs:"Verificado por pilar-1 em 29/10/2026 em resultados de busca: comunicado da AlixPartners (newsroom, “AlixPartners acquires leading agentic AI consulting firm, Artium”), reproduzido pela GlobeNewswire/AAP e pela Bernama (05/08/2026), e matérias da Consulting.us e da Cooley (04/08/2026). Equivale ao fato alixpartners-compra-artium (a verificar), sem a leitura “par mais comparável à A&M”, que é nossa."}
+});
+}
