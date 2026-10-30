@@ -131,11 +131,11 @@
     const mk=cls=>{const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","s09-print",cls,"play");c.querySelectorAll("[id]").forEach(x=>x.removeAttribute("id"));return c};
     /* página 2: nome de hoje */
     const o=mk("s09-org");const ot=o.querySelector(".tc");if(ot)ot.innerHTML="Nome de hoje: de qual serviço oficial nasce cada um dos 24 produtos";
-    const os=o.querySelector(".sub");if(os)os.innerHTML="Os nomes oficiais dos serviços e dos pilares de hoje, no lugar da proposta de valor de cada carta";
+    const os=o.querySelector(".sub");if(os)os.innerHTML="Os nomes oficiais de hoje no lugar da proposta de valor";
     /* página 3: a leitura de cada pilar e da base */
     const r=mk("s09-lp");const rt=r.querySelector(".tc");if(rt)rt.innerHTML="Pilar a pilar: a decisão do cliente e como os produtos se encadeiam";
-    const rs=r.querySelector(".sub");if(rs)rs.innerHTML="O que o spotlight mostra em cada pilar e na base comum, a Plataforma de Dados e AI";
-    const g=H("div",{class:"s09-pg"});g.innerHTML=st.map(s=>`<div class="s09-pc"><b class="s09-pct">${s.title}</b>${s.text}</div>`).join("");
+    const rs=r.querySelector(".sub");if(rs)rs.innerHTML="A leitura de cada pilar e da base comum, a Plataforma de Dados e AI";
+    const g=H("div",{class:"s09-pg"});g.innerHTML=st.map((s,i)=>`<div class="s09-pc"><span class="s09-pck">${i<PILLARS.length?`Pilar ${PILLARS[i].n}`:"A base comum"}</span><b class="s09-pct">${i<PILLARS.length?PILLARS[i].name:"Plataforma de Dados e AI"}</b>${s.text}</div>`).join("");
     const h=r.querySelector(".s09-host");if(h)h.replaceWith(g);const lg=r.querySelector(".s09-leg");if(lg)lg.remove();
     sec.after(o);o.after(r)});
 })();

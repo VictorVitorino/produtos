@@ -117,7 +117,7 @@
   PRINT.push(()=>{step(-1);box.classList.remove("hv");ba.set(50);if(stage.querySelector(".s08-print"))return;
     const c=sec.cloneNode(true);c.classList.remove("active","entering","back");c.classList.add("pane-print","s08-print","play");c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));
     const tc=c.querySelector(".tc");if(tc)tc.innerHTML="Pilar a pilar: por que cada serviço muda e o que muda na proposta";
-    const sub=c.querySelector(".sub");if(sub)sub.innerHTML="Os dois lados escondidos do divisor: o diagnóstico de hoje e a mudança proposta para cada pilar";
+    const sub=c.querySelector(".sub");if(sub)sub.innerHTML="O diagnóstico de hoje e a mudança proposta, pilar a pilar";
     const g=H("div",{class:"s08-pg"});g.innerHTML=`<div class="s08-pgh"></div><div class="s08-pgh"><span class="s08-k a">Hoje</span>Por que muda</div><div class="s08-pgh"><span class="s08-k b">Proposta</span>O que muda</div>`+
       PILLARS.map(P=>`<div class="s08-pli"><span class="s08-pln">Pilar ${P.n}</span><b>${P.name}</b><span class="s08-plc">${svcOf(P.n).length} serviços → ${prdOf(P.n).length} produtos</span></div><div class="s08-pgc"><p>${WHY[P.n]}</p></div><div class="s08-pgc"><p>${codeLink(WHAT[P.n])}</p></div>`).join("");
     const m=c.querySelector(".s08-main");if(m)m.replaceWith(g);const r=c.querySelector(".head-r");if(r)r.remove();sec.after(c)});

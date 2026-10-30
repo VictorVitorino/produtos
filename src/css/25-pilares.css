@@ -317,8 +317,9 @@
   .pl-qr,.pl-card,.pl-front{transition:none!important}
 }
 @media print{
-  /* --tm fixo no papel: o gancho PRINT chama to(2,true), que põe --tm:0 no estilo da .pl-flow; mudar uma variável CSS
-     no beforeprint faz o Chromium imprimir o PDF inteiro em branco. Com o valor travado aqui, nada muda na impressão. */
+  /* --tm fixo no papel: o gancho PRINT chama to(2,true), que põe --tm:0 no estilo da .pl-flow. Uma variável CSS que muda
+     de valor na hora de imprimir (com os contêineres .pd-art das fichas no documento) faz o Chromium gerar o PDF todo em
+     branco. Com o valor travado aqui, o --tm não muda na impressão. */
   .pl-flow{--tm:0!important}
   .pl-flow .pl-in{transform:none!important}
   .pl-flow .pl-back{display:none!important}
