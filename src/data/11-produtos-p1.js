@@ -89,7 +89,7 @@ PRODUCTS.push(
  steps:[["1","Linha de\u00a0base","Pessoas, terceiros, custos e\u00a0demanda"],
         ["2","Desenho","Modelo de produto, plataforma e\u00a0governança"],
         ["3","Agentes","Tarefas com potencial de IA e papéis\u00a0novos"],
-        ["4","Dimensionar","Níveis, custo-alvo e\u00a0terceiros"],
+        ["4","Dimensionar","Níveis, custo e\u00a0terceiros"],
         ["5","Transição","Ondas, comunicação, riscos e\u00a0donos"]],
  tools:"Modelo de dimensionamento, catálogo de tarefas de TI, IA generativa para ler cargos e\u00a0chamados.",
  data:"Quadro de pessoal, contratos de terceiros, chamados, catálogo de serviços e\u00a0cargos.",
