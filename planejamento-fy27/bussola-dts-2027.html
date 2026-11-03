@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="navy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bússola DTS 2027</title>
+<meta name="description" content="Diagnóstico rápido para o planejamento FY27 do DTS (Alvarez & Marsal): sete minutos, dezoito decisões, uma bússola.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap">
+<!-- =====================================================================
+     BASE DE RESPOSTAS · GOOGLE PLANILHAS
+     1. Crie uma planilha nova e cole o Apps Script de google-apps-script/Codigo.gs
+        (passo a passo em google-apps-script/LEIAME.md).
+     2. Implante como "App da Web" e cole abaixo o link que termina em /exec.
+     Sem link, a bússola funciona igual e guarda as respostas só neste navegador.
+     ===================================================================== -->
+<script id="dts-config">
+  window.BUSSOLA_CONFIG = {
+    sheetsEndpoint: '',       // link do Apps Script (termina em /exec)
+    painelToken: '',          // o mesmo TOKEN definido no Codigo.gs (o painel usa para ler as respostas ao vivo)
+    mostrarAderencia: false   // true = o participante vê a aderência ao plano no final (recomendado: false)
+  };
+</script>
+<style>
+/* =====================================================================
+   BÚSSOLA DTS 2027 · design system A&M (tema navy)
+   Navy carrega, cinza estrutura, azul apoia, laranja só aponta.
+   Cantos retos, fios de 1px, sem sombra, sem gradiente.
+   ===================================================================== */
+:root{
+  --navy-100:#002b49; --navy-80:#33556d; --navy-40:#99aab6; --navy-20:#ccd5db;
+  --orange-100:#f78c16; --orange-80:#f9a345; --orange-40:#fcd1a2; --orange-20:#fde8d0;
+  --gray-100:#cdd5db; --gray-80:#d7dde2; --gray-40:#ebeef1; --gray-20:#f5f7f8;
+  --blue-100:#5e8ab4; --blue-80:#7ea1c3; --blue-40:#bfd0e1; --blue-20:#dfe8f0;
+  --positive:#9acc3c; --attention:#f9c20a; --negative:#cf3d3d; --white:#fff;
+  --surface:#002b49; --surface-subtle:#33556d; --ink:#fff; --ink-muted:#ccd5db;
+  --line:#33556d; --line-strong:#ccd5db; --accent:#f78c16; --action:#fff; --action-ink:#002b49;
+  --font-light:"Arial Nova Light","Arial Nova",Arial,"Helvetica Neue",sans-serif;
+  --font-cond:"Arial Nova Cond","Arial Nova Condensed","Arial Narrow","Roboto Condensed",sans-serif;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s8:32px; --s12:48px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{min-height:100dvh;background:var(--surface);color:var(--ink);font-family:var(--font-cond);font-size:17px;line-height:1.4;display:flex;flex-direction:column}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--orange-80);outline-offset:2px}
+.sr{position:absolute;left:-9999px}
+/* ---------- barra superior ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:10px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:5}
+.brand{font-family:var(--font-cond);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);white-space:nowrap}
+.brand .long{display:inline} .brand .short{display:none}
+@media (max-width:560px){.brand .long{display:none} .brand .short{display:inline} .brand{font-size:11px} .ring{gap:2px} .ring i{width:4px;height:9px} .top{gap:8px;padding:10px 12px}}
+.brand b{color:var(--ink)}
+.ring{display:flex;gap:3px;align-items:center}
+.ring i{display:block;width:6px;height:10px;background:var(--navy-80)}
+.ring i.on{background:var(--navy-20)}
+.ring i.cur{background:var(--accent)}
+.clock{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;color:var(--ink-muted);min-width:46px;text-align:right}
+.clock.over{color:var(--orange-80)}
+/* ---------- palco ---------- */
+main{flex:1;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:760px;margin:0 auto;padding:20px 16px 28px;flex:1;display:flex;flex-direction:column;gap:var(--s4)}
+.eyebrow{font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+.eyebrow b{color:var(--orange-80)}
+h1,h2{font-family:var(--font-light);font-weight:300;line-height:1.15}
+h1{font-size:clamp(38px,8vw,58px)}
+h2{font-size:clamp(24px,5.2vw,32px)}
+.rule{width:48px;height:4px;background:var(--accent);margin:4px 0}
+.lede{font-size:19px;line-height:1.4;color:var(--ink-muted);max-width:56ch}
+.small{font-size:14px;color:var(--ink-muted)}
+.dts{font-size:14px;color:var(--navy-40);border-left:1px solid var(--line);padding-left:10px}
+/* ---------- controles ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:17px;letter-spacing:.02em;padding:14px 24px;border:1px solid var(--action);background:var(--action);color:var(--action-ink);border-radius:2px;min-height:48px}
+.btn:hover{background:var(--navy-20);border-color:var(--navy-20)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.sec{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.btn.sec:hover{background:var(--surface-subtle)}
+.btn.txt{background:transparent;border-color:transparent;color:var(--blue-40);text-decoration:underline;padding-inline:8px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;padding-top:var(--s4);border-top:1px solid var(--line)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-muted)}
+.field input,.field textarea{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line-strong);border-radius:2px;padding:12px 14px;width:100%}
+.field input::placeholder,.field textarea::placeholder{color:var(--navy-40)}
+.rules{display:grid;gap:8px;list-style:none}
+.rules li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:16px;color:var(--ink-muted)}
+.rules li i{font-style:normal;display:block;width:22px;height:22px;border:1px solid var(--line-strong);text-align:center;font-size:12px;font-weight:700;line-height:20px;color:var(--ink)}
+.meta{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--ink-muted)}
+.meta b{color:var(--ink);font-family:var(--font-light);font-weight:300;font-size:26px;display:block;line-height:1}
+/* ---------- opções (cartões) ---------- */
+.opts{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;text-align:left;border:1px solid var(--line-strong);padding:14px 16px;border-radius:2px;background:transparent;transition:background .15s}
+.opt:hover{background:var(--surface-subtle)}
+.opt i{font-style:normal;width:30px;height:30px;border:1px solid var(--line-strong);display:grid;place-items:center;font-weight:700;font-size:13px}
+.opt b{display:block;font-size:17px;line-height:1.3}
+.opt span{display:block;font-size:14px;color:var(--ink-muted);margin-top:4px;line-height:1.35}
+.opt.on{border-color:var(--orange-80);background:var(--surface-subtle)}
+.opt.on i{background:var(--accent);border-color:var(--accent);color:var(--navy-100)}
+.opt.dim{opacity:.45}
+/* ---------- reflexo ---------- */
+.rx-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.timer{position:relative;width:54px;height:54px;flex:none}
+.timer svg{width:54px;height:54px;transform:rotate(-90deg)}
+.timer circle{fill:none;stroke-width:4}
+.timer .bg{stroke:var(--navy-80)}
+.timer .fg{stroke:var(--accent);stroke-linecap:butt;transition:stroke-dashoffset .1s linear}
+.timer b{position:absolute;inset:0;display:grid;place-items:center;font-size:18px;font-variant-numeric:tabular-nums}
+.timer.out .fg{stroke:var(--navy-40)}
+.rx-q{font-family:var(--font-light);font-weight:300;font-size:clamp(26px,6vw,36px);line-height:1.15;min-height:2.2em}
+.rx-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.rx-opt{border:1px solid var(--line-strong);padding:22px 14px;min-height:150px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;font-size:19px;line-height:1.25;border-radius:2px;transition:transform .18s,background .15s,border-color .15s}
+.rx-opt small{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);font-weight:700}
+.rx-opt:hover{background:var(--surface-subtle)}
+.rx-opt.pick{border-color:var(--accent);background:var(--surface-subtle)}
+.rx-opt.fade{opacity:.35}
+.rx-cards.tilt-l .rx-opt.l{transform:scale(1.03)} .rx-cards.tilt-r .rx-opt.r{transform:scale(1.03)}
+.rx-cards.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.rx-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:var(--ink-muted)}
+.rx-msg{min-height:1.4em;font-size:14px;color:var(--orange-80)}
+/* ---------- mesa de fichas ---------- */
+.mesa{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid var(--line);padding:10px 12px}
+.mrow .lbl{font-size:16px;line-height:1.25}
+.mrow .lbl span{display:block;font-size:13px;color:var(--ink-muted)}
+.mrow .ctl{display:flex;align-items:center;gap:6px}
+.mrow .ctl button{width:40px;height:40px;border:1px solid var(--line-strong);font-size:22px;font-weight:700;display:grid;place-items:center;border-radius:2px}
+.mrow .ctl button:hover{background:var(--surface-subtle)}
+.mrow .ctl button[disabled]{opacity:.3}
+.mrow .ctl b{min-width:40px;text-align:center;font-family:var(--font-light);font-weight:300;font-size:26px;font-variant-numeric:tabular-nums}
+.mrow .bar{grid-column:1/-1;height:6px;background:var(--navy-80)}
+.mrow .bar i{display:block;height:100%;background:var(--blue-80);transition:width .2s}
+.left{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;color:var(--ink-muted)}
+.left b{font-family:var(--font-light);font-weight:300;font-size:30px;color:var(--ink)}
+.left b.zero{color:var(--orange-80)}
+/* ---------- telefone ---------- */
+.calls{display:grid;gap:8px}
+.call{display:grid;grid-template-columns:44px 1fr;gap:10px;border:1px solid var(--line);padding:10px 12px;align-items:start}
+.call .av{width:44px;height:44px;border:1px solid var(--line-strong);display:grid;place-items:center;font-weight:700;font-size:12px;letter-spacing:.04em;text-align:center;line-height:1.1;padding:2px}
+.call .who{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-muted)}
+.call .txt{font-size:16px;line-height:1.3;margin:2px 0 8px}
+.call .acts{display:flex;gap:8px;flex-wrap:wrap}
+.call .acts button{border:1px solid var(--line-strong);padding:7px 12px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:2px;display:inline-flex;gap:6px;align-items:center}
+.call .acts button:hover{background:var(--surface-subtle)}
+.call .acts button.on{background:var(--white);color:var(--navy-100);border-color:var(--white)}
+.call .acts button.on.postal{background:var(--navy-80);color:var(--white);border-color:var(--navy-40)}
+.call .acts button i{font-style:normal;width:18px;height:18px;background:var(--accent);color:var(--navy-100);display:grid;place-items:center;font-size:11px}
+.call.on{border-color:var(--navy-20)}
+.call.postal{opacity:.55}
+.callstat{display:flex;gap:18px;font-size:14px;color:var(--ink-muted)}
+.callstat b{color:var(--ink)}
+/* ---------- slider ---------- */
+.slide{display:grid;gap:10px}
+.slide input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent}
+.slide input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--navy-80)}
+.slide input[type=range]::-moz-range-track{height:6px;background:var(--navy-80)}
+.slide input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;background:var(--white);border:4px solid var(--accent);margin-top:-14px;border-radius:50%;cursor:grab}
+.slide input[type=range]::-moz-range-thumb{width:26px;height:26px;background:var(--white);border:4px solid var(--accent);border-radius:50%;cursor:grab}
+.ends{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:14px;color:var(--ink-muted)}
+.ends div:last-child{text-align:right}
+.ends b{display:block;color:var(--ink);font-size:16px}
+.big{font-family:var(--font-light);font-weight:300;font-size:clamp(44px,12vw,72px);line-height:1;text-align:center}
+.big small{display:block;font-family:var(--font-cond);font-size:16px;color:var(--ink-muted);margin-top:6px}
+/* ---------- ordem ---------- */
+.ord .opt i{background:transparent}
+.ord .opt.on i{background:var(--accent);border-color:var(--accent);color:var(--navy-100)}
+/* ---------- final ---------- */
+.result{display:grid;gap:18px}
+.compass{width:min(86vw,400px);margin:0 auto;display:block}
+.arch{text-align:center}
+.arch .name{font-family:var(--font-light);font-weight:300;font-size:clamp(30px,7vw,40px);line-height:1.1}
+.arch p{color:var(--ink-muted);font-size:17px;max-width:46ch;margin:8px auto 0}
+.signals{display:grid;gap:8px;list-style:none}
+.signals li{display:grid;grid-template-columns:10px 1fr;gap:12px;align-items:start;border-top:1px solid var(--line);padding-top:10px;font-size:16px}
+.signals li i{display:block;width:10px;height:10px;margin-top:6px;background:var(--blue-80)}
+.signals li.hot i{background:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpi{border:1px solid var(--line);border-top:4px solid var(--navy-20);padding:10px 12px}
+.kpi.hi{border-top-color:var(--accent)}
+.kpi .l{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+.kpi .v{font-family:var(--font-light);font-weight:300;font-size:30px;line-height:1.05;margin-top:4px}
+.kpi .d{font-size:12px;color:var(--ink-muted)}
+.sync{font-size:13px;color:var(--ink-muted);border-top:1px solid var(--line);padding-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sync .dot{width:8px;height:8px;background:var(--navy-40);display:inline-block}
+.sync .dot.ok{background:var(--positive)} .sync .dot.wait{background:var(--attention)} .sync .dot.err{background:var(--negative)}
+/* ---------- transições ---------- */
+.screen{animation:in .28s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (max-width:480px){.kpis{grid-template-columns:1fr 1fr}.rx-opt{min-height:170px;font-size:18px;padding:18px 10px}.opt{padding:12px 12px}.wrap{padding:16px 14px 24px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* =====================================================================
+   PAINEL DA FACILITAÇÃO (tema claro, pronto para projetar e imprimir)
+   ===================================================================== */
+body.painel{background:#fff;color:var(--navy-100)}
+body.painel .top{background:#fff;border-bottom-color:var(--gray-100)}
+body.painel .brand,body.painel .clock{color:var(--navy-80)} body.painel .brand b{color:var(--navy-100)}
+.pn{width:100%;max-width:1200px;margin:0 auto;padding:24px 20px 60px;display:grid;gap:28px}
+.pn h1{font-size:clamp(30px,5vw,44px);color:var(--navy-100)}
+.pn h2{font-size:24px;color:var(--navy-100)}
+.pn .eyebrow{color:var(--navy-80)} .pn .lede{color:var(--navy-80)} .pn .small{color:var(--navy-80)}
+.pn .btn{background:var(--navy-100);color:#fff;border-color:var(--navy-100)} .pn .btn:hover{background:var(--navy-80)}
+.pn .btn.sec{background:#fff;color:var(--navy-100);border-color:var(--navy-100)} .pn .btn.sec:hover{background:var(--gray-20)}
+.pn .field input,.pn .field textarea{color:var(--navy-100);border-color:var(--gray-100)} .pn .field label{color:var(--navy-80)}
+.src{display:grid;gap:12px;border:1px solid var(--gray-100);padding:16px}
+.src .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pn-block{display:grid;gap:12px;border-top:1px solid var(--gray-100);padding-top:18px}
+.pn-block.wide{break-inside:avoid}
+.pn-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.hero-grid{display:grid;grid-template-columns:440px 1fr;gap:28px;align-items:center}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.hero-txt{display:grid;gap:14px}
+.hero-txt .big2{font-family:var(--font-light);font-weight:300;font-size:30px;line-height:1.15;color:var(--navy-100)}
+.hero-txt .big2 b{font-weight:300;color:var(--navy-100);border-bottom:3px solid var(--accent)}
+.arqs{display:grid;gap:6px}
+.arqs>div{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;font-size:15px}
+.arqs>div>b{font-family:var(--font-light);font-weight:300;font-size:26px;line-height:1;color:var(--navy-100);text-align:right}
+.arqs>div span{color:var(--navy-80);font-size:13px;display:block}
+@media (max-width:820px){.pn-grid{grid-template-columns:1fr}}
+.pn .kpis{grid-template-columns:repeat(4,1fr)} @media (max-width:700px){.pn .kpis{grid-template-columns:1fr 1fr}}
+.pn .kpi{border-color:var(--gray-100);border-top-color:var(--navy-100)} .pn .kpi.hi{border-top-color:var(--accent)} .pn .kpi .l,.pn .kpi .d{color:var(--navy-80)}
+.bars{display:grid;gap:8px}
+.brow{display:grid;grid-template-columns:200px 1fr 60px;gap:10px;align-items:center;font-size:15px}
+.brow .tr{height:16px;background:var(--gray-40);position:relative}
+.brow .tr i{position:absolute;left:0;top:0;height:100%;background:var(--navy-100)}
+.brow .tr i.b2{background:var(--blue-100)}
+.brow .tr em{position:absolute;top:-4px;width:3px;height:24px;background:var(--accent);margin-left:-1px}
+.brow .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.brow.sub{font-size:13px;color:var(--navy-80)}
+.strip{position:relative;height:112px;border-bottom:1px solid var(--gray-100);margin:6px 0 4px}
+.strip .ax{position:absolute;left:0;right:0;top:36px;height:2px;background:var(--gray-100)}
+.strip .mid{position:absolute;left:50%;top:26px;height:22px;width:1px;background:var(--navy-40)}
+.strip .p{position:absolute;top:24px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:var(--navy-100);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;border:2px solid #fff}
+.strip .p.plan{background:var(--accent);color:var(--navy-100);width:30px;height:30px;top:22px;margin-left:-15px;z-index:2}
+.strip .p.team{background:#fff;color:var(--navy-100);border:2px solid var(--navy-100)}
+.strip .lab{position:absolute;top:0;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy-80)}
+.strip .lab.r{right:0;text-align:right}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy-100);background:var(--gray-20);border-top:2px solid var(--navy-100);padding:6px 8px}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--gray-100);vertical-align:top}
+.tbl .num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl tr.plan td{background:var(--orange-20);font-weight:700}
+.pautas{display:grid;gap:10px;list-style:none}
+.pautas li{display:grid;grid-template-columns:28px 1fr;gap:12px;border:1px solid var(--gray-100);padding:12px 14px;font-size:16px;line-height:1.35}
+.pautas li i{font-style:normal;width:28px;height:28px;background:var(--navy-100);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+.pautas li b{display:block}
+.pautas li span{color:var(--navy-80);font-size:14px}
+.frases{display:grid;gap:8px}
+.frases div{border-left:4px solid var(--blue-100);padding:6px 12px;font-size:16px;color:var(--navy-100)}
+.frases div small{display:block;color:var(--navy-80);font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--navy-80)}
+.legend i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:6px}
+.foot{font-size:12px;color:var(--navy-80)}
+@media print{body.painel .top,.src,.noprint{display:none!important}.pn{max-width:none;padding:0}.pn-block{break-inside:avoid;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="long"><b>ALVAREZ &amp; MARSAL</b> · DTS · Bússola 2027</span><span class="short"><b>A&amp;M</b> · DTS · Bússola 2027</span></div>
+  <div class="ring" id="ring" aria-hidden="true"></div>
+  <div class="clock" id="clock" aria-label="Tempo decorrido">0:00</div>
+</header>
+<main id="app"></main>
+
+<script>
+/* ===================================================================== */
+/* 1 · MODELO: dimensões, posição do planejamento e os itens             */
+/* ===================================================================== */
+const VERSION = 'bussola-dts-1';
+const CFG = window.BUSSOLA_CONFIG || {};
+const clamp = (v, a = 0, b = 100) => Math.max(a, Math.min(b, v));
+const avg = arr => arr.length ? arr.reduce((s, x) => s + x, 0) / arr.length : null;
+const median = arr => { if (!arr.length) return null; const s = [...arr].sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt1 = n => (Math.round(n * 10) / 10).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+// Posição do planejamento FY27 em cada dimensão (0–100). Serve de referência; o participante não a vê.
+const DIMS = {
+  PORTA:   { nome: 'Porta de entrada', esq: 'CFO · chamado na crise', dir: 'CIO · chamado para não falhar', plan: 40, w: .20, leitura: 'Entrar pela dor que o cliente já tem (ERP em crise, custo de TI, pós-M&A) e ficar para não falhar de novo.' },
+  FOCO:    { nome: 'Foco do portfólio', esq: 'Abrir frentes', dir: 'Núcleo forte', plan: 80, w: .20, leitura: 'Núcleo forte (eficiência de TI, programas críticos e M&A) com expansão seletiva.' },
+  RECEITA: { nome: 'Modelo de receita', esq: 'Por hora', dir: 'Por resultado', plan: 80, w: .10, leitura: 'Preço ligado a resultado, risco evitado ou recorrência.' },
+  PRODUTO: { nome: 'Entrega', esq: 'Relatório', dir: 'Produto que fica', plan: 85, w: .05, leitura: 'Entrega concreta e artefatos prontos, não um PPT.' },
+  IA:      { nome: 'Inteligência artificial', esq: 'Prática própria', dir: 'Dentro dos produtos, com Data & IA', plan: 90, w: .07, leitura: 'IA como base interna de todos os produtos; oferta de IA junto com Data & IA.' },
+  FABRICA: { nome: 'Fábrica × parceiros', esq: 'Fábrica própria', dir: 'Parceiros, DTS no comando', plan: 85, w: .05, leitura: 'Situações críticas com parceiros de engenharia, sem fábrica própria.' },
+  ANCORAS: { nome: 'Âncoras do núcleo', esq: 'Fora das âncoras', dir: 'Nas âncoras', plan: 100, w: .10, leitura: 'Custo de TI (1.1, 2.7), programas críticos (2.3) e tecnologia em transações (3.2–3.4).' },
+  PILARES: { nome: 'Mesa de investimento', esq: 'Longe do plano', dir: 'Como o plano', plan: 100, w: .15, leitura: 'Esforço concentrado em reestruturação, execução/eficiência e M&A; operações e apostas como expansão.' },
+  CONSOL:  { nome: 'Consolidação', esq: 'Catálogo amplo', dir: '33 → 23 produtos', plan: 100, w: .05, leitura: 'De 33 para 23 produtos; diagnóstico isolado e implementação de ERP deixam de ser vendidos à parte.' },
+  PESSOAS: { nome: 'Pessoas', esq: 'Outros perfis', dir: 'Operadores do núcleo', plan: 100, w: .03, leitura: 'Perfis de operador: ex-CIO, programas críticos e tecnologia em transações.' }
+};
+const PLAN_MESA = [25, 35, 25, 10, 5];
+
+// Bloco 1 · reflexos (6 segundos cada). L/R dizem o valor de cada lado na dimensão.
+const REFLEX = [
+  { id: 'r1', tema: 'O carro', q: 'No seu carro, o que você prefere pagar?', L: 'O guincho, na hora do problema', R: 'A revisão preventiva, todo ano', dim: 'PORTA', vL: 0, vR: 100, dts: 'Ser chamado na crise ou acompanhar sempre.' },
+  { id: 'r2', tema: 'A saúde', q: 'Quando a TI de um cliente adoece, o DTS é…', L: 'O pronto-socorro: entra quando dói', R: 'O médico de família: acompanha sempre', dim: 'PORTA', vL: 0, vR: 100, dts: 'A mesma pergunta, por outro ângulo.' },
+  { id: 'r3', tema: 'O restaurante', q: 'Que restaurante você abriria?', L: 'Cardápio com 33 pratos', R: '10 pratos que todo mundo lembra', dim: 'FOCO', vL: 0, vR: 100, dts: 'Catálogo amplo ou poucas e boas escolhas.' },
+  { id: 'r4', tema: 'O honorário', q: 'Como você prefere ser pago?', L: 'Pela economia que entregar', R: 'Pelas horas que trabalhar', dim: 'RECEITA', vL: 100, vR: 0, dts: 'Resultado ou esforço.' },
+  { id: 'r5', tema: 'A entrega', q: 'O que o cliente leva para casa no fim?', L: 'Um relatório que explica', R: 'Uma ferramenta que fica funcionando', dim: 'PRODUTO', vL: 0, vR: 100, dts: 'Serviço ou produto.' },
+  { id: 'r6', tema: 'A inteligência artificial', q: 'IA no DTS é…', L: 'Dentro de cada produto, junto com Data & IA', R: 'Uma prática de IA própria do DTS', dim: 'IA', vL: 100, vR: 0, dts: 'Base de tudo ou oferta à parte.' },
+  { id: 'r7', tema: 'A fábrica', q: 'Para construir sistemas e agentes, o DTS…', L: 'Monta a própria fábrica de engenheiros', R: 'Lidera com parceiros de engenharia', dim: 'FABRICA', vL: 0, vR: 100, dts: 'Construir ou orquestrar.' },
+  { id: 'r8', tema: 'As frentes novas', q: '2027 chegou. O que você faz?', L: 'Domina um problema operacional por vez', R: 'Abre três verticais novas de uma vez', dim: 'FOCO', vL: 100, vR: 0, dts: 'Profundidade ou amplitude.' }
+];
+const REFLEX_MS = 6000;
+
+const ROTAS = [
+  { id: 'A', nome: 'A estrada de sempre', txt: 'Seguimos com tudo que já oferecemos; cada serviço vendido por si.', pro: 'Sem custo de mudança.', con: 'Ninguém sabe exatamente para que nos chamar.', foco: 20 },
+  { id: 'B', nome: 'Três destinos e um desvio', txt: 'Concentramos o esforço em três problemas com orçamento e urgência; frente nova só quando houver oportunidade.', pro: 'Somos a primeira escolha em poucos problemas.', con: 'Deixamos de vender algumas coisas à parte.', foco: 85 },
+  { id: 'C', nome: 'Mapa aberto', txt: 'Abrimos todas as frentes novas ao mesmo tempo: verticais, supply chain, assinaturas.', pro: 'Mais mercado endereçável.', con: 'Time e investimento diluídos; receita incerta no primeiro ano.', foco: 10 }
+];
+const MESAS = [
+  { id: 'P1', nome: 'Reestruturação e turnaround de TI', sub: 'custo, desempenho e comando da área' },
+  { id: 'P2', nome: 'Programas críticos e eficiência do gasto', sub: 'ERP atrasado, fiscal, contratos e nuvem' },
+  { id: 'P3', nome: 'Tecnologia em fusões e aquisições', sub: 'diligência, integração e separação' },
+  { id: 'P4', nome: 'Operações e verticais', sub: 'supply chain, saúde, varejo, financeiro' },
+  { id: 'P5', nome: 'Apostas novas', sub: 'valor da IA, radar de investidas, assinaturas' }
+];
+const CALLS = [
+  { id: 'cfo', quem: 'CFO', av: 'CFO', txt: 'Preciso tirar 20% do custo de TI sem parar a operação.', core: true, porta: 0 },
+  { id: 'erp', quem: 'Patrocinador do ERP', av: 'ERP', txt: 'O programa atrasou e a CBS chega em 2027. Alguém assume?', core: true, porta: 0 },
+  { id: 'fundo', quem: 'Sócio de fundo', av: 'PE', txt: 'Fechamos a compra em 30 dias. Quais riscos de TI mexem no preço?', core: true, porta: 0 },
+  { id: 'ceo', quem: 'CEO', av: 'CEO', txt: 'O CIO pediu demissão. Quem segura a área até acharmos outro?', core: true, porta: 0 },
+  { id: 'coo', quem: 'COO', av: 'COO', txt: 'Estoque alto e ruptura ao mesmo tempo. O sistema não resolve.', exp: true },
+  { id: 'cio_prev', quem: 'CIO', av: 'CIO', txt: 'Está tudo funcionando. Quero alguém olhando a TI comigo todo mês, sem surpresas.', porta: 100 },
+  { id: 'cio_diag', quem: 'CIO', av: 'CIO', txt: 'Quero um diagnóstico de maturidade e uma estratégia digital para três anos.', neg: true },
+  { id: 'cio_erp', quem: 'CIO', av: 'CIO', txt: 'Vamos implantar um ERP novo. Vocês lideram a implementação?', neg: true },
+  { id: 'cons_ia', quem: 'Conselheiro', av: 'CONS', txt: 'Investimos milhões em IA. Quanto voltou? Ninguém sabe.', cand: true }
+];
+const IA_OPTS = [
+  { id: 'a', txt: 'Sim. Vamos montar uma prática de IA própria do DTS.', ia: 15 },
+  { id: 'b', txt: 'A IA está dentro de cada produto nosso. A oferta de IA fazemos junto com Data & IA.', ia: 100 },
+  { id: 'c', txt: 'IA é com a prática de Data & IA. O DTS cuida da TI.', ia: 45 },
+  { id: 'd', txt: 'Montamos uma fábrica de agentes e vendemos como plataforma.', ia: 25, fabrica: 0 }
+];
+const PRIO = [
+  { id: 'custo', txt: 'Reduzir o custo de tecnologia', top: true },
+  { id: 'programa', txt: 'Recuperar um programa crítico atrasado', top: true },
+  { id: 'deal', txt: 'Traduzir tecnologia em preço e sinergia numa transação', top: true },
+  { id: 'erp', txt: 'Implementar ERP e sistemas de ponta a ponta', top: false },
+  { id: 'estrategia', txt: 'Desenhar a estratégia digital e medir a maturidade de TI', top: false }
+];
+const PERFIS = [
+  { id: 'excio', txt: 'Ex-CIO operador, que assume a área do cliente', plan: true },
+  { id: 'programas', txt: 'Gerente de programas de ERP e fiscal', plan: true },
+  { id: 'ma', txt: 'Especialista em tecnologia para M&A', plan: true },
+  { id: 'eng', txt: 'Engenheiro de IA e plataforma, para montar a fábrica', eng: true },
+  { id: 'setor', txt: 'Especialista setorial: saúde, varejo ou financeiro' },
+  { id: 'comercial', txt: 'Executivo comercial para abrir portas com CIOs', cio: true },
+  { id: 'dados', txt: 'Cientista de dados' }
+];
+const ESPELHO = [
+  { id: 'A', txt: '…o CFO chama quando a TI falhou.', sub: 'Entramos na crise, com acesso ao CEO e ao conselho.', porta: 10 },
+  { id: 'B', txt: '…o CIO chama para não falhar.', sub: 'Presença recorrente e lembrança de marca em TI.', porta: 90 },
+  { id: 'C', txt: '…entra pela dor que o CIO já tem e fica para não falhar de novo.', sub: 'ERP em crise, custo de TI, pós-M&A: a porta é o problema de hoje.', porta: 40 }
+];
+const ARQUETIPOS = {
+  NW: { nome: 'Cirurgião de crise', txt: 'Entra quando dói, com poucas e boas armas. Acesso ao CEO e ao conselho; o desafio é ficar depois da crise.' },
+  NE: { nome: 'Médico de confiança', txt: 'O CIO chama antes de doer. Poucos problemas, acompanhamento contínuo; o desafio é ser lembrado em TI.' },
+  SW: { nome: 'Pronto-socorro completo', txt: 'Atende qualquer emergência de tecnologia. Ninguém fica sem resposta; o desafio é ser a primeira escolha em alguma.' },
+  SE: { nome: 'Clínica geral', txt: 'Presença ampla e contínua junto ao CIO. Mais mercado endereçável; o desafio é foco e investimento comercial.' },
+  C:  { nome: 'Caminho do meio', txt: 'Entra pela dor que o cliente já tem e fica para não falhar de novo, sem abrir mão do foco.' }
+};
+
+/* ===================================================================== */
+/* 2 · ROTEIRO: a sequência de telas                                     */
+/* ===================================================================== */
+const STEPS = [
+  { id: 'capa' },
+  { id: 'rx_intro' },
+  { id: 'rx_treino' },
+  ...REFLEX.map(r => ({ id: r.id, rx: r })),
+  { id: 'rota' }, { id: 'mesa' }, { id: 'telefone' }, { id: 'contrato' }, { id: 'ia' }, { id: 'prio' }, { id: 'roupa' }, { id: 'pessoas' }, { id: 'espelho' }, { id: 'frase' },
+  { id: 'final' }
+];
+const DECISOES = STEPS.filter(s => !['capa', 'rx_intro', 'final'].includes(s.id)).map(s => s.id); // 18 decisões (treino incluído)
+
+/* ===================================================================== */
+/* 3 · ESTADO                                                            */
+/* ===================================================================== */
+const KEY = 'bussola-dts-2027';
+const newId = () => 'bx-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
+function fresh() {
+  return { v: VERSION, sessionId: newId(), nome: '', email: '', startedAt: null, finishedAt: null, step: 0,
+    a: { treino: null, rx: {}, rota: null, mesa: [0, 0, 0, 0, 0], mesaMoves: 0, tel: { atender: [], postal: null }, contrato: { v: 50, moves: 0 }, ia: null, prio: [], roupa: { n: 33, moves: 0 }, pessoas: [], espelho: null, frase: '' },
+    t: {}, enteredAt: null, result: null };
+}
+let S;
+try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); S = d && d.v === VERSION ? d : fresh(); } catch (e) { S = fresh(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* sem armazenamento */ } };
+const stepId = () => STEPS[S.step].id;
+
+/* ===================================================================== */
+/* 4 · PONTUAÇÃO                                                         */
+/* ===================================================================== */
+function compute(a) {
+  const rx = id => { const r = a.rx[id]; if (!r || r.side == null) return null; const def = REFLEX.find(x => x.id === id); return r.side === 'L' ? def.vL : def.vR; };
+  const rxAvg = ids => { const v = ids.map(rx).filter(x => x != null); return v.length ? avg(v) : null; };
+  const mix = parts => { // [[valor, peso]] ignorando valores nulos
+    const ok = parts.filter(p => p[0] != null); const tw = ok.reduce((s, p) => s + p[1], 0);
+    return tw ? ok.reduce((s, p) => s + p[0] * p[1], 0) / tw : 50;
+  };
+  const rota = ROTAS.find(r => r.id === a.rota);
+  const mesa = a.mesa; const mesaTot = mesa.reduce((s, x) => s + x, 0);
+  const nucleo = mesaTot ? (mesa[0] + mesa[1] + mesa[2]) / mesaTot * 100 : null;
+  const focoMesa = nucleo == null ? null : clamp((nucleo - 40) / 55 * 100);
+  const pilares = mesaTot ? clamp(100 - mesa.reduce((s, x, i) => s + Math.abs(x - PLAN_MESA[i]), 0) / 2) : null;
+  const at = a.tel.atender.map(id => CALLS.find(c => c.id === id)).filter(Boolean);
+  const postal = CALLS.find(c => c.id === a.tel.postal);
+  const telPorta = at.filter(c => c.porta != null).map(c => c.porta); // chamadas de crise = 0, prevenção = 100
+  const coreN = at.filter(c => c.core).length, negN = at.filter(c => c.neg).length;
+  const telAnc = at.length ? clamp(coreN / 3 * 100 - negN * 20 + (postal && postal.neg ? 10 : 0)) : null;
+  const prioAnc = a.prio.length === 5 ? (PRIO.filter(p => p.top).reduce((s, p) => s + (5 - a.prio.indexOf(p.id)), 0) - 6) / 3 * 100 : null; // 9 = melhor, 6 = pior
+  const prioCon = a.prio.length === 5 ? (PRIO.filter(p => !p.top).reduce((s, p) => s + a.prio.indexOf(p.id), 0)) / 7 * 100 : null; // posições 0..4 → 7 = melhor
+  const iaOpt = IA_OPTS.find(o => o.id === a.ia);
+  const esp = ESPELHO.find(e => e.id === a.espelho);
+  const engChosen = a.pessoas.includes('eng'), cioChosen = a.pessoas.includes('comercial');
+  const planPerfis = a.pessoas.filter(id => (PERFIS.find(p => p.id === id) || {}).plan).length;
+  const n = a.roupa.n;
+  const d = {
+    PORTA: clamp(mix([[esp ? esp.porta : null, .45], [rxAvg(['r1', 'r2']), .35], [telPorta.length ? avg(telPorta) : null, .2]]) + (cioChosen ? 8 : 0)),
+    FOCO: clamp(mix([[rota ? rota.foco : null, .35], [rxAvg(['r3', 'r8']), .25], [focoMesa, .2], [clamp(100 - (n - 18) * 3.3), .2]])),
+    RECEITA: clamp(mix([[rx('r4'), .4], [a.contrato.v, .6]])),
+    PRODUTO: clamp(mix([[rx('r5'), .7], [postal && postal.id === 'cio_diag' ? 100 : at.some(c => c.id === 'cio_diag') ? 0 : 50, .3]])),
+    IA: clamp(mix([[rx('r6'), .4], [iaOpt ? iaOpt.ia : null, .6]])),
+    FABRICA: clamp(mix([[rx('r7'), .5], [engChosen ? 0 : 100, .25], [iaOpt && iaOpt.fabrica != null ? iaOpt.fabrica : 100, .25]])),
+    ANCORAS: clamp(mix([[telAnc, .6], [prioAnc, .4]])),
+    PILARES: pilares == null ? 50 : pilares,
+    CONSOL: clamp(mix([[clamp(100 - Math.abs(n - 23) * 6), .5], [prioCon, .3], [clamp(100 - negN * 50), .2]])),
+    PESSOAS: a.pessoas.length ? clamp(planPerfis * 50) : 50
+  };
+  const ader = Object.keys(DIMS).reduce((s, k) => s + DIMS[k].w * (100 - Math.abs(d[k] - DIMS[k].plan)), 0);
+  // reflexo: velocidade, hesitação e coerência (instinto × reflexão)
+  const times = REFLEX.map(r => a.rx[r.id]).filter(r => r && r.side != null).map(r => r.ms);
+  const hes = REFLEX.filter(r => a.rx[r.id] && a.rx[r.id].hesitou).map(r => r.tema);
+  const med = median(times);
+  const speed = med == null ? .5 : clamp(1 - (med - 800) / 5200, 0, 1);
+  const pares = [
+    ['PORTA', rxAvg(['r1', 'r2']), esp ? esp.porta : null],
+    ['IA', rx('r6'), iaOpt ? iaOpt.ia : null],
+    ['FOCO', rxAvg(['r3', 'r8']), rota ? rota.foco : null]
+  ].filter(p => p[1] != null && p[2] != null);
+  const coer = pares.length ? 1 - avg(pares.map(p => Math.abs(p[1] - p[2]))) / 100 : .75;
+  const divergente = pares.length ? pares.reduce((m, p) => Math.abs(p[1] - p[2]) > Math.abs(m[1] - m[2]) ? p : m) : null;
+  const conv = .5 * speed + .5 * coer;
+  const x = d.PORTA - 50, y = d.FOCO - 50;
+  const ang = (Math.atan2(x, y) * 180 / Math.PI + 360) % 360;
+  const quad = Math.abs(x) < 12 && Math.abs(y) < 12 ? 'C' : (y >= 0 ? 'N' : 'S') + (x < 0 ? 'W' : 'E');
+  const topMesa = mesaTot ? MESAS[mesa.indexOf(Math.max(...mesa))].nome : null;
+  return { d, aderencia: Math.round(ader), ang: Math.round(ang), x: Math.round(x), y: Math.round(y), quad, conv: Math.round(conv * 100), velocidade: med == null ? null : Math.round(med) / 1000,
+    hesitacoes: hes.length, hesTemas: hes, coerencia: Math.round(coer * 100), divergente: divergente ? divergente[0] : null, topMesa, rota: a.rota, espelho: a.espelho, nucleo: nucleo == null ? null : Math.round(nucleo) };
+}
+function planHeading() { const x = DIMS.PORTA.plan - 50, y = DIMS.FOCO.plan - 50; return { x, y, ang: (Math.atan2(x, y) * 180 / Math.PI + 360) % 360 }; }
+
+function signals(r, a) {
+  const out = [];
+  const d = r.d;
+  out.push({ t: d.RECEITA >= 60 ? 'Você assina por resultado, não por hora.' : d.RECEITA >= 40 ? 'Entre o fixo e o resultado, você fica no meio.' : 'Você prefere a segurança do preço fixo.', hot: d.RECEITA >= 60 });
+  out.push({ t: d.PRODUTO >= 60 ? 'Entrega que fica: ferramenta, não relatório.' : 'Entrega consultiva: o relatório que explica.', hot: d.PRODUTO >= 60 });
+  if (r.topMesa) out.push({ t: 'Sua maior aposta de 2027: ' + r.topMesa.toLowerCase() + '.', hot: true });
+  out.push({ t: d.IA >= 70 ? 'IA dentro de cada produto, com Data & IA ao lado.' : d.IA >= 40 ? 'IA é assunto de outra prática: o DTS fica na TI.' : 'Você montaria uma frente de IA própria no DTS.', hot: false });
+  out.push({ t: r.coerencia >= 75 ? 'Instinto e reflexão apontaram para o mesmo lado.' : 'Instinto e reflexão divergem em ' + (r.divergente ? DIMS[r.divergente].nome.toLowerCase() : 'um tema') + ': assunto para a mesa.', hot: r.coerencia < 75 });
+  return out;
+}
+
+/* ===================================================================== */
+/* 5 · ENVIO À PLANILHA (fila local, reenvio automático)                 */
+/* ===================================================================== */
+const Sync = (() => {
+  const Q = 'bussola-dts-envios'; const RETRY = 20000, MAXR = 300000;
+  let box = { pending: [], sent: {}, lastOk: null, lastErr: null }; let busy = false, timer = null; const ls = new Set();
+  try { const d = JSON.parse(localStorage.getItem(Q) || 'null'); if (d && Array.isArray(d.pending)) box = d; } catch (e) { }
+  const write = () => { try { localStorage.setItem(Q, JSON.stringify(box)); } catch (e) { } };
+  const url = () => { const u = String(CFG.sheetsEndpoint || '').trim(); return /^https:\/\/\S+$/i.test(u) ? u : ''; };
+  const fp = t => { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36) + '.' + t.length; };
+  const status = () => ({ enabled: !!url(), pending: box.pending.length, busy, lastOk: box.lastOk, lastErr: box.lastErr });
+  const notify = () => ls.forEach(f => { try { f(status()); } catch (e) { } });
+  function put(linha) {
+    if (!url()) return;
+    const key = linha.sessionId, body = JSON.stringify({ tipo: 'bussola', versao: VERSION, linha }), f = fp(body);
+    const w = box.pending.find(i => i.key === key);
+    if (w ? w.fp === f : box.sent[key] === f) return;
+    const item = { key, body, fp: f, tries: 0, nextAt: 0 };
+    if (w) box.pending[box.pending.indexOf(w)] = item; else box.pending.push(item);
+    write(); notify(); flush();
+  }
+  async function post(u, body) {
+    const init = { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body, cache: 'no-store' };
+    let res; try { res = await fetch(u, init); } catch (e) { await fetch(u, Object.assign({}, init, { mode: 'no-cors' })); return false; }
+    if (!res.ok) throw new Error('A planilha respondeu HTTP ' + res.status);
+    let data = null; try { data = await res.json(); } catch (e) { throw new Error('Resposta inesperada: o Apps Script foi implantado como App da Web com acesso "Qualquer pessoa"?'); }
+    if (!data || data.sucesso !== true) throw new Error('Planilha: ' + ((data && data.erro) || 'registro não confirmado'));
+    return true;
+  }
+  async function flush() {
+    if (busy || !url()) return; clearTimeout(timer);
+    const item = box.pending.find(i => i.nextAt <= Date.now()); if (!item) { schedule(); return; }
+    busy = true; notify();
+    try { await post(url(), item.body); box.pending = box.pending.filter(i => i !== item); box.sent[item.key] = item.fp; box.lastOk = new Date().toISOString(); box.lastErr = null; }
+    catch (e) { item.tries++; item.nextAt = Date.now() + Math.min(MAXR, RETRY * Math.pow(2, item.tries - 1)); box.lastErr = e instanceof TypeError ? 'Sem conexão com a planilha.' : e.message; }
+    busy = false; write(); notify(); if (box.pending.length) schedule();
+  }
+  function schedule() { clearTimeout(timer); if (!box.pending.length || !url()) return; timer = setTimeout(flush, Math.max(0, Math.min(...box.pending.map(i => i.nextAt)) - Date.now())); }
+  function beacon() { const u = url(); if (!u || !navigator.sendBeacon) return; box.pending.forEach(i => { try { navigator.sendBeacon(u, new Blob([i.body], { type: 'text/plain;charset=utf-8' })); } catch (e) { } }); }
+  window.addEventListener('online', () => { box.pending.forEach(i => i.nextAt = 0); flush(); });
+  window.addEventListener('pagehide', beacon);
+  setTimeout(flush, 800);
+  return { put, status, on: f => ls.add(f), flush };
+})();
+
+function buildRow() {
+  const a = S.a, r = S.result || compute(a);
+  const row = { sessionId: S.sessionId, nome: S.nome, email: S.email, versao: VERSION, iniciadoEm: S.startedAt, concluidoEm: S.finishedAt,
+    duracaoSeg: S.startedAt && S.finishedAt ? Math.round((new Date(S.finishedAt) - new Date(S.startedAt)) / 1000) : null,
+    arquetipo: ARQUETIPOS[r.quad].nome, aderencia: r.aderencia, angulo: r.ang, x: r.x, y: r.y, conviccao: r.conv, velocidadeMed: r.velocidade, hesitacoes: r.hesitacoes, coerencia: r.coerencia,
+    PORTA: Math.round(r.d.PORTA), FOCO: Math.round(r.d.FOCO), RECEITA: Math.round(r.d.RECEITA), PRODUTO: Math.round(r.d.PRODUTO), IA: Math.round(r.d.IA), FABRICA: Math.round(r.d.FABRICA), ANCORAS: Math.round(r.d.ANCORAS), PILARES: Math.round(r.d.PILARES), CONSOL: Math.round(r.d.CONSOL), PESSOAS: Math.round(r.d.PESSOAS),
+    rota: a.rota, mesaP1: a.mesa[0], mesaP2: a.mesa[1], mesaP3: a.mesa[2], mesaP4: a.mesa[3], mesaP5: a.mesa[4], nucleo: r.nucleo,
+    atendeu: a.tel.atender.join(' > '), caixaPostal: a.tel.postal, contrato: a.contrato.v, ia: a.ia, prioridade: a.prio.join(' > '), produtos2027: a.roupa.n, contratacoes: a.pessoas.join(' + '), espelho: a.espelho, frase: a.frase };
+  REFLEX.forEach(x => { const v = a.rx[x.id] || {}; row[x.id] = v.side == null ? 'hesitou' : v.side === 'L' ? x.L : x.R; row[x.id + '_ms'] = v.ms == null ? '' : v.ms; });
+  row.temposPorTela = JSON.stringify(S.t);
+  row.estado = JSON.stringify({ a, result: r });
+  return row;
+}
+
+/* ===================================================================== */
+/* 6 · RENDERIZAÇÃO                                                      */
+/* ===================================================================== */
+const app = document.getElementById('app');
+let rxTimer = null, rxStart = 0, rxLocked = false, clockTimer = null;
+
+function ring() {
+  const el = document.getElementById('ring'); const cur = stepId();
+  const idx = DECISOES.indexOf(cur);
+  el.innerHTML = DECISOES.map((id, i) => `<i class="${i < idx || cur === 'final' ? 'on' : ''} ${i === idx ? 'cur' : ''}"></i>`).join('');
+}
+function clock() {
+  const el = document.getElementById('clock');
+  if (!S.startedAt) { el.textContent = '7:00'; el.classList.remove('over'); return; }
+  const end = S.finishedAt ? new Date(S.finishedAt) : new Date();
+  const s = Math.max(0, Math.round((end - new Date(S.startedAt)) / 1000));
+  el.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); el.classList.toggle('over', s > 420);
+}
+function go(i) {
+  if (rxTimer) { cancelAnimationFrame(rxTimer); rxTimer = null; }
+  const prev = stepId();
+  if (S.enteredAt && S.t && prev !== 'capa') S.t[prev] = (S.t[prev] || 0) + (Date.now() - S.enteredAt);
+  S.step = clamp(i, 0, STEPS.length - 1); S.enteredAt = Date.now(); save(); render(); window.scrollTo(0, 0);
+}
+const next = () => go(S.step + 1), back = () => go(S.step - 1);
+
+function render() {
+  ring(); clock();
+  const id = stepId(); const R = RENDER[id] || RENDER.rx;
+  app.innerHTML = `<div class="wrap screen">${R()}</div>`;
+  if (AFTER[id]) AFTER[id](); else if (STEPS[S.step].rx) AFTER.rx();
+}
+const bloco = (n, nome, extra = '') => `<div class="eyebrow">Bloco ${n} · <b>${nome}</b>${extra ? ' · ' + extra : ''}</div>`;
+const navBar = (ok, label = 'Continuar →', showBack = true) => `<div class="nav">${showBack ? '<button class="btn txt" data-a="back">← Voltar</button>' : '<span></span>'}<button class="btn" data-a="next" ${ok ? '' : 'disabled'}>${label}</button></div>`;
+
+const RENDER = {
+  capa() {
+    const resume = S.step > 0;
+    return `
+      <div class="eyebrow">Alvarez &amp; Marsal · Digital &amp; Technology Services · Planejamento FY27</div>
+      <h1>Bússola DTS 2027</h1>
+      <div class="rule"></div>
+      <p class="lede">Sete minutos, dezoito decisões rápidas. No fim, a sua bússola: para onde você acha que o DTS deve apontar em 2027. Na agenda presencial, juntamos as bússolas de todos.</p>
+      <ul class="rules">
+        <li><i>1</i><span>Não existe resposta certa. Vale o que você pensa de verdade.</span></li>
+        <li><i>2</i><span>Algumas decisões têm 6 segundos. Vale o primeiro instinto, e hesitar também diz algo.</span></li>
+        <li><i>3</i><span>Faça de uma vez só, sem consultar ninguém. A resposta individual fica com a facilitação; o grupo vê o conjunto.</span></li>
+      </ul>
+      <div class="field"><label for="nome">Seu nome</label><input id="nome" autocomplete="name" placeholder="Como quer aparecer na bússola do time" value="${esc(S.nome)}"></div>
+      <div class="field"><label for="email">E-mail (opcional)</label><input id="email" type="email" autocomplete="email" placeholder="para não duplicar respostas" value="${esc(S.email)}"></div>
+      <div class="meta"><div><b>7</b>minutos</div><div><b>18</b>decisões</div><div><b>0</b>respostas certas</div></div>
+      <div class="nav"><button class="btn txt" data-a="painel">Painel da facilitação</button><button class="btn" data-a="start">${resume ? 'Continuar de onde parei →' : 'Girar a bússola →'}</button></div>
+      ${resume ? '<p class="small" style="text-align:right"><button class="btn txt" data-a="reset">Recomeçar do zero</button></p>' : ''}`;
+  },
+  rx_intro() {
+    return `${bloco(1, 'Reflexo', '8 decisões · 6 segundos cada')}
+      <h2>Vale o primeiro instinto.</h2><div class="rule"></div>
+      <p class="lede">Oito escolhas de “isto ou aquilo”, com analogias do dia a dia. Toque no lado que você escolhe, deslize o cartão ou use as setas do teclado. Se o relógio zerar, contamos como hesitação. Não dá para voltar: é de propósito.</p>
+      <p class="small">Vamos testar com uma fácil, só para pegar o jeito.</p>
+      ${navBar(true, 'Testar →', false)}`;
+  },
+  rx_treino() { return reflexScreen({ id: 'treino', tema: 'para pegar o jeito', q: 'Café ou chá?', L: 'Café', R: 'Chá', dts: 'Só para pegar o jeito. Esta não conta.' }, 0, true); },
+  rx() { const r = STEPS[S.step].rx; return reflexScreen(r, REFLEX.indexOf(r) + 1, false); },
+  rota() {
+    return `${bloco(2, 'A rota')}
+      <h2>Uma viagem de 12 meses pela frente. Como você dirige?</h2><div class="rule"></div>
+      <div class="opts">${ROTAS.map(o => `<button class="opt ${S.a.rota === o.id ? 'on' : ''}" data-a="rota" data-id="${o.id}"><i>${o.id}</i><div><b>${o.nome}</b><span>${o.txt}</span><span>Prós: ${o.pro} Contras: ${o.con}</span></div></button>`).join('')}</div>
+      <p class="dts">No DTS: manter tudo, concentrar em poucos problemas ou abrir todas as frentes.</p>
+      ${navBar(!!S.a.rota)}`;
+  },
+  mesa() {
+    const tot = S.a.mesa.reduce((s, x) => s + x, 0), left = 100 - tot;
+    return `${bloco(3, 'A mesa de investimento')}
+      <h2>100 fichas de esforço comercial para 2027. Onde você aposta?</h2><div class="rule"></div>
+      <p class="small">Distribua de 10 em 10. Pode deixar mesa vazia. Continua quando as 100 estiverem na mesa.</p>
+      <div class="left"><span>Fichas na mão</span><b class="${left === 0 ? 'zero' : ''}">${left}</b></div>
+      <div class="mesa">${MESAS.map((m, i) => `<div class="mrow"><div class="lbl">${m.nome}<span>${m.sub}</span></div><div class="ctl"><button data-a="mesa" data-i="${i}" data-d="-10" ${S.a.mesa[i] === 0 ? 'disabled' : ''} aria-label="menos">−</button><b>${S.a.mesa[i]}</b><button data-a="mesa" data-i="${i}" data-d="10" ${left === 0 ? 'disabled' : ''} aria-label="mais">+</button></div><div class="bar"><i style="width:${S.a.mesa[i]}%"></i></div></div>`).join('')}</div>
+      ${navBar(left === 0)}`;
+  },
+  telefone() {
+    const at = S.a.tel.atender, postal = S.a.tel.postal;
+    return `${bloco(4, 'O telefone não para')}
+      <h2>Nove chamadas ao mesmo tempo. Atenda três, na ordem, e mande uma para a caixa postal.</h2><div class="rule"></div>
+      <div class="callstat"><span>Atendidas <b>${at.length}/3</b></span><span>Caixa postal <b>${postal ? 1 : 0}/1</b></span></div>
+      <div class="calls">${CALLS.map(c => { const k = at.indexOf(c.id); const isP = postal === c.id; return `<div class="call ${k >= 0 ? 'on' : ''} ${isP ? 'postal' : ''}"><div class="av">${c.av}</div><div><div class="who">${c.quem}</div><div class="txt">“${c.txt}”</div><div class="acts"><button class="${k >= 0 ? 'on' : ''}" data-a="atender" data-id="${c.id}">${k >= 0 ? `<i>${k + 1}</i> Atendida` : 'Atender'}</button><button class="postal ${isP ? 'on' : ''}" data-a="postal" data-id="${c.id}">${isP ? 'Na caixa postal' : 'Caixa postal'}</button></div></div></div>`; }).join('')}</div>
+      ${navBar(at.length === 3 && !!postal)}`;
+  },
+  contrato() {
+    const v = S.a.contrato.v;
+    return `${bloco(5, 'O contrato')}
+      <h2>O mesmo projeto, dois jeitos de assinar. Arraste até onde você assinaria.</h2><div class="rule"></div>
+      <p class="small">Como escolher entre salário fixo e comissão.</p>
+      <div class="slide">
+        <div class="ends"><div><b>R$ 1,0 mi fixo</b>garantido, independe do resultado</div><div><b>R$ 0,6 mi + 25% da economia</b>pode chegar a R$ 1,8 mi, pode ficar em R$ 0,6 mi</div></div>
+        <input type="range" min="0" max="100" step="5" value="${v}" data-a="contrato" aria-label="Fixo ou resultado">
+        <div class="big" id="contratoTxt">${contratoTxt(v)}</div>
+      </div>
+      ${navBar(true)}`;
+  },
+  ia() {
+    return `${bloco(6, 'A pergunta do cliente')}
+      <h2>“A A&amp;M faz IA?” O que você responde?</h2><div class="rule"></div>
+      <div class="opts">${IA_OPTS.map(o => `<button class="opt ${S.a.ia === o.id ? 'on' : ''}" data-a="ia" data-id="${o.id}"><i>${o.id.toUpperCase()}</i><div><b>${o.txt}</b></div></button>`).join('')}</div>
+      ${navBar(!!S.a.ia)}`;
+  },
+  prio() {
+    const p = S.a.prio;
+    return `${bloco(7, 'A lembrança')}
+      <h2>2027: um CFO indica o DTS a outro CFO. Pelo quê, primeiro?</h2><div class="rule"></div>
+      <p class="small">Toque nas frases na ordem em que você quer ser lembrado. Toque de novo para tirar.</p>
+      <div class="opts ord">${PRIO.map(o => { const k = p.indexOf(o.id); return `<button class="opt ${k >= 0 ? 'on' : ''}" data-a="prio" data-id="${o.id}"><i>${k >= 0 ? k + 1 : ''}</i><div><b>${o.txt}</b></div></button>`; }).join('')}</div>
+      ${navBar(p.length === 5)}`;
+  },
+  roupa() {
+    const n = S.a.roupa.n;
+    return `${bloco(8, 'O guarda-roupa')}
+      <h2>Hoje o catálogo tem 33 produtos. Com quantos o DTS entra em 2027?</h2><div class="rule"></div>
+      <p class="small">Guarda-roupa cheio, e a gente usa sempre as mesmas peças.</p>
+      <div class="slide">
+        <div class="big" id="roupaTxt">${n}<small>${roupaTxt(n)}</small></div>
+        <input type="range" min="10" max="40" step="1" value="${n}" data-a="roupa" aria-label="Quantidade de produtos">
+        <div class="ends"><div><b>10</b>só o essencial</div><div><b>40</b>tudo e mais um pouco</div></div>
+      </div>
+      ${navBar(true)}`;
+  },
+  pessoas() {
+    const p = S.a.pessoas;
+    return `${bloco(9, 'As duas cadeiras')}
+      <h2>Só duas contratações sênior em 2027. Quem senta?</h2><div class="rule"></div>
+      <div class="opts">${PERFIS.map((o, i) => { const on = p.includes(o.id); return `<button class="opt ${on ? 'on' : ''} ${!on && p.length >= 2 ? 'dim' : ''}" data-a="pessoa" data-id="${o.id}"><i>${on ? '✓' : ''}</i><div><b>${o.txt}</b></div></button>`; }).join('')}</div>
+      ${navBar(p.length === 2)}`;
+  },
+  espelho() {
+    return `${bloco(10, 'O espelho', 'sem relógio')}
+      <h2>Que consultoria o DTS quer ser? Aquela que…</h2><div class="rule"></div>
+      <div class="opts">${ESPELHO.map(o => `<button class="opt ${S.a.espelho === o.id ? 'on' : ''}" data-a="espelho" data-id="${o.id}"><i>${o.id}</i><div><b>${o.txt}</b><span>${o.sub}</span></div></button>`).join('')}</div>
+      ${navBar(!!S.a.espelho)}`;
+  },
+  frase() {
+    return `${bloco(11, 'A frase', 'opcional')}
+      <h2>Complete: “Em 2027, o cliente liga para o DTS quando…”</h2><div class="rule"></div>
+      <div class="field"><label for="frase">Sua frase (até 140 caracteres)</label><textarea id="frase" rows="3" maxlength="140" placeholder="…">${esc(S.a.frase)}</textarea></div>
+      <div class="nav"><button class="btn txt" data-a="back">← Voltar</button><div style="display:flex;gap:8px"><button class="btn sec" data-a="finish">Pular</button><button class="btn" data-a="finish">Concluir →</button></div></div>`;
+  },
+  final() {
+    const r = S.result || (S.result = compute(S.a)); const arq = ARQUETIPOS[r.quad]; const sig = signals(r, S.a);
+    return `<div class="result">
+      <div class="eyebrow">A sua bússola · ${esc(S.nome || 'participante')}</div>
+      ${compassSvg([{ ang: r.ang, len: .45 + .55 * r.conv / 100, label: '' }], { showPlan: false })}
+      <div class="arch"><div class="name">${arq.nome}</div><p>${arq.txt}</p></div>
+      <div class="kpis">
+        <div class="kpi hi"><div class="l">Reflexo</div><div class="v">${r.velocidade == null ? '—' : fmt1(r.velocidade) + ' s'}</div><div class="d">por decisão de 6 s</div></div>
+        <div class="kpi"><div class="l">Hesitações</div><div class="v">${r.hesitacoes}</div><div class="d">${r.hesTemas.length ? r.hesTemas.join(', ') : 'nenhuma'}</div></div>
+        <div class="kpi"><div class="l">Convicção</div><div class="v">${r.conv}</div><div class="d">instinto × reflexão: ${r.coerencia}%</div></div>
+        ${CFG.mostrarAderencia ? `<div class="kpi"><div class="l">Aderência ao plano</div><div class="v">${r.aderencia}</div><div class="d">de 100</div></div>` : ''}
+      </div>
+      <ul class="signals">${sig.map(s => `<li class="${s.hot ? 'hot' : ''}"><i></i><span>${s.t}</span></li>`).join('')}</ul>
+      <p class="lede" style="font-size:17px">O que acontece agora: na agenda presencial, as bússolas de todos entram no mesmo mostrador, ao lado do que o planejamento propõe. É de lá que saem as decisões de 2027.</p>
+      <div class="sync" id="sync"></div>
+      <div class="nav"><span class="small">Obrigado. Pode fechar esta página.</span><button class="btn txt" data-a="reset">Responder de novo</button></div>
+    </div>`;
+  }
+};
+function contratoTxt(v) { return v <= 10 ? 'Fixo, sem risco' : v < 45 ? `${100 - v}% para o fixo` : v <= 55 ? 'Meio a meio' : v < 90 ? `${v}% para o resultado` : 'Tudo no resultado'; }
+function roupaTxt(n) { return n <= 17 ? 'só o essencial' : n <= 26 ? 'enxuto: poucas e boas escolhas' : n <= 33 ? 'quase como hoje' : 'mais que hoje'; }
+function reflexScreen(r, n, treino) {
+  const circ = 2 * Math.PI * 24;
+  return `<div class="rx-head"><div class="eyebrow">${treino ? 'Treino' : `Reflexo <b>${n} de 8</b>`} · ${esc(r.tema)}</div><div class="timer" id="timer"><svg viewBox="0 0 54 54"><circle class="bg" cx="27" cy="27" r="24"/><circle class="fg" cx="27" cy="27" r="24" stroke-dasharray="${circ}" stroke-dashoffset="0"/></svg><b id="tnum">6</b></div></div>
+    <div class="rx-q">${esc(r.q)}</div>
+    <div class="rx-cards" id="rxc"><button class="rx-opt l" data-a="rx" data-side="L"><small>← esquerda</small>${esc(r.L)}</button><button class="rx-opt r" data-a="rx" data-side="R"><small>direita →</small>${esc(r.R)}</button></div>
+    <p class="dts">${treino ? esc(r.dts) : 'No DTS: ' + esc(r.dts)}</p>
+    <div class="rx-foot"><span class="rx-msg" id="rxmsg"></span><span>toque, deslize ou use ← →</span></div>`;
+}
+
+/* bússola em SVG: agulhas = [{ang, len, label, cls}] */
+function compassSvg(needles, opt = {}) {
+  const W = 400, c = 200, R = 150;
+  const ticks = []; for (let a = 0; a < 360; a += 10) { const r1 = a % 90 === 0 ? R - 16 : a % 30 === 0 ? R - 11 : R - 6; const rad = a * Math.PI / 180; ticks.push(`<line x1="${c + Math.sin(rad) * r1}" y1="${c - Math.cos(rad) * r1}" x2="${c + Math.sin(rad) * R}" y2="${c - Math.cos(rad) * R}" stroke="${opt.light ? '#99aab6' : '#33556d'}" stroke-width="${a % 90 === 0 ? 2 : 1}"/>`); }
+  const lab = (t, x, y, anchor = 'middle', cls = '') => `<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="Arial Narrow, Roboto Condensed, sans-serif" font-size="11" font-weight="700" letter-spacing=".08em" fill="${opt.light ? '#33556d' : '#ccd5db'}" class="${cls}">${t}</text>`;
+  const needle = (n, i) => { const L = R * (n.len || .9); const rad = n.ang * Math.PI / 180; const tx = c + Math.sin(rad) * L, ty = c - Math.cos(rad) * L;
+    const col = n.cls === 'plan' ? '#f78c16' : n.cls === 'team' ? (opt.light ? '#002b49' : '#ffffff') : opt.light ? '#5e8ab4' : '#7ea1c3'; const w = n.cls === 'plan' ? 4 : n.cls === 'team' ? 3 : n.cls === 'me' ? 5 : 1.5;
+    const tip = n.cls === 'me' ? `<polygon points="${c + Math.sin(rad) * L},${c - Math.cos(rad) * L} ${c + Math.sin(rad + 2.6) * 14},${c - Math.cos(rad + 2.6) * 14} ${c + Math.sin(rad - 2.6) * 14},${c - Math.cos(rad - 2.6) * 14}" fill="#f78c16"/>` : `<line x1="${c}" y1="${c}" x2="${tx}" y2="${ty}" stroke="${col}" stroke-width="${w}" ${n.cls === 'team' ? 'stroke-dasharray="6 4"' : ''} stroke-linecap="butt"/>`;
+    const lr = n.cls === 'plan' ? R + 16 : n.cls === 'team' ? L * .55 : L + 11; const lbl = n.label ? `<text x="${c + Math.sin(rad) * lr}" y="${c - Math.cos(rad) * lr + 4}" text-anchor="middle" font-family="Arial Narrow, Roboto Condensed, sans-serif" font-size="${n.cls === 'plan' || n.cls === 'team' ? 11 : 10}" font-weight="700" fill="${col}">${esc(n.label)}</text>` : '';
+    return tip + lbl; };
+  const me = needles.filter(n => !n.cls).map(n => ({ ...n, cls: 'me' }));
+  const others = needles.filter(n => n.cls);
+  return `<svg class="compass" viewBox="0 0 ${W} ${W}" role="img" aria-label="Bússola">
+    <circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${opt.light ? '#002b49' : '#ccd5db'}" stroke-width="1.5"/>
+    <circle cx="${c}" cy="${c}" r="${R - 40}" fill="none" stroke="${opt.light ? '#cdd5db' : '#33556d'}" stroke-width="1" stroke-dasharray="2 4"/>
+    <line x1="${c - R + 20}" y1="${c}" x2="${c + R - 20}" y2="${c}" stroke="${opt.light ? '#cdd5db' : '#33556d'}" stroke-width="1"/>
+    <line x1="${c}" y1="${c - R + 20}" x2="${c}" y2="${c + R - 20}" stroke="${opt.light ? '#cdd5db' : '#33556d'}" stroke-width="1"/>
+    ${ticks.join('')}
+    ${lab('NÚCLEO FORTE', c, 22)}${lab('ABRIR FRENTES', c, W - 12)}
+    ${lab('CFO', 2, c - 6, 'start')}${lab('NA CRISE', 2, c + 8, 'start')}
+    ${lab('CIO', W - 2, c - 6, 'end')}${lab('PARA NÃO FALHAR', W - 2, c + 8, 'end')}
+    ${others.filter(n => n.cls !== 'plan' && n.cls !== 'team').map(needle).join('')}
+    ${others.filter(n => n.cls === 'team').map(needle).join('')}
+    ${others.filter(n => n.cls === 'plan').map(needle).join('')}
+    ${me.map(n => `<line x1="${c}" y1="${c}" x2="${c + Math.sin(n.ang * Math.PI / 180) * R * n.len}" y2="${c - Math.cos(n.ang * Math.PI / 180) * R * n.len}" stroke="#f78c16" stroke-width="5"/>` + needle(n)).join('')}
+    <circle cx="${c}" cy="${c}" r="6" fill="${opt.light ? '#002b49' : '#ffffff'}"/>
+  </svg>`;
+}
+
+/* ===================================================================== */
+/* 7 · COMPORTAMENTO DE CADA TELA                                        */
+/* ===================================================================== */
+const AFTER = {
+  capa() { },
+  rx() { startReflex(false); },
+  rx_treino() { startReflex(true); },
+  final() {
+    const el = document.getElementById('sync');
+    const paint = st => { if (!el) return; if (!st.enabled) { el.innerHTML = '<span class="dot"></span>Respostas guardadas neste navegador (sem planilha configurada).'; return; }
+      el.innerHTML = st.pending ? `<span class="dot ${st.lastErr ? 'err' : 'wait'}"></span>${st.lastErr ? 'Tentando enviar à facilitação: ' + esc(st.lastErr) : 'Enviando à facilitação…'}` : '<span class="dot ok"></span>Enviado à facilitação.'; };
+    Sync.on(paint); paint(Sync.status());
+  }
+};
+function startReflex(treino) {
+  rxLocked = false; rxStart = performance.now();
+  const fg = document.querySelector('.timer .fg'), num = document.getElementById('tnum'), circ = 2 * Math.PI * 24;
+  const tick = () => { const el = performance.now() - rxStart; const left = Math.max(0, REFLEX_MS - el); fg.style.strokeDashoffset = circ * (1 - left / REFLEX_MS); num.textContent = Math.ceil(left / 1000);
+    if (left <= 0) { timeoutReflex(treino); return; } rxTimer = requestAnimationFrame(tick); };
+  rxTimer = requestAnimationFrame(tick);
+  // deslizar
+  const cards = document.getElementById('rxc'); let x0 = null;
+  cards.addEventListener('pointerdown', e => { x0 = e.clientX; });
+  cards.addEventListener('pointermove', e => { if (x0 == null) return; const dx = e.clientX - x0; cards.classList.toggle('tilt-l', dx < -30); cards.classList.toggle('tilt-r', dx > 30); });
+  const end = e => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; cards.classList.remove('tilt-l', 'tilt-r'); if (Math.abs(dx) > 60) answerReflex(dx < 0 ? 'L' : 'R', treino); };
+  cards.addEventListener('pointerup', end); cards.addEventListener('pointercancel', () => { x0 = null; cards.classList.remove('tilt-l', 'tilt-r'); });
+}
+function answerReflex(side, treino) {
+  if (rxLocked) return; rxLocked = true;
+  const ms = Math.round(performance.now() - rxStart);
+  if (rxTimer) { cancelAnimationFrame(rxTimer); rxTimer = null; }
+  const r = STEPS[S.step].rx;
+  if (treino) S.a.treino = { side, ms }; else S.a.rx[r.id] = { side, ms, hesitou: false };
+  save();
+  document.querySelectorAll('.rx-opt').forEach(b => b.classList.add(b.dataset.side === side ? 'pick' : 'fade'));
+  const msg = document.getElementById('rxmsg'); msg.textContent = treino ? `Isso. ${fmt1(ms / 1000)} s. Agora vale.` : `${fmt1(ms / 1000)} s`;
+  setTimeout(next, treino ? 900 : 420);
+}
+function timeoutReflex(treino) {
+  if (rxLocked) return; rxLocked = true; rxTimer = null;
+  const r = STEPS[S.step].rx; document.getElementById('timer').classList.add('out'); document.getElementById('rxc').classList.add('shake');
+  if (treino) S.a.treino = { side: null, ms: null }; else S.a.rx[r.id] = { side: null, ms: null, hesitou: true };
+  save();
+  document.getElementById('rxmsg').textContent = treino ? 'O tempo acabou: nas próximas, isso conta como hesitação.' : 'Sem resposta: contamos como hesitação.';
+  setTimeout(next, treino ? 1400 : 1000);
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-a]'); if (!el) return; const a = el.dataset.a;
+  switch (a) {
+    case 'start': {
+      const nome = document.getElementById('nome').value.trim(); if (!nome) { document.getElementById('nome').focus(); document.getElementById('nome').placeholder = 'Precisamos do seu nome para montar a bússola do time'; return; }
+      S.nome = nome; S.email = (document.getElementById('email').value || '').trim();
+      if (!S.startedAt) S.startedAt = new Date().toISOString();
+      save(); go(S.step > 0 ? S.step : 1); break; }
+    case 'next': next(); break;
+    case 'back': if (STEPS[S.step].rx || stepId() === 'rx_treino') return; back(); break;
+    case 'reset': if (confirm('Apagar as respostas e começar de novo?')) { S = fresh(); save(); render(); } break;
+    case 'painel': location.search = '?painel'; break;
+    case 'rx': answerReflex(el.dataset.side, stepId() === 'rx_treino'); break;
+    case 'rota': S.a.rota = el.dataset.id; save(); render(); break;
+    case 'mesa': { const i = +el.dataset.i, d = +el.dataset.d; const tot = S.a.mesa.reduce((s, x) => s + x, 0); if (d > 0 && tot >= 100) return; S.a.mesa[i] = clamp(S.a.mesa[i] + d, 0, 100); S.a.mesaMoves++; save(); render(); break; }
+    case 'atender': { const id = el.dataset.id, t = S.a.tel; if (t.postal === id) t.postal = null; const k = t.atender.indexOf(id); if (k >= 0) t.atender.splice(k, 1); else if (t.atender.length < 3) t.atender.push(id); save(); render(); break; }
+    case 'postal': { const id = el.dataset.id, t = S.a.tel; t.postal = t.postal === id ? null : id; const k = t.atender.indexOf(id); if (k >= 0) t.atender.splice(k, 1); save(); render(); break; }
+    case 'ia': S.a.ia = el.dataset.id; save(); render(); break;
+    case 'prio': { const id = el.dataset.id, p = S.a.prio; const k = p.indexOf(id); if (k >= 0) p.splice(k, 1); else p.push(id); save(); render(); break; }
+    case 'pessoa': { const id = el.dataset.id, p = S.a.pessoas; const k = p.indexOf(id); if (k >= 0) p.splice(k, 1); else if (p.length < 2) p.push(id); save(); render(); break; }
+    case 'espelho': S.a.espelho = el.dataset.id; save(); render(); break;
+    case 'finish': { const ta = document.getElementById('frase'); S.a.frase = ta ? ta.value.trim() : ''; S.finishedAt = S.finishedAt || new Date().toISOString(); S.result = compute(S.a); save(); go(STEPS.length - 1); Sync.put(buildRow()); break; }
+  }
+});
+document.addEventListener('input', e => {
+  const el = e.target; if (!el.dataset.a) return;
+  if (el.dataset.a === 'contrato') { S.a.contrato.v = +el.value; S.a.contrato.moves++; document.getElementById('contratoTxt').textContent = contratoTxt(+el.value); save(); }
+  if (el.dataset.a === 'roupa') { S.a.roupa.n = +el.value; S.a.roupa.moves++; document.getElementById('roupaTxt').innerHTML = `${el.value}<small>${roupaTxt(+el.value)}</small>`; save(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+  const isRx = STEPS[S.step].rx || stepId() === 'rx_treino';
+  if (isRx && (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a')) { e.preventDefault(); answerReflex('L', stepId() === 'rx_treino'); }
+  if (isRx && (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd')) { e.preventDefault(); answerReflex('R', stepId() === 'rx_treino'); }
+  if (!isRx && e.key === 'Enter') { const b = document.querySelector('[data-a="next"]:not([disabled])'); if (b) b.click(); }
+});
+
+/* ===================================================================== */
+/* 8 · PAINEL DA FACILITAÇÃO                                             */
+/* ===================================================================== */
+function painel() {
+  document.body.classList.add('painel');
+  document.getElementById('ring').innerHTML = ''; document.getElementById('clock').textContent = 'painel';
+  let rows = []; let fonte = ''; let liveTimer = null;
+  const el = document.getElementById('app');
+  const initials = n => (n || '?').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  const safeNum = v => (v === '' || v == null || isNaN(+v)) ? null : +v;
+  const normalize = rs => rs.map(r => { const o = { ...r }; ['aderencia', 'angulo', 'x', 'y', 'conviccao', 'velocidadeMed', 'hesitacoes', 'coerencia', 'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL', 'PESSOAS', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'contrato', 'produtos2027', 'duracaoSeg'].forEach(k => o[k] = safeNum(o[k])); return o; }).filter(r => r.nome && r.PORTA != null);
+  function parseCsv(txt) {
+    const rows = []; let row = [], cur = '', q = false;
+    for (let i = 0; i < txt.length; i++) { const ch = txt[i]; if (q) { if (ch === '"') { if (txt[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+      else if (ch === '"') q = true; else if (ch === ',') { row.push(cur); cur = ''; } else if (ch === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; } else if (ch !== '\r') cur += ch; }
+    if (cur || row.length) { row.push(cur); rows.push(row); }
+    const h = rows.shift() || []; return rows.filter(r => r.length > 1).map(r => Object.fromEntries(h.map((k, i) => [k, r[i]])));
+  }
+  function demo() {
+    const perfis = [
+      ['Diretor 1', { PORTA: 18, FOCO: 82, esp: 'A', rota: 'B', mesa: [30, 35, 25, 10, 0] }], ['Diretora 2', { PORTA: 44, FOCO: 78, esp: 'C', rota: 'B', mesa: [20, 40, 20, 10, 10] }],
+      ['Diretor 3', { PORTA: 72, FOCO: 35, esp: 'B', rota: 'C', mesa: [10, 20, 10, 40, 20] }], ['Diretor 4', { PORTA: 38, FOCO: 62, esp: 'C', rota: 'B', mesa: [20, 30, 30, 10, 10] }],
+      ['Diretora 5', { PORTA: 60, FOCO: 70, esp: 'B', rota: 'B', mesa: [20, 30, 20, 20, 10] }], ['Diretor 6', { PORTA: 25, FOCO: 30, esp: 'A', rota: 'A', mesa: [30, 30, 20, 10, 10] }],
+      ['Diretor 7', { PORTA: 50, FOCO: 85, esp: 'C', rota: 'B', mesa: [20, 40, 30, 0, 10] }], ['Diretora 8', { PORTA: 82, FOCO: 55, esp: 'B', rota: 'C', mesa: [10, 20, 10, 30, 30] }]
+    ];
+    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    return perfis.map(([nome, p], i) => {
+      const a = fresh().a; const want = { PORTA: p.PORTA, FOCO: p.FOCO };
+      REFLEX.forEach(r => { let v = want[r.dim] ?? (DIMS[r.dim].plan + (rnd() - .5) * 60); v = clamp(v + (rnd() - .5) * 30); const side = Math.abs(r.vL - v) < Math.abs(r.vR - v) ? 'L' : 'R'; const hes = rnd() < .08; a.rx[r.id] = hes ? { side: null, ms: null, hesitou: true } : { side, ms: Math.round(900 + rnd() * 3800), hesitou: false }; });
+      a.rota = p.rota; a.mesa = p.mesa; a.espelho = p.esp;
+      const pool = CALLS.map(c => c.id); const pick = []; while (pick.length < 3) { const c = pool[Math.floor(rnd() * pool.length)]; if (!pick.includes(c)) pick.push(c); }
+      a.tel = { atender: pick, postal: pool.filter(c => !pick.includes(c))[Math.floor(rnd() * 6)] };
+      a.contrato = { v: Math.round(clamp(DIMS.RECEITA.plan + (rnd() - .5) * 90) / 5) * 5, moves: 2 }; a.ia = ['a', 'b', 'b', 'c', 'd', 'b'][Math.floor(rnd() * 6)];
+      a.prio = PRIO.map(x => x.id).sort(() => rnd() - .5); a.roupa = { n: Math.round(14 + rnd() * 22), moves: 1 };
+      const pp = PERFIS.map(x => x.id).sort(() => rnd() - .5); a.pessoas = pp.slice(0, 2);
+      a.frase = ['a conta de TI não fecha e o CFO precisa de uma resposta em semanas', 'o ERP travou e a reforma tributária não espera', 'o fundo quer saber quanto a tecnologia vale antes de assinar', 'quer alguém olhando a TI com ele todo mês', 'precisa transformar a operação, não só o sistema', 'o CIO saiu e a área precisa de comando', 'quer provar o retorno da IA para o conselho', ''][i];
+      const r = compute(a);
+      const Sfake = { sessionId: 'demo-' + i, nome, email: '', startedAt: new Date(Date.now() - 500000).toISOString(), finishedAt: new Date(Date.now() - 500000 + 380000 + i * 20000).toISOString(), a, result: r, t: {} };
+      const keep = S; S = Sfake; const row = buildRow(); S = keep; return row;
+    });
+  }
+  async function fetchLive() {
+    const u = String(CFG.sheetsEndpoint || '').trim(); if (!u) throw new Error('Sem link da planilha no config.');
+    const res = await fetch(u + '?painel=1&token=' + encodeURIComponent(CFG.painelToken || ''), { cache: 'no-store' });
+    const data = await res.json(); if (!data || !Array.isArray(data.linhas)) throw new Error((data && data.erro) || 'resposta inesperada');
+    return data.linhas;
+  }
+  function setRows(rs, f) { rows = normalize(rs); fonte = f; draw(); }
+  function draw() {
+    const n = rows.length; const ph = planHeading();
+    const mean = k => n ? avg(rows.map(r => r[k]).filter(v => v != null)) : null;
+    const sd = k => { const v = rows.map(r => r[k]).filter(x => x != null); if (v.length < 2) return 0; const m = avg(v); return Math.sqrt(avg(v.map(x => (x - m) ** 2))); };
+    const count = (k, val) => rows.filter(r => r[k] === val).length;
+    const mx = n ? mean('PORTA') - 50 : 0, my = n ? mean('FOCO') - 50 : 0; const teamAng = (Math.atan2(mx, my) * 180 / Math.PI + 360) % 360;
+    const needles = rows.map(r => ({ ang: r.angulo, len: .5 + .45 * ((r.conviccao || 50) / 100), label: initials(r.nome), cls: 'p' }));
+    if (n) needles.push({ ang: teamAng, len: .66, label: 'TIME', cls: 'team' });
+    needles.push({ ang: ph.ang, len: .84, label: 'PLANO FY27', cls: 'plan' });
+    const dimKeys = Object.keys(DIMS);
+    const gaps = dimKeys.map(k => ({ k, team: mean(k), gap: n ? mean(k) - DIMS[k].plan : 0, sd: sd(k) })).filter(g => g.team != null);
+    const pautas = [];
+    if (n) {
+      const gp = gaps.find(g => g.k === 'PORTA'); const esq = rows.filter(r => r.PORTA < 40).length, dir = rows.filter(r => r.PORTA > 60).length;
+      if (gp && Math.abs(gp.gap) >= 15) pautas.push({ t: `O time aponta mais para ${gp.gap > 0 ? 'o CIO (prevenção)' : 'o CFO (crise)'} do que o planejamento.`, s: `Média ${Math.round(gp.team)} contra ${DIMS.PORTA.plan} do plano. Discutir a porta de entrada: ${DIMS.PORTA.leitura}` });
+      if (esq && dir) pautas.push({ t: `O time está dividido no dilema CFO × CIO: ${esq} para a crise, ${dir} para a prevenção.`, s: 'Começar a plenária por aqui: é a decisão que muda tudo o que vem depois.' });
+      const gf = gaps.find(g => g.k === 'FOCO'); if (gf && Math.abs(gf.gap) >= 15) pautas.push({ t: `O time quer ${gf.gap > 0 ? 'ainda mais foco' : 'mais amplitude'} do que o plano propõe.`, s: `Média ${Math.round(gf.team)} contra ${DIMS.FOCO.plan}. Revisar o caminho focado: ${DIMS.FOCO.leitura}` });
+      const rC = count('rota', 'C'), rA = count('rota', 'A'); if (rC + rA >= n / 2) pautas.push({ t: `${rC + rA} de ${n} não escolheram a rota focada (${rA} mantêm tudo, ${rC} abrem todas as frentes).`, s: 'Testar a tese de foco contra as alternativas antes de validar as âncoras.' });
+      const gm = gaps.find(g => g.k === 'PILARES'); if (gm && gm.team < 70) { const m = MESAS.map((x, i) => ({ nome: x.nome, v: mean('mesaP' + (i + 1)) || 0, p: PLAN_MESA[i] })); const big = m.reduce((a, b) => Math.abs(b.v - b.p) > Math.abs(a.v - a.p) ? b : a); pautas.push({ t: `A mesa de investimento do time difere do plano, sobretudo em “${big.nome}” (${Math.round(big.v)} fichas contra ${big.p}).`, s: 'Rever o peso de cada pilar no esforço comercial de FY27.' }); }
+      const gr = gaps.find(g => g.k === 'RECEITA'); if (gr && gr.gap <= -20) pautas.push({ t: 'O time ainda prefere o preço fixo ao preço por resultado.', s: `Média ${Math.round(gr.team)} contra ${DIMS.RECEITA.plan}. Discutir cobrança: quanto da receita FY27 vem de contratos por resultado?` });
+      const gi = gaps.find(g => g.k === 'IA'); if (gi && gi.gap <= -25) pautas.push({ t: 'O time vê a IA como frente própria do DTS, não como base dos produtos com Data & IA.', s: 'Alinhar a fronteira com Data & IA antes de falar com clientes.' });
+      const ga = gaps.find(g => g.k === 'ANCORAS'); if (ga && ga.team < 60) pautas.push({ t: 'As âncoras do núcleo (custo de TI, programas críticos, M&A) não foram a primeira escolha do time.', s: 'Validar as âncoras 1.1, 2.3, 2.7 e 3.2–3.4, ou trocá-las.' });
+      const gc = gaps.find(g => g.k === 'CONSOL'); if (gc && gc.team < 60) pautas.push({ t: `O time entra em 2027 com ${Math.round(mean('produtos2027'))} produtos em média, contra 23 do plano.`, s: 'Aprovar (ou não) as consolidações de 33 para 23 e o que deixa de ser vendido à parte.' });
+      const hes = {}; rows.forEach(r => { try { const st = JSON.parse(r.estado || '{}'); (st.result && st.result.hesTemas || []).forEach(t => hes[t] = (hes[t] || 0) + 1); } catch (e) { } });
+      const topHes = Object.entries(hes).sort((a, b) => b[1] - a[1]).slice(0, 2); if (topHes.length && topHes[0][1] >= 2) pautas.push({ t: `Onde o time hesitou: ${topHes.map(h => `${h[0].toLowerCase()} (${h[1]})`).join(' e ')}.`, s: 'Temas em que o instinto travou merecem tempo na plenária.' });
+      const coer = mean('coerencia'); if (coer != null && coer < 70) pautas.push({ t: `Instinto e reflexão divergem (coerência média ${Math.round(coer)}%).`, s: 'O que o time diz pensando difere do que escolhe no reflexo: expor a diferença abre a conversa.' });
+      if (!pautas.length) pautas.push({ t: 'O time aponta para onde o planejamento aponta.', s: 'Usar a agenda presencial para validar âncoras, candidatas e consolidações, não para rediscutir a direção.' });
+    }
+    const bar = (label, v, plan, sub = '') => `<div class="brow ${sub ? 'sub' : ''}"><span>${label}</span><div class="tr"><i style="width:${clamp(v)}%"></i>${plan != null ? `<em style="left:${clamp(plan)}%"></em>` : ''}</div><span class="v">${v == null ? '—' : Math.round(v)}</span></div>`;
+    const dist = k => { const m = mean(k); const lanes = []; const pts = [...rows].sort((a, b) => a[k] - b[k]).map(r => { let ln = 0; while (ln < 3 && lanes[ln] != null && Math.abs(lanes[ln] - r[k]) < 6) ln++; if (ln > 2) ln = 2; lanes[ln] = r[k]; return { r, ln }; }); return `<div class="strip"><span class="lab">${DIMS[k].esq}</span><span class="lab r">${DIMS[k].dir}</span><div class="ax"></div><div class="mid"></div>${pts.map(({ r, ln }) => `<span class="p" style="left:${clamp(r[k])}%;top:${24 + ln * 28}px" title="${esc(r.nome)}: ${Math.round(r[k])}">${initials(r.nome)}</span>`).join('')}${n ? `<span class="p team" style="left:${clamp(m)}%" title="média do time">T</span>` : ''}<span class="p plan" style="left:${DIMS[k].plan}%" title="planejamento FY27">P</span></div>`; };
+    const tel = CALLS.map(c => ({ c, at: rows.filter(r => (r.atendeu || '').split(' > ').includes(c.id)).length, first: rows.filter(r => (r.atendeu || '').split(' > ')[0] === c.id).length, postal: rows.filter(r => r.caixaPostal === c.id).length })).sort((a, b) => b.at - a.at);
+    const esp = ESPELHO.map(e => ({ e, n: count('espelho', e.id) }));
+    const rot = ROTAS.map(r => ({ r, n: count('rota', r.id) }));
+    const frases = rows.filter(r => r.frase).map(r => `<div>“Em 2027, o cliente liga para o DTS quando ${esc(r.frase)}”<small>${esc(r.nome)}</small></div>`).join('');
+    el.innerHTML = `<div class="pn">
+      <div>
+        <div class="eyebrow">Alvarez &amp; Marsal · DTS · Planejamento FY27 · painel da facilitação</div>
+        <h1>Bússola DTS 2027 · o time</h1><div class="rule"></div>
+        <p class="lede">${n ? `${n} bússola${n > 1 ? 's' : ''} no mostrador. A seta laranja é o planejamento FY27; a tracejada é a média do time.` : 'Nenhuma resposta carregada ainda.'} ${fonte ? `<span class="small">Fonte: ${esc(fonte)}</span>` : ''}</p>
+      </div>
+      <div class="src noprint">
+        <div class="eyebrow">De onde vêm as respostas</div>
+        <div class="row"><button class="btn" data-p="live">Ler a planilha ao vivo</button><button class="btn sec" data-p="local">Respostas deste navegador</button><button class="btn sec" data-p="demo">Ver com dados de exemplo</button><button class="btn sec" data-p="print">Imprimir / PDF</button><button class="btn sec" data-p="copy">Copiar resumo</button></div>
+        <div class="field"><label for="paste">Ou cole aqui o CSV exportado da planilha (aba Respostas) ou o JSON do painel</label><textarea id="paste" rows="3" placeholder="Colar e clicar em Carregar"></textarea></div>
+        <div class="row"><button class="btn sec" data-p="paste">Carregar o que foi colado</button><span class="small" id="srcmsg"></span></div>
+      </div>
+      <div class="pn-block hero"><h2>Para onde o time aponta</h2><div class="hero-grid"><div>${compassSvg(needles, { light: true, showPlan: true })}
+          <div class="legend"><span><i style="background:#f78c16"></i>Planejamento FY27</span><span><i style="background:#002b49"></i>Média do time (tracejada)</span><span><i style="background:#5e8ab4"></i>Cada diretor (tamanho = convicção)</span></div></div>
+          <div class="hero-txt">${heroTexto(rows, mean, teamAng, ph)}</div></div></div>
+      <div class="pn-grid">
+        <div class="pn-block"><h2>O dilema: CFO na crise × CIO para não falhar</h2>
+          ${dist('PORTA')}
+          <table class="tbl"><thead><tr><th>Resposta no espelho (reflexão)</th><th class="num">Votos</th></tr></thead><tbody>${esp.map(x => `<tr class="${x.e.id === 'C' ? 'plan' : ''}"><td>${x.e.txt} <span class="small">${x.e.sub}</span></td><td class="num">${x.n}</td></tr>`).join('')}</tbody></table>
+          <p class="small">Linha laranja: a opção mais próxima do plano. P = planejamento, T = média do time.</p>
+          <h2 style="margin-top:8px">Foco × amplitude</h2>${dist('FOCO')}
+          <table class="tbl"><thead><tr><th>Rota escolhida</th><th class="num">Votos</th></tr></thead><tbody>${rot.map(x => `<tr class="${x.r.id === 'B' ? 'plan' : ''}"><td>${x.r.nome} <span class="small">${x.r.txt}</span></td><td class="num">${x.n}</td></tr>`).join('')}</tbody></table>
+        </div>
+      </div>
+      <div class="pn-block"><h2>Pautas sugeridas para a agenda presencial</h2><ul class="pautas">${pautas.map((p, i) => `<li><i>${i + 1}</i><div><b>${p.t}</b><span>${p.s}</span></div></li>`).join('')}</ul></div>
+      <div class="pn-grid">
+        <div class="pn-block"><h2>A mesa de investimento: time × plano</h2><div class="bars">${MESAS.map((m, i) => bar(m.nome, mean('mesaP' + (i + 1)), PLAN_MESA[i])).join('')}</div><p class="small">Barras: média de fichas do time. Marca laranja: fichas do planejamento (${PLAN_MESA.join(' · ')}). Núcleo (P1+P2+P3) do time: ${n ? Math.round(mean('nucleo')) : '—'}% contra 85% do plano.</p></div>
+        <div class="pn-block"><h2>Os mostradores</h2><div class="bars">${dimKeys.filter(k => !['PORTA', 'FOCO', 'PILARES'].includes(k)).map(k => bar(DIMS[k].nome, mean(k), DIMS[k].plan)).join('')}</div><p class="small">0 = ${['RECEITA', 'PRODUTO', 'IA', 'FABRICA'].map(k => DIMS[k].esq.toLowerCase()).join(' / ')}; 100 = o lado do plano. Marca laranja: posição do planejamento.</p></div>
+      </div>
+      <div class="pn-grid">
+        <div class="pn-block"><h2>O telefone: quem o time atende primeiro</h2><table class="tbl"><thead><tr><th>Chamada</th><th class="num">Atendida</th><th class="num">1ª</th><th class="num">Caixa postal</th></tr></thead><tbody>${tel.map(x => `<tr><td><b>${x.c.quem}</b> “${x.c.txt}” <span class="small">${x.c.core ? 'âncora do núcleo' : x.c.neg ? 'o plano deixa de vender à parte' : x.c.exp ? 'expansão' : x.c.cand ? 'oferta candidata' : 'prevenção com o CIO'}</span></td><td class="num">${x.at}</td><td class="num">${x.first}</td><td class="num">${x.postal}</td></tr>`).join('')}</tbody></table></div>
+        <div class="pn-block"><h2>Reflexo, hesitação e convicção</h2>
+          <div class="kpis"><div class="kpi hi"><div class="l">Reflexo médio</div><div class="v">${n ? fmt1(mean('velocidadeMed') || 0) + ' s' : '—'}</div><div class="d">por decisão de 6 s</div></div><div class="kpi"><div class="l">Hesitações</div><div class="v">${n ? rows.reduce((s, r) => s + (r.hesitacoes || 0), 0) : '—'}</div><div class="d">em ${n * 8} decisões</div></div><div class="kpi"><div class="l">Coerência</div><div class="v">${n ? Math.round(mean('coerencia')) + '%' : '—'}</div><div class="d">instinto × reflexão</div></div><div class="kpi"><div class="l">Aderência ao plano</div><div class="v">${n ? Math.round(mean('aderencia')) : '—'}</div><div class="d">média, de 100</div></div></div>
+          <table class="tbl"><thead><tr><th>Nome</th><th>Arquétipo</th><th class="num">Aderência</th><th class="num">Reflexo</th><th class="num">Hesit.</th><th class="num">Coer.</th><th class="num">Tempo</th></tr></thead><tbody>${[...rows].sort((a, b) => (b.aderencia || 0) - (a.aderencia || 0)).map(r => `<tr><td>${esc(r.nome)}</td><td>${esc(r.arquetipo)}</td><td class="num">${r.aderencia ?? '—'}</td><td class="num">${r.velocidadeMed == null ? '—' : fmt1(r.velocidadeMed) + ' s'}</td><td class="num">${r.hesitacoes ?? '—'}</td><td class="num">${r.coerencia ?? '—'}%</td><td class="num">${r.duracaoSeg == null ? '—' : Math.floor(r.duracaoSeg / 60) + ':' + String(r.duracaoSeg % 60).padStart(2, '0')}</td></tr>`).join('')}</tbody></table>
+        </div>
+      </div>
+      ${frases ? `<div class="pn-block"><h2>“Em 2027, o cliente liga para o DTS quando…”</h2><div class="frases">${frases}</div></div>` : ''}
+      <p class="foot">Como ler: cada dimensão vai de 0 a 100; a posição do planejamento FY27 vem do material de planejamento (proposta DTS, a validar com os sócios). A aderência é a distância média ponderada entre as respostas e essa posição; serve para abrir a conversa, não para dar nota. Reflexo: mediana do tempo de resposta nas oito decisões de 6 segundos. Coerência: quanto o instinto (reflexos) e a reflexão (rota, espelho, pergunta de IA) apontam para o mesmo lado.</p>
+    </div>`;
+    el.querySelector('[data-p="live"]').onclick = async () => { const m = document.getElementById('srcmsg'); m.textContent = 'Lendo a planilha…'; try { setRows(await fetchLive(), 'planilha (ao vivo, atualiza a cada 30 s)'); clearInterval(liveTimer); liveTimer = setInterval(async () => { try { const rs = await fetchLive(); if (rs.length !== rows.length) setRows(rs, 'planilha (ao vivo, atualiza a cada 30 s)'); } catch (e) { } }, 30000); } catch (e) { m.textContent = 'Não deu para ler a planilha: ' + e.message; } };
+    el.querySelector('[data-p="local"]').onclick = () => { const rs = []; try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.finishedAt) { const keep = S; S = d; rs.push(buildRow()); S = keep; } } catch (e) { } setRows(rs, 'este navegador'); if (!rs.length) document.getElementById('srcmsg').textContent = 'Nenhuma resposta concluída neste navegador.'; };
+    el.querySelector('[data-p="demo"]').onclick = () => setRows(demo(), 'dados de exemplo (fictícios)');
+    el.querySelector('[data-p="print"]').onclick = () => window.print();
+    el.querySelector('[data-p="copy"]').onclick = () => { const txt = resumoTexto(rows, gaps, pautas, mean); navigator.clipboard.writeText(txt).then(() => document.getElementById('srcmsg').textContent = 'Resumo copiado.'); };
+    el.querySelector('[data-p="paste"]').onclick = () => { const t = document.getElementById('paste').value.trim(); if (!t) return; try { let rs; if (t[0] === '[' || t[0] === '{') { const j = JSON.parse(t); rs = Array.isArray(j) ? j : j.linhas || []; } else rs = parseCsv(t); setRows(rs, 'colado'); document.getElementById('srcmsg').textContent = rs.length + ' linha(s) lidas.'; } catch (e) { document.getElementById('srcmsg').textContent = 'Não entendi o conteúdo colado: ' + e.message; } };
+  }
+  function heroTexto(rows, mean, teamAng, ph) {
+    const n = rows.length; if (!n) return '<p class="lede">Quando as respostas chegarem, aqui aparece a leitura do time: para onde aponta, o quanto está junto e a distância para o planejamento.</p>';
+    const diff = Math.abs(((teamAng - ph.ang) + 540) % 360 - 180);
+    const px = mean('PORTA'), py = mean('FOCO');
+    const lado = px < 42 ? 'para o CFO, na crise' : px > 58 ? 'para o CIO, na prevenção' : 'para o caminho do meio';
+    const foco = py > 60 ? 'com foco no núcleo' : py < 40 ? 'abrindo frentes' : 'entre foco e amplitude';
+    const cnt = {}; rows.forEach(r => cnt[r.arquetipo] = (cnt[r.arquetipo] || 0) + 1);
+    const arqs = Object.entries(cnt).sort((a, b) => b[1] - a[1]);
+    const sdP = Math.sqrt(avg(rows.map(r => (r.PORTA - px) ** 2))), juntos = sdP < 15 ? 'bem alinhado' : sdP < 25 ? 'parcialmente alinhado' : 'dividido';
+    return `<div class="big2">O time aponta <b>${lado}</b>, ${foco}.</div>
+      <p class="lede" style="font-size:17px">${diff < 25 ? 'Direção parecida com a do planejamento' : diff < 60 ? 'Direção próxima, com desvio em relação ao planejamento' : 'Direção diferente da do planejamento'} (${Math.round(diff)}° de diferença). No dilema CFO × CIO o time está <b>${juntos}</b>.</p>
+      <div class="arqs">${arqs.map(([a, c]) => `<div><b>${c}</b><div>${esc(a)}<span>${esc((Object.values(ARQUETIPOS).find(x => x.nome === a) || {}).txt || '')}</span></div></div>`).join('')}</div>`;
+  }
+  function resumoTexto(rows, gaps, pautas, mean) {
+    const n = rows.length; const L = [`Bússola DTS 2027 · resumo (${n} respostas)`, ''];
+    Object.keys(DIMS).forEach(k => L.push(`${DIMS[k].nome}: time ${n ? Math.round(mean(k)) : '—'} · plano ${DIMS[k].plan}`));
+    L.push('', 'Mesa de investimento (time × plano): ' + MESAS.map((m, i) => `${m.nome} ${n ? Math.round(mean('mesaP' + (i + 1))) : '—'}/${PLAN_MESA[i]}`).join(' · '));
+    L.push('', 'Pautas sugeridas:'); pautas.forEach((p, i) => L.push(`${i + 1}. ${p.t} ${p.s}`));
+    L.push('', 'Por pessoa:'); rows.forEach(r => L.push(`- ${r.nome}: ${r.arquetipo} · aderência ${r.aderencia} · reflexo ${r.velocidadeMed == null ? '—' : fmt1(r.velocidadeMed) + 's'} · hesitações ${r.hesitacoes} · coerência ${r.coerencia}%`));
+    return L.join('\n');
+  }
+  draw();
+}
+
+/* ===================================================================== */
+/* 9 · INÍCIO                                                            */
+/* ===================================================================== */
+if (new URLSearchParams(location.search).has('painel')) painel();
+else { render(); clockTimer = setInterval(clock, 1000); }
+</script>
+</body>
+</html>
