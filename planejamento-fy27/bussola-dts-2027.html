@@ -69,7 +69,11 @@ svg{display:block}
 .voyage{position:relative;flex:1;max-width:640px;height:40px;min-width:0}
 .voyage .vl{position:absolute;left:6px;right:6px;top:11px;height:0;border-top:1.5px dotted rgba(191,208,225,.35)}
 .voyage .vd{position:absolute;left:6px;top:10px;height:2px;width:0;background:var(--orange);transition:width 1.2s var(--ease)}
-.voyage .pt{position:absolute;top:6px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;white-space:nowrap}
+.voyage .pt{position:absolute;top:6px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;white-space:nowrap;padding:0 4px 4px;border-radius:6px;cursor:pointer}
+.voyage .pt:not(.locked):not(.cur):hover span{color:#fff}
+.voyage .pt:not(.locked):not(.cur):hover i{border-color:var(--peach);transform:scale(1.15)}
+.voyage .pt.locked{cursor:default}
+.voyage .pt.locked span{color:rgba(191,208,225,.32)}
 .voyage .pt i{width:11px;height:11px;border-radius:50%;background:#0b2238;border:1.5px solid rgba(191,208,225,.45);transition:all .4s}
 .voyage .pt span{font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(191,208,225,.55);transition:color .4s}
 .voyage .pt.past i{background:var(--orange);border-color:var(--orange)}
@@ -156,7 +160,10 @@ svg{display:block}
 .stage[data-act="tempestade"] .farsea{filter:brightness(.7) saturate(.6)}
 
 /* navio */
-.ship{position:absolute;left:var(--ship-x,30cqw);width:17cqw;aspect-ratio:300/130;top:calc(78cqh - 5.9cqw);transition:left 2.8s var(--ease-io),width 2.6s var(--ease-io),top 2.6s var(--ease-io);z-index:2}
+.ship{position:absolute;left:var(--ship-x,30cqw);width:17cqw;aspect-ratio:300/130;top:calc(78cqh - 5.9cqw);transition:left 2.8s var(--ease-io),width 2.6s var(--ease-io),top 2.6s var(--ease-io),opacity 1.2s ease;z-index:2}
+.ship.corner{width:12cqw;top:calc(78cqh - 4.16cqw)}
+.ship.far{width:4.4cqw;top:calc(56.8cqh - 1.53cqw)}
+.ship.hide{opacity:0}
 .ship .hull-in{position:absolute;inset:0;transform-origin:50% 80%;animation:rock 6s ease-in-out infinite}
 .ship svg{width:100%;height:100%}
 .ship .lit{fill:#FCD1A2}
@@ -205,7 +212,6 @@ svg{display:block}
 .stage[data-act="amanhecer"] .gulls{opacity:1}.stage[data-act="porto"] .gulls{opacity:.6}
 
 /* câmera por ato */
-.stage[data-act="casco"] .ship{width:23cqw;top:calc(78cqh - 7.97cqw)}
 .stage[data-act="casco"] .lighthouse{right:-5cqw}
 .stage[data-act="profundo"] .world{transform:translateY(-62cqh)}
 .stage[data-act="tempestade"] .roll{animation:camRoll 7s ease-in-out infinite}
@@ -233,6 +239,7 @@ svg{display:block}
 .stage[data-layout="center"] .scrim{background:radial-gradient(70% 70% at 50% 52%,rgba(2,11,20,.55),rgba(2,11,20,.15) 70%,rgba(2,11,20,0))}
 .stage[data-layout="capa"] .scrim{background:linear-gradient(90deg,rgba(2,11,20,.86) 0%,rgba(2,11,20,.66) 36%,rgba(2,11,20,0) 62%)}
 .stage[data-layout="final"] .scrim{background:linear-gradient(90deg,rgba(2,11,20,.25) 0%,rgba(2,11,20,.35) 40%,rgba(2,11,20,.78) 62%,rgba(2,11,20,.86) 100%)}
+.stage[data-layout="split"] .scrim,.stage[data-layout="farol"] .scrim{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 62%,rgba(0,0,0,.35) 84%);mask-image:linear-gradient(180deg,#000 0%,#000 62%,rgba(0,0,0,.35) 84%)}
 .stage[data-layout="farol"] .scrim{background:linear-gradient(90deg,rgba(2,11,20,.84) 0%,rgba(2,11,20,.7) 45%,rgba(2,11,20,0) 72%)}
 .vignette{position:absolute;inset:0;z-index:7;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(0,0,0,.55) 100%);transition:opacity .6s}
 .stage.pressure .vignette{background:radial-gradient(100% 80% at 50% 45%,transparent 40%,rgba(0,0,0,.72) 100%)}
@@ -244,7 +251,8 @@ svg{display:block}
 
 /* cartela de ato: barras de cinema e o título */
 .cartela{position:absolute;inset:0;z-index:20;display:grid;place-items:center;pointer-events:none;visibility:hidden}
-.cartela.on{visibility:visible;pointer-events:auto;cursor:pointer}
+.cartela.on{visibility:visible;pointer-events:auto}
+.cartela.ready{cursor:pointer}
 .cartela .bar{position:absolute;left:0;right:0;height:14%;background:#000;transform:scaleY(0);transition:transform .55s var(--ease-io)}
 .cartela .bar.t{top:0;transform-origin:50% 0}.cartela .bar.b{bottom:0;transform-origin:50% 100%}
 .cartela.on .bar{transform:scaleY(1)}
@@ -258,8 +266,10 @@ svg{display:block}
 .cartela.on .ln{animation:lineIn .7s var(--ease) .8s both}
 .cartela .sub{font-family:var(--hand);font-size:1.3em;color:var(--ice);opacity:0}
 .cartela.on .sub{animation:fadeUp .7s var(--ease) 1s both}
-.cartela .skip{position:absolute;right:1.6em;bottom:calc(14% + .8em);font:700 .7em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:rgba(223,232,240,.5);opacity:0}
-.cartela.on .skip{animation:fadeUp .5s 1.2s both}
+.cartela .cmeta{font:700 .74em var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--light-blue);margin-top:1.1em;opacity:0}
+.cartela.on .cmeta{animation:fadeUp .6s var(--ease) 1.2s both}
+.cartela .cgo{margin-top:1.6em;height:2.9em;padding:0 1.5em;border-radius:99px;background:var(--orange);color:var(--navy);font:700 1em var(--sans);box-shadow:0 .6em 1.6em rgba(247,140,22,.35);opacity:0;transform:translateY(.6em);transition:opacity .5s var(--ease),transform .5s var(--ease);pointer-events:none}
+.cartela.ready .cgo{opacity:1;transform:none;pointer-events:auto;animation:readyPulse 2.4s ease-in-out 1s infinite}
 .cartela.out .bar{transform:scaleY(0)}.cartela.out .ct{opacity:0;transition:opacity .35s}
 
 /* ---------------------------------------------------------------------
@@ -382,7 +392,7 @@ h2.q em{font-style:normal;color:var(--peach)}
 .helm.late{animation:shake .5s ease-in-out infinite}
 .helm.out{opacity:.4}
 .helm.static{position:relative;right:auto;top:auto;width:5em;height:5em}
-.helm.static .fg{animation:countdown 10s linear infinite}
+.helm.static .fg{animation:countdown 30s linear infinite}
 @keyframes countdown{from{stroke-dashoffset:0}to{stroke-dashoffset:169.65}}
 .rx-q{max-width:22em;font-size:2.15em}
 .flags{display:grid;grid-template-columns:1fr auto 1fr;gap:1.4em;align-items:center;width:min(100%,46em);align-self:center}
@@ -807,7 +817,8 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
   .plab{grid-area:lab}.pval{grid-area:val}.pctl{grid-area:ctl}.ptrack{grid-area:trk}
   .rv{grid-template-columns:1fr}.kscale{align-self:flex-start}
   .nmis{grid-template-columns:1fr}
-  .stage[data-act="casco"] .ship{width:max(23cqw,150px);top:calc(78cqh - max(7.97cqw,52px))}
+  .ship.corner{width:max(12cqw,92px);top:calc(78cqh - max(4.16cqw,32px))}
+  .ship.far{width:max(4.4cqw,40px);top:calc(56.8cqh - max(1.53cqw,14px))}
   .bigc{height:auto;max-height:none}.bigc svg{width:100%;height:auto}
   .seal{display:none}
   .lighthouse{width:max(19cqw,120px);top:calc(78cqh - max(28.5cqw,180px))}
@@ -1078,15 +1089,14 @@ body.painel .content{padding:4.4em 2.2em 1.6em;display:block;color:var(--ink);ba
       <main class="content" id="app" aria-live="polite"></main>
       <div class="cartela" id="cartela" role="dialog" aria-live="polite">
         <i class="bar t"></i><i class="bar b"></i>
-        <div class="ct"><div class="ato" id="cAto"></div><div class="nome" id="cNome"></div><div class="ln"></div><div class="sub" id="cSub"></div></div>
-        <div class="skip">toque para seguir</div>
+        <div class="ct"><div class="ato" id="cAto"></div><div class="nome" id="cNome"></div><div class="ln"></div><div class="sub" id="cSub"></div><div class="cmeta" id="cMeta"></div><button class="cgo" data-a="cartela" tabindex="-1">Seguir viagem →</button></div>
       </div>
     </div>
   </div>
 </div>
 
 <nav class="dock" id="dock" aria-label="Navegação">
-  <div class="voyage" id="voyage" aria-hidden="true">
+  <div class="voyage" id="voyage" role="navigation" aria-label="Atos da travessia">
     <div class="vl"></div><div class="vd" id="vd"></div>
     <div class="vs" id="vs"><svg viewBox="0 0 30 22"><path d="M3 14 H27 L23 20 H7 Z" fill="#F78C16"/><rect x="11" y="8" width="9" height="6" fill="#FCD1A2"/><rect x="14" y="2" width="2.4" height="6" fill="#F78C16"/></svg></div>
   </div>
@@ -1120,7 +1130,7 @@ const DIMS = {
 };
 const PLAN_MESA = [25, 35, 25, 10, 5];
 
-// Bloco 1 · reflexos (10 segundos cada). L/R dizem o valor de cada lado na dimensão.
+// Bloco 1 · reflexos (até 30 segundos cada: dá tempo de ler antes de escolher). L/R dizem o valor de cada lado na dimensão.
 const REFLEX = [
   { id: 'r1', tema: 'O motor', q: 'No seu barco, o que você prefere pagar?', L: 'O reboque, quando o motor parar no mar', R: 'A revisão do motor antes de zarpar', dim: 'PORTA', vL: 0, vR: 100, dts: 'Ser chamado na crise ou acompanhar sempre.' },
   { id: 'r2', tema: 'O resgate', q: 'Quando a TI de um cliente está em perigo, DTS é…', L: 'O resgate que chega na tempestade', R: 'O prático que guia o navio longe das pedras', dim: 'PORTA', vL: 0, vR: 100, dts: 'A mesma pergunta, por outro ângulo.' },
@@ -1131,7 +1141,7 @@ const REFLEX = [
   { id: 'r7', tema: 'O estaleiro', q: 'Para ter navios novos, DTS…', L: 'Monta o próprio estaleiro', R: 'Comanda a obra em estaleiros parceiros', dim: 'FABRICA', vL: 0, vR: 100, dts: 'Construir sistemas e agentes ou liderar parceiros de engenharia.' },
   { id: 'r8', tema: 'O mar novo', q: 'Mar desconhecido pela frente. Como você navega?', L: 'Uma rota por vez, até conhecer cada corrente', R: 'Três rotas novas ao mesmo tempo', dim: 'FOCO', vL: 100, vR: 0, dts: 'Profundidade ou amplitude.' }
 ];
-const REFLEX_MS = 10000;
+const REFLEX_MS = 30000;
 
 const ROTAS = [
   { id: 'A', nome: 'A estrada de sempre', txt: 'Seguimos com tudo que já oferecemos; cada serviço vendido por si.', pro: 'Sem custo de mudança.', con: 'Ninguém sabe exatamente para que nos chamar.', foco: 20 },
@@ -1235,7 +1245,7 @@ const DECISOES = STEPS.filter(s => !['capa', 'rx_intro', 'final'].includes(s.id)
 const KEY = 'bussola-dts-2027';
 const newId = () => 'bx-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
 function fresh() {
-  return { v: VERSION, sessionId: newId(), nome: '', email: '', cargo: '', startedAt: null, finishedAt: null, step: 0,
+  return { v: VERSION, sessionId: newId(), nome: '', email: '', cargo: '', startedAt: null, finishedAt: null, step: 0, maxStep: 0,
     a: { treino: null, rx: {}, rota: null, mesa: [0, 0, 0, 0, 0], mesaMoves: 0, tel: { atender: [], postal: null }, contrato: { v: 50, moves: 0 }, ia: null, prio: [], roupa: { n: 33, moves: 0 }, pessoas: [], espelho: null, frase: '',
       papel: { hoje: [0, 0, 0, 0, 0, 0], ideal: null, movesH: 0, movesI: 0 }, casco: [null, null, null, null, null], chama: { porta: [], trilho: [], proposta: [] } },
     t: {}, enteredAt: null, result: null };
@@ -1400,7 +1410,7 @@ const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce
 // A travessia em seis atos. Cada ato muda o céu, o mar e a câmera.
 const ACTS = [
   { id: 'porto', n: 'I', nome: 'O porto', dock: 'Porto', steps: ['capa'] },
-  { id: 'tempestade', n: 'II', nome: 'A tempestade', dock: 'Tempestade', sub: 'Na tempestade não dá tempo de abrir o manual. Vale o primeiro instinto.', steps: ['rx_intro', 'rx_treino', ...REFLEX.map(r => r.id)] },
+  { id: 'tempestade', n: 'II', nome: 'A tempestade', dock: 'Tempestade', sub: 'Leia cada pergunta com calma. Depois, vale o primeiro instinto.', steps: ['rx_intro', 'rx_treino', ...REFLEX.map(r => r.id)] },
   { id: 'navegacao', n: 'III', nome: 'A navegação', dock: 'Navegação', sub: 'Rota, carga, rádio e contrato: as escolhas do ano.', steps: ['rota', 'mesa', 'telefone', 'contrato'] },
   { id: 'profundo', n: 'IV', nome: 'Águas profundas', dock: 'Águas profundas', sub: 'Onde as escolhas custam caro. Cuidado com os tubarões.', steps: ['ia', 'prio', 'roupa', 'pessoas'] },
   { id: 'casco', n: 'V', nome: 'O casco', dock: 'Casco', sub: 'A integridade do navio: como a tripulação trabalha junta.', steps: ['papel_hoje', 'papel_ideal', 'casco', 'chamado'] },
@@ -1510,10 +1520,11 @@ function setScene(act) {
   if (act.id === 'tempestade' && !REDUCED) ambientTimer = setInterval(() => { if (Math.random() < .35 && !rxLocked) lightning(false); }, 11000);
 }
 function placeShip(x) {
-  const id = stepId(), ai = ACTS.indexOf(actOf(id)), act = ACTS[ai];
-  const k = Math.max(0, act.steps.indexOf(id)), within = act.steps.length > 1 ? k / (act.steps.length - 1) : 0;
-  const base = [52, 36, 44, 30, 4, 50, 58][ai] + within * 10;
-  $('#ship').style.setProperty('--ship-x', (x != null ? x : base) + 'cqw');
+  const id = stepId(), act = actOf(id).id, s = $('#ship');
+  s.classList.toggle('corner', id !== 'capa' && id !== 'final');
+  s.classList.toggle('far', id === 'final');
+  s.classList.toggle('hide', act === 'profundo');
+  s.style.setProperty('--ship-x', (x != null ? x : id === 'capa' ? 52 : id === 'final' ? 46 : 1.5) + 'cqw');
 }
 function lightning(strong) {
   if (REDUCED) return;
@@ -1529,14 +1540,19 @@ function steer(side) { const s = $('#ship'); s.classList.remove('steer-l', 'stee
 
 /* ---------- cartela de ato ---------- */
 let cartelaSkip = null;
+function actMeta(act) {
+  const k = act.steps.filter(id => DEC.includes(id)).length, base = k === 1 ? '1 manobra' : k + ' manobras';
+  return act.id === 'tempestade' ? `${base} · até ${REFLEX_MS / 1000} segundos em cada uma` : act.id === 'farol' ? `${base} · sem relógio` : act.id === 'amanhecer' ? `${base} e a revelação da bússola` : base;
+}
 function cartela(act) {
   return new Promise(res => {
     const c = $('#cartela');
-    $('#cAto').textContent = 'Ato ' + act.n; $('#cNome').textContent = act.nome; $('#cSub').textContent = act.sub || '';
-    c.classList.remove('out'); void c.offsetWidth; c.classList.add('on'); Sound.swell();
-    let done = false;
-    const finish = () => { if (done) return; done = true; cartelaSkip = null; c.classList.add('out'); setTimeout(() => c.classList.remove('on', 'out'), 650); res(); };
-    cartelaSkip = finish; setTimeout(finish, REDUCED ? 700 : 2700);
+    $('#cAto').textContent = 'Ato ' + act.n; $('#cNome').textContent = act.nome; $('#cSub').textContent = act.sub || ''; $('#cMeta').textContent = actMeta(act);
+    c.classList.remove('out', 'ready'); void c.offsetWidth; c.classList.add('on'); Sound.swell();
+    let done = false, ready = false;
+    const finish = () => { if (done || !ready) return; done = true; cartelaSkip = null; c.classList.add('out'); setTimeout(() => c.classList.remove('on', 'out', 'ready'), 650); res(); };
+    cartelaSkip = finish;
+    setTimeout(() => { ready = true; c.classList.add('ready'); const g = $('#ctrls [data-a="cartela"]'); if (g) { g.disabled = false; g.classList.add('ready'); } }, REDUCED ? 200 : 1500);
   });
 }
 
@@ -1563,13 +1579,14 @@ function clock() {
 }
 function buildVoyage() {
   const v = $('#voyage');
-  v.insertAdjacentHTML('beforeend', ACTS.map((a, i) => `<div class="pt" data-i="${i}" style="left:calc(6px + (100% - 12px) * ${i / (ACTS.length - 1)})"><i></i><span>${a.dock}</span></div>`).join(''));
+  v.insertAdjacentHTML('beforeend', ACTS.map((a, i) => `<button class="pt" data-a="port" data-i="${i}" style="left:calc(6px + (100% - 12px) * ${i / (ACTS.length - 1)})" title="Voltar ao ato ${a.n} · ${a.nome}"><i></i><span>${a.dock}</span></button>`).join(''));
 }
 function voyage() {
   const id = stepId(), ai = ACTS.indexOf(actOf(id)), act = ACTS[ai];
   const k = Math.max(0, act.steps.indexOf(id)), within = act.steps.length > 1 ? k / (act.steps.length - 1) : 0;
   const pos = Math.min(1, (ai + (ai < ACTS.length - 1 ? within * .8 : 0)) / (ACTS.length - 1));
-  $$('#voyage .pt').forEach(p => { const i = +p.dataset.i; p.classList.toggle('past', i < ai); p.classList.toggle('cur', i === ai); });
+  const reach = Math.max(S.maxStep || 0, S.step);
+  $$('#voyage .pt').forEach(p => { const i = +p.dataset.i, first = STEPS.findIndex(s => s.id === ACTS[i].steps[0]), locked = first > reach; p.classList.toggle('past', i < ai); p.classList.toggle('cur', i === ai); p.classList.toggle('locked', locked); p.disabled = locked; p.setAttribute('aria-current', i === ai ? 'step' : 'false'); });
   $('#vd').style.width = `calc((100% - 12px) * ${pos})`; $('#vs').style.left = `calc(6px + (100% - 12px) * ${pos})`;
   const d = DEC.indexOf(id); $('#progress').style.width = (id === 'final' ? 100 : d < 0 ? 0 : d / DEC.length * 100) + '%';
 }
@@ -1598,7 +1615,7 @@ async function go(i, o = {}) {
     const prevId = stepId(), prevAct = actOf(prevId);
     if (S.enteredAt && prevId !== 'capa') S.t[prevId] = (S.t[prevId] || 0) + (Date.now() - S.enteredAt);
     const fwd = i > S.step;
-    S.step = clamp(i, 0, STEPS.length - 1); S.enteredAt = Date.now(); save();
+    S.step = clamp(i, 0, STEPS.length - 1); S.maxStep = Math.max(S.maxStep || 0, S.step); S.enteredAt = Date.now(); save();
     const act = actOf(stepId());
     if (!o.instant) { app.classList.add('out'); await wait(o.fast ? 170 : 280); }
     S.seen = S.seen || {};
@@ -1607,7 +1624,7 @@ async function go(i, o = {}) {
   } catch (err) { console.error(err); app.classList.remove('out'); } finally { busy = false; }
 }
 const next = () => go(S.step + 1), back = () => go(S.step - 1);
-function dockQuiet() { $('#ctrls').innerHTML = `<span class="hint">${actOf(stepId()).nome}</span>`; voyage(); }
+function dockQuiet() { $('#ctrls').innerHTML = `<span class="hint">Ato ${actOf(stepId()).n} · ${actOf(stepId()).nome}</span><button class="dbtn go" data-a="cartela" disabled>${lbl('Seguir viagem →')}</button>`; voyage(); }
 // rótulo longo no notebook, curto no celular
 const SHORT = { 'Seguir viagem →': 'Seguir →', 'Içar as velas →': 'Içar →', 'Manter e seguir →': 'Manter →', 'Soltar as amarras →': 'Zarpar →', 'Continuar a viagem →': 'Continuar →', 'Lançar a garrafa →': 'Lançar →', 'Painel da facilitação': 'Painel', 'Navegar de novo': 'Recomeçar', '← Voltar': '←' };
 const lbl = (l, s = SHORT[l]) => s ? `<span class="lg">${l}</span><span class="sh">${s}</span>` : l;
@@ -1682,10 +1699,10 @@ SCREENS.capa = {
     return `<div class="col">
       ${ey('Alvarez &amp; Marsal', 'DTS', 'Planejamento FY27')}
       <h1 class="title">${t1.html} <em>${t2.html}</em></h1>
-      <p class="lede" data-in>Uma travessia de uns <b>dez minutos</b> para descobrir para onde a sua agulha aponta em 2027 e como a tripulação navega junta. No encontro, todas as agulhas entram no mesmo mostrador.</p>
+      <p class="lede" data-in>Uma travessia de uns <b>12 minutos</b> para descobrir para onde a sua agulha aponta em 2027 e como a tripulação navega junta. No encontro, todas as agulhas entram no mesmo mostrador.</p>
       <div class="ticks" data-in>
         <div class="tick">${ICON.wheel}<span><b>Não existe rota certa.</b> Vale o que você pensa de verdade.</span></div>
-        <div class="tick">${ICON.bolt}<span><b>Em mar aberto, dez segundos.</b> Vale o primeiro instinto.</span></div>
+        <div class="tick">${ICON.bolt}<span><b>Em mar aberto, até 30 segundos.</b> Leia com calma; vale o primeiro instinto.</span></div>
         <div class="tick">${ICON.anchor}<span><b>Navegue sozinho.</b> A resposta individual fica com a facilitação.</span></div>
       </div>
       <div class="board" data-in>
@@ -1710,7 +1727,7 @@ SCREENS.rx_intro = {
     return `<div class="col">
       ${ey('Manobras 1 a 8', '<b>Mar aberto</b>')}
       <h2 class="q" data-in>O vento sopra forte. Vale o <em>primeiro instinto</em>.</h2>
-      <p class="lede" data-in>Na tempestade, o comandante não tem tempo de abrir o manual: decide no instinto. São oito escolhas de “isto ou aquilo”, com histórias do mar, e dez segundos em cada uma.</p>
+      <p class="lede" data-in>Na tempestade, o comandante decide no instinto. São oito escolhas de “isto ou aquilo”, com histórias do mar. Você tem até 30 segundos em cada uma: leia a pergunta, depois escolha.</p>
       <div class="ticks" data-in>
         <div class="tick">${ICON.hand}<span><b>Toque na bandeira</b>, deslize o cartão ou use as setas <span class="kbd">←</span> <span class="kbd">→</span>.</span></div>
         <div class="tick">${ICON.bolt}<span>Se o timão zerar, <b>cai um relâmpago</b> e conta como hesitação.</span></div>
@@ -1762,7 +1779,7 @@ function startReflex(treino) {
       const left = Math.max(0, REFLEX_MS - (performance.now() - rxStart));
       fg.style.strokeDashoffset = (C27 * (1 - left / REFLEX_MS)).toFixed(2);
       const sec = Math.ceil(left / 1000);
-      if (sec !== rxSec) { rxSec = sec; num.textContent = sec; if (sec <= 2 && sec > 0) { helm.classList.add('late'); stage.classList.add('pressure'); Sound.tick(); } }
+      if (sec !== rxSec) { rxSec = sec; num.textContent = sec; if (sec <= 5 && sec > 0) { helm.classList.add('late'); stage.classList.add('pressure'); Sound.tick(); } }
       if (left <= 0) { rxRAF = null; timeoutReflex(treino); return; }
       rxRAF = requestAnimationFrame(tick);
     };
@@ -1788,7 +1805,7 @@ function answerReflex(side, treino) {
   const tok = navToken; save(); Sound.bell(); steer(side); miniCompass();
   $$('.flag').forEach(b => b.classList.add(b.dataset.side === side ? 'pick' : 'fade'));
   const cur = $('.buoys i.cur'); if (cur) { cur.classList.remove('cur'); cur.classList.add('done'); }
-  const pop = $('#rxpop'); pop.innerHTML = `${fmt1(ms / 1000)} s<small>${treino ? 'Isso. Agora vale.' : ms < 2500 ? 'mão firme no leme' : ms < 6000 ? 'rumo decidido' : 'no limite da onda'}</small>`; pop.classList.add('on');
+  const pop = $('#rxpop'); pop.innerHTML = `${fmt1(ms / 1000)} s<small>${treino ? 'Isso. Agora vale.' : ms < 8000 ? 'mão firme no leme' : ms < 18000 ? 'rumo decidido' : 'no limite da onda'}</small>`; pop.classList.add('on');
   setTimeout(() => { if (tok === navToken) go(S.step + 1, { fast: true }); }, 1500);
 }
 function timeoutReflex(treino) {
@@ -2353,6 +2370,8 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-a]'); if (!el || el.disabled) return; const a = el.dataset.a;
   switch (a) {
     case 'start': startTrip(); break;
+    case 'cartela': if (cartelaSkip) cartelaSkip(); break;
+    case 'port': { const t = STEPS.findIndex(s => s.id === ACTS[+el.dataset.i].steps[0]); if (!busy && t !== S.step && t <= Math.max(S.maxStep || 0, S.step)) go(t); break; }
     case 'next': if (!busy) next(); break;
     case 'back': if (!busy) back(); break;
     case 'keep': if (!busy) { rxLocked = true; go(S.step + 1, { fast: true }); } break;
@@ -2414,11 +2433,11 @@ function painel() {
     $('#voyage').style.display = 'none';
     let tabs = $('#ptabs'); if (!tabs) { tabs = document.createElement('div'); tabs.id = 'ptabs'; tabs.className = 'ptabs'; $('#dock').insertBefore(tabs, $('#ctrls')); }
     tabs.innerHTML = PAGES.map((t, i) => `<button class="${i === pIdx ? 'cur' : ''}" data-pg="${i}">${t}</button>`).join('');
-    $('#ctrls').innerHTML = `<button class="dbtn" data-pg="${pIdx - 1}" ${pIdx === 0 ? 'disabled' : ''}>← Voltar</button><span class="count">${pIdx + 1} / ${PAGES.length}</span><button class="dbtn go" data-pg="${pIdx + 1}" ${pIdx === PAGES.length - 1 ? 'disabled' : ''}>Avançar →</button>`;
+    $('#ctrls').innerHTML = `<button class="dbtn ghost" data-exit="1" title="Voltar para a Bússola">${lbl('← Voltar à Bússola', '← Bússola')}</button><button class="dbtn" data-pg="${pIdx - 1}" ${pIdx === 0 ? 'disabled' : ''}>← Voltar</button><span class="count">${pIdx + 1} / ${PAGES.length}</span><button class="dbtn go" data-pg="${pIdx + 1}" ${pIdx === PAGES.length - 1 ? 'disabled' : ''}>Avançar →</button>`;
     $('#progress').style.width = ((pIdx + 1) / PAGES.length * 100) + '%';
   }
   function showPage(i) { if (i < 0 || i >= PAGES.length) return; pIdx = i; $$('#app .ps').forEach((s, k) => s.classList.toggle('on', k === i)); $('#app').scrollTop = 0; painelNav(); }
-  document.addEventListener('click', e => { const b = e.target.closest('[data-pg]'); if (b && !b.disabled) showPage(+b.dataset.pg); });
+  document.addEventListener('click', e => { if (e.target.closest('[data-exit]')) { location.href = location.pathname; return; } const b = e.target.closest('[data-pg]'); if (b && !b.disabled) showPage(+b.dataset.pg); });
   document.addEventListener('keydown', e => { if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return; if (e.key === 'ArrowRight' || e.key === 'PageDown') showPage(pIdx + 1); if (e.key === 'ArrowLeft' || e.key === 'PageUp') showPage(pIdx - 1); });
   let rows = []; let fonte = ''; let liveTimer = null;
   const el = document.getElementById('app');
@@ -2576,7 +2595,7 @@ function painel() {
           </div>
         </div>`],
       ['Garrafas', `<h2>“Em 2027, o cliente liga para DTS quando…”</h2>${frases ? `<div class="frases">${frases}</div>` : '<p class="lede">Nenhuma mensagem na garrafa ainda.</p>'}
-        <p class="foot">Como ler: cada dimensão vai de 0 a 100; a posição do planejamento FY27 vem do material de planejamento (proposta DTS, a validar com os sócios). A aderência é a distância média ponderada entre as respostas e essa posição; serve para abrir a conversa, não para dar nota. Reflexo: mediana do tempo de resposta nas oito decisões de 10 segundos. Coerência: quanto o instinto (reflexos) e a reflexão (rota, farol, pergunta de IA) apontam para o mesmo lado.</p>`]
+        <p class="foot">Como ler: cada dimensão vai de 0 a 100; a posição do planejamento FY27 vem do material de planejamento (proposta DTS, a validar com os sócios). A aderência é a distância média ponderada entre as respostas e essa posição; serve para abrir a conversa, não para dar nota. Reflexo: mediana do tempo de resposta nas oito decisões de até 30 segundos. Coerência: quanto o instinto (reflexos) e a reflexão (rota, farol, pergunta de IA) apontam para o mesmo lado.</p>`]
     ];
     PAGES = pages.map(p => p[0]); pIdx = Math.min(pIdx, PAGES.length - 1);
     el.innerHTML = pages.map(([t, h], i) => `<section class="ps ${i === pIdx ? 'on' : ''}" data-t="${t}">${h}</section>`).join('');

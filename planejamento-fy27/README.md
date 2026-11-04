@@ -1,11 +1,11 @@
 # Planejamento FY27 · Bússola DTS 2027
 
-Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessia de uns dez minutos, em sete atos e vinte e duas manobras, feita no celular ou no notebook. Mede três coisas: para onde cada diretor quer levar DTS (estratégia), como a tripulação trabalha junta (papel, integridade e referências) e onde o time quer pôr o esforço de venda. Cada pessoa sai com a própria bússola; na agenda presencial, todas entram no mesmo mostrador, ao lado da rota que o planejamento propõe.
+Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessia de uns 12 minutos, em sete atos e vinte e duas manobras, feita no celular ou no notebook. Mede três coisas: para onde cada diretor quer levar DTS (estratégia), como a tripulação trabalha junta (papel, integridade e referências) e onde o time quer pôr o esforço de venda. Cada pessoa sai com a própria bússola; na agenda presencial, todas entram no mesmo mostrador, ao lado da rota que o planejamento propõe.
 
 | Ato | O que acontece | Manobras |
 |---|---|---|
 | I · O porto | Abertura e nome do comandante | — |
-| II · A tempestade | Oito escolhas de “isto ou aquilo”, dez segundos cada, contadas com histórias do mar (o reboque ou a revisão do motor, a rede ou o anzol, o próprio estaleiro ou os parceiros). Mede instinto, velocidade e hesitação. | 1 a 8 |
+| II · A tempestade | Oito escolhas de “isto ou aquilo”, até 30 segundos cada (dá tempo de ler antes de escolher), contadas com histórias do mar (o reboque ou a revisão do motor, a rede ou o anzol, o próprio estaleiro ou os parceiros). Mede instinto, velocidade e hesitação. | 1 a 8 |
 | III · A navegação | Carta náutica (rota), porão (100 caixas por pilar), rádio de bordo (quem atender) e contrato (fixo × resultado). | 9 a 12 |
 | IV · Águas profundas | Sonar (IA), diário de bordo (pelo que ser lembrado), lastro (tamanho do catálogo) e tripulação (duas contratações). | 13 a 16 |
 | V · O casco | Quarto de serviço (como o tempo do diretor se divide hoje e em 2027), os cinco rebites da integridade do time e o apito de bordo (a quem cada um recorre). | 17 a 20 |

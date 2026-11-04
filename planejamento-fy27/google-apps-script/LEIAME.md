@@ -47,9 +47,9 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 **Antes do encontro (assíncrono).** Mande o link com um prazo. As respostas chegam na planilha; na véspera, abra o painel e monte os slides de resultado.
 
 **Ao vivo, na abertura do dia (recomendado para a "dinâmica inicial").**
-1. Projete o link ou um QR code. Todos respondem no celular ou no notebook: uns 10 minutos.
+1. Projete o link ou um QR code. Todos respondem no celular ou no notebook: uns 12 minutos. Cada ato abre com uma cartela que espera a pessoa clicar em "Seguir viagem", e os nomes dos atos na barra de baixo (Porto, Tempestade…) levam de volta a qualquer ato já visitado.
 2. Enquanto respondem, abra no projetor `bussola-dts-2027.html?painel` e clique em **Ler a planilha ao vivo**. O painel atualiza sozinho a cada 30 segundos; as agulhas vão aparecendo.
-3. O painel tem dez páginas, no mesmo enquadramento da dinâmica. Navegue pelas abas da barra de baixo ou pelas setas do teclado. Leitura sugerida (15 minutos):
+3. O painel tem dez páginas, no mesmo enquadramento da dinâmica, e o botão "Voltar à Bússola" leva de volta à dinâmica. Navegue pelas abas da barra de baixo ou pelas setas do teclado. Leitura sugerida (15 minutos):
    - *Direção*: para onde o time aponta. A seta laranja é o planejamento; as azuis, cada diretor; a tracejada, a média.
    - *Dilema*: o dilema CFO × CIO. Mostra quem está de cada lado e o que cada um respondeu no farol, quando pensou com calma.
    - *Papéis*: como o tempo do diretor se divide hoje e como o time quer que se divida em 2027 (front do projeto, gate de qualidade, vender, expandir contas, desenvolver o time, construir ofertas). Mostra onde não há consenso e, com o cargo preenchido, o que cada cargo espera.
@@ -69,7 +69,7 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 | Mostradores | Receita (hora × resultado), entrega (relatório × produto), IA (prática própria × dentro dos produtos com Data & IA), fábrica × parceiros, âncoras, consolidação, pessoas. |
 | Mesa de investimento (o porão) | 100 caixas distribuídas pelos pilares, contra 25 · 35 · 25 · 10 · 5 do plano. |
 | Aderência | Distância média ponderada entre as respostas e a posição do plano (0–100). Serve para abrir a conversa, não para dar nota. Por padrão o participante não vê. |
-| Reflexo | Mediana do tempo nas 8 decisões de 10 segundos. Hesitação = o relógio zerou. |
+| Reflexo | Mediana do tempo nas 8 decisões de até 30 segundos. Hesitação = o relógio zerou. |
 | Revisões | Quantos reflexos a pessoa trocou depois de usar o botão Voltar. A primeira resposta fica guardada no estado da linha (coluna `estado`); se o relógio zerar numa pergunta revisitada, vale a resposta anterior. |
 | Coerência | Quanto o instinto (reflexos) e a reflexão (carta náutica, farol, sonar de IA) apontam para o mesmo lado. |
 | Opinião formada | Metade reflexo, metade coerência. Define o tamanho da agulha de cada pessoa no painel. Resposta rápida indica opinião já formada sobre o tema, não competência nem qualidade de decisão: é assunto de conversa, e o participante não vê esse número. |
