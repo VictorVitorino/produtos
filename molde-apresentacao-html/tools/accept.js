@@ -159,9 +159,11 @@ const near = (a, b, t = TOL) => Math.abs(a - b) <= t;
     if (s.cur !== 2 || s.hash !== '#2') fail('nav', `Avançar: ${JSON.stringify(s)}`);
     if (Math.abs(parseFloat(s.prog) - 2 / N * 100) > 0.6) fail('nav', `progresso ${s.prog}`);
     await p.click('#bPrev'); await p.waitForTimeout(400); s = await st(); if (s.cur !== 1) fail('nav', 'Voltar não voltou');
-    for (const [key, exp] of [['ArrowRight', 2], ['PageDown', 3], [' ', 4], ['ArrowLeft', 3], ['PageUp', 2], ['End', N], ['Home', 1]]) {
+    let pos = 1; const clampN = v => Math.max(1, Math.min(N, v));
+    for (const [key, step] of [['ArrowRight', 1], ['PageDown', 1], [' ', 1], ['ArrowLeft', -1], ['PageUp', -1], ['End', 'end'], ['Home', 'home']]) {
+      pos = step === 'end' ? N : step === 'home' ? 1 : clampN(pos + step); // esperado, respeitando os limites do deck
       await p.keyboard.press(key === ' ' ? 'Space' : key); await p.waitForTimeout(350); s = await st();
-      if (s.cur !== exp) fail('teclas', `${key} → ${s.cur} (esperado ${exp})`);
+      if (s.cur !== pos) fail('teclas', `${key} → ${s.cur} (esperado ${pos})`);
     }
     await p.keyboard.press('End'); await p.waitForTimeout(350); s = await st(); if (!s.next || s.prev) fail('nav', 'na última página Avançar deveria estar desabilitado');
     await p.keyboard.press('Home'); await p.waitForTimeout(350);
