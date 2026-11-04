@@ -17,9 +17,9 @@ var ABA = 'Respostas';
 var COLUNAS = [
   'sessionId', 'nome', 'email', 'cargo', 'versao', 'iniciadoEm', 'concluidoEm', 'duracaoSeg', 'atualizadoEm',
   'arquetipo', 'aderencia', 'angulo', 'x', 'y', 'opiniaoFormada', 'velocidadeMed', 'hesitacoes', 'revisoes', 'coerencia',
-  'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL', 'PESSOAS',
+  'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL',
   'rota', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'atendeu', 'caixaPostal', 'contrato', 'ia',
-  'prioridade', 'produtos2027', 'carga2027', 'cargaNova', 'contratacoes',
+  'prioridade', 'produtos2027', 'carga2027', 'cargaNova', 'ventoVenda', 'ancorasVenda',
   'hoje_front', 'hoje_qualidade', 'hoje_vender', 'hoje_expandir', 'hoje_pessoas', 'hoje_ofertas',
   'ideal_front', 'ideal_qualidade', 'ideal_vender', 'ideal_expandir', 'ideal_pessoas', 'ideal_ofertas',
   'casco_confianca', 'casco_conflito', 'casco_compromisso', 'casco_cobranca', 'casco_resultado',
@@ -84,6 +84,7 @@ function aba_() {
 
 // Aba "Resumo": médias do time ao lado da posição do planejamento, atualizada a cada resposta.
 var PAPEIS_ = [['front', 'Front do projeto'], ['qualidade', 'Gate de qualidade'], ['vender', 'Vender e abrir portas'], ['expandir', 'Expandir contas'], ['pessoas', 'Desenvolver o time'], ['ofertas', 'Construir ofertas']];
+var ANCORAS_ = ['Tempo para vender', 'Oferta clara', 'Ferramentas de venda', 'Treinamento comercial', 'Coach de venda', 'Go-to-market com os MDs', 'Cases e referências', 'Gente que vende'];
 var CASCO_ = [['confianca', 'Confiança'], ['conflito', 'Conflito produtivo'], ['compromisso', 'Compromisso'], ['cobranca', 'Cobrança mútua'], ['resultado', 'Resultado coletivo']];
 function resumo_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -92,7 +93,7 @@ function resumo_() {
   var col = function (nome) { var i = hdr.indexOf(nome); if (i < 0) i = COLUNAS.indexOf(nome); return colLetter_(i + 1); }; // pela linha de títulos real da aba
   var faixa = function (k) { return ABA + '!' + col(k) + '2:' + col(k); };
   var media = function (k, casas) { return '=IFERROR(ROUND(AVERAGE(' + faixa(k) + '),' + (casas || 0) + '),"")'; };
-  var plano = { PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, PESSOAS: 100 };
+  var plano = { PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100 };
   var rows = [], negrito = [];
   var linha = function (a, b, c) { rows.push([a, b === undefined ? '' : b, c === undefined ? '' : c]); };
   var titulo = function (a, b, c) { linha(a, b, c); negrito.push(rows.length); };
@@ -114,6 +115,10 @@ function resumo_() {
   linha('');
   titulo('Manifesto de carga', 'Média do time', 'Hoje');
   linha('Produtos no catálogo de 2027', media('produtos2027'), 33);
+  linha('');
+  titulo('Ventos da venda', 'Média ou votos');
+  linha('Força do vento comercial (1 = calmaria, 5 = vento de popa)', media('ventoVenda', 1));
+  ANCORAS_.forEach(function (a) { linha('Falta: ' + a, '=COUNTIF(' + faixa('ancorasVenda') + ',"*' + a + '*")'); });
   linha('');
   titulo('Papel do diretor (% do tempo)', 'Hoje', '2027');
   PAPEIS_.forEach(function (p) { linha(p[1], media('hoje_' + p[0]), media('ideal_' + p[0])); });
@@ -138,6 +143,6 @@ function json_(obj) { return ContentService.createTextOutput(JSON.stringify(obj)
 
 // Para testar dentro do editor: Executar > testeLocal (cria uma linha de exemplo).
 function testeLocal() {
-  var r = doPost({ postData: { contents: JSON.stringify({ tipo: 'bussola', versao: 'bussola-dts-2', linha: { sessionId: 'teste-1', nome: 'Teste', cargo: 'Senior Director', hoje_front: 40, ideal_front: 25, casco_confianca: 4, chama_porta: 'Nome A', PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, PESSOAS: 100, aderencia: 100, espelho: 'C', rota: 'B', mesaP1: 25, mesaP2: 35, mesaP3: 25, mesaP4: 10, mesaP5: 5 } }) } });
+  var r = doPost({ postData: { contents: JSON.stringify({ tipo: 'bussola', versao: 'bussola-dts-2', linha: { sessionId: 'teste-1', nome: 'Teste', cargo: 'Senior Director', hoje_front: 40, ideal_front: 25, casco_confianca: 4, chama_porta: 'Nome A', PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, ventoVenda: 2, ancorasVenda: 'Tempo para vender; Ferramentas de venda', aderencia: 100, espelho: 'C', rota: 'B', mesaP1: 25, mesaP2: 35, mesaP3: 25, mesaP4: 10, mesaP5: 5 } }) } });
   Logger.log(r.getContent());
 }
