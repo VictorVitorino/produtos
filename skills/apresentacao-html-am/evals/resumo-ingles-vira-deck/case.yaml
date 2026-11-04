@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: resumo-ingles-vira-deck
+expected_outcome: |
+  Um único .html no molde, em inglês (conteúdo e interface), com cerca de 8 páginas que levam o resumo da
+  Orion Foods: gasto de US$ 412M, potencial de US$ 38–52M, onde o dinheiro vai, causas, quatro alavancas com
+  faixas, roadmap em 3 ondas e os pedidos à liderança, sem nenhum número inventado.
+context:
+  scaffold_script: place-files.sh

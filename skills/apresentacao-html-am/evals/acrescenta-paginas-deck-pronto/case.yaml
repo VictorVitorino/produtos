@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: acrescenta-paginas-deck-pronto
+expected_outcome: |
+  O mesmo deck do Projeto Atlas, com as páginas originais intactas (capa, gasto por categoria, encerramento)
+  e uma nova seção de riscos: uma página com os 4 riscos (impacto, probabilidade e mitigação) e uma página com
+  o cronograma das 3 ondas (novembro, dezembro, janeiro). Trilha, índice e agenda atualizados; camadas fixas intactas.
+context:
+  scaffold_script: place-files.sh

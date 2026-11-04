@@ -6,7 +6,7 @@ function H(t,a,p,x){const e=document.createElement(t);if(a)for(const k in a){if(
 function T(p,x,y,s,a){const t=S("text",Object.assign({x,y},a||{}),p);t.textContent=s;return t}
 function tip(el,v,l){el.setAttribute("data-tv",v);el.setAttribute("data-tl",l||"")}
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function count(el,from,to,suf){const t0=performance.now(),d=900;const st=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3),v=from+(to-from)*e;el.textContent=(k<1?Math.round(v):to).toLocaleString("pt-BR")+(suf||"");if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
+function count(el,from,to,suf){const t0=performance.now(),d=900;const st=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3),v=from+(to-from)*e;el.textContent=(k<1?Math.round(v):to).toLocaleString(document.documentElement.lang||"pt-BR")+(suf||"");if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
 const ENTER={};
 /* registro de efeitos por página: play ao entrar, stop ao sair (a casca chama FXR.run) */
 const FXR={list:[],add(slide,inst){if(slide&&inst)this.list.push({slide,inst});return inst},run(n){this.list.forEach(o=>{if(o.slide!==n){try{o.inst.stop&&o.inst.stop()}catch(e){}}});this.list.forEach(o=>{if(o.slide===n){try{o.inst.play&&o.inst.play()}catch(e){console.error(e)}}})}};

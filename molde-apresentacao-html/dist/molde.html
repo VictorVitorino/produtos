@@ -791,7 +791,7 @@ function H(t,a,p,x){const e=document.createElement(t);if(a)for(const k in a){if(
 function T(p,x,y,s,a){const t=S("text",Object.assign({x,y},a||{}),p);t.textContent=s;return t}
 function tip(el,v,l){el.setAttribute("data-tv",v);el.setAttribute("data-tl",l||"")}
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function count(el,from,to,suf){const t0=performance.now(),d=900;const st=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3),v=from+(to-from)*e;el.textContent=(k<1?Math.round(v):to).toLocaleString("pt-BR")+(suf||"");if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
+function count(el,from,to,suf){const t0=performance.now(),d=900;const st=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3),v=from+(to-from)*e;el.textContent=(k<1?Math.round(v):to).toLocaleString(document.documentElement.lang||"pt-BR")+(suf||"");if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
 const ENTER={};
 /* registro de efeitos por página: play ao entrar, stop ao sair (a casca chama FXR.run) */
 const FXR={list:[],add(slide,inst){if(slide&&inst)this.list.push({slide,inst});return inst},run(n){this.list.forEach(o=>{if(o.slide!==n){try{o.inst.stop&&o.inst.stop()}catch(e){}}});this.list.forEach(o=>{if(o.slide===n){try{o.inst.play&&o.inst.play()}catch(e){console.error(e)}}})}};
@@ -900,7 +900,7 @@ window.DECK = {
 
   /* textos da interface (os omitidos usam o padrão em português da referência) */
   ui: {
-    part: "Parte", partCaps: "PARTE", pages: "telas", chapterSkip: "clique ou → para continuar",
+    part: "Parte", partCaps: "PARTE", pages: "telas", page: "tela", chapterSkip: "clique ou → para continuar",
     zoomHint: "⤢ amplia gráficos", zoomBtn: "Ampliar (duplo clique também amplia)",
     close: "Fechar", closeHint: "Esc ou clique fora para fechar",
     about: "Sobre este slide", aboutKey: "Sobre este slide (tecla I)",
@@ -941,7 +941,7 @@ window.DECK = {
 "use strict";
 const DK=window.DECK;
 /* textos da interface e marca do cliente: configuráveis em DECK.ui / DECK.client (os padrões reproduzem a referência) */
-const UI=Object.assign({part:"Parte",partCaps:"PARTE",pages:"telas",chapterSkip:"clique ou → para continuar",zoomHint:"⤢ amplia gráficos",zoomBtn:"Ampliar (duplo clique também amplia)",close:"Fechar",closeHint:"Esc ou clique fora para fechar",about:"Sobre este slide",aboutKey:"Sobre este slide (tecla I)",index:"Índice",indexKey:"Índice · escolha a página (tecla G)",prev:"Voltar",next:"Avançar",defaultPart:"Contexto",brand:"Alvarez &amp; Marsal"},DK.ui||{});
+const UI=Object.assign({part:"Parte",partCaps:"PARTE",pages:"telas",page:"tela",chapterSkip:"clique ou → para continuar",zoomHint:"⤢ amplia gráficos",zoomBtn:"Ampliar (duplo clique também amplia)",close:"Fechar",closeHint:"Esc ou clique fora para fechar",about:"Sobre este slide",aboutKey:"Sobre este slide (tecla I)",index:"Índice",indexKey:"Índice · escolha a página (tecla G)",prev:"Voltar",next:"Avançar",defaultPart:"Contexto",brand:"Alvarez &amp; Marsal"},DK.ui||{});
 const CLIENT=DK.client||{}; // {name:"Cliente"} (texto) ou {logo:"chave em ASSET", alt:"Cliente"}
 const clientMark=()=>CLIENT.logo&&ASSET[CLIENT.logo]?`<img class="ons-logo" src="${ASSET[CLIENT.logo]}" alt="${CLIENT.alt||""}">`:(CLIENT.name?`<span class="cl-wm">${CLIENT.name}</span>`:"");
 const AMDECO=`<svg class="am-deco" viewBox="0 0 520 80" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><path d="M40 80 L100 0" stroke="#F78C16" stroke-width="1.4" fill="none"/><path d="M150 80 L210 0" stroke="#5E8AB4" stroke-width="7" fill="none" opacity=".55"/><path d="M190 80 V0" stroke="#F78C16" stroke-width="1.2" opacity=".7"/><path d="M280 80 L340 0" stroke="#5E8AB4" stroke-width="16" fill="none" opacity=".45"/><path d="M350 80 V0" stroke="#5E8AB4" stroke-width="5" opacity=".45"/><path d="M420 80 L480 0" stroke="#F78C16" stroke-width="1.4" fill="none" opacity=".8"/></svg>`;
@@ -960,7 +960,7 @@ document.querySelectorAll(".kin").forEach(kin);
 /* ---------- roteiro (agenda) no resumo executivo ---------- */
 (function(){const ag=$("agenda");if(!ag)return;DK.parts.filter(p=>p[3]).forEach(([lab,key,desc,col],i)=>{const l=slides.map((x,j)=>x.dataset.p===key?j:-1).filter(j=>j>=0);if(!l.length)return;const n=key.split(" · ")[0];
 const b=H("button",{class:"clk","data-a":"up",style:`--d:${12+i};display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;text-align:left;background:#fff;border:1.5px solid var(--line);border-top:4px solid ${col};border-radius:12px;padding:7px 12px`},ag);
-H("div",{style:`font:800 27px var(--fh);color:${col}`},b,n);const x=H("div",null,b);H("div",{style:"font:800 14px var(--fh);color:var(--navy);white-space:nowrap"},x,`${UI.part} ${n} · ${lab} · ${UI.pages} ${l[0]+1}–${l[l.length-1]+1}`);H("div",{class:"small",style:"font-size:10.5px"},x,desc);b.addEventListener("click",()=>go(l[0]))})})();
+H("div",{style:`font:800 27px var(--fh);color:${col}`},b,n);const x=H("div",null,b);H("div",{style:"font:800 14px var(--fh);color:var(--navy);white-space:nowrap"},x,`${UI.part} ${n} · ${lab} · ${l.length>1?UI.pages+" "+(l[0]+1)+"–"+(l[l.length-1]+1):UI.page+" "+(l[0]+1)}`);H("div",{class:"small",style:"font-size:10.5px"},x,desc);b.addEventListener("click",()=>go(l[0]))})})();
 
 function fit(){const vw=innerWidth,vh=innerHeight,sm=vw<760,pad=sm?6:10,bar=sm?54:62,sc=Math.min((vw-pad*2)/1600,(vh-pad-bar)/900),st=$("stage");st.style.left=vw/2+"px";st.style.top=(pad+(vh-pad-bar)/2)+"px";st.style.transform=`translate(-50%,-50%) scale(${sc})`}
 addEventListener("resize",fit);
@@ -990,7 +990,7 @@ fit();const h0=parseInt(location.hash.slice(1),10);cur=isNaN(h0)?0:Math.max(0,Ma
 (function(){
 const FX={modal:false};const stage=$("stage");const SC=()=>stage.getBoundingClientRect().width/1600;
 /* trilha narrativa */
-const rail=H("div",{id:"rail"},document.body);FX.rail=DK.parts.map(([n,key,,,sh])=>{const idx=slides.map((s,i)=>((s.dataset.p||UI.defaultPart)===key)?i:-1).filter(i=>i>=0);if(!idx.length)return null;const d=H("div",{class:"seg2",style:`width:${Math.max(n.length*8+14,idx.length*18)}px`},rail);const lab=H("span",null,d,n);const bar=H("i",null,d);const b=H("b",null,bar);d.addEventListener("click",()=>go(idx[0]));d.title=`${n} · ${UI.pages} ${idx[0]+1}–${idx[idx.length-1]+1}`;return{idx,d,b,lab,full:n,short:sh||n,wF:Math.max(n.length*8+14,idx.length*18),wS:Math.max((sh||n).length*8+14,idx.length*18)}}).filter(Boolean);
+const rail=H("div",{id:"rail"},document.body);FX.rail=DK.parts.map(([n,key,,,sh])=>{const idx=slides.map((s,i)=>((s.dataset.p||UI.defaultPart)===key)?i:-1).filter(i=>i>=0);if(!idx.length)return null;const d=H("div",{class:"seg2",style:`width:${Math.max(n.length*8+14,idx.length*18)}px`},rail);const lab=H("span",null,d,n);const bar=H("i",null,d);const b=H("b",null,bar);d.addEventListener("click",()=>go(idx[0]));d.title=`${n} · ${idx.length>1?UI.pages+" "+(idx[0]+1)+"–"+(idx[idx.length-1]+1):UI.page+" "+(idx[0]+1)}`;return{idx,d,b,lab,full:n,short:sh||n,wF:Math.max(n.length*8+14,idx.length*18),wS:Math.max((sh||n).length*8+14,idx.length*18)}}).filter(Boolean);
 /* trilha com muitas seções: se os rótulos não couberem na largura disponível, usa o rótulo curto (DECK.parts[i][4]) */
 const railFit=()=>{FX.rail.forEach(r=>{r.lab.textContent=r.full;r.d.style.width=r.wF+"px"});const gap=parseFloat(getComputedStyle(rail).columnGap)||10,need=FX.rail.reduce((t,r)=>t+r.wF,0)+gap*(FX.rail.length-1);if(rail.offsetParent&&need>rail.getBoundingClientRect().width+1)FX.rail.forEach(r=>{r.lab.textContent=r.short;r.d.style.width=r.wS+"px"})};addEventListener("resize",railFit);railFit();
 /* indicador deslizante dos seletores */
@@ -1019,7 +1019,7 @@ addEventListener("keydown",e=>{if(FX.modal){if(e.key==="Escape")close();e.stopIm
 function open(el,title){host.innerHTML="";tt.textContent=title;const W=1460,Hh=700;let node;
 if(el.tagName==="svg"){node=el.cloneNode(true);const vb=el.viewBox.baseVal,ar=vb.width/vb.height;let w=W,h=W/ar;if(h>Hh){h=Hh;w=Hh*ar}node.setAttribute("width",w);node.setAttribute("height",h);node.style.cssText=`width:${w}px;height:${h}px;max-width:none`;host.appendChild(node)}
 else{node=el.cloneNode(true);const r=el.getBoundingClientRect(),sc=SC(),w0=r.width/sc,h0=r.height/sc,k=Math.min(W/w0,Hh/h0);const wr=H("div",{style:`width:${w0*k}px;height:${h0*k}px;overflow:hidden`},host);node.style.transform=`scale(${k})`;node.style.transformOrigin="0 0";node.style.width=w0+"px";node.style.height=h0+"px";node.style.animation="none";wr.appendChild(node)}
-node.querySelectorAll("[data-a]").forEach(x=>x.removeAttribute("data-a"));node.querySelectorAll(".dr").forEach(x=>x.classList.remove("dr"));
+node.querySelectorAll("[data-a]").forEach(x=>x.removeAttribute("data-a"));node.removeAttribute("data-a");node.querySelectorAll(".dr").forEach(x=>x.classList.remove("dr"));
 box.classList.toggle("dark",!!el.closest(".dk")||!!el.closest(".slide.dark"));fzm.classList.add("on");FX.modal=true}
 const targets=(DK.zoom||[]).map(id=>$(id)).filter(Boolean);
 const fzb=H("button",{class:"fzb",title:UI.zoomBtn},stage,"⤢");let cur_=null,hide=0;

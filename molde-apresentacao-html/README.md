@@ -156,6 +156,9 @@ node tools/pages.js dist/molde.html                          # número → seç�
 4. **Trilha com muitas seções:** se os rótulos não couberem, a trilha usa o rótulo curto (5º campo de `parts`). Com poucas seções, nada muda.
 5. **Entrada da capa:** título e logos aparecem com a classe `.play` da casca. Na referência dependiam do efeito de neurônios; com movimento reduzido, aparecem direto.
 6. A cor da trilha passou para o tema do conteúdo (`theme.css`). Na referência era o roxo AXON na camada de navegação.
+7. **Ampliação:** o motor também tira a animação de entrada (`data-a`) do próprio elemento ampliado. Na referência, um alvo com `data-a` aparecia em branco no modal.
+8. **Agenda e trilha:** uma seção de uma página só aparece como “tela 12”, e não “telas 12–12” (texto em `DECK.ui.page`).
+9. **Contadores (`data-count`):** seguem a língua do deck (`<html lang>`), por exemplo 1,230 em inglês. Na referência, eram sempre pt-BR.
 
 A arquitetura foi validada antes de remover o conteúdo: a Axon remontada a partir destas camadas ficou idêntica ao original pixel a pixel em 9 das 11 páginas. As outras 2 variam dentro da diferença que o próprio original tem entre duas execuções, por causa da animação.
 

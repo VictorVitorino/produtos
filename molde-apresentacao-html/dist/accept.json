@@ -1,5 +1,5 @@
 {
- "file": "/tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/scratchpad/axon/molde/dist/molde.html",
+ "file": "/home/user/produtos/molde-apresentacao-html/dist/molde.html",
  "N": 12,
  "ok": true,
  "fails": [],
@@ -473,12 +473,12 @@
    "exFases"
   ],
   "rail": [
-   "Capa · telas 1–1",
+   "Capa · tela 1",
    "Abertura · telas 2–3",
    "Conteúdo · telas 4–6",
    "Layouts · telas 7–8",
    "Variações · telas 9–11",
-   "Encerramento · telas 12–12"
+   "Encerramento · tela 12"
   ]
  }
 }

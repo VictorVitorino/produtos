@@ -1,0 +1,23 @@
+{
+ "versoes": {
+  "1.0": {
+   "shell/frame.css": "4f9dd5081874a805c6e6820690b0f2f2f6b79cb8",
+   "shell/nav.css": "7790c92f8c4f8830bceb945f1cf0990a99e4852a",
+   "shell/nav.js": "d7c78d0b2b5486eee83f0b64878a8313296c8f45",
+   "base/base.css": "47a0cd7c34a673b2a6f0ee843e9a344e22f001e9",
+   "base/base.js": "6a7ff229875f86c8c247c64739d2f80561e44cc5"
+  },
+  "1.1": {
+   "shell/frame.css": "4f9dd5081874a805c6e6820690b0f2f2f6b79cb8",
+   "shell/nav.css": "7790c92f8c4f8830bceb945f1cf0990a99e4852a",
+   "shell/nav.js": "d106b43a8af5d214e3566672ad8468ce8b0c6866",
+   "base/base.css": "47a0cd7c34a673b2a6f0ee843e9a344e22f001e9",
+   "base/base.js": "38db1d1ab0911213d1fa874e02f5976a3d7a0875"
+  }
+ },
+ "atual": "1.1",
+ "notas": {
+  "1.0": "versão inicial (novembro 2026)",
+  "1.1": "ampliação mostra alvo com data-a; 'tela N' no singular; contadores na língua do deck"
+ }
+}

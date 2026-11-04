@@ -198,6 +198,8 @@ const near = (a, b, t = TOL) => Math.abs(a - b) <= t;
       if (!s.fz) { fail('ampliação', `#${id} (p${n}): duplo clique não abriu`); continue; }
       const bx = await p.evaluate(() => { const b = document.querySelector('#fzm .box'), st = document.getElementById('stage').getBoundingClientRect(), sc = st.width / 1600, q = b.getBoundingClientRect(); return { w: q.width / sc, h: q.height / sc, radius: getComputedStyle(b).borderRadius, inside: q.left >= st.left - 1 && q.right <= st.right + 1 && q.top >= st.top - 1 && q.bottom <= st.bottom + 1 }; });
       if (bx.w > 1541 || bx.h > 851 || !bx.inside || bx.radius !== '16px') fail('ampliação', `#${id}: caixa ${JSON.stringify(bx)}`);
+      const zv = await p.evaluate(() => { const host = document.querySelector('#fzm .box').children[2]; let n = host && host.firstElementChild; if (n && n.tagName === 'DIV' && n.firstElementChild && getComputedStyle(n).overflow === 'hidden') n = n.firstElementChild; return n ? +getComputedStyle(n).opacity : 0; });
+      if (zv < 0.5) fail('ampliação', `#${id}: conteúdo ampliado invisível (opacidade ${zv})`);
       await p.keyboard.press('Escape'); await p.waitForTimeout(250); s = await st(); if (s.fz) fail('ampliação', `#${id}: Esc não fechou`);
       await p.dblclick('#' + id, { force: true }); await p.waitForTimeout(350);
       { const pt = await p.evaluate(() => { const o = document.getElementById('fzm').getBoundingClientRect(), b = document.querySelector('#fzm .box').getBoundingClientRect(); return b.top - o.top > 8 ? { x: o.left + o.width / 2, y: o.top + 4 } : { x: o.left + 4, y: o.top + o.height / 2 }; }); await p.mouse.click(pt.x, pt.y); }
@@ -228,6 +230,15 @@ const near = (a, b, t = TOL) => Math.abs(a - b) <= t;
   const e2 = []; q.on('pageerror', e => e2.push(e.message));
   await q.goto('file://' + file + '#1'); await q.waitForTimeout(800);
   for (let i = 0; i < Math.min(N - 1, 6); i++) { await q.keyboard.press('ArrowRight'); await q.waitForTimeout(1300); }
+  // ampliação com animações ligadas: o conteúdo ampliado precisa estar visível (com movimento reduzido tudo aparece)
+  for (const id of (info.zoom || [])) {
+    const n = await q.evaluate(id => [...document.querySelectorAll('.slide')].indexOf(document.getElementById(id).closest('.slide')) + 1, id);
+    await q.goto('file://' + file + '#' + n); await q.reload(); await q.waitForTimeout(2600);
+    await q.dblclick('#' + id, { force: true }); await q.waitForTimeout(700);
+    const zv = await q.evaluate(() => { const b = document.querySelector('#fzm.on .box'); if (!b) return -1; const host = b.children[2]; let el = host && host.firstElementChild; if (el && el.tagName === 'DIV' && el.firstElementChild && getComputedStyle(el).overflow === 'hidden') el = el.firstElementChild; return el ? +getComputedStyle(el).opacity : 0; });
+    if (zv >= 0 && zv < 0.5) fail('ampliação', `#${id}: conteúdo ampliado invisível com animações ligadas (opacidade ${zv})`);
+    await q.keyboard.press('Escape'); await q.waitForTimeout(200);
+  }
   if (e2.length) fail('animação', e2.slice(0, 3).join(' | '));
   if (errs.length) fail('console', errs.slice(0, 5).join(' | '));
   await browser.close();

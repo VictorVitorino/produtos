@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: kickoff-custos-ti-deck-novo
+expected_outcome: |
+  Um único arquivo .html montado no molde A&M (camadas fixas intactas), com 8 a 12 páginas em português:
+  capa, contexto com os números do cliente, objetivo, abordagem em 4 fases com durações, time e governança,
+  próximos passos e encerramento. Navegação, índice, painel "Sobre este slide" e ampliação funcionando.

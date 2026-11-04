@@ -1,0 +1,121 @@
+<!-- PARTE 2 · EXEMPLOS DE CONTEÚDO — três telas preenchidas com texto-modelo.
+     Mostram a estrutura de uma página com conteúdo: frase-chave → grade (.gr) → blocos (css/01-blocos.css).
+     Para usar: copie a <section> mais parecida com o que precisa, troque os textos e ajuste a grade. -->
+
+<!-- A · TEXTO E NÚMEROS: leitura à esquerda (contexto, pontos, conclusão) e painel de números à direita -->
+<section class="slide" data-p="2 · Exemplos de conteúdo" data-t="Texto e números"
+  data-band="Exemplo · leitura à esquerda, números à direita" data-c="c-navy" data-bs="Passe o mouse no painel · duplo clique amplia"
+  data-src="Fonte: indique a origem dos números (documento, base de dados, data da extração)."
+  data-desc="Estrutura: frase-chave (.stmt2, 2 linhas no máximo, 1 a 2 destaques) e uma grade de duas colunas (1fr | 640 px). À esquerda: rótulo (.lbl), parágrafo de abertura, três pontos numerados e uma conclusão em destaque, que fica sempre no pé da coluna. À direita: painel escuro com três indicadores animados (data-count) e barras comparativas (data-a=grow). O painel está em DECK.zoom e pode ser ampliado. Os textos são modelo: troque pelo seu conteúdo e mantenha as medidas.">
+  <div class="body sp fill">
+    <div class="stmt2" data-fx-type="word" style="font-size:23px">A frase-chave diz o que concluir: <span data-fx-hl>o número que importa</span> e <span data-fx-hl>o que ele muda</span> para quem decide.</div>
+    <div class="gr" style="display:grid;grid-template-columns:1fr 640px;gap:28px;min-height:0">
+      <div class="ex-col">
+        <div class="lbl">Contexto <small>o que está acontecendo</small></div>
+        <p class="ex-p" data-a="up" style="--d:1">Parágrafo de abertura em duas ou três linhas. Situa o leitor: o que mudou, desde quando e por que isso pede uma decisão agora. Use <b>negrito para o termo-chave</b> e evite repetir o que já está na frase-chave.</p>
+        <ul class="ex-list">
+          <li data-a="up" style="--d:2"><i>1</i><b>Primeiro ponto · título curto</b><span>Explicação em uma ou duas linhas, com o fato que sustenta o ponto.</span></li>
+          <li data-a="up" style="--d:3"><i>2</i><b>Segundo ponto · título curto</b><span>Explicação em uma ou duas linhas, com o fato que sustenta o ponto.</span></li>
+          <li data-a="up" style="--d:4"><i>3</i><b>Terceiro ponto · título curto</b><span>Explicação em uma ou duas linhas, com o fato que sustenta o ponto.</span></li>
+        </ul>
+        <div class="ex-note" data-a="up" style="--d:6"><div class="eye">Leitura</div><p>Conclusão da página numa frase: o que esses pontos significam para o cliente.</p></div>
+      </div>
+      <div id="exNumeros" class="ex-pnl ex-num" data-a="zoom" style="--d:2">
+        <div class="eye">Em números</div>
+        <div class="ex-kpis">
+          <div class="ex-kpi"><b><span data-count="123">0</span><em>M</em></b><span>Indicador principal</span><small>unidade · fonte</small></div>
+          <div class="ex-kpi"><b><span data-count="1506">0</span></b><span>Segundo indicador</span><small>unidade · fonte</small></div>
+          <div class="ex-kpi"><b><span data-count="77">0</span><em>%</em></b><span>Terceiro indicador</span><small>unidade · fonte</small></div>
+        </div>
+        <div class="ex-bars">
+          <div class="lbl" style="color:#fff">Comparação <small style="color:#9DB7CE">quatro categorias</small></div>
+          <div class="ex-bar hi"><span>Categoria A</span><div><i data-a="grow" style="--d:4;width:82%"></i></div><b>82%</b></div>
+          <div class="ex-bar"><span>Categoria B</span><div><i data-a="grow" style="--d:5;width:61%"></i></div><b>61%</b></div>
+          <div class="ex-bar"><span>Categoria C</span><div><i data-a="grow" style="--d:6;width:38%"></i></div><b>38%</b></div>
+          <div class="ex-bar"><span>Categoria D</span><div><i data-a="grow" style="--d:7;width:17%"></i></div><b>17%</b></div>
+        </div>
+        <div class="mini" style="color:#9DB7CE;margin-top:auto">Nota sobre os dados: período, base de cálculo e o que é estimativa.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- B · PAINEL E CARTÕES: definição em painel escuro + cartões de apoio à esquerda; etapas, pilares e princípios à direita -->
+<section class="slide" data-p="2 · Exemplos de conteúdo" data-t="Painel e cartões"
+  data-band="Exemplo · um conceito explicado em painel e cartões" data-c="c-blue" data-bs="Página 1 de 1 · método"
+  data-src="Fonte: metodologia, documento de referência ou proposta da consultoria."
+  data-desc="Estrutura: grade de duas colunas (470 px | 1fr), cada uma empilhando blocos com 12 px de intervalo. À esquerda: painel escuro com a definição, um cartão com quatro razões (2 × 2) e um cartão com três níveis. À direita: um cartão com seis etapas, quatro pilares (2 × 2, com cor na borda superior) e um cartão de princípios em pílulas, com um destaque em laranja. O último bloco de cada coluna usa flex:1 e ocupa a altura que sobra.">
+  <div class="body sp fill">
+    <div class="stmt2" data-fx-type="word" style="font-size:23px">Um conceito em uma tela: <span data-fx-hl>o que é</span>, por que agora, como funciona e <span data-fx-hl>o que o sustenta</span>.</div>
+    <div class="gr" style="display:grid;grid-template-columns:470px 1fr;gap:18px;min-height:0">
+      <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
+        <div class="ex-pnl" data-a="up" style="--d:1"><div class="eye">O que é</div><h3>Nome do conceito</h3><p>Definição em duas ou três linhas: o que é, para que serve e quando entra. Escreva para quem nunca ouviu falar.</p></div>
+        <div class="ex-card" data-a="up" style="--d:2"><div class="lbl">Por que agora <small>quatro razões</small></div>
+          <div class="ex-2x2">
+            <div><b>Razão 1</b><span>uma linha que explica a razão</span></div><div><b>Razão 2</b><span>uma linha que explica a razão</span></div>
+            <div><b>Razão 3</b><span>uma linha que explica a razão</span></div><div><b>Razão 4</b><span>uma linha que explica a razão</span></div>
+          </div></div>
+        <div class="ex-card ex-fill" data-a="up" style="--d:3;flex:1"><div class="lbl">Três níveis <small>quem decide o quê</small></div>
+          <div class="ex-lv">
+            <div><u style="background:#002B49">Nível 1</u><div><b>cadência</b><span>o que este nível decide</span></div></div>
+            <div><u style="background:#1F3263;margin:0 14px">Nível 2</u><div><b>cadência</b><span>o que este nível decide</span></div></div>
+            <div><u style="background:#5E8AB4;margin:0 28px">Nível 3</u><div><b>cadência</b><span>o que este nível decide</span></div></div>
+          </div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
+        <div class="ex-card" data-a="up" style="--d:2"><div class="lbl">Como funciona <small>seis etapas, do início ao fim</small></div>
+          <div class="ex-acts">
+            <div><i>1</i><b>Etapa um</b><span>o que acontece</span></div><div><i>2</i><b>Etapa dois</b><span>o que acontece</span></div>
+            <div><i>3</i><b>Etapa três</b><span>o que acontece</span></div><div><i>4</i><b>Etapa quatro</b><span>o que acontece</span></div>
+            <div><i>5</i><b>Etapa cinco</b><span>o que acontece</span></div><div><i>6</i><b>Etapa seis</b><span>o que acontece</span></div>
+          </div></div>
+        <div class="ex-fill" data-a="up" style="--d:3;flex:1"><div class="lbl">Os quatro pilares <small>o que sustenta o conceito</small></div>
+          <div class="ex-pils">
+            <div class="ex-pil" style="--c:#002B49"><div class="h"><i>A</i><b>Pilar A</b></div><p>Descrição do pilar em uma ou duas linhas: o que ele garante e como aparece no dia a dia.</p><small><b>Indicador</b> · como medimos o pilar</small></div>
+            <div class="ex-pil" style="--c:#1F3263"><div class="h"><i>B</i><b>Pilar B</b></div><p>Descrição do pilar em uma ou duas linhas: o que ele garante e como aparece no dia a dia.</p><small><b>Indicador</b> · como medimos o pilar</small></div>
+            <div class="ex-pil" style="--c:#5E8AB4"><div class="h"><i>C</i><b>Pilar C</b></div><p>Descrição do pilar em uma ou duas linhas: o que ele garante e como aparece no dia a dia.</p><small><b>Indicador</b> · como medimos o pilar</small></div>
+            <div class="ex-pil" style="--c:#F78C16"><div class="h"><i>D</i><b>Pilar D</b></div><p>Descrição do pilar em uma ou duas linhas: o que ele garante e como aparece no dia a dia.</p><small><b>Indicador</b> · como medimos o pilar</small></div>
+          </div></div>
+        <div class="ex-card" data-a="up" style="--d:4"><div class="lbl">Princípios</div>
+          <div class="ex-chips"><span>Princípio um</span><span>Princípio dois</span><span>Princípio três</span><span>Princípio quatro</span><span class="on">Princípio em destaque</span><span>Princípio seis</span><span>Princípio sete</span><span>Princípio oito</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- C · FASES E TABELA: régua de fases em chevrons + tabela de entregas e linha de marcos -->
+<section class="slide" data-p="2 · Exemplos de conteúdo" data-t="Fases e tabela"
+  data-band="Exemplo · fases, entregas e marcos" data-c="c-green" data-bs="Duplo clique nas fases amplia"
+  data-src="Fonte: plano de trabalho proposto; datas a confirmar."
+  data-desc="Estrutura: régua de quatro fases em chevrons (cada uma com número, nome e duração), registrada em DECK.zoom. Abaixo, uma grade de duas colunas (1fr | 420 px): à esquerda, uma tabela de entregas (frente, entrega, responsável, quando) com cabeçalho navy e linhas alternadas; à direita, um cartão com a linha de marcos (o marco principal em laranja) e uma nota.">
+  <div class="body sp fill">
+    <div class="stmt2" data-fx-type="word" style="font-size:23px">Quatro fases, <span data-fx-hl>cinco entregas com dono</span> e um marco que decide o passo seguinte.</div>
+    <div id="exFases" class="ex-ph" data-a="up" style="--d:1">
+      <div style="--c:#002B49"><small>Fase 1</small><b>Nome da fase</b><span>semanas 1–2</span></div>
+      <div style="--c:#1F3263"><small>Fase 2</small><b>Nome da fase</b><span>semanas 3–6</span></div>
+      <div style="--c:#33556D"><small>Fase 3</small><b>Nome da fase</b><span>semanas 7–8</span></div>
+      <div style="--c:#5E8AB4"><small>Fase 4 · opcional</small><b>Nome da fase</b><span>meses 3–5</span></div>
+    </div>
+    <div class="gr" style="display:grid;grid-template-columns:1fr 420px;gap:18px;min-height:0">
+      <div class="ex-card ex-fill" data-a="up" style="--d:2;padding:12px 14px"><div class="lbl" style="margin-bottom:8px">Entregas <small>cinco, cada uma com dono e data</small></div>
+        <table class="ex-tb">
+          <thead><tr><th>Frente</th><th>Entrega</th><th>Responsável</th><th>Quando</th></tr></thead>
+          <tbody>
+            <tr><td><b>Frente 1</b></td><td>Nome da entrega e o que ela contém</td><td>Cliente</td><td><span class="ex-tag">Sem. 2</span></td></tr>
+            <tr><td><b>Frente 1</b></td><td>Nome da entrega e o que ela contém</td><td>Consultoria</td><td><span class="ex-tag">Sem. 4</span></td></tr>
+            <tr><td><b>Frente 2</b></td><td>Nome da entrega e o que ela contém</td><td>Consultoria</td><td><span class="ex-tag o">Sem. 6 · marco</span></td></tr>
+            <tr><td><b>Frente 3</b></td><td>Nome da entrega e o que ela contém</td><td>Conjunta</td><td><span class="ex-tag">Sem. 8</span></td></tr>
+            <tr><td><b>Frente 3</b></td><td>Nome da entrega e o que ela contém</td><td>Cliente</td><td><span class="ex-tag">Mês 4</span></td></tr>
+          </tbody>
+        </table></div>
+      <div class="ex-card" data-a="up" style="--d:3;display:flex;flex-direction:column"><div class="lbl">Marcos</div>
+        <ul class="ex-tl">
+          <li><b>Semana 1</b><span>Início e alinhamento</span></li>
+          <li><b>Semana 4</b><span>Primeiro resultado apresentado</span></li>
+          <li class="o"><b>Semana 6 · decisão</b><span>Marco que libera a fase seguinte</span></li>
+          <li><b>Mês 5</b><span>Encerramento e passagem</span></li>
+        </ul>
+        <div class="ex-note" style="margin-top:auto"><div class="eye">Atenção</div><p>Datas a confirmar no início do trabalho.</p></div></div>
+    </div>
+  </div>
+</section>

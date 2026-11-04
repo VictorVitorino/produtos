@@ -10,7 +10,7 @@ window.DECK = {
 
   /* textos da interface (os omitidos usam o padrão em português da referência) */
   ui: {
-    part: "Parte", partCaps: "PARTE", pages: "telas", chapterSkip: "clique ou → para continuar",
+    part: "Parte", partCaps: "PARTE", pages: "telas", page: "tela", chapterSkip: "clique ou → para continuar",
     zoomHint: "⤢ amplia gráficos", zoomBtn: "Ampliar (duplo clique também amplia)",
     close: "Fechar", closeHint: "Esc ou clique fora para fechar",
     about: "Sobre este slide", aboutKey: "Sobre este slide (tecla I)",
