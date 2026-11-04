@@ -1,19 +1,20 @@
 # Planejamento FY27 · Bússola DTS 2027
 
-Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessia de sete minutos, em seis atos e dezoito manobras, feita no celular ou no notebook. Cada pessoa sai com a própria bússola. Na agenda presencial, todas as bússolas entram no mesmo mostrador, ao lado da rota que o planejamento propõe.
+Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessia de uns dez minutos, em sete atos e vinte e duas manobras, feita no celular ou no notebook. Mede três coisas: para onde cada diretor quer levar DTS (estratégia), como a tripulação trabalha junta (papel, integridade e referências) e onde o time quer pôr o esforço de venda. Cada pessoa sai com a própria bússola; na agenda presencial, todas entram no mesmo mostrador, ao lado da rota que o planejamento propõe.
 
 | Ato | O que acontece | Manobras |
 |---|---|---|
 | I · O porto | Abertura e nome do comandante | — |
-| II · A tempestade | Oito escolhas de “isto ou aquilo”, seis segundos cada, contadas com histórias do mar (o reboque ou a revisão do motor, a rede ou o anzol, o próprio estaleiro ou os parceiros). Mede instinto, velocidade e hesitação. | 1 a 8 |
+| II · A tempestade | Oito escolhas de “isto ou aquilo”, dez segundos cada, contadas com histórias do mar (o reboque ou a revisão do motor, a rede ou o anzol, o próprio estaleiro ou os parceiros). Mede instinto, velocidade e hesitação. | 1 a 8 |
 | III · A navegação | Carta náutica (rota), porão (100 caixas por pilar), rádio de bordo (quem atender) e contrato (fixo × resultado). | 9 a 12 |
 | IV · Águas profundas | Sonar (IA), diário de bordo (pelo que ser lembrado), lastro (tamanho do catálogo) e tripulação (duas contratações). | 13 a 16 |
-| V · O farol | O dilema central, com calma: o resgate na tempestade (a consultoria que o CFO chama quando a TI falhou) ou o prático do canal (a que o CIO chama para não falhar). | 17 |
-| VI · O amanhecer | Mensagem na garrafa e a revelação da bússola: arquétipo (rebocador de salvamento, prático de confiança, guarda costeira, estaleiro da frota ou resgate que fica a bordo), posição no dilema, reflexo, hesitações e convicção. | 18 |
+| V · O casco | Quarto de serviço (como o tempo do diretor se divide hoje e em 2027), os cinco rebites da integridade do time e o apito de bordo (a quem cada um recorre). | 17 a 20 |
+| VI · O farol | O dilema central, com calma: o resgate na tempestade (a consultoria que o CFO chama quando a TI falhou) ou o prático do canal (a que o CIO chama para não falhar). | 21 |
+| VII · O amanhecer | Mensagem na garrafa e a revelação da bússola: arquétipo (rebocador de salvamento, prático de confiança, guarda costeira, estaleiro da frota ou resgate que fica a bordo), posição no dilema, papel em 2027, leitura do casco, reflexo e hesitações. | 22 |
 
 | Arquivo | O que é |
 |---|---|
-| `bussola-dts-2027.html` | A dinâmica (participante) e, com `?painel` no fim do link, o painel da facilitação em sete páginas. Arquivo único, sem dependências além das fontes do Google. |
+| `bussola-dts-2027.html` | A dinâmica (participante) e, com `?painel` no fim do link, o painel da facilitação em dez páginas. Arquivo único, sem dependências além das fontes do Google. |
 | `google-apps-script/Codigo.gs` | Script da planilha que recebe as respostas e devolve ao painel. |
 | `google-apps-script/LEIAME.md` | Passo a passo: ligar a planilha, publicar o link, rodar ao vivo ou antes do encontro, ler o painel. |
 

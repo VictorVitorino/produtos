@@ -15,11 +15,16 @@
 var TOKEN = 'troque-por-uma-senha';   // o painel só lê as respostas com este token
 var ABA = 'Respostas';
 var COLUNAS = [
-  'sessionId', 'nome', 'email', 'versao', 'iniciadoEm', 'concluidoEm', 'duracaoSeg', 'atualizadoEm',
-  'arquetipo', 'aderencia', 'angulo', 'x', 'y', 'conviccao', 'velocidadeMed', 'hesitacoes', 'revisoes', 'coerencia',
+  'sessionId', 'nome', 'email', 'cargo', 'versao', 'iniciadoEm', 'concluidoEm', 'duracaoSeg', 'atualizadoEm',
+  'arquetipo', 'aderencia', 'angulo', 'x', 'y', 'opiniaoFormada', 'velocidadeMed', 'hesitacoes', 'revisoes', 'coerencia',
   'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL', 'PESSOAS',
   'rota', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'atendeu', 'caixaPostal', 'contrato', 'ia',
-  'prioridade', 'produtos2027', 'contratacoes', 'espelho', 'frase',
+  'prioridade', 'produtos2027', 'contratacoes',
+  'hoje_front', 'hoje_qualidade', 'hoje_vender', 'hoje_expandir', 'hoje_pessoas', 'hoje_ofertas',
+  'ideal_front', 'ideal_qualidade', 'ideal_vender', 'ideal_expandir', 'ideal_pessoas', 'ideal_ofertas',
+  'casco_confianca', 'casco_conflito', 'casco_compromisso', 'casco_cobranca', 'casco_resultado',
+  'chama_porta', 'chama_trilho', 'chama_proposta',
+  'espelho', 'frase',
   'r1', 'r1_ms', 'r2', 'r2_ms', 'r3', 'r3_ms', 'r4', 'r4_ms', 'r5', 'r5_ms', 'r6', 'r6_ms', 'r7', 'r7_ms', 'r8', 'r8_ms',
   'temposPorTela', 'estado'
 ];
@@ -78,47 +83,50 @@ function aba_() {
 }
 
 // Aba "Resumo": médias do time ao lado da posição do planejamento, atualizada a cada resposta.
+var PAPEIS_ = [['front', 'Front do projeto'], ['qualidade', 'Gate de qualidade'], ['vender', 'Vender e abrir portas'], ['expandir', 'Expandir contas'], ['pessoas', 'Desenvolver o time'], ['ofertas', 'Construir ofertas']];
+var CASCO_ = [['confianca', 'Confiança'], ['conflito', 'Conflito produtivo'], ['compromisso', 'Compromisso'], ['cobranca', 'Cobrança mútua'], ['resultado', 'Resultado coletivo']];
 function resumo_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName('Resumo') || ss.insertSheet('Resumo');
   var col = function (nome) { var i = COLUNAS.indexOf(nome); return colLetter_(i + 1); };
+  var faixa = function (k) { return ABA + '!' + col(k) + '2:' + col(k); };
+  var media = function (k, casas) { return '=IFERROR(ROUND(AVERAGE(' + faixa(k) + '),' + (casas || 0) + '),"")'; };
   var plano = { PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, PESSOAS: 100 };
-  var rows = [
-    ['Bússola DTS 2027 · resumo', '', ''],
-    ['Atualiza sozinho a cada resposta. A posição do planejamento vem do material FY27 (proposta DTS).', '', ''],
-    ['', '', ''],
-    ['Participação', 'Valor', ''],
-    ['Bússolas concluídas', '=COUNTA(' + ABA + '!' + col('nome') + '2:' + col('nome') + ')', ''],
-    ['Tempo médio (min)', '=IFERROR(ROUND(AVERAGE(' + ABA + '!' + col('duracaoSeg') + '2:' + col('duracaoSeg') + ')/60,1),"")', ''],
-    ['Aderência média ao plano (0–100)', '=IFERROR(ROUND(AVERAGE(' + ABA + '!' + col('aderencia') + '2:' + col('aderencia') + '),0),"")', ''],
-    ['Reflexo médio (s)', '=IFERROR(ROUND(AVERAGE(' + ABA + '!' + col('velocidadeMed') + '2:' + col('velocidadeMed') + '),1),"")', ''],
-    ['Hesitações (total)', '=IFERROR(SUM(' + ABA + '!' + col('hesitacoes') + '2:' + col('hesitacoes') + '),"")', ''],
-    ['', '', ''],
-    ['Dimensão (0–100)', 'Média do time', 'Planejamento FY27']
-  ];
-  Object.keys(plano).forEach(function (k) {
-    rows.push([k, '=IFERROR(ROUND(AVERAGE(' + ABA + '!' + col(k) + '2:' + col(k) + '),0),"")', plano[k]]);
-  });
-  rows.push(['', '', '']);
-  rows.push(['Mesa de investimento (fichas)', 'Média do time', 'Planejamento FY27']);
-  [['mesaP1', 'Reestruturação e turnaround', 25], ['mesaP2', 'Programas críticos e eficiência', 35], ['mesaP3', 'M&A', 25], ['mesaP4', 'Operações e verticais', 10], ['mesaP5', 'Apostas novas', 5]].forEach(function (m) {
-    rows.push([m[1], '=IFERROR(ROUND(AVERAGE(' + ABA + '!' + col(m[0]) + '2:' + col(m[0]) + '),0),"")', m[2]]);
-  });
-  rows.push(['', '', '']);
-  rows.push(['Espelho (votos)', '', '']);
-  [['A', '…o CFO chama quando a TI falhou'], ['B', '…o CIO chama para não falhar'], ['C', '…entra pela dor que o CIO já tem e fica']].forEach(function (o) {
-    rows.push([o[1], '=COUNTIF(' + ABA + '!' + col('espelho') + '2:' + col('espelho') + ',"' + o[0] + '")', '']);
-  });
-  rows.push(['', '', '']);
-  rows.push(['Rota (votos)', '', '']);
-  [['A', 'A estrada de sempre'], ['B', 'Três destinos e um desvio'], ['C', 'Mapa aberto']].forEach(function (o) {
-    rows.push([o[1], '=COUNTIF(' + ABA + '!' + col('rota') + '2:' + col('rota') + ',"' + o[0] + '")', '']);
-  });
+  var rows = [], negrito = [];
+  var linha = function (a, b, c) { rows.push([a, b === undefined ? '' : b, c === undefined ? '' : c]); };
+  var titulo = function (a, b, c) { linha(a, b, c); negrito.push(rows.length); };
+  titulo('Bússola DTS 2027 · resumo');
+  linha('Atualiza sozinho a cada resposta. A posição do planejamento vem do material FY27 (proposta DTS).');
+  linha('');
+  titulo('Participação', 'Valor');
+  linha('Bússolas concluídas', '=COUNTA(' + faixa('nome') + ')');
+  linha('Tempo médio (min)', '=IFERROR(ROUND(AVERAGE(' + faixa('duracaoSeg') + ')/60,1),"")');
+  linha('Aderência média ao plano (0–100)', media('aderencia'));
+  linha('Reflexo médio (s)', media('velocidadeMed', 1));
+  linha('Hesitações (total)', '=IFERROR(SUM(' + faixa('hesitacoes') + '),"")');
+  linha('');
+  titulo('Dimensão (0–100)', 'Média do time', 'Planejamento FY27');
+  Object.keys(plano).forEach(function (k) { linha(k, media(k), plano[k]); });
+  linha('');
+  titulo('Porão: caixas por pilar', 'Média do time', 'Planejamento FY27');
+  [['mesaP1', 'Reestruturação e turnaround de TI', 25], ['mesaP2', 'Programas críticos e eficiência do gasto', 35], ['mesaP3', 'M&A', 25], ['mesaP4', 'Operações e verticais', 10], ['mesaP5', 'Apostas novas', 5]].forEach(function (m) { linha(m[1], media(m[0]), m[2]); });
+  linha('');
+  titulo('Papel do diretor (% do tempo)', 'Hoje', '2027');
+  PAPEIS_.forEach(function (p) { linha(p[1], media('hoje_' + p[0]), media('ideal_' + p[0])); });
+  linha('');
+  titulo('Casco (1 a 5)', 'Média do time');
+  CASCO_.forEach(function (c) { linha(c[1], media('casco_' + c[0], 1)); });
+  linha('');
+  titulo('Farol (votos)');
+  [['A', '…o CFO chama quando a TI falhou'], ['B', '…o CIO chama para não falhar'], ['C', '…entra pela dor que o CIO já tem e fica']].forEach(function (o) { linha(o[1], '=COUNTIF(' + faixa('espelho') + ',"' + o[0] + '")'); });
+  linha('');
+  titulo('Carta náutica (votos)');
+  [['A', 'A estrada de sempre'], ['B', 'Três destinos e um desvio'], ['C', 'Mapa aberto']].forEach(function (o) { linha(o[1], '=COUNTIF(' + faixa('rota') + ',"' + o[0] + '")'); });
   sh.clear();
   sh.getRange(1, 1, rows.length, 3).setValues(rows);
-  sh.getRange(1, 1).setFontWeight('bold').setFontSize(14);
-  [4, 11, 11 + Object.keys(plano).length + 2, 11 + Object.keys(plano).length + 2 + 7, 11 + Object.keys(plano).length + 2 + 7 + 5].forEach(function (r) { sh.getRange(r, 1, 1, 3).setFontWeight('bold'); });
-  sh.setColumnWidth(1, 300); sh.setColumnWidth(2, 140); sh.setColumnWidth(3, 160);
+  negrito.forEach(function (r) { sh.getRange(r, 1, 1, 3).setFontWeight('bold'); });
+  sh.getRange(1, 1).setFontSize(14);
+  sh.setColumnWidth(1, 320); sh.setColumnWidth(2, 140); sh.setColumnWidth(3, 160);
 }
 
 function colLetter_(n) { var s = ''; while (n > 0) { var m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; }
@@ -126,6 +134,6 @@ function json_(obj) { return ContentService.createTextOutput(JSON.stringify(obj)
 
 // Para testar dentro do editor: Executar > testeLocal (cria uma linha de exemplo).
 function testeLocal() {
-  var r = doPost({ postData: { contents: JSON.stringify({ tipo: 'bussola', versao: 'bussola-dts-1', linha: { sessionId: 'teste-1', nome: 'Teste', PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, PESSOAS: 100, aderencia: 100, espelho: 'C', rota: 'B', mesaP1: 25, mesaP2: 35, mesaP3: 25, mesaP4: 10, mesaP5: 5 } }) } });
+  var r = doPost({ postData: { contents: JSON.stringify({ tipo: 'bussola', versao: 'bussola-dts-2', linha: { sessionId: 'teste-1', nome: 'Teste', cargo: 'Senior Director', hoje_front: 40, ideal_front: 25, casco_confianca: 4, chama_porta: 'Nome A', PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, PESSOAS: 100, aderencia: 100, espelho: 'C', rota: 'B', mesaP1: 25, mesaP2: 35, mesaP3: 25, mesaP4: 10, mesaP5: 5 } }) } });
   Logger.log(r.getContent());
 }

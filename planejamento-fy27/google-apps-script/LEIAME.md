@@ -19,11 +19,14 @@ Abra `bussola-dts-2027.html` num editor de texto e preencha o bloco do início:
 window.BUSSOLA_CONFIG = {
   sheetsEndpoint: 'https://script.google.com/macros/s/.../exec',  // o link copiado
   painelToken: 'a-senha-que-voce-colocou-no-TOKEN',
-  mostrarAderencia: false
+  mostrarAderencia: false,
+  tripulacao: ['Nome 1', 'Nome 2']   // opcional: os diretores que respondem
 };
 ```
 
 Sem o link, a bússola funciona do mesmo jeito, mas guarda a resposta só no navegador de quem respondeu.
+
+`tripulacao` é opcional. Com a lista de nomes, a pergunta "quem você chama quando…" mostra botões com os nomes, e as indicações chegam escritas do mesmo jeito. Sem a lista, cada pessoa digita os nomes, e o painel junta as grafias parecidas (acentos e maiúsculas não contam).
 
 Teste: abra o HTML, responda com um nome de teste e veja a linha chegar na aba `Respostas`. Se a última tela disser "Enviado à facilitação", está ligado. Apague a linha de teste depois.
 
@@ -44,12 +47,15 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 **Antes do encontro (assíncrono).** Mande o link com um prazo. As respostas chegam na planilha; na véspera, abra o painel e monte os slides de resultado.
 
 **Ao vivo, na abertura do dia (recomendado para a "dinâmica inicial").**
-1. Projete o link ou um QR code. Todos respondem no celular: 7 minutos.
+1. Projete o link ou um QR code. Todos respondem no celular ou no notebook: uns 10 minutos.
 2. Enquanto respondem, abra no projetor `bussola-dts-2027.html?painel` e clique em **Ler a planilha ao vivo**. O painel atualiza sozinho a cada 30 segundos; as agulhas vão aparecendo.
-3. O painel tem sete páginas, no mesmo enquadramento da dinâmica. Navegue pelas abas da barra de baixo ou pelas setas do teclado. Leitura sugerida (10 minutos):
+3. O painel tem dez páginas, no mesmo enquadramento da dinâmica. Navegue pelas abas da barra de baixo ou pelas setas do teclado. Leitura sugerida (15 minutos):
    - *Direção*: para onde o time aponta. A seta laranja é o planejamento; as azuis, cada diretor; a tracejada, a média.
    - *Dilema*: o dilema CFO × CIO. Mostra quem está de cada lado e o que cada um respondeu no farol, quando pensou com calma.
-   - *Pautas*: o painel escreve onde o time diverge do plano e onde hesitou. É a pauta da plenária.
+   - *Papéis*: como o tempo do diretor se divide hoje e como o time quer que se divida em 2027 (front do projeto, gate de qualidade, vender, expandir contas, desenvolver o time, construir ofertas). Mostra onde não há consenso e, com o cargo preenchido, o que cada cargo espera.
+   - *Casco*: os cinco rebites da integridade do time (confiança, conflito produtivo, compromisso, cobrança mútua, resultado coletivo) e o índice de 0 a 100.
+   - *Chamados*: a quem o time recorre para abrir a porta de um CFO, segurar um projeto que sai do trilho e fechar uma proposta difícil. Os nomes ficam ocultos por padrão; o botão "Mostrar nomes" é para a facilitação.
+   - *Pautas*: o painel escreve onde o time diverge do plano, onde hesitou, que rebite vaza e onde há dependência ou lacuna de referência. É a pauta da plenária.
    - *Mesa*: o porão (onde o esforço comercial vai) e os mostradores (receita, entrega, IA, fábrica e o restante), ao lado do plano.
    - *Reflexos* e *Garrafas*: quem o time atende primeiro no rádio, a velocidade, as hesitações e as mensagens na garrafa.
 4. **Copiar resumo** cola um texto com todos os números. **Imprimir / PDF** gera uma página por tela, para levar ao PPT.
@@ -63,13 +69,16 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 | Mostradores | Receita (hora × resultado), entrega (relatório × produto), IA (prática própria × dentro dos produtos com Data & IA), fábrica × parceiros, âncoras, consolidação, pessoas. |
 | Mesa de investimento (o porão) | 100 caixas distribuídas pelos pilares, contra 25 · 35 · 25 · 10 · 5 do plano. |
 | Aderência | Distância média ponderada entre as respostas e a posição do plano (0–100). Serve para abrir a conversa, não para dar nota. Por padrão o participante não vê. |
-| Reflexo | Mediana do tempo nas 8 decisões de 6 segundos. Hesitação = o relógio zerou. |
+| Reflexo | Mediana do tempo nas 8 decisões de 10 segundos. Hesitação = o relógio zerou. |
 | Revisões | Quantos reflexos a pessoa trocou depois de usar o botão Voltar. A primeira resposta fica guardada no estado da linha (coluna `estado`); se o relógio zerar numa pergunta revisitada, vale a resposta anterior. |
 | Coerência | Quanto o instinto (reflexos) e a reflexão (carta náutica, farol, sonar de IA) apontam para o mesmo lado. |
-| Convicção | Metade reflexo, metade coerência. Define o tamanho da agulha de cada pessoa. |
+| Opinião formada | Metade reflexo, metade coerência. Define o tamanho da agulha de cada pessoa no painel. Resposta rápida indica opinião já formada sobre o tema, não competência nem qualidade de decisão: é assunto de conversa, e o participante não vê esse número. |
+| Papel do diretor | Divisão do tempo, em blocos de 10%, hoje e em 2027, entre front do projeto, gate de qualidade, vender, expandir contas, desenvolver o time e construir ofertas. |
+| Casco | Concordância de 1 a 5 com uma frase para cada rebite (confiança, conflito produtivo, compromisso, cobrança mútua, resultado coletivo). O índice do casco é a média, em 0–100. |
+| Chamados | Até duas pessoas por pergunta (ou "ninguém em especial"). Mostra referências concentradas (dependência) e perguntas sem referência (lacuna). |
 
 As posições do planejamento estão no início do script do HTML (`DIMS` e `PLAN_MESA`). Se o plano mudar, é ali que se ajusta.
 
 ## 6. Privacidade
 
-A resposta individual fica na planilha (nome, respostas, tempos). O painel mostra iniciais na bússola e nomes na tabela. Combine com o grupo o que será projetado: a sugestão é mostrar a bússola e as pautas, e deixar a tabela por pessoa para a facilitação.
+A resposta individual fica na planilha (nome, respostas, tempos e as indicações de colegas). As indicações são o dado mais sensível: o painel mostra o mapa sem nomes por padrão, e a sugestão é não projetar a versão com nomes. O painel mostra iniciais na bússola e nomes na tabela. Combine com o grupo o que será projetado: a sugestão é mostrar a bússola e as pautas, e deixar a tabela por pessoa para a facilitação.
