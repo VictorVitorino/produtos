@@ -11,6 +11,8 @@
 
 Se mudar o `Codigo.gs` depois de implantado: **Implantar → Gerenciar implantações → editar → Nova versão** (o link continua o mesmo).
 
+> **Sem nome:** a bússola não pede nome nem e-mail. Cada aparelho recebe um código ("Comandante A1B2") que aparece na planilha e no painel; quem recomeça no mesmo aparelho mantém o código. O cargo (opcional) é a única informação de identificação.
+
 ## 2. O que garante que nenhuma resposta se perde
 
 - **Tempo real:** a linha da pessoa aparece na planilha assim que ela preenche o nome e é atualizada a cada resposta (em até 1 segundo). Fica com `status` "em andamento" até concluir; aí vira "concluída". O painel mostra quem está respondendo agora e só analisa as concluídas, e o Resumo também.
@@ -39,7 +41,7 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 3. O painel tem onze páginas, no mesmo enquadramento da dinâmica, e o botão "Voltar à Bússola" leva de volta à dinâmica. Navegue pelas abas da barra de baixo ou pelas setas do teclado. Leitura sugerida (15 minutos):
    - *Direção*: para onde o time aponta. A seta laranja é o planejamento; as azuis, cada diretor; a tracejada, a média.
    - *Dilema*: o dilema CFO × CIO. Mostra quem está de cada lado e o que cada um respondeu no farol, quando pensou com calma.
-   - *Papéis*: como o tempo do diretor se divide hoje e como o time quer que se divida em 2027 (front do projeto, gate de qualidade, vender, expandir contas, desenvolver o time, construir ofertas). Mostra onde não há consenso e, com o cargo preenchido, o que cada cargo espera.
+   - *Papéis*: como o tempo do diretor se divide hoje e como o time quer que se divida em 2027 (front do projeto, gate de qualidade, vender, expandir contas, desenvolver o time, construir ofertas, burocracias). Mostra onde não há consenso e, com o cargo preenchido, o que cada cargo espera.
    - *Casco*: os cinco rebites da integridade do time (confiança, conflito produtivo, compromisso, cobrança mútua, resultado coletivo) e o índice de 0 a 100.
    - *Chamados*: a quem o time recorre para abrir a porta de um CFO, segurar um projeto que sai do trilho e fechar uma proposta difícil. Os nomes ficam ocultos por padrão; o botão "Mostrar nomes" é para a facilitação.
    - *Pautas*: o painel escreve onde o time diverge do plano, onde hesitou, que rebite vaza e onde há dependência ou lacuna de referência. É a pauta da plenária.

@@ -14,7 +14,7 @@
 
 var TOKEN = 'troque-por-uma-senha';   // a SENHA DO PAINEL: troque por uma senha sua. Só você a digita, no painel; ela não vai dentro do arquivo dos diretores.
 var SENHA_PADRAO = 'troque-por-uma-senha';   // não mexa: o painel recusa ler enquanto o TOKEN for este texto
-var RESUMO_VERSAO = 'r6';                    // sobe quando o desenho do Resumo muda; aí ele é refeito uma vez
+var RESUMO_VERSAO = 'r7';                    // sobe quando o desenho do Resumo muda; aí ele é refeito uma vez
 var ABA = 'Respostas';
 var COLUNAS = [
   'sessionId', 'nome', 'email', 'cargo', 'versao', 'iniciadoEm', 'concluidoEm', 'duracaoSeg', 'atualizadoEm', 'ativa', 'status', 'etapa', 'progresso',
@@ -22,8 +22,8 @@ var COLUNAS = [
   'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL',
   'rota', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'atendeu', 'caixaPostal', 'contrato', 'ia',
   'prioridade', 'produtos2027', 'carga2027', 'cargaNova', 'ventoVenda', 'ancorasVenda',
-  'hoje_front', 'hoje_qualidade', 'hoje_vender', 'hoje_expandir', 'hoje_pessoas', 'hoje_ofertas',
-  'ideal_front', 'ideal_qualidade', 'ideal_vender', 'ideal_expandir', 'ideal_pessoas', 'ideal_ofertas',
+  'hoje_front', 'hoje_qualidade', 'hoje_vender', 'hoje_expandir', 'hoje_pessoas', 'hoje_ofertas', 'hoje_burocracias',
+  'ideal_front', 'ideal_qualidade', 'ideal_vender', 'ideal_expandir', 'ideal_pessoas', 'ideal_ofertas', 'ideal_burocracias',
   'casco_confianca', 'casco_conflito', 'casco_compromisso', 'casco_cobranca', 'casco_resultado',
   'chama_porta', 'chama_trilho', 'chama_proposta',
   'espelho', 'frase',
@@ -134,7 +134,7 @@ function aba_() {
 }
 
 // Aba "Resumo": médias do time ao lado da posição do planejamento, atualizada a cada resposta.
-var PAPEIS_ = [['front', 'Front do projeto'], ['qualidade', 'Gate de qualidade'], ['vender', 'Vender e abrir portas'], ['expandir', 'Expandir contas'], ['pessoas', 'Desenvolver o time'], ['ofertas', 'Construir ofertas']];
+var PAPEIS_ = [['front', 'Front do projeto'], ['qualidade', 'Gate de qualidade'], ['vender', 'Vender e abrir portas'], ['expandir', 'Expandir contas'], ['pessoas', 'Desenvolver o time'], ['ofertas', 'Construir ofertas'], ['burocracias', 'Burocracias']];
 var ANCORAS_ = ['Tempo para vender', 'Oferta clara', 'Ferramentas de venda', 'Treinamento comercial', 'Coach de venda', 'Go-to-market com os MDs', 'Cases e referências', 'Gente que vende'];
 var CASCO_ = [['confianca', 'Confiança'], ['conflito', 'Conflito produtivo'], ['compromisso', 'Compromisso'], ['cobranca', 'Cobrança mútua'], ['resultado', 'Resultado coletivo']];
 function resumo_() {

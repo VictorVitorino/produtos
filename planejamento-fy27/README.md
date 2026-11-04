@@ -4,7 +4,7 @@ Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessi
 
 | Ato | O que acontece | Manobras |
 |---|---|---|
-| I · O porto | Abertura e nome do comandante | — |
+| I · O porto | Abertura. Não pede nome nem e-mail: cada aparelho recebe um código ("Comandante A1B2"); o cargo é opcional. | — |
 | II · A tempestade | Oito escolhas de “isto ou aquilo”, até 30 segundos cada (dá tempo de ler antes de escolher), contadas com histórias do mar (o reboque ou a revisão do motor, a rede ou o anzol, o próprio estaleiro ou os parceiros). Mede instinto, velocidade e hesitação. | 1 a 8 |
 | III · A navegação | Carta náutica (rota), porão (100 caixas por pilar), rádio de bordo (quem atender) e contrato (fixo × resultado: os valores da parte fixa, da parte variável e da faixa que o frete pode render mudam enquanto a pessoa arrasta). | 9 a 12 |
 | IV · Águas profundas | Sonar (IA), diário de bordo (pelo que ser lembrado), manifesto de carga (quais dos 33 produtos de hoje embarcam em 2027; cada um vira um contêiner no convés, e dá para embarcar até três cargas novas) e os ventos da venda (a força do vento comercial de DTS hoje, de calmaria a vento de popa, e as duas âncoras que mais seguram a venda: tempo, oferta clara, ferramentas, treinamento, coach, go-to-market com os MDs, cases ou gente que vende). | 13 a 16 |
