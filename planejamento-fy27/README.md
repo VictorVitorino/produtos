@@ -1,6 +1,6 @@
 # Planejamento FY27 · Bússola DTS 2027
 
-Diagnóstico de engajamento para os diretores executivos do DTS. É uma travessia de sete minutos, em seis atos e dezoito manobras, feita no celular ou no notebook. Cada pessoa sai com a própria bússola. Na agenda presencial, todas as bússolas entram no mesmo mostrador, ao lado da rota que o planejamento propõe.
+Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessia de sete minutos, em seis atos e dezoito manobras, feita no celular ou no notebook. Cada pessoa sai com a própria bússola. Na agenda presencial, todas as bússolas entram no mesmo mostrador, ao lado da rota que o planejamento propõe.
 
 | Ato | O que acontece | Manobras |
 |---|---|---|

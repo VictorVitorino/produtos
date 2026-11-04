@@ -64,6 +64,7 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 | Mesa de investimento (o porão) | 100 caixas distribuídas pelos pilares, contra 25 · 35 · 25 · 10 · 5 do plano. |
 | Aderência | Distância média ponderada entre as respostas e a posição do plano (0–100). Serve para abrir a conversa, não para dar nota. Por padrão o participante não vê. |
 | Reflexo | Mediana do tempo nas 8 decisões de 6 segundos. Hesitação = o relógio zerou. |
+| Revisões | Quantos reflexos a pessoa trocou depois de usar o botão Voltar. A primeira resposta fica guardada no estado da linha (coluna `estado`); se o relógio zerar numa pergunta revisitada, vale a resposta anterior. |
 | Coerência | Quanto o instinto (reflexos) e a reflexão (carta náutica, farol, sonar de IA) apontam para o mesmo lado. |
 | Convicção | Metade reflexo, metade coerência. Define o tamanho da agulha de cada pessoa. |
 

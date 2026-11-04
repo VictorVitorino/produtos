@@ -16,7 +16,7 @@ var TOKEN = 'troque-por-uma-senha';   // o painel só lê as respostas com este 
 var ABA = 'Respostas';
 var COLUNAS = [
   'sessionId', 'nome', 'email', 'versao', 'iniciadoEm', 'concluidoEm', 'duracaoSeg', 'atualizadoEm',
-  'arquetipo', 'aderencia', 'angulo', 'x', 'y', 'conviccao', 'velocidadeMed', 'hesitacoes', 'coerencia',
+  'arquetipo', 'aderencia', 'angulo', 'x', 'y', 'conviccao', 'velocidadeMed', 'hesitacoes', 'revisoes', 'coerencia',
   'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL', 'PESSOAS',
   'rota', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'atendeu', 'caixaPostal', 'contrato', 'ia',
   'prioridade', 'produtos2027', 'contratacoes', 'espelho', 'frase',

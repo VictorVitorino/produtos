@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bússola DTS 2027 · a travessia</title>
-<meta name="description" content="Diagnóstico de engajamento para o planejamento FY27 do DTS (Alvarez & Marsal): uma travessia de sete minutos em seis atos, dezoito manobras e uma bússola.">
+<meta name="description" content="Diagnóstico de engajamento para o planejamento FY27 de DTS (Alvarez & Marsal): uma travessia de sete minutos em seis atos, dezoito manobras e uma bússola.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Kalam:wght@400;700&family=Libre+Franklin:wght@400;500;600;700;800&family=Zilla+Slab:wght@500;600;700&display=swap">
@@ -79,6 +79,7 @@ svg{display:block}
 .ctrls{display:flex;gap:8px;align-items:center;flex:none}
 .dbtn{height:38px;padding:0 15px;border-radius:7px;font:600 14px var(--sans);border:1px solid rgba(191,208,225,.22);background:#0d2a42;color:#fff;display:inline-flex;align-items:center;gap:8px;transition:background .2s,transform .2s,opacity .2s,box-shadow .2s;white-space:nowrap}
 .dbtn:hover:not(:disabled){background:#123654;transform:translateY(-1px)}
+.dbtn .sh{display:none}
 .dbtn.go{background:var(--orange);border-color:var(--orange);color:var(--navy);font-weight:700;box-shadow:0 6px 20px rgba(247,140,22,.25)}
 .dbtn.go:hover:not(:disabled){background:#ffa033}
 .dbtn.go:disabled{background:#3b4a58;border-color:#3b4a58;color:#8fa2b3;box-shadow:none}
@@ -390,6 +391,8 @@ h2.q em{font-style:normal;color:var(--peach)}
 .flag .sd{font:700 .52em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:.6em}
 .flag .sd .kbd{color:var(--navy);border-color:rgba(0,43,73,.35);font-size:1em}
 .flag:hover{transform:translateY(-.35em) rotate(0deg);box-shadow:0 1.6em 3.2em rgba(0,0,0,.6),0 0 0 2px var(--peach);animation-play-state:paused}
+.flag.prev{box-shadow:0 1.2em 2.6em rgba(0,0,0,.55),0 0 0 2px var(--peach)}
+.flag.prev::after{content:'sua escolha';position:absolute;top:.75em;right:.8em;font:700 max(9px,.42em) var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rust);border:1px solid rgba(180,87,10,.6);border-radius:99px;padding:.3em .7em}
 .flags.tilt-l .flag.l,.flags.tilt-r .flag.r{box-shadow:0 1.6em 3.2em rgba(0,0,0,.6),0 0 0 3px var(--orange);transform:translateY(-.4em)}
 .flag.pick{box-shadow:0 0 0 3px var(--orange),0 1.6em 3.2em rgba(0,0,0,.6);animation:none}
 .flag.l.pick{animation:flyL .7s var(--ease-io) .18s forwards}
@@ -727,6 +730,8 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
   .flags{grid-template-columns:1fr 1fr;gap:.8em}
   .flags .or{display:none}
   .flag{min-height:8.6em;font-size:1.1em;padding:2em .8em 1em}
+  .flag.prev{padding-bottom:2.6em}
+  .flag.prev::after{top:auto;bottom:.7em;right:50%;transform:translateX(50%);white-space:nowrap}
   .radio{grid-template-columns:1fr 1fr}
   .holds{gap:.35em}.hstack{height:13em}.hsub{display:none}
   .crew{grid-template-columns:1fr}.mate.last{width:100%}
@@ -745,7 +750,9 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
   .dock{padding:0 10px 6px}
   .voyage{display:none}
   .ctrls{width:100%;justify-content:space-between}
-  .dbtn{height:42px}
+  .dbtn{height:42px;padding:0 11px;font-size:13.5px}
+  .dbtn .lg{display:none}.dbtn .sh{display:inline-flex;align-items:center;gap:6px}
+  .ctrls{gap:6px}
   .hud .brand .act{display:none}
   h1.title{font-size:3em}
   .hint{display:none}
@@ -1020,12 +1027,12 @@ const PLAN_MESA = [25, 35, 25, 10, 5];
 // Bloco 1 · reflexos (6 segundos cada). L/R dizem o valor de cada lado na dimensão.
 const REFLEX = [
   { id: 'r1', tema: 'O motor', q: 'No seu barco, o que você prefere pagar?', L: 'O reboque, quando o motor parar no mar', R: 'A revisão do motor antes de zarpar', dim: 'PORTA', vL: 0, vR: 100, dts: 'Ser chamado na crise ou acompanhar sempre.' },
-  { id: 'r2', tema: 'O resgate', q: 'Quando a TI de um cliente está em perigo, o DTS é…', L: 'O resgate que chega na tempestade', R: 'O prático que guia o navio longe das pedras', dim: 'PORTA', vL: 0, vR: 100, dts: 'A mesma pergunta, por outro ângulo.' },
+  { id: 'r2', tema: 'O resgate', q: 'Quando a TI de um cliente está em perigo, DTS é…', L: 'O resgate que chega na tempestade', R: 'O prático que guia o navio longe das pedras', dim: 'PORTA', vL: 0, vR: 100, dts: 'A mesma pergunta, por outro ângulo.' },
   { id: 'r3', tema: 'A pesca', q: 'Para voltar com o barco cheio, você lança…', L: 'Uma rede enorme, que pega de tudo', R: 'O anzol certo, no cardume certo', dim: 'FOCO', vL: 0, vR: 100, dts: 'Catálogo amplo ou poucas e boas escolhas.' },
   { id: 'r4', tema: 'O quinhão', q: 'Como o pescador prefere ser pago?', L: 'Com uma parte do que pescar', R: 'Com a diária, pescando ou não', dim: 'RECEITA', vL: 100, vR: 0, dts: 'Preço por resultado ou por hora trabalhada.' },
   { id: 'r5', tema: 'O fim da viagem', q: 'No fim da viagem, o que fica com o dono do navio?', L: 'Um relatório contando a travessia', R: 'Instrumentos novos, instalados a bordo', dim: 'PRODUTO', vL: 0, vR: 100, dts: 'Serviço que explica ou produto que fica.' },
   { id: 'r6', tema: 'O radar', q: 'A IA é o radar da frota. Ele fica…', L: 'Instalado em cada navio, com Data & IA', R: 'Num navio próprio, só de radar', dim: 'IA', vL: 100, vR: 0, dts: 'IA dentro de cada produto ou uma prática de IA à parte.' },
-  { id: 'r7', tema: 'O estaleiro', q: 'Para ter navios novos, o DTS…', L: 'Monta o próprio estaleiro', R: 'Comanda a obra em estaleiros parceiros', dim: 'FABRICA', vL: 0, vR: 100, dts: 'Construir sistemas e agentes ou liderar parceiros de engenharia.' },
+  { id: 'r7', tema: 'O estaleiro', q: 'Para ter navios novos, DTS…', L: 'Monta o próprio estaleiro', R: 'Comanda a obra em estaleiros parceiros', dim: 'FABRICA', vL: 0, vR: 100, dts: 'Construir sistemas e agentes ou liderar parceiros de engenharia.' },
   { id: 'r8', tema: 'O mar novo', q: 'Mar desconhecido pela frente. Como você navega?', L: 'Uma rota por vez, até conhecer cada corrente', R: 'Três rotas novas ao mesmo tempo', dim: 'FOCO', vL: 100, vR: 0, dts: 'Profundidade ou amplitude.' }
 ];
 const REFLEX_MS = 6000;
@@ -1054,9 +1061,9 @@ const CALLS = [
   { id: 'cons_ia', quem: 'Conselheiro', av: 'CONS', txt: 'Investimos milhões em IA. Quanto voltou? Ninguém sabe.', cand: true }
 ];
 const IA_OPTS = [
-  { id: 'a', txt: 'Sim. Vamos montar uma prática de IA própria do DTS.', ia: 15 },
+  { id: 'a', txt: 'Sim. Vamos montar uma prática de IA própria de DTS.', ia: 15 },
   { id: 'b', txt: 'A IA está dentro de cada produto nosso. A oferta de IA fazemos junto com Data & IA.', ia: 100 },
-  { id: 'c', txt: 'IA é com a prática de Data & IA. O DTS cuida da TI.', ia: 45 },
+  { id: 'c', txt: 'IA é com a prática de Data & IA. DTS cuida da TI.', ia: 45 },
   { id: 'd', txt: 'Montamos uma fábrica de agentes e vendemos como plataforma.', ia: 25, fabrica: 0 }
 ];
 const PRIO = [
@@ -1184,7 +1191,7 @@ function signals(r, a) {
   out.push({ t: d.RECEITA >= 60 ? 'Você assina por resultado, não por hora.' : d.RECEITA >= 40 ? 'Entre o fixo e o resultado, você fica no meio.' : 'Você prefere a segurança do preço fixo.', hot: d.RECEITA >= 60 });
   out.push({ t: d.PRODUTO >= 60 ? 'Entrega que fica: ferramenta, não relatório.' : 'Entrega consultiva: o relatório que explica.', hot: d.PRODUTO >= 60 });
   if (r.topMesa) out.push({ t: 'Sua maior aposta de 2027: ' + r.topMesa.toLowerCase() + '.', hot: true });
-  out.push({ t: d.IA >= 70 ? 'IA dentro de cada produto, com Data & IA ao lado.' : d.IA >= 40 ? 'IA é assunto de outra prática: o DTS fica na TI.' : 'Você montaria uma frente de IA própria no DTS.', hot: false });
+  out.push({ t: d.IA >= 70 ? 'IA dentro de cada produto, com Data & IA ao lado.' : d.IA >= 40 ? 'IA é assunto de outra prática: DTS fica na TI.' : 'Você montaria uma frente de IA própria em DTS.', hot: false });
   out.push({ t: r.coerencia >= 75 ? 'Instinto e reflexão apontaram para o mesmo lado.' : 'Instinto e reflexão divergem em ' + (r.divergente ? DIMS[r.divergente].nome.toLowerCase() : 'um tema') + ': assunto para a mesa.', hot: r.coerencia < 75 });
   return out;
 }
@@ -1243,6 +1250,7 @@ function buildRow() {
     rota: a.rota, mesaP1: a.mesa[0], mesaP2: a.mesa[1], mesaP3: a.mesa[2], mesaP4: a.mesa[3], mesaP5: a.mesa[4], nucleo: r.nucleo,
     atendeu: a.tel.atender.join(' > '), caixaPostal: a.tel.postal, contrato: a.contrato.v, ia: a.ia, prioridade: a.prio.join(' > '), produtos2027: a.roupa.n, contratacoes: a.pessoas.join(' + '), espelho: a.espelho, frase: a.frase };
   REFLEX.forEach(x => { const v = a.rx[x.id] || {}; row[x.id] = v.side == null ? 'hesitou' : v.side === 'L' ? x.L : x.R; row[x.id + '_ms'] = v.ms == null ? '' : v.ms; });
+  row.revisoes = REFLEX.filter(x => (a.rx[x.id] || {}).revisto).length;
   row.temposPorTela = JSON.stringify(S.t);
   row.estado = JSON.stringify({ a, result: r });
   return row;
@@ -1471,15 +1479,18 @@ async function go(i, o = {}) {
 }
 const next = () => go(S.step + 1), back = () => go(S.step - 1);
 function dockQuiet() { $('#ctrls').innerHTML = `<span class="hint">${actOf(stepId()).nome}</span>`; voyage(); }
+// rótulo longo no notebook, curto no celular
+const SHORT = { 'Seguir viagem →': 'Seguir →', 'Içar as velas →': 'Içar →', 'Manter e seguir →': 'Manter →', 'Soltar as amarras →': 'Zarpar →', 'Continuar a viagem →': 'Continuar →', 'Lançar a garrafa →': 'Lançar →', 'Painel da facilitação': 'Painel', 'Navegar de novo': 'Recomeçar', '← Voltar': '←' };
+const lbl = (l, s = SHORT[l]) => s ? `<span class="lg">${l}</span><span class="sh">${s}</span>` : l;
 function dock() {
   const nav = SCR && SCR.nav ? SCR.nav() : {};
   const p = [];
   p.push(`<button class="dbtn icon ${Sound.on ? 'on' : ''}" data-a="sound" title="${Sound.on ? 'Desligar o som do mar' : 'Ligar o som do mar'}" aria-label="Som do mar">${Sound.on ? ICON.sndOn : ICON.sndOff}</button>`);
   if (nav.hint) p.push(`<span class="hint">${nav.hint}</span>`);
-  (nav.alt || []).forEach(b => p.push(`<button class="dbtn ${b.cls || 'ghost'}" data-a="${b.a}">${b.label}</button>`));
-  if (nav.back) p.push('<button class="dbtn" data-a="back">← Voltar</button>');
+  (nav.alt || []).forEach(b => p.push(`<button class="dbtn ${b.cls || 'ghost'}" data-a="${b.a}">${lbl(b.label, b.short)}</button>`));
+  if (nav.back) p.push(`<button class="dbtn" data-a="back" aria-label="Voltar">${lbl('← Voltar')}</button>`);
   const k = DEC.indexOf(stepId()); if (k >= 0) p.push(`<span class="count">${k + 1} / ${DEC.length}</span>`); else if (stepId() === 'rx_treino') p.push('<span class="count">Treino</span>');
-  if (nav.next) p.push(`<button class="dbtn go ${nav.next.ok ? 'ready' : ''}" data-a="${nav.next.a || 'next'}" ${nav.next.ok ? '' : 'disabled'}>${nav.next.label}</button>`);
+  if (nav.next) p.push(`<button class="dbtn go ${nav.next.ok ? 'ready' : ''}" data-a="${nav.next.a || 'next'}" ${nav.next.ok ? '' : 'disabled'}>${lbl(nav.next.label)}</button>`);
   $('#ctrls').innerHTML = p.join('');
 }
 
@@ -1523,7 +1534,7 @@ function compassSvg(needles, opt = {}) {
 function contratoTxt(v) { return v <= 10 ? 'Tudo fixo, sem risco' : v < 45 ? `${100 - v}% para o fixo` : v <= 55 ? 'Meio a meio' : v < 90 ? `${v}% para o resultado` : 'Tudo no resultado'; }
 function roupaTxt(n) { return n <= 17 ? 'só o essencial' : n <= 26 ? 'enxuto: poucas e boas escolhas' : n <= 33 ? 'quase como hoje' : 'mais que hoje'; }
 const ey = (...parts) => `<div class="eyebrow" data-in>${parts.join('<span class="sep">·</span>')}</div>`;
-const dtsLine = t => `<p class="dts" data-in><b>No DTS</b>${t}</p>`;
+const dtsLine = t => `<p class="dts" data-in><b>Em DTS</b>${t}</p>`;
 function splitChars(text, start = 0) {
   let i = start;
   const html = text.split(' ').map(w => `<span style="display:inline-block;white-space:nowrap">${[...w].map(ch => `<span class="ch" style="--c:${i++}">${esc(ch)}</span>`).join('')}</span>`).join(' ');
@@ -1574,7 +1585,7 @@ SCREENS.rx_intro = {
       <div class="ticks" data-in>
         <div class="tick">${ICON.hand}<span><b>Toque na bandeira</b>, deslize o cartão ou use as setas <span class="kbd">←</span> <span class="kbd">→</span>.</span></div>
         <div class="tick">${ICON.bolt}<span>Se o timão zerar, <b>cai um relâmpago</b> e conta como hesitação.</span></div>
-        <div class="tick">${ICON.anchor}<span><b>Não dá para voltar.</b> É de propósito.</span></div>
+        <div class="tick">${ICON.anchor}<span><b>Dá para voltar</b> se precisar, mas vale o primeiro instinto.</span></div>
       </div>
       <p class="note" data-in>Primeiro uma fácil, só para pegar o jeito.</p>
     </div>
@@ -1586,6 +1597,7 @@ SCREENS.rx_intro = {
   nav() { return { back: true, next: { label: 'Içar as velas →', ok: true } }; }
 };
 function rxHtml(r, n, treino) {
+  const prevA = treino ? S.a.treino : S.a.rx[r.id], ps = prevA && prevA.side;
   const buoys = REFLEX.map(x => { const v = S.a.rx[x.id]; const cls = !treino && x.id === r.id ? 'cur' : v ? (v.side == null ? 'hes' : 'done') : ''; return `<i class="${cls}"></i>`; }).join('');
   return `<div class="rx-top" data-in>
       <div class="eyebrow">${treino ? 'Treino <span class="sep">·</span> para pegar o jeito' : `Mar aberto <span class="sep">·</span> <b>${n} de 8</b> <span class="sep">·</span> ${esc(r.tema)}`}</div>
@@ -1593,17 +1605,22 @@ function rxHtml(r, n, treino) {
     </div>
     <h2 class="q rx-q" data-in>${esc(r.q)}</h2>
     <div class="flags" id="flags" data-in>
-      <button class="flag l" data-a="rx" data-side="L"><span class="pen"><i></i><i></i><i></i></span><span class="sd"><span class="kbd">←</span> esquerda</span><span class="t">${esc(r.L)}</span></button>
+      <button class="flag l ${ps === 'L' ? 'prev' : ''}" data-a="rx" data-side="L"><span class="pen"><i></i><i></i><i></i></span><span class="sd"><span class="kbd">←</span> esquerda</span><span class="t">${esc(r.L)}</span></button>
       <span class="or">ou</span>
-      <button class="flag r" data-a="rx" data-side="R"><span class="pen"><i></i><i></i><i></i></span><span class="sd">direita <span class="kbd">→</span></span><span class="t">${esc(r.R)}</span></button>
+      <button class="flag r ${ps === 'R' ? 'prev' : ''}" data-a="rx" data-side="R"><span class="pen"><i></i><i></i><i></i></span><span class="sd">direita <span class="kbd">→</span></span><span class="t">${esc(r.R)}</span></button>
     </div>
-    <div class="rx-foot" data-in><p class="dts">${treino ? esc(r.dts) : '<b>No DTS</b>' + esc(r.dts)}</p></div>
+    <div class="rx-foot" data-in><p class="dts">${treino ? esc(r.dts) : '<b>Em DTS</b>' + esc(r.dts)}</p></div>
     <div class="helm" id="helm" aria-label="Tempo restante">${helmSvg()}<b id="tnum">6</b></div>
     <div class="rx-pop" id="rxpop" aria-live="assertive"></div>`;
 }
 const TREINO = { id: 'treino', tema: 'para pegar o jeito', q: 'Vela ou motor?', L: 'Vela', R: 'Motor', dts: 'Esta não conta. É só o treino.' };
-SCREENS.rx_treino = { layout: 'rx', html: () => rxHtml(TREINO, 0, true), mount() { startReflex(true); }, nav: () => ({ hint: 'toque, deslize ou use <kbd>←</kbd> <kbd>→</kbd>' }) };
-SCREENS.rx = { layout: 'rx', html() { const r = STEPS[S.step].rx; return rxHtml(r, REFLEX.indexOf(r) + 1, false); }, mount() { startReflex(false); }, nav: () => ({ hint: 'toque, deslize ou use <kbd>←</kbd> <kbd>→</kbd>' }) };
+function rxNav(treino) {
+  const r = STEPS[S.step].rx, prev = treino ? S.a.treino : r && S.a.rx[r.id];
+  const had = prev && (prev.side != null || prev.hesitou);
+  return { back: true, hint: 'toque, deslize ou use <kbd>←</kbd> <kbd>→</kbd>', next: had ? { a: 'keep', label: 'Manter e seguir →', ok: true } : null };
+}
+SCREENS.rx_treino = { layout: 'rx', html: () => rxHtml(TREINO, 0, true), mount() { startReflex(true); }, nav: () => rxNav(true) };
+SCREENS.rx = { layout: 'rx', html() { const r = STEPS[S.step].rx; return rxHtml(r, REFLEX.indexOf(r) + 1, false); }, mount() { startReflex(false); }, nav: () => rxNav(false) };
 
 let rxRAF = null, rxStart = 0, rxLocked = false, rxSec = 7;
 function stopReflex() { if (rxRAF) cancelAnimationFrame(rxRAF); rxRAF = null; stage.classList.remove('pressure'); }
@@ -1634,7 +1651,11 @@ function answerReflex(side, treino) {
   if (rxLocked) return; rxLocked = true;
   const ms = Math.max(0, Math.round(performance.now() - rxStart)); stopReflex();
   const r = STEPS[S.step].rx;
-  if (treino) S.a.treino = { side, ms }; else S.a.rx[r.id] = { side, ms, hesitou: false };
+  if (treino) S.a.treino = { side, ms };
+  else {
+    const prev = S.a.rx[r.id], first = prev ? (prev.primeira || { side: prev.side, ms: prev.ms, hesitou: !!prev.hesitou }) : null;
+    S.a.rx[r.id] = first ? { side, ms, hesitou: false, revisto: first.side !== side, primeira: first } : { side, ms, hesitou: false };
+  }
   const tok = navToken; save(); Sound.bell(); steer(side); miniCompass();
   $$('.flag').forEach(b => b.classList.add(b.dataset.side === side ? 'pick' : 'fade'));
   const cur = $('.buoys i.cur'); if (cur) { cur.classList.remove('cur'); cur.classList.add('done'); }
@@ -1643,13 +1664,14 @@ function answerReflex(side, treino) {
 }
 function timeoutReflex(treino) {
   if (rxLocked) return; rxLocked = true; stopReflex();
-  const r = STEPS[S.step].rx;
-  if (treino) S.a.treino = { side: null, ms: null }; else if (r) S.a.rx[r.id] = { side: null, ms: null, hesitou: true };
-  const tok = navToken; save(); lightning(true); sharkFin();
+  const r = STEPS[S.step].rx, prev = treino ? S.a.treino : r && S.a.rx[r.id], keep = !!(prev && prev.side != null);
+  if (!keep) { if (treino) S.a.treino = { side: null, ms: null }; else if (r) S.a.rx[r.id] = { side: null, ms: null, hesitou: true }; }
+  const tok = navToken; save(); if (keep) { const f = $('#flash'); f.classList.add('soft'); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); } else { lightning(true); sharkFin(); }
   const helm = $('#helm'); if (helm) helm.classList.add('out');
   const flags = $('#flags'); if (flags) flags.classList.add('shake');
-  const cur = $('.buoys i.cur'); if (cur) { cur.classList.remove('cur'); cur.classList.add('hes'); }
-  const pop = $('#rxpop'); if (pop) { pop.innerHTML = `Relâmpago!<small>${treino ? 'O timão zerou. Nas próximas, isso conta como hesitação.' : 'Quem hesita vira isca. Conta como hesitação.'}</small>`; pop.classList.add('on'); }
+  const cur = $('.buoys i.cur'); if (cur) { cur.classList.remove('cur'); cur.classList.add(keep ? 'done' : 'hes'); }
+  const pop = $('#rxpop'); if (pop && keep) { pop.innerHTML = 'Tempo esgotado<small>Mantivemos a sua resposta anterior.</small>'; pop.classList.add('on'); }
+  else if (pop) { pop.innerHTML = `Relâmpago!<small>${treino ? 'O timão zerou. Nas próximas, isso conta como hesitação.' : 'Quem hesita vira isca. Conta como hesitação.'}</small>`; pop.classList.add('on'); }
   setTimeout(() => { if (tok === navToken) go(S.step + 1, { fast: true }); }, treino ? 1900 : 1600);
 }
 
@@ -1666,7 +1688,7 @@ SCREENS.rota = {
     <div class="col r" data-in><div class="chart map"><span class="tag">Carta náutica · 2027</span><div id="mapsvg">${mapSvg()}</div><div class="cap" id="mapcap">${mapCap()}</div></div></div>`;
   },
   update() { $$('.opt', app).forEach(b => b.classList.toggle('on', b.dataset.id === S.a.rota)); $('#mapsvg').innerHTML = mapSvg(); $('#mapcap').innerHTML = mapCap(); },
-  nav() { return { next: { label: 'Seguir viagem →', ok: !!S.a.rota } }; }
+  nav() { return { back: true, next: { label: 'Seguir viagem →', ok: !!S.a.rota } }; }
 };
 function mapCap() {
   const o = ROTAS.find(r => r.id === S.a.rota);
@@ -1836,7 +1858,7 @@ SCREENS.prio = {
   html() {
     return `<div class="col">
       ${ey('Ato IV', 'Manobra 14', '<b>O diário de bordo</b>')}
-      <h2 class="q" data-in>2027: um CFO indica o DTS a outro CFO. Pelo quê, <em>primeiro</em>?</h2>
+      <h2 class="q" data-in>2027: um CFO indica DTS a outro CFO. Pelo quê, <em>primeiro</em>?</h2>
       <p class="small" data-in>Toque nas frases na ordem em que você quer ser lembrado. Toque de novo para tirar.</p>
       ${dtsLine('a reputação que passa de um CFO para outro.')}
     </div>
@@ -1872,7 +1894,7 @@ SCREENS.roupa = {
     const n = S.a.roupa.n;
     return `<div class="col">
       ${ey('Ato IV', 'Manobra 15', '<b>O lastro</b>')}
-      <h2 class="q" data-in>Hoje o navio leva 33 produtos no catálogo. Com quantos o DTS zarpa em 2027?</h2>
+      <h2 class="q" data-in>Hoje o navio leva 33 produtos no catálogo. Com quantos produtos DTS zarpa em 2027?</h2>
       <p class="note" data-in>Navio pesado demais não ganha velocidade; leve demais, não aguenta o mar.</p>
       <div class="bignum" data-in><b id="rN">${n}</b><span id="rT">${roupaTxt(n)}</span></div>
       <div data-in><input class="helmslider" type="range" min="10" max="40" step="1" value="${n}" data-a="roupa" aria-label="Quantidade de produtos no catálogo de 2027"><div class="dark-ends"><span><b>10</b>só o essencial</span><span><b>40</b>tudo e mais um pouco</span></div></div>
@@ -1917,7 +1939,7 @@ SCREENS.espelho = {
     const pos = { A: 10, B: 90, C: 40 };
     return `<div class="col">
       ${ey('Ato V', 'Manobra 17', '<b>O farol</b>', 'sem relógio')}
-      <h2 class="q" data-in>Agora com calma, à luz do farol. Que consultoria o DTS quer ser? Aquela que…</h2>
+      <h2 class="q" data-in>Agora com calma, à luz do farol. Que consultoria DTS quer ser? Aquela que…</h2>
       <p class="note" data-in>No mar, há o resgate que chega na tempestade e há o prático que guia o navio longe das pedras.</p>
       <div class="opts" data-in id="espOpts">${ESPELHO.map(o => `<button class="opt ${S.a.espelho === o.id ? 'on lit' : ''}" data-a="espelho" data-id="${o.id}"><span class="k"><span>${o.id}</span></span><span><span class="mar">${o.mar}</span><b>${o.txt}</b><span class="s">${o.sub}</span></span></button>`).join('')}</div>
       <div class="axis" data-in aria-hidden="true"><div class="ln"></div>${ESPELHO.map(o => `<span class="tk ${S.a.espelho === o.id ? 'on' : ''}" data-id="${o.id}" style="left:${pos[o.id]}%">${o.id}</span>`).join('')}<span class="e">CFO · quando a TI falhou</span><span class="e r">CIO · para não falhar</span></div>
@@ -1949,10 +1971,10 @@ SCREENS.frase = {
   html() {
     return `<div class="col">
       ${ey('Ato VI', 'Manobra 18', '<b>A garrafa ao mar</b>', 'opcional')}
-      <h2 class="q" data-in>Complete: “Em 2027, o cliente liga para o DTS quando…”</h2>
+      <h2 class="q" data-in>Complete: “Em 2027, o cliente liga para DTS quando…”</h2>
       <p class="lede" data-in>Escreva como contaria a um amigo. A mensagem segue na garrafa para a facilitação.</p>
     </div>
-    <div class="col r" data-in><div class="note-paper" id="notep"><div class="to">Em 2027, o cliente liga para o DTS quando…</div><textarea id="frase" maxlength="140" rows="3" placeholder="escreva aqui">${esc(S.a.frase)}</textarea><div class="cnt" id="fcnt">${S.a.frase.length}/140</div><div class="bottle" id="bottle">${BOTTLE}</div></div></div>`;
+    <div class="col r" data-in><div class="note-paper" id="notep"><div class="to">Em 2027, o cliente liga para DTS quando…</div><textarea id="frase" maxlength="140" rows="3" placeholder="escreva aqui">${esc(S.a.frase)}</textarea><div class="cnt" id="fcnt">${S.a.frase.length}/140</div><div class="bottle" id="bottle">${BOTTLE}</div></div></div>`;
   },
   mount() { const t = $('#frase'); if (t && matchMedia('(pointer:fine)').matches) setTimeout(() => t.focus({ preventScroll: true }), 700); },
   nav() { return { back: true, alt: [{ a: 'skip', label: 'Pular' }], next: { a: 'finish', label: 'Lançar a garrafa →', ok: true } }; }
@@ -2013,7 +2035,7 @@ SCREENS.final = {
       el.innerHTML = st.pending ? `<span class="dot ${st.lastErr ? 'err' : 'wait'}"></span>${st.lastErr ? 'Tentando enviar à facilitação: ' + esc(st.lastErr) : 'Enviando à facilitação…'}` : '<span class="dot ok"></span>Enviado à facilitação. No encontro, sua agulha entra no mostrador do time, ao lado da rota do planejamento.'; };
     Sync.on(paint); paint(Sync.status());
   },
-  nav() { return { alt: [{ a: 'reset', label: 'Navegar de novo' }, { a: 'replay', label: ICON.replay + ' Ver de novo', cls: '' }], hint: 'pode fechar esta página' }; }
+  nav() { return { back: true, alt: [{ a: 'reset', label: 'Navegar de novo' }, { a: 'replay', label: ICON.replay + ' Ver de novo', short: ICON.replay, cls: '' }], hint: 'pode fechar esta página' }; }
 };
 function dilemaTxt(v) { return v < 42 ? 'No dilema, você puxa para o <b>resgate na tempestade</b>: a consultoria que o CFO chama quando a TI falhou.' : v > 58 ? 'No dilema, você puxa para o <b>prático do canal</b>: a consultoria que o CIO chama para não falhar.' : 'No dilema, você fica no meio: <b>entra no resgate e fica a bordo</b>, para o cliente não falhar de novo.'; }
 function countUp(el) {
@@ -2043,7 +2065,8 @@ document.addEventListener('click', e => {
   switch (a) {
     case 'start': startTrip(); break;
     case 'next': if (!busy) next(); break;
-    case 'back': if (!isRxStep()) back(); break;
+    case 'back': if (!busy) back(); break;
+    case 'keep': if (!busy) { rxLocked = true; go(S.step + 1, { fast: true }); } break;
     case 'sound': Sound.setOn(!Sound.on); dock(); break;
     case 'painel': location.search = '?painel'; break;
     case 'reset': if (confirm('Apagar as respostas e começar de novo?')) { S = fresh(); save(); miniAng = null; go(0, { instant: true }); } break;
@@ -2164,7 +2187,7 @@ function painel() {
       const rC = count('rota', 'C'), rA = count('rota', 'A'); if (rC + rA >= n / 2) pautas.push({ t: `${rC + rA} de ${n} não escolheram a rota focada (${rA} mantêm tudo, ${rC} abrem todas as frentes).`, s: 'Testar a tese de foco contra as alternativas antes de validar as âncoras.' });
       const gm = gaps.find(g => g.k === 'PILARES'); if (gm && gm.team < 70) { const m = MESAS.map((x, i) => ({ nome: x.nome, v: mean('mesaP' + (i + 1)) || 0, p: PLAN_MESA[i] })); const big = m.reduce((a, b) => Math.abs(b.v - b.p) > Math.abs(a.v - a.p) ? b : a); pautas.push({ t: `A mesa de investimento do time difere do plano, sobretudo em “${big.nome}” (${Math.round(big.v)} fichas contra ${big.p}).`, s: 'Rever o peso de cada pilar no esforço comercial de FY27.' }); }
       const gr = gaps.find(g => g.k === 'RECEITA'); if (gr && gr.gap <= -20) pautas.push({ t: 'O time ainda prefere o preço fixo ao preço por resultado.', s: `Média ${Math.round(gr.team)} contra ${DIMS.RECEITA.plan}. Discutir cobrança: quanto da receita FY27 vem de contratos por resultado?` });
-      const gi = gaps.find(g => g.k === 'IA'); if (gi && gi.gap <= -25) pautas.push({ t: 'O time vê a IA como frente própria do DTS, não como base dos produtos com Data & IA.', s: 'Alinhar a fronteira com Data & IA antes de falar com clientes.' });
+      const gi = gaps.find(g => g.k === 'IA'); if (gi && gi.gap <= -25) pautas.push({ t: 'O time vê a IA como frente própria de DTS, não como base dos produtos com Data & IA.', s: 'Alinhar a fronteira com Data & IA antes de falar com clientes.' });
       const ga = gaps.find(g => g.k === 'ANCORAS'); if (ga && ga.team < 60) pautas.push({ t: 'As âncoras do núcleo (custo de TI, programas críticos, M&A) não foram a primeira escolha do time.', s: 'Validar as âncoras 1.1, 2.3, 2.7 e 3.2–3.4, ou trocá-las.' });
       const gc = gaps.find(g => g.k === 'CONSOL'); if (gc && gc.team < 60) pautas.push({ t: `O time entra em 2027 com ${Math.round(mean('produtos2027'))} produtos em média, contra 23 do plano.`, s: 'Aprovar (ou não) as consolidações de 33 para 23 e o que deixa de ser vendido à parte.' });
       const hes = {}; rows.forEach(r => { try { const st = JSON.parse(r.estado || '{}'); (st.result && st.result.hesTemas || []).forEach(t => hes[t] = (hes[t] || 0) + 1); } catch (e) { } });
@@ -2177,7 +2200,7 @@ function painel() {
     const tel = CALLS.map(c => ({ c, at: rows.filter(r => (r.atendeu || '').split(' > ').includes(c.id)).length, first: rows.filter(r => (r.atendeu || '').split(' > ')[0] === c.id).length, postal: rows.filter(r => r.caixaPostal === c.id).length })).sort((a, b) => b.at - a.at);
     const esp = ESPELHO.map(e => ({ e, n: count('espelho', e.id) }));
     const rot = ROTAS.map(r => ({ r, n: count('rota', r.id) }));
-    const frases = rows.filter(r => r.frase).map(r => `<div>“Em 2027, o cliente liga para o DTS quando ${esc(r.frase)}”<small>${esc(r.nome)}</small></div>`).join('');
+    const frases = rows.filter(r => r.frase).map(r => `<div>“Em 2027, o cliente liga para DTS quando ${esc(r.frase)}”<small>${esc(r.nome)}</small></div>`).join('');
     const durMed = n ? mean('duracaoSeg') : null;
     const pages = [
       ['Fonte', `<div class="eyebrow">Alvarez &amp; Marsal · DTS · Planejamento FY27 · painel da facilitação</div>
@@ -2209,10 +2232,10 @@ function painel() {
           <div class="pcard"><h2>O rádio de bordo: quem o time atende primeiro</h2><table class="tbl"><thead><tr><th>Chamado</th><th class="num">Atendido</th><th class="num">1º</th><th class="num">Sem resposta</th></tr></thead><tbody>${tel.map(x => `<tr><td><b>${x.c.quem}</b> “${x.c.txt}” <span class="small">${x.c.core ? 'âncora do núcleo' : x.c.neg ? 'o plano deixa de vender à parte' : x.c.exp ? 'expansão' : x.c.cand ? 'oferta candidata' : 'prevenção com o CIO'}</span></td><td class="num">${x.at}</td><td class="num">${x.first}</td><td class="num">${x.postal}</td></tr>`).join('')}</tbody></table></div>
           <div class="pcard"><h2>Reflexo, hesitação e convicção</h2>
             <div class="kpis light"><div class="kpi hi"><div class="l">Reflexo médio</div><div class="v">${n ? fmt1(mean('velocidadeMed') || 0) + ' s' : '—'}</div><div class="d">por decisão de 6 s</div></div><div class="kpi"><div class="l">Hesitações</div><div class="v">${n ? rows.reduce((s, r) => s + (r.hesitacoes || 0), 0) : '—'}</div><div class="d">em ${n * 8} decisões</div></div><div class="kpi"><div class="l">Coerência</div><div class="v">${n ? Math.round(mean('coerencia')) + '%' : '—'}</div><div class="d">instinto × reflexão</div></div><div class="kpi"><div class="l">Aderência</div><div class="v">${n ? Math.round(mean('aderencia')) : '—'}</div><div class="d">média, de 100</div></div></div>
-            <table class="tbl" style="margin-top:.8em"><thead><tr><th>Nome</th><th>Arquétipo</th><th class="num">Ader.</th><th class="num">Reflexo</th><th class="num">Hesit.</th><th class="num">Coer.</th><th class="num">Tempo</th></tr></thead><tbody>${[...rows].sort((a, b) => (b.aderencia || 0) - (a.aderencia || 0)).map(r => `<tr><td>${esc(r.nome)}</td><td>${esc(r.arquetipo)}</td><td class="num">${r.aderencia ?? '—'}</td><td class="num">${r.velocidadeMed == null ? '—' : fmt1(r.velocidadeMed) + ' s'}</td><td class="num">${r.hesitacoes ?? '—'}</td><td class="num">${r.coerencia ?? '—'}%</td><td class="num">${r.duracaoSeg == null ? '—' : Math.floor(r.duracaoSeg / 60) + ':' + String(r.duracaoSeg % 60).padStart(2, '0')}</td></tr>`).join('')}</tbody></table>
+            <table class="tbl" style="margin-top:.8em"><thead><tr><th>Nome</th><th>Arquétipo</th><th class="num">Ader.</th><th class="num">Reflexo</th><th class="num">Hesit.</th><th class="num">Rev.</th><th class="num">Coer.</th><th class="num">Tempo</th></tr></thead><tbody>${[...rows].sort((a, b) => (b.aderencia || 0) - (a.aderencia || 0)).map(r => `<tr><td>${esc(r.nome)}</td><td>${esc(r.arquetipo)}</td><td class="num">${r.aderencia ?? '—'}</td><td class="num">${r.velocidadeMed == null ? '—' : fmt1(r.velocidadeMed) + ' s'}</td><td class="num">${r.hesitacoes ?? '—'}</td><td class="num">${r.revisoes || 0}</td><td class="num">${r.coerencia ?? '—'}%</td><td class="num">${r.duracaoSeg == null ? '—' : Math.floor(r.duracaoSeg / 60) + ':' + String(r.duracaoSeg % 60).padStart(2, '0')}</td></tr>`).join('')}</tbody></table>
           </div>
         </div>`],
-      ['Garrafas', `<h2>“Em 2027, o cliente liga para o DTS quando…”</h2>${frases ? `<div class="frases">${frases}</div>` : '<p class="lede">Nenhuma mensagem na garrafa ainda.</p>'}
+      ['Garrafas', `<h2>“Em 2027, o cliente liga para DTS quando…”</h2>${frases ? `<div class="frases">${frases}</div>` : '<p class="lede">Nenhuma mensagem na garrafa ainda.</p>'}
         <p class="foot">Como ler: cada dimensão vai de 0 a 100; a posição do planejamento FY27 vem do material de planejamento (proposta DTS, a validar com os sócios). A aderência é a distância média ponderada entre as respostas e essa posição; serve para abrir a conversa, não para dar nota. Reflexo: mediana do tempo de resposta nas oito decisões de 6 segundos. Coerência: quanto o instinto (reflexos) e a reflexão (rota, farol, pergunta de IA) apontam para o mesmo lado.</p>`]
     ];
     PAGES = pages.map(p => p[0]); pIdx = Math.min(pIdx, PAGES.length - 1);
