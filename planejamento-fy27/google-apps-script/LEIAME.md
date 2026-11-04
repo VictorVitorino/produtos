@@ -46,12 +46,13 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 **Ao vivo, na abertura do dia (recomendado para a "dinâmica inicial").**
 1. Projete o link ou um QR code. Todos respondem no celular: 7 minutos.
 2. Enquanto respondem, abra no projetor `bussola-dts-2027.html?painel` e clique em **Ler a planilha ao vivo**. O painel atualiza sozinho a cada 30 segundos; as agulhas vão aparecendo.
-3. Leitura sugerida (10 minutos):
-   - *Para onde o time aponta*: a seta laranja é o planejamento; as azuis, cada diretor; a tracejada, a média.
-   - *O dilema CFO × CIO*: quem está de cada lado e o que o "espelho" diz quando a pessoa pensa com calma.
-   - *Pautas sugeridas*: o painel escreve onde o time diverge do plano e onde hesitou; é a pauta da plenária.
-   - *Mesa de investimento* e *mostradores*: onde o esforço comercial e o modelo de receita do time diferem do plano.
-4. **Copiar resumo** cola um texto com todos os números; **Imprimir / PDF** gera o material para o PPT.
+3. O painel tem sete páginas, no mesmo enquadramento da dinâmica. Navegue pelas abas da barra de baixo ou pelas setas do teclado. Leitura sugerida (10 minutos):
+   - *Direção*: para onde o time aponta. A seta laranja é o planejamento; as azuis, cada diretor; a tracejada, a média.
+   - *Dilema*: o dilema CFO × CIO. Mostra quem está de cada lado e o que cada um respondeu no farol, quando pensou com calma.
+   - *Pautas*: o painel escreve onde o time diverge do plano e onde hesitou. É a pauta da plenária.
+   - *Mesa*: o porão (onde o esforço comercial vai) e os mostradores (receita, entrega, IA, fábrica e o restante), ao lado do plano.
+   - *Reflexos* e *Garrafas*: quem o time atende primeiro no rádio, a velocidade, as hesitações e as mensagens na garrafa.
+4. **Copiar resumo** cola um texto com todos os números. **Imprimir / PDF** gera uma página por tela, para levar ao PPT.
 
 ## 5. O que o painel mede
 
@@ -60,10 +61,10 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 | Eixo esquerda–direita | Porta de entrada: 0 = o CFO chama quando a TI falhou; 100 = o CIO chama para não falhar. O planejamento está em 40 (entrar pela dor que o CIO já tem e ficar). |
 | Eixo norte–sul | Foco do portfólio: 100 = núcleo forte, 0 = abrir frentes. Planejamento em 80. |
 | Mostradores | Receita (hora × resultado), entrega (relatório × produto), IA (prática própria × dentro dos produtos com Data & IA), fábrica × parceiros, âncoras, consolidação, pessoas. |
-| Mesa de investimento | 100 fichas por pilar, contra 25 · 35 · 25 · 10 · 5 do plano. |
+| Mesa de investimento (o porão) | 100 caixas distribuídas pelos pilares, contra 25 · 35 · 25 · 10 · 5 do plano. |
 | Aderência | Distância média ponderada entre as respostas e a posição do plano (0–100). Serve para abrir a conversa, não para dar nota. Por padrão o participante não vê. |
 | Reflexo | Mediana do tempo nas 8 decisões de 6 segundos. Hesitação = o relógio zerou. |
-| Coerência | Quanto o instinto (reflexos) e a reflexão (rota, espelho, pergunta de IA) apontam para o mesmo lado. |
+| Coerência | Quanto o instinto (reflexos) e a reflexão (carta náutica, farol, sonar de IA) apontam para o mesmo lado. |
 | Convicção | Metade reflexo, metade coerência. Define o tamanho da agulha de cada pessoa. |
 
 As posições do planejamento estão no início do script do HTML (`DIMS` e `PLAN_MESA`). Se o plano mudar, é ali que se ajusta.
