@@ -1443,7 +1443,10 @@ function fresh() {
 }
 let S;
 try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); S = d && d.v === VERSION ? d : fresh(); } catch (e) { S = fresh(); }
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* sem armazenamento */ } };
+let liveT = null;
+// Cada resposta gravada vai para a planilha em até 1 s (a linha da pessoa é atualizada; "em andamento" até concluir).
+function liveSoon() { if (!S.nome || (typeof PAINEL !== 'undefined' && PAINEL)) return; clearTimeout(liveT); liveT = setTimeout(() => { try { if (S.nome) Sync.put(buildRow()); } catch (e) { } }, 700); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* sem armazenamento */ } liveSoon(); };
 const stepId = () => STEPS[S.step].id;
 
 /* ===================================================================== */
@@ -1569,7 +1572,7 @@ const Sync = (() => {
     const item = box.pending.find(i => i.nextAt <= Date.now()); if (!item) { schedule(); return; }
     busy = true; notify();
     try { await post(url(), item.body); box.pending = box.pending.filter(i => i !== item); box.sent[item.key] = item.fp; box.lastOk = new Date().toISOString(); box.lastErr = null; }
-    catch (e) { item.tries++; item.nextAt = Date.now() + Math.min(MAXR, RETRY * Math.pow(2, item.tries - 1)); box.lastErr = e instanceof TypeError ? 'Sem conexão com a planilha (internet fora do ar ou rede bloqueando o Google).' : e.message; }
+    catch (e) { item.tries++; item.nextAt = Date.now() + Math.min(MAXR, RETRY * Math.pow(2, item.tries - 1)); box.lastErr = e instanceof TypeError ? 'Sem conexão com a planilha.' : e.message; }
     busy = false; write(); notify(); if (box.pending.length) schedule();
   }
   function schedule() { clearTimeout(timer); if (!box.pending.length || !url()) return; timer = setTimeout(flush, Math.max(0, Math.min(...box.pending.map(i => i.nextAt)) - Date.now())); }
@@ -1591,6 +1594,7 @@ function buildRow() {
   REFLEX.forEach(x => { const v = a.rx[x.id] || {}; row[x.id] = v.side == null ? 'hesitou' : v.side === 'L' ? x.L : x.R; row[x.id + '_ms'] = v.ms == null ? '' : v.ms; });
   row.revisoes = REFLEX.filter(x => (a.rx[x.id] || {}).revisto).length;
   row.cargo = S.cargo || '';
+  row.status = S.finishedAt ? 'concluída' : 'em andamento'; row.etapa = (STEPS[S.step] || {}).id || ''; row.progresso = Math.max(0, Math.round((DEC.indexOf(row.etapa) + 1) / DEC.length * 100));
   const pp = a.papel || { hoje: [], ideal: null }, cc = a.casco || [], ch = a.chama || {};
   PAPEIS.forEach((x, i) => { row['hoje_' + x.id] = pp.hoje[i] == null ? '' : pp.hoje[i]; row['ideal_' + x.id] = pp.ideal ? pp.ideal[i] : ''; });
   CASCO.forEach((x, i) => { row['casco_' + x.id] = cc[i] == null ? '' : cc[i]; });
@@ -2645,7 +2649,7 @@ SCREENS.final = {
     const fb = '<span class="fb"><button type="button" data-a="copiar-resp">Copiar minhas respostas</button><button type="button" data-a="baixar-resp">Baixar arquivo</button></span>';
     const paint = st => { if (!el || !el.isConnected) return; const hint = $('#ctrls .hint');
       if (!st.enabled) { el.innerHTML = '<span class="dot"></span>Guardada só neste navegador (arquivo sem link da planilha):' + fb; if (hint) hint.textContent = 'envie as respostas à facilitação'; return; }
-      if (st.pending) { el.innerHTML = `<span class="dot ${st.lastErr ? 'err' : 'wait'}"></span>${st.lastErr ? 'Ainda não chegou à facilitação. ' + esc(st.lastErr) + ' Tento de novo sozinho; mantenha esta página aberta. Plano B:' + fb : 'Enviando à facilitação…'}`; if (hint) hint.textContent = 'aguarde o envio'; return; }
+      if (st.pending) { el.innerHTML = `<span class="dot ${st.lastErr ? 'err' : 'wait'}"></span>${st.lastErr ? 'Ainda não chegou à facilitação. ' + esc(st.lastErr) + ' Tento de novo sozinho. Plano B:' + fb : 'Enviando à facilitação…'}`; if (hint) hint.textContent = 'aguarde o envio'; return; }
       el.innerHTML = '<span class="dot ok"></span>Carta enviada à facilitação. No encontro, sua agulha entra no mostrador do time.'; if (hint) hint.textContent = 'pode fechar esta página'; };
     Sync.on(paint); paint(Sync.status());
   },
@@ -2769,7 +2773,8 @@ document.addEventListener('input', e => {
   if (el.id === 'frase') { const c = $('#fcnt'); if (c) c.textContent = el.value.length + '/140'; }
   if (el.classList && el.classList.contains('nmi')) chamadoInput(el);
 });
-document.addEventListener('change', e => { if (e.target.dataset && e.target.dataset.a === 'contrato') miniCompass(); });
+document.addEventListener('change', e => {
+  if (e.target && e.target.id === 'nome' && !PAINEL) { const v = e.target.value.trim(); if (v && v !== S.nome) { S.nome = v; save(); } } if (e.target.dataset && e.target.dataset.a === 'contrato') miniCompass(); });
 document.addEventListener('keydown', e => {
   if (PAINEL) return;
   if ($('#askbox.on')) { if (e.key === 'Escape') { e.preventDefault(); closeRestart(); } return; }
@@ -2810,7 +2815,7 @@ function painel() {
   const safeNum = v => (v === '' || v == null || isNaN(+v)) ? null : +v;
   // se alguém recomeçar e responder de novo, vale a bússola mais recente de cada nome
   const ultimaPorNome = rs => { const m = new Map(), t = x => Date.parse(x.atualizadoEm || x.concluidoEm || '') || 0; rs.forEach(r => { const k = normName(r.nome), o = m.get(k); if (!o || t(r) >= t(o)) m.set(k, r); }); return [...m.values()]; };
-  const normalize = rs => ultimaPorNome(rs.map(r => { const o = { ...r }; ['aderencia', 'angulo', 'x', 'y', 'opiniaoFormada', ...PAPEIS.flatMap(x => ['hoje_' + x.id, 'ideal_' + x.id]), ...CASCO.map(x => 'casco_' + x.id), 'velocidadeMed', 'hesitacoes', 'coerencia', 'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL', 'ventoVenda', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'contrato', 'produtos2027', 'duracaoSeg'].forEach(k => o[k] = safeNum(o[k])); return o; }).filter(r => r.nome && r.PORTA != null));
+  const normalize = rs => ultimaPorNome(rs.map(r => { const o = { ...r }; ['aderencia', 'angulo', 'x', 'y', 'opiniaoFormada', ...PAPEIS.flatMap(x => ['hoje_' + x.id, 'ideal_' + x.id]), ...CASCO.map(x => 'casco_' + x.id), 'velocidadeMed', 'hesitacoes', 'coerencia', 'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL', 'ventoVenda', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'contrato', 'produtos2027', 'duracaoSeg'].forEach(k => o[k] = safeNum(o[k])); return o; }).filter(r => r.nome && r.PORTA != null && r.status !== 'em andamento'));
   function parseCsv(txt) {
     const rows = []; let row = [], cur = '', q = false;
     for (let i = 0; i < txt.length; i++) { const ch = txt[i]; if (q) { if (ch === '"') { if (txt[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
@@ -2862,7 +2867,9 @@ function painel() {
     if (!data || !Array.isArray(data.linhas)) throw new Error((data && data.erro) || 'resposta inesperada');
     return data.linhas;
   }
-  function setRows(rs, f) { rows = normalize(rs); fonte = f; draw(); }
+  let andamento = [], sig = '';
+  const assin = rs => JSON.stringify(rs.map(r => [r.sessionId, r.status, r.etapa, r.atualizadoEm]));
+  function setRows(rs, f) { rows = normalize(rs); andamento = ultimaPorNome(rs).filter(r => r.nome && r.status === 'em andamento'); fonte = f; draw(); }
   function draw() {
     const n = rows.length; const ph = planHeading();
     const mean = k => n ? avg(rows.map(r => r[k]).filter(v => v != null)) : null;
@@ -2941,6 +2948,7 @@ function painel() {
       ['Fonte', `<div class="eyebrow">Alvarez &amp; Marsal · DTS · Planejamento FY27 · painel da facilitação</div>
         <h1>Bússola DTS 2027 · o time</h1><div class="rule"></div>
         <p class="lede">${n ? `${n} bússola${n > 1 ? 's' : ''} no mostrador. Nas próximas páginas: para onde o time aponta, o dilema CFO × CIO, as pautas para a agenda presencial e o detalhe de cada manobra.` : 'Nenhuma resposta carregada ainda. Escolha abaixo de onde vêm as respostas.'} ${fonte ? `<span class="small">Fonte: ${esc(fonte)}</span>` : ''}</p>
+        ${andamento.length ? `<p class="small">Respondendo agora (${andamento.length}): ${andamento.map(r => esc(r.nome) + (r.progresso != null && r.progresso !== '' ? ' ' + r.progresso + '%' : '')).join(' · ')}</p>` : ''}
         <div class="pstats"><div><b>${n || '—'}</b><span>bússolas</span></div><div><b>${durMed ? Math.floor(durMed / 60) + ':' + String(Math.round(durMed % 60)).padStart(2, '0') : '—'}</b><span>tempo médio</span></div><div><b>${n ? Math.round(mean('aderencia')) : '—'}</b><span>aderência média ao plano</span></div><div><b>${n ? fmt1(mean('velocidadeMed') || 0) + ' s' : '—'}</b><span>reflexo médio</span></div></div>
         <div class="pcard src noprint">
           <div class="eyebrow">De onde vêm as respostas</div>
@@ -3009,7 +3017,7 @@ function painel() {
     el.querySelector('[data-p="ptest"]').onclick = async () => { const m = document.getElementById('srcmsg'); m.textContent = 'Testando…'; const r = await Sync.ping(); m.textContent = r.ok ? `✔ A planilha respondeu (${r.respostas} resposta${r.respostas === 1 ? '' : 's'} guardada${r.respostas === 1 ? '' : 's'}). As respostas dos diretores vão chegar.` : '✘ ' + r.msg; };
     el.querySelector('[data-p="files"]').onclick = () => document.getElementById('pfiles').click();
     document.getElementById('pfiles').onchange = async e => { const m = document.getElementById('srcmsg'); let all = [], ruins = 0; for (const f of e.target.files) { try { all = all.concat(parseAny(await f.text())); } catch (er) { ruins++; } } if (all.length) setRows(juntar(all), 'arquivos de resposta'); document.getElementById('srcmsg').textContent = `${all.length} resposta(s) lida(s)${ruins ? `, ${ruins} arquivo(s) não entendido(s)` : ''}.`; };
-    el.querySelector('[data-p="live"]').onclick = async () => { const m = document.getElementById('srcmsg'); const tk = document.getElementById('ptoken'); if (tk && tk.value.trim()) guardaSenha(tk.value.trim()); m.textContent = 'Lendo a planilha…'; try { setRows(await fetchLive(), 'planilha (ao vivo, atualiza a cada 30 s)'); clearInterval(liveTimer); liveTimer = setInterval(async () => { try { const rs = await fetchLive(); if (rs.length !== rows.length) setRows(rs, 'planilha (ao vivo, atualiza a cada 30 s)'); } catch (e) { } }, 30000); } catch (e) { m.textContent = 'Não deu para ler a planilha: ' + e.message; } };
+    el.querySelector('[data-p="live"]').onclick = async () => { const m = document.getElementById('srcmsg'); const tk = document.getElementById('ptoken'); if (tk && tk.value.trim()) guardaSenha(tk.value.trim()); m.textContent = 'Lendo a planilha…'; try { const rs0 = await fetchLive(); sig = assin(rs0); setRows(rs0, 'planilha (ao vivo, atualiza a cada 10 s)'); clearInterval(liveTimer); liveTimer = setInterval(async () => { try { const rs = await fetchLive(), s2 = assin(rs); if (s2 !== sig) { sig = s2; setRows(rs, 'planilha (ao vivo, atualiza a cada 10 s)'); } } catch (e) { } }, 10000); } catch (e) { m.textContent = 'Não deu para ler a planilha: ' + e.message; } };
     el.querySelector('[data-p="local"]').onclick = () => { const rs = []; try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.finishedAt) { const keep = S; S = d; rs.push(buildRow()); S = keep; } } catch (e) { } setRows(rs, 'este navegador'); if (!rs.length) document.getElementById('srcmsg').textContent = 'Nenhuma resposta concluída neste navegador.'; };
     el.querySelector('[data-p="demo"]').onclick = () => setRows(demo(), 'dados de exemplo (fictícios)');
     el.querySelector('[data-p="print"]').onclick = () => window.print();

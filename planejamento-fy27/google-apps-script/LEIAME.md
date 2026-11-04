@@ -13,6 +13,7 @@ Se mudar o `Codigo.gs` depois de implantado: **Implantar → Gerenciar implanta�
 
 ## 2. O que garante que nenhuma resposta se perde
 
+- **Tempo real:** a linha da pessoa aparece na planilha assim que ela preenche o nome e é atualizada a cada resposta (em até 1 segundo). Fica com `status` "em andamento" até concluir; aí vira "concluída". O painel mostra quem está respondendo agora e só analisa as concluídas, e o Resumo também.
 - O arquivo, aberto de qualquer lugar (link ou baixado), envia a resposta à planilha ao terminar. A tela só diz "enviada" quando a planilha confirma.
 - Sem internet, ou se a planilha recusar, a resposta fica guardada no navegador e é reenviada sozinha; a tela pede para manter a página aberta.
 - Plano B: na tela final aparecem **Copiar minhas respostas** e **Baixar arquivo**. A pessoa manda o texto ou o arquivo para você, e no painel você usa **Abrir arquivos de resposta** (ou cola o texto) para incluí-las.

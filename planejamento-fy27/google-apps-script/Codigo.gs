@@ -14,10 +14,10 @@
 
 var TOKEN = 'troque-por-uma-senha';   // a SENHA DO PAINEL: troque por uma senha sua. Só você a digita, no painel; ela não vai dentro do arquivo dos diretores.
 var SENHA_PADRAO = 'troque-por-uma-senha';   // não mexa: o painel recusa ler enquanto o TOKEN for este texto
-var RESUMO_VERSAO = 'r5';                    // sobe quando o desenho do Resumo muda; aí ele é refeito uma vez
+var RESUMO_VERSAO = 'r6';                    // sobe quando o desenho do Resumo muda; aí ele é refeito uma vez
 var ABA = 'Respostas';
 var COLUNAS = [
-  'sessionId', 'nome', 'email', 'cargo', 'versao', 'iniciadoEm', 'concluidoEm', 'duracaoSeg', 'atualizadoEm', 'ativa',
+  'sessionId', 'nome', 'email', 'cargo', 'versao', 'iniciadoEm', 'concluidoEm', 'duracaoSeg', 'atualizadoEm', 'ativa', 'status', 'etapa', 'progresso',
   'arquetipo', 'aderencia', 'angulo', 'x', 'y', 'opiniaoFormada', 'velocidadeMed', 'hesitacoes', 'revisoes', 'coerencia',
   'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL',
   'rota', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'atendeu', 'caixaPostal', 'contrato', 'ia',
@@ -143,7 +143,7 @@ function resumo_() {
   var resp = aba_(), hdr = resp.getRange(1, 1, 1, Math.max(1, resp.getLastColumn())).getValues()[0];
   var col = function (nome) { var i = hdr.indexOf(nome); if (i < 0) i = COLUNAS.indexOf(nome); return colLetter_(i + 1); }; // pela linha de títulos real da aba
   var faixa = function (k) { return ABA + '!' + col(k) + '2:' + col(k); };
-  var ATV = ',' + faixa('ativa') + ',"<>substituída"';   // só a resposta mais recente de cada pessoa
+  var ATV = ',' + faixa('ativa') + ',"<>substituída",' + faixa('status') + ',"concluída"';   // só a resposta mais recente de cada pessoa, já concluída
   var media = function (k, casas) { return '=IFERROR(ROUND(AVERAGEIFS(' + faixa(k) + ATV + '),' + (casas || 0) + '),"")'; };
   var votos = function (k, texto) { return '=COUNTIFS(' + faixa(k) + ',"' + texto + '"' + ATV + ')'; };
   var plano = { PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100 };
@@ -155,6 +155,7 @@ function resumo_() {
   linha('');
   titulo('Participação', 'Valor');
   linha('Bússolas concluídas', '=COUNTIFS(' + faixa('nome') + ',"<>"' + ATV + ')');
+  linha('Respondendo agora', '=COUNTIFS(' + faixa('nome') + ',"<>",' + faixa('ativa') + ',"<>substituída",' + faixa('status') + ',"em andamento")');
   linha('Tempo médio (min)', '=IFERROR(ROUND(AVERAGEIFS(' + faixa('duracaoSeg') + ATV + ')/60,1),"")');
   linha('Aderência média ao plano (0–100)', media('aderencia'));
   linha('Reflexo médio (s)', media('velocidadeMed', 1));
@@ -199,7 +200,7 @@ function json_(obj) { return ContentService.createTextOutput(JSON.stringify(obj)
 // Cria as abas Respostas e Resumo e uma linha de exemplo ("Teste"), que você pode apagar depois.
 function testeLocal() {
   var ping = JSON.parse(doPost({ postData: { contents: JSON.stringify({ tipo: 'ping' }) } }).getContent());
-  var r = doPost({ postData: { contents: JSON.stringify({ tipo: 'bussola', versao: 'bussola-dts-2', linha: { sessionId: 'teste-1', nome: 'Teste', cargo: 'Senior Director', iniciadoEm: new Date().toISOString(), hoje_front: 40, ideal_front: 25, casco_confianca: 4, chama_porta: 'Nome A', PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, ventoVenda: 2, ancorasVenda: 'Tempo para vender; Ferramentas de venda', aderencia: 100, espelho: 'C', rota: 'B', mesaP1: 25, mesaP2: 35, mesaP3: 25, mesaP4: 10, mesaP5: 5 } }) } });
+  var r = doPost({ postData: { contents: JSON.stringify({ tipo: 'bussola', versao: 'bussola-dts-2', linha: { sessionId: 'teste-1', nome: 'Teste', status: 'concluída', cargo: 'Senior Director', iniciadoEm: new Date().toISOString(), hoje_front: 40, ideal_front: 25, casco_confianca: 4, chama_porta: 'Nome A', PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, ventoVenda: 2, ancorasVenda: 'Tempo para vender; Ferramentas de venda', aderencia: 100, espelho: 'C', rota: 'B', mesaP1: 25, mesaP2: 35, mesaP3: 25, mesaP4: 10, mesaP5: 5 } }) } });
   Logger.log('ping: ' + ping.sucesso + ' · linha de teste: ' + r.getContent());
   Logger.log(TOKEN === SENHA_PADRAO ? 'ATENÇÃO: troque o TOKEN (a senha do painel) no início do arquivo.' : 'TOKEN definido.');
 }
