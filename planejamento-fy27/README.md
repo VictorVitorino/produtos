@@ -10,7 +10,9 @@ Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessi
 | IV · Águas profundas | Sonar (IA), diário de bordo (pelo que ser lembrado), manifesto de carga (quais dos 33 produtos de hoje embarcam em 2027; cada um vira um contêiner no convés, e dá para embarcar até três cargas novas) e tripulação (duas contratações sênior, com o que cada perfil faz e a frente que fortalece). | 13 a 16 |
 | V · O casco | Quarto de serviço (como o tempo do diretor se divide hoje e em 2027), os cinco rebites da integridade do time e o apito de bordo (a quem cada um recorre). | 17 a 20 |
 | VI · O farol | O dilema central, com calma: o resgate na tempestade (a consultoria que o CFO chama quando a TI falhou) ou o prático do canal (a que o CIO chama para não falhar). | 21 |
-| VII · O amanhecer | Mensagem na garrafa e a revelação da bússola: arquétipo (rebocador de salvamento, prático de confiança, guarda costeira, estaleiro da frota ou resgate que fica a bordo), posição no dilema, papel em 2027, leitura do casco, reflexo e hesitações. | 22 |
+| VII · O amanhecer | Mensagem na garrafa e a carta do comandante: a bússola calibrada e, numa página, o arquétipo em uma frase com o desafio (rebocador de salvamento, prático de confiança, guarda costeira, estaleiro da frota ou resgate que fica a bordo), quatro leituras com veredito (rumo, carga, tripulação e casco), o instinto na tempestade e uma pergunta para levar à mesa. | 22 |
+
+Cada troca de ato abre com o vídeo do ato, que espera a pessoa clicar em "Seguir viagem". Isso vale também ao voltar, pelo botão Voltar ou pelos nomes dos atos na barra de baixo. O botão Recomeçar, na mesma barra, pede confirmação, apaga as respostas daquele navegador e recomeça do porto, com os vídeos de novo.
 
 | Arquivo | O que é |
 |---|---|

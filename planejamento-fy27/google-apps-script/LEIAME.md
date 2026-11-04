@@ -47,7 +47,7 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 **Antes do encontro (assíncrono).** Mande o link com um prazo. As respostas chegam na planilha; na véspera, abra o painel e monte os slides de resultado.
 
 **Ao vivo, na abertura do dia (recomendado para a "dinâmica inicial").**
-1. Projete o link ou um QR code. Todos respondem no celular ou no notebook: uns 12 minutos. Cada ato abre com uma cartela que espera a pessoa clicar em "Seguir viagem", e os nomes dos atos na barra de baixo (Porto, Tempestade…) levam de volta a qualquer ato já visitado.
+1. Projete o link ou um QR code. Todos respondem no celular ou no notebook: uns 12 minutos. Cada troca de ato abre com o vídeo do ato, que espera a pessoa clicar em "Seguir viagem"; isso vale também ao voltar (botão Voltar ou nomes dos atos na barra de baixo, que levam a qualquer ato já visitado). O botão Recomeçar pede confirmação, apaga as respostas daquele navegador e recomeça do porto, com os vídeos de novo. Se alguém recomeçar e responder outra vez, o painel considera só a bússola mais recente de cada nome.
 2. Enquanto respondem, abra no projetor `bussola-dts-2027.html?painel` e clique em **Ler a planilha ao vivo**. O painel atualiza sozinho a cada 30 segundos; as agulhas vão aparecendo.
 3. O painel tem onze páginas, no mesmo enquadramento da dinâmica, e o botão "Voltar à Bússola" leva de volta à dinâmica. Navegue pelas abas da barra de baixo ou pelas setas do teclado. Leitura sugerida (15 minutos):
    - *Direção*: para onde o time aponta. A seta laranja é o planejamento; as azuis, cada diretor; a tracejada, a média.
@@ -67,6 +67,8 @@ Funciona em celular e computador. Cada pessoa deve responder de uma vez só; se 
 |---|---|
 | Eixo esquerda–direita | Porta de entrada: 0 = o CFO chama quando a TI falhou; 100 = o CIO chama para não falhar. O planejamento está em 40 (entrar pela dor que o CIO já tem e ficar). |
 | Eixo norte–sul | Foco do portfólio: 100 = núcleo forte, 0 = abrir frentes. Planejamento em 80. |
+| Arquétipo | Vem dos dois eixos. Porta entre 38 e 62 e foco a partir de 38 = resgate que fica a bordo (é onde está o plano). Fora dessa faixa, vale o quadrante: CFO e núcleo = rebocador de salvamento; CIO e núcleo = prático de confiança; CFO e frentes = guarda costeira; CIO e frentes = estaleiro da frota. |
+| Carta do comandante | A tela final do participante. Traz o arquétipo em uma frase, com o desafio, e quatro leituras com veredito: rumo (porta e foco), carga (maior aposta do porão, tamanho do catálogo e preço), tripulação (o que muda no papel em 2027 e quem contrataria) e casco (índice e rebite que mais vaza). Fecha com o instinto na tempestade e uma pergunta para levar à mesa. Não mostra aderência nem opinião formada; a aderência só aparece com `mostrarAderencia: true`, junto da marca do plano nas réguas. |
 | Mostradores | Receita (hora × resultado), entrega (relatório × produto), IA (prática própria × dentro dos produtos com Data & IA), fábrica × parceiros, âncoras, consolidação, pessoas. |
 | Mesa de investimento (o porão) | 100 caixas distribuídas pelos pilares, contra 25 · 35 · 25 · 10 · 5 do plano. |
 | Contrato | Posição de 0 (tudo fixo, R$ 1,0 mi garantido) a 100 (R$ 0,6 mi fixo + 25% da economia, até R$ 1,8 mi). A tela mostra a parte fixa, a variável e a faixa do frete para cada posição. Alimenta o mostrador de receita. |
