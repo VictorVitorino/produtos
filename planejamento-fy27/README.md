@@ -5,11 +5,11 @@ Diagnóstico de engajamento para os diretores executivos do DTS. É uma travessi
 | Ato | O que acontece | Manobras |
 |---|---|---|
 | I · O porto | Abertura e nome do comandante | — |
-| II · A tempestade | Oito escolhas de “isto ou aquilo”, seis segundos cada, com analogias da vida real. Mede instinto, velocidade e hesitação. | 1 a 8 |
+| II · A tempestade | Oito escolhas de “isto ou aquilo”, seis segundos cada, contadas com histórias do mar (o reboque ou a revisão do motor, a rede ou o anzol, o próprio estaleiro ou os parceiros). Mede instinto, velocidade e hesitação. | 1 a 8 |
 | III · A navegação | Carta náutica (rota), porão (100 caixas por pilar), rádio de bordo (quem atender) e contrato (fixo × resultado). | 9 a 12 |
 | IV · Águas profundas | Sonar (IA), diário de bordo (pelo que ser lembrado), lastro (tamanho do catálogo) e tripulação (duas contratações). | 13 a 16 |
-| V · O farol | O dilema central, com calma: a consultoria que o CFO chama quando a TI falhou, ou a que o CIO chama para não falhar. | 17 |
-| VI · O amanhecer | Mensagem na garrafa e a revelação da bússola: arquétipo, posição no dilema, reflexo, hesitações e convicção. | 18 |
+| V · O farol | O dilema central, com calma: o resgate na tempestade (a consultoria que o CFO chama quando a TI falhou) ou o prático do canal (a que o CIO chama para não falhar). | 17 |
+| VI · O amanhecer | Mensagem na garrafa e a revelação da bússola: arquétipo (rebocador de salvamento, prático de confiança, guarda costeira, estaleiro da frota ou resgate que fica a bordo), posição no dilema, reflexo, hesitações e convicção. | 18 |
 
 | Arquivo | O que é |
 |---|---|
