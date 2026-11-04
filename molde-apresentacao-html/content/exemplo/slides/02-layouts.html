@@ -1,0 +1,36 @@
+<!-- PARTE 2 · LAYOUTS -->
+<section class="slide" data-p="2 · Layouts" data-t="Duas colunas"
+  data-band="Layouts · duas colunas" data-c="c-blue" data-bs="Coluna principal + coluna lateral de 452 px"
+  data-src="Exemplo de grade: grid-template-columns: 1fr 452px; gap: 20px."
+  data-desc="Grade de duas colunas, a mesma proporção usada na referência: a coluna principal é fluida e a lateral tem 452 px. Os blocos ocupam a altura toda da região .gr.">
+  <div class="body sp fill">
+    <div class="stmt2" data-fx-type="word" style="font-size:23px">Duas colunas: <span data-fx-hl>a principal conta a história</span>, a lateral traz números ou leitura de apoio.</div>
+    <div class="gr" style="display:grid;grid-template-columns:1fr 452px;gap:20px;min-height:0">
+      <div class="wf"><b>Coluna principal</b><span class="wf-dim"></span></div>
+      <div class="wf"><b>Coluna lateral</b><span class="wf-dim"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-p="2 · Layouts" data-t="Três colunas"
+  data-band="Layouts · três colunas e um gráfico ampliável" data-c="c-blue" data-bs="Passe o mouse no gráfico · duplo clique amplia"
+  data-src="Exemplo de grade: grid-template-columns: repeat(3, 1fr); gap: 18px. Gráfico ilustrativo, sem dados."
+  data-desc="Grade de três colunas. A primeira coluna tem um gráfico SVG de exemplo registrado em DECK.zoom (id exGrafico): ao passar o mouse aparece o ícone ⤢; duplo clique ou o ícone abrem a ampliação, que fecha com ×, Esc ou clique fora.">
+  <div class="body sp fill">
+    <div class="stmt2" data-fx-type="word" style="font-size:23px">Três colunas para comparar. <span data-fx-hl>Todo gráfico registrado em DECK.zoom</span> pode ser ampliado.</div>
+    <div class="gr" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;min-height:0">
+      <div style="display:flex;flex-direction:column;gap:10px;min-height:0">
+        <div class="lbl">Gráfico de exemplo <small>ilustrativo</small></div>
+        <svg id="exGrafico" viewBox="0 0 480 420" width="480" height="420" style="display:block;width:100%;height:auto">
+          <rect x="0" y="0" width="480" height="420" rx="12" fill="#F4F7FA"/>
+          <g fill="#BFD0E1"><rect x="50" y="250" width="60" height="120" rx="6"/><rect x="140" y="190" width="60" height="180" rx="6"/><rect x="230" y="140" width="60" height="230" rx="6"/></g>
+          <rect x="320" y="80" width="60" height="290" rx="6" fill="#F78C16"/>
+          <line x1="30" y1="370" x2="450" y2="370" stroke="#98A6B3"/>
+          <text x="240" y="40" text-anchor="middle">Gráfico SVG ampliável</text>
+        </svg>
+      </div>
+      <div class="wf"><b>Coluna 2</b><span class="wf-dim"></span></div>
+      <div class="wf"><b>Coluna 3</b><span class="wf-dim"></span></div>
+    </div>
+  </div>
+</section>

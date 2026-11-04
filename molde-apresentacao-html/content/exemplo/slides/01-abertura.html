@@ -1,0 +1,20 @@
+<!-- PARTE 1 · ABERTURA -->
+<section class="slide" data-p="1 · Abertura" data-t="Agenda"
+  data-band="Agenda · as seções desta apresentação" data-c="c-navy" data-bs="Clique numa seção para ir até ela"
+  data-src="Fonte ou nota da página (uma linha no rodapé; o texto longo vai para “Sobre este slide”)."
+  data-desc="Agenda gerada automaticamente: o motor cria um botão por seção de DECK.parts que tenha cor (4º campo), com o número da parte, as telas e a descrição. Basta um elemento com id=agenda no corpo.">
+  <div class="body sp fill">
+    <div class="stmt2" data-fx-type="word" style="font-size:23px">Frase-chave da página, em até duas linhas, com <span data-fx-hl>um destaque</span> e, se preciso, <span data-fx-hl>um segundo</span>.</div>
+    <div id="agenda" class="gr" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-content:start;min-height:0"></div>
+  </div>
+</section>
+
+<section class="slide" data-p="1 · Abertura" data-t="Página padrão"
+  data-band="Página padrão · cabeçalho, faixa, frase-chave e corpo" data-c="c-navy" data-bs="Texto auxiliar à direita da faixa"
+  data-src="Fonte: rodapé com até ~150 caracteres; acima disso o texto é cortado com reticências e aparece inteiro na dica."
+  data-desc="Página de conteúdo padrão. O cabeçalho (marca, título da página, parte e marca do cliente), a faixa do título e o rodapé são gerados pelo motor a partir dos atributos data-t, data-p, data-band, data-bs e data-src. O corpo tem padding de 12 e 16 px; abaixo da frase-chave, a região .gr ocupa o resto da altura. Use a área tracejada para o seu conteúdo: o tamanho disponível aparece em px.">
+  <div class="body sp fill">
+    <div class="stmt2" data-fx-type="word" style="font-size:23px">A frase-chave resume a mensagem da página. <span data-fx-hl>O conteúdo entra na área abaixo</span>, sem passar do corpo.</div>
+    <div class="gr wf" style="min-height:0"><b>Área de conteúdo</b><span>grid livre: colunas, cartões, diagramas, tabelas</span><span class="wf-dim"></span></div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+/* PÁGINAS-MODELO · blocos tracejados que marcam onde entra o conteúdo. Apague este arquivo ao usar o molde. */
+.wf{position:relative;border:1.5px dashed #9DB7CE;border-radius:12px;background:repeating-linear-gradient(135deg,rgba(94,138,180,.05) 0 10px,rgba(94,138,180,0) 10px 20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:12px;min-height:0;min-width:0;color:#5E8AB4;font:500 13px/1.4 var(--fb)}
+.wf b{font:800 12.5px var(--fh);letter-spacing:.06em;text-transform:uppercase;color:#002B49}
+.wf .wf-dim{font:500 11px 'JetBrains Mono',monospace;color:#6B7B8C}
+.wf.hi{border-color:#F78C16;background:repeating-linear-gradient(135deg,rgba(247,140,22,.06) 0 10px,rgba(247,140,22,0) 10px 20px)}
+.dk .wf{border-color:rgba(157,183,206,.55);background:rgba(255,255,255,.035);color:#9DB7CE}
+.dk .wf b{color:#fff}
+.dk .wf .wf-dim{color:#9DB7CE}
+.cv4 .wf{border-color:rgba(157,183,206,.45);background:rgba(255,255,255,.03);color:#9DB7CE}
+.cv4 .wf b{color:#fff}
+/* gráfico de exemplo (SVG neutro) */
+#exGrafico text{font:600 13px var(--fb);fill:#35516A}

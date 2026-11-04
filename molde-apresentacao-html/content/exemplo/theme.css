@@ -1,0 +1,12 @@
+/* TEMA DO DECK (camada 3) — cores e marca. Troque à vontade; a estrutura e a navegação não dependem destas cores.
+   Paleta A&M: navy #002B49 · #122143 · #1F3263 · ardósia #33556D · aço #5E8AB4 · gelo #DFE8F0 · laranja #F78C16 (acento)
+   As cores da faixa de título por página vêm de data-c (c-navy, c-blue, c-green, c-purple, c-red) definidas na camada 1. */
+:root{--navy:#002B49;--blue:#5E8AB4;--orange:#F78C16;--line:#D6DEE6;--muted:#6B7B8C}
+
+/* trilha de seções: acento da marca */
+#rail .seg2 i b{background:linear-gradient(90deg,#1F3263,#F78C16);box-shadow:none}
+#rail .seg2.on span{color:#122143}
+#rail .seg2:hover span{color:#F78C16}
+
+/* marca do cliente em texto (quando DECK.client usa name em vez de logo) */
+.cl-wm{font:800 19px/1 var(--fb);letter-spacing:-.01em;color:#fff;white-space:nowrap}

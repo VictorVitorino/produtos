@@ -1,0 +1,107 @@
+[
+ {
+  "janela": "1366×768",
+  "quadro": [
+   64.33,
+   10,
+   1237.33,
+   696
+  ],
+  "iguais": true,
+  "diferencas": [],
+  "controlesRef": [
+   766.8,
+   716,
+   577.2,
+   40
+  ],
+  "controlesMolde": [
+   769.11,
+   716,
+   574.89,
+   40
+  ],
+  "trilhaRef": [
+   22,
+   735,
+   486,
+   21
+  ],
+  "trilhaMolde": [
+   22,
+   735,
+   430,
+   21
+  ]
+ },
+ {
+  "janela": "1600×900",
+  "quadro": [
+   64,
+   10,
+   1472,
+   828
+  ],
+  "iguais": true,
+  "diferencas": [],
+  "controlesRef": [
+   1000.8,
+   848,
+   577.2,
+   40
+  ],
+  "controlesMolde": [
+   1003.11,
+   848,
+   574.89,
+   40
+  ],
+  "trilhaRef": [
+   22,
+   867,
+   486,
+   21
+  ],
+  "trilhaMolde": [
+   22,
+   867,
+   430,
+   21
+  ]
+ },
+ {
+  "janela": "1920×1080",
+  "quadro": [
+   64,
+   10,
+   1792,
+   1008
+  ],
+  "iguais": true,
+  "diferencas": [],
+  "controlesRef": [
+   1320.8,
+   1028,
+   577.2,
+   40
+  ],
+  "controlesMolde": [
+   1323.11,
+   1028,
+   574.89,
+   40
+  ],
+  "trilhaRef": [
+   22,
+   1047,
+   486,
+   21
+  ],
+  "trilhaMolde": [
+   22,
+   1047,
+   430,
+   21
+  ]
+ }
+]
