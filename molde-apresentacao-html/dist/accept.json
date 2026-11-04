@@ -1,6 +1,6 @@
 {
  "file": "/tmp/claude-0/-home-user-produtos/157ea01b-5eac-590d-ab7a-107b53a7d9c9/scratchpad/axon/molde/dist/molde.html",
- "N": 9,
+ "N": 12,
  "ok": true,
  "fails": [],
  "warns": [],
@@ -73,7 +73,7 @@
    "rail": {
     "left": 22,
     "bottom": 12,
-    "right": 452
+    "right": 540
    },
    "scroll": {
     "x": 0,
@@ -149,7 +149,7 @@
    "rail": {
     "left": 22,
     "bottom": 12,
-    "right": 452
+    "right": 540
    },
    "scroll": {
     "x": 0,
@@ -225,7 +225,7 @@
    "rail": {
     "left": 22,
     "bottom": 12,
-    "right": 452
+    "right": 540
    },
    "scroll": {
     "x": 0,
@@ -377,7 +377,7 @@
     "bodyOverflow": "hidden"
    }
   },
-  "N": 9,
+  "N": 12,
   "pages": [
    {
     "n": 1,
@@ -399,38 +399,56 @@
    },
    {
     "n": 4,
-    "t": "Duas colunas",
-    "p": "2 · Layouts",
+    "t": "Texto e números",
+    "p": "2 · Exemplos de conteúdo",
     "small": 0
    },
    {
     "n": 5,
-    "t": "Três colunas",
-    "p": "2 · Layouts",
+    "t": "Painel e cartões",
+    "p": "2 · Exemplos de conteúdo",
     "small": 0
    },
    {
     "n": 6,
-    "t": "Corpo escuro",
-    "p": "3 · Variações",
+    "t": "Fases e tabela",
+    "p": "2 · Exemplos de conteúdo",
     "small": 0
    },
    {
     "n": 7,
-    "t": "Conteúdo dividido (1/2)",
-    "p": "3 · Variações",
+    "t": "Duas colunas",
+    "p": "3 · Layouts",
     "small": 0
    },
    {
     "n": 8,
-    "t": "Conteúdo dividido (2/2)",
-    "p": "3 · Variações",
+    "t": "Três colunas",
+    "p": "3 · Layouts",
     "small": 0
    },
    {
     "n": 9,
+    "t": "Corpo escuro",
+    "p": "4 · Variações",
+    "small": 0
+   },
+   {
+    "n": 10,
+    "t": "Conteúdo dividido (1/2)",
+    "p": "4 · Variações",
+    "small": 0
+   },
+   {
+    "n": 11,
+    "t": "Conteúdo dividido (2/2)",
+    "p": "4 · Variações",
+    "small": 0
+   },
+   {
+    "n": 12,
     "t": "Encerramento",
-    "p": "4 · Encerramento",
+    "p": "5 · Encerramento",
     "small": 0
    }
   ],
@@ -438,25 +456,29 @@
    "groups": [
     "Capa",
     "Parte 1 · Abertura",
-    "Parte 2 · Layouts",
-    "Parte 3 · Variações",
-    "Parte 4 · Encerramento"
+    "Parte 2 · Exemplos de conteúdo",
+    "Parte 3 · Layouts",
+    "Parte 4 · Variações",
+    "Parte 5 · Encerramento"
    ],
-   "items": 9,
+   "items": 12,
    "cur": 0,
    "w": 400,
    "radius": "12px"
   },
   "zoom": [
    "exGrafico",
-   "exQuadro"
+   "exQuadro",
+   "exNumeros",
+   "exFases"
   ],
   "rail": [
    "Capa · telas 1–1",
    "Abertura · telas 2–3",
-   "Layouts · telas 4–5",
-   "Variações · telas 6–8",
-   "Encerramento · telas 9–9"
+   "Conteúdo · telas 4–6",
+   "Layouts · telas 7–8",
+   "Variações · telas 9–11",
+   "Encerramento · telas 12–12"
   ]
  }
 }

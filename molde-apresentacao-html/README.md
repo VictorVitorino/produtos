@@ -2,7 +2,7 @@
 
 O molde traz o **layout, a arquitetura e os comportamentos** da apresentação de referência (Axon v0), **sem o conteúdo e sem os componentes dela**. Ele não tem cenas, matrizes, gráficos nem a marca AXON. Você entra com o conteúdo; o molde garante o quadro, a escala, o enquadramento, a navegação e as interações.
 
-- **Pronto para preencher:** `dist/molde.html`, um arquivo único e autocontido com 9 páginas-modelo em wireframe.
+- **Pronto para preencher:** `dist/molde.html`, um arquivo único e autocontido com 12 páginas. São **3 telas de exemplo com conteúdo** (estrutura completa, texto-modelo) e 9 páginas-modelo de layout em wireframe.
 - **Fonte modular:** as pastas abaixo, montadas com `python3 -I build.py <pacote>`.
 
 ## 1. Três camadas
@@ -27,7 +27,7 @@ O molde traz o **layout, a arquitetura e os comportamentos** da apresentação d
 **B. Pela fonte (recomendado para decks maiores).**
 1. Copie `content/exemplo` para `content/<seu-deck>`.
 2. Edite `deck.js` e os arquivos em `slides/` (um por seção, em ordem alfabética).
-3. Apague `css/00-wireframe.css`.
+3. Apague `css/00-wireframe.css`. Mantenha `css/01-blocos.css` se for reaproveitar os blocos das telas de exemplo.
 4. Rode `python3 -I build.py <seu-deck>`. O resultado é `dist/<seu-deck>.html`.
 
 ## 3. Contrato de uma página
@@ -66,6 +66,14 @@ O molde traz o **layout, a arquitetura e os comportamentos** da apresentação d
 | Rodapé interno | laterais 32, 11 da base |
 
 O corpo útil tem 1544 × 680 px. Abaixo da frase-chave em 2 linhas, sobram cerca de **1542 × 620 px**; as páginas-modelo mostram o tamanho de cada bloco ao vivo.
+
+**Telas de exemplo com conteúdo** (seção “2 · Exemplos de conteúdo”, arquivo `slides/02-conteudo.html`). Para usar, copie a `<section>` mais parecida com o que você precisa, troque os textos e ajuste a grade.
+
+| Tela | Estrutura | Blocos (`css/01-blocos.css`) |
+|---|---|---|
+| Texto e números | grade `1fr \| 640px`: leitura (rótulo, parágrafo, 3 pontos numerados, conclusão no pé) e painel escuro de números | `.ex-col` `.ex-list` `.ex-note` `.ex-pnl` `.ex-kpis` `.ex-bar` |
+| Painel e cartões | grade `470px \| 1fr` com colunas empilhadas: definição, razões 2×2 e níveis; etapas, pilares 2×2 e princípios | `.ex-pnl` `.ex-card` `.ex-2x2` `.ex-lv` `.ex-acts` `.ex-pils` `.ex-chips` |
+| Fases e tabela | régua de fases em chevrons + grade `1fr \| 420px`: tabela de entregas e linha de marcos | `.ex-ph` `.ex-tb` `.ex-tag` `.ex-tl` |
 
 ## 4. Configuração (`deck.js`)
 
@@ -136,7 +144,7 @@ node tools/pages.js dist/molde.html                          # número → seç�
 | Verificação | Resultado no molde |
 |---|---|
 | Geometria em 1366×768, 1600×900, 1920×1080, 1000×700 e 700×560 | escala igual à da `fit()`; 16:9; quadro centralizado acima da navegação; raio 14 e `overflow:hidden`; cabeçalho, faixa, corpo e rodapé nas medidas da especificação; controles com 40 px (36 px abaixo de 760), 8 px entre si, a 22/12 px; trilha a 22/12 px e oculta abaixo de 1100; sem rolagem; nada invade a navegação |
-| Conteúdo | nada fora do corpo nem cortado nas 9 páginas |
+| Conteúdo | nada fora do corpo nem cortado nas 12 páginas |
 | Comportamentos | Voltar/Avançar e limites, contador e índice (400 px, raio 12, navegação direta), “Sobre este slide” (440 px, raio 12, acompanha a página), ampliação (até 1540 × 850, raio 16; fecha com ×, Esc e clique fora), atalhos, trilha, `#n`, progresso, transições sem erros |
 | Enquadramento × referência, mesma janela | quadro, cabeçalho, faixa, corpo e rodapé idênticos em 1366×768, 1600×900 e 1920×1080 (diferença ≤ 0,5 px); sobreposições em `dist/framing/` |
 
@@ -159,7 +167,8 @@ molde/
   build.py             montagem do HTML único
   shell/               camadas 1 e 2 (não editar)
   base/                base mínima (não editar)
-  content/exemplo/     camada 3 de exemplo: deck.js, slides/, css/, scenes/, theme.css, assets.js, brand.js, meta.json
+  content/exemplo/     camada 3 de exemplo: deck.js, slides/ (capa, abertura, exemplos de conteúdo, layouts, variações, encerramento),
+                       css/ (00-wireframe, 01-blocos), scenes/, theme.css, assets.js, brand.js, meta.json
   tools/               accept.js · framing.js · pages.js
-  dist/molde.html      molde pronto (9 páginas-modelo)
+  dist/molde.html      molde pronto (12 páginas: 3 de conteúdo + 9 de layout)
 ```

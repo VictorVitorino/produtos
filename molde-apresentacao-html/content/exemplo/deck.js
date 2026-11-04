@@ -23,19 +23,21 @@ window.DECK = {
   parts: [
     ["Capa", "Capa", "", "", "▸"],
     ["Abertura", "1 · Abertura", "Agenda e página de conteúdo padrão.", "#002B49", "1"],
-    ["Layouts", "2 · Layouts", "Duas e três colunas, gráfico ampliável.", "#5E8AB4", "2"],
-    ["Variações", "3 · Variações", "Corpo escuro e conteúdo dividido em duas páginas.", "#F78C16", "3"],
-    ["Encerramento", "4 · Encerramento", "Página de fecho com composição própria.", "#33556D", "4"],
+    ["Conteúdo", "2 · Exemplos de conteúdo", "Três páginas preenchidas: texto e números, painel e cartões, fases e tabela.", "#F78C16", "2"],
+    ["Layouts", "3 · Layouts", "Duas e três colunas, gráfico ampliável.", "#5E8AB4", "3"],
+    ["Variações", "4 · Variações", "Corpo escuro e conteúdo dividido em duas páginas.", "#1F3263", "4"],
+    ["Encerramento", "5 · Encerramento", "Página de fecho com composição própria.", "#33556D", "5"],
   ],
   /* cartão de capítulo exibido ao entrar numa seção (avançando): [número, título, texto] */
   chapters: {
     "1 · Abertura": ["01", "Abertura", "Agenda gerada a partir das seções. Página de conteúdo padrão."],
-    "2 · Layouts": ["02", "Layouts", "Grades de duas e três colunas. Gráfico com ampliação."],
-    "3 · Variações": ["03", "Variações", "Corpo escuro. Conteúdo que não cabe vira duas páginas."],
+    "2 · Exemplos de conteúdo": ["02", "Exemplos de conteúdo", "Páginas preenchidas mostram a estrutura de uma tela com conteúdo. Troque os textos e mantenha a estrutura."],
+    "3 · Layouts": ["03", "Layouts", "Grades de duas e três colunas. Gráfico com ampliação."],
+    "4 · Variações": ["04", "Variações", "Corpo escuro. Conteúdo que não cabe vira duas páginas."],
   },
 
   /* ids dos elementos que podem ser ampliados (ícone ⤢ e duplo clique) */
-  zoom: ["exGrafico", "exQuadro"],
+  zoom: ["exGrafico", "exQuadro", "exNumeros", "exFases"],
 
   /* texto de "Sobre este slide": use data-desc em cada <section>; este é o padrão quando faltar */
   descDefault: "Página do molde de apresentação.",
