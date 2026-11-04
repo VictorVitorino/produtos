@@ -1,36 +1,22 @@
 # Bússola DTS 2027 · como ligar a base de respostas e rodar a dinâmica
 
-## 1. Criar a planilha (5 minutos, uma vez)
+## 1. Ligar a planilha (uns 5 minutos, uma vez)
 
-1. Crie uma planilha nova no Google Drive (ex.: `Bússola DTS 2027 · Respostas`).
-2. Menu **Extensões → Apps Script**. Apague o conteúdo que aparece e cole o arquivo `Codigo.gs` inteiro.
-3. Na primeira linha útil, troque `TOKEN = 'troque-por-uma-senha'` por uma senha sua (letras e números, sem espaço).
-4. Salve (ícone de disquete). Opcional: menu **Executar → testeLocal** para criar uma linha de exemplo e conferir que as abas `Respostas` e `Resumo` aparecem na planilha. Na primeira execução o Google pede autorização: aceite.
-5. **Implantar → Nova implantação → tipo "App da Web"**:
-   - Executar como: **Eu**
-   - Quem pode acessar: **Qualquer pessoa**
-   - Clique em Implantar e copie o link que termina em `/exec`.
+1. Abra a planilha no Google Planilhas (conta Google pessoal ou uma que permita acesso "Qualquer pessoa"; contas corporativas às vezes bloqueiam isso).
+2. Menu **Extensões → Apps Script**. Apague o que aparece e cole o `Codigo.gs` inteiro. Na linha `var TOKEN = ...` coloque uma senha sua (é a senha do painel; só você a usa).
+3. Salve (disquete). No menu de funções escolha **testeLocal** e clique **Executar**. O Google pede autorização: *Revisar permissões → sua conta → Avançado → Acessar (não seguro) → Permitir*. As abas `Respostas` e `Resumo` aparecem com uma linha "Teste"; apague essa linha depois.
+4. **Implantar → Nova implantação → ⚙ App da Web**. *Executar como:* **Eu**. *Quem pode acessar:* **Qualquer pessoa**. Implantar e copiar o link que termina em **/exec**.
+5. No arquivo `bussola-dts-2027.html`, num editor de texto (Bloco de Notas, não o Word), no bloco do início, cole o link em `sheetsEndpoint: ''` entre as aspas. **Deixe `painelToken` vazio**: este arquivo vai para os diretores, e a senha do painel não pode ir junto.
+6. **Teste como um diretor:** salve o arquivo no computador, abra com duplo clique (assim ele chega à planilha igual a quem o baixou), vá a `?painel` no fim do endereço e clique **Testar o envio**. Deve aparecer "✔ A planilha respondeu". Se aparecer ✘, a mensagem diz a causa mais provável.
 
-## 2. Ligar a bússola à planilha
+Se mudar o `Codigo.gs` depois de implantado: **Implantar → Gerenciar implantações → editar → Nova versão** (o link continua o mesmo).
 
-Abra `bussola-dts-2027.html` num editor de texto e preencha o bloco do início:
+## 2. O que garante que nenhuma resposta se perde
 
-```js
-window.BUSSOLA_CONFIG = {
-  sheetsEndpoint: 'https://script.google.com/macros/s/.../exec',  // o link copiado
-  painelToken: 'a-senha-que-voce-colocou-no-TOKEN',
-  mostrarAderencia: false,
-  tripulacao: ['Nome 1', 'Nome 2']   // opcional: os diretores que respondem
-};
-```
-
-Sem o link, a bússola funciona do mesmo jeito, mas guarda a resposta só no navegador de quem respondeu.
-
-`tripulacao` é opcional. Com a lista de nomes, a pergunta "quem você chama quando…" mostra botões com os nomes, e as indicações chegam escritas do mesmo jeito. Sem a lista, cada pessoa digita os nomes, e o painel junta as grafias parecidas (acentos e maiúsculas não contam).
-
-Teste: abra o HTML, responda com um nome de teste e veja a linha chegar na aba `Respostas`. Se a última tela disser "Enviado à facilitação", está ligado. Apague a linha de teste depois.
-
-Se mudar o `Codigo.gs` depois de implantado, faça **Implantar → Gerenciar implantações → editar → Nova versão**; o link `/exec` continua o mesmo. Se a aba `Respostas` já existir de um teste anterior, não é preciso apagá-la: colunas novas (como `carga2027` e `cargaNova`) entram no fim sozinhas, e o `Resumo` lê os títulos reais da aba.
+- O arquivo, aberto de qualquer lugar (link ou baixado), envia a resposta à planilha ao terminar. A tela só diz "enviada" quando a planilha confirma.
+- Sem internet, ou se a planilha recusar, a resposta fica guardada no navegador e é reenviada sozinha; a tela pede para manter a página aberta.
+- Plano B: na tela final aparecem **Copiar minhas respostas** e **Baixar arquivo**. A pessoa manda o texto ou o arquivo para você, e no painel você usa **Abrir arquivos de resposta** (ou cola o texto) para incluí-las.
+- Quem recomeça e responde de novo: vale a resposta mais recente; a antiga fica na planilha marcada como "substituída" e não entra no Resumo nem no painel.
 
 ## 3. Publicar o link para os diretores
 

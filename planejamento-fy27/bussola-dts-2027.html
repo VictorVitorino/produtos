@@ -18,7 +18,7 @@
 <script id="dts-config">
   window.BUSSOLA_CONFIG = {
     sheetsEndpoint: '',       // link do Apps Script (termina em /exec)
-    painelToken: '',          // o mesmo TOKEN definido no Codigo.gs (o painel usa para ler as respostas ao vivo)
+    painelToken: '',          // DEIXE VAZIO neste arquivo (ele vai para os diretores). A senha do painel (o TOKEN do Codigo.gs) é digitada no painel.
     mostrarAderencia: false,  // true = o participante vê a aderência ao plano no final (recomendado: false)
     tripulacao: []            // opcional: nomes dos diretores, ex. ['Ana Paula', 'Ricupero']. Com a lista, o "apito de bordo" vira botões; sem ela, campos de texto.
   };
@@ -703,7 +703,7 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
 .dl-t{display:flex;justify-content:space-between;font:700 max(9.5px,.6em) var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--light-blue)}
 .content.final .result{gap:.7em}.content.final .signals li{padding:.3em 0}
 .later{opacity:0;animation:rise .8s var(--ease) forwards;animation-delay:calc(var(--i,0)*90ms + 3.6s)}
-.sync{display:flex;align-items:center;gap:.6em;font-size:max(11px,.8em);color:var(--light-blue)}
+.sync{display:flex;flex-wrap:wrap;align-items:center;gap:.4em .6em;font-size:max(11px,.8em);color:var(--light-blue)}
 .sync .dot{width:.7em;height:.7em;border-radius:50%;background:var(--navy-40)}
 .sync .dot.ok{background:#9ACC3C;box-shadow:0 0 .6em rgba(154,204,60,.6)}
 .sync .dot.wait{background:var(--peach);animation:pulse 1s infinite}
@@ -909,6 +909,12 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
 .askcard .row button:hover,.askcard .row button:focus-visible{background:rgba(0,43,73,.08);outline:none}
 .askcard .row .yes{background:var(--navy);color:#fff}
 .askcard .row .yes:hover,.askcard .row .yes:focus-visible{background:#0b3a5e}
+
+.sync .fb{display:inline-flex;flex-wrap:wrap;gap:.4em}
+.sync .fb button{height:2em;padding:0 .75em;border-radius:6px;border:1px solid var(--navy);background:rgba(255,255,255,.6);color:var(--navy);font:700 .9em var(--sans);transition:background .2s,color .2s}
+.sync .fb button:hover{background:var(--navy);color:#fff}
+#ptoken{font:inherit;font-size:.9em;padding:.5em .7em;border:1px solid var(--navy-40);border-radius:6px;min-width:15em;background:#fff;color:var(--ink)}
+.pcard.src .row{flex-wrap:wrap;align-items:center}
 
 /* ---------------------------------------------------------------------
    6 · RESPONSIVO
@@ -1531,20 +1537,39 @@ const Sync = (() => {
     if (w) box.pending[box.pending.indexOf(w)] = item; else box.pending.push(item);
     write(); notify(); flush();
   }
-  async function post(u, body) {
+  const NAO_CONF = 'A planilha não confirmou o recebimento. Confira se o Apps Script foi implantado como App da Web com acesso "Qualquer pessoa" e se o link termina em /exec.';
+  const tfetch = (u, init, ms = 25000) => { const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms); return fetch(u, Object.assign({}, init, { signal: ctl.signal })).finally(() => clearTimeout(t)); };
+  // Devolve o JSON da planilha. Só conta como entregue o que a gente consegue LER: se o Google nega o acesso, ele responde com a
+  // tela de login, que o navegador não deixa ler. Aí ainda tentamos entregar às cegas (para não perder o dado), mas não vale como enviado.
+  async function call(u, body, cego) {
     const init = { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body, cache: 'no-store' };
-    let res; try { res = await fetch(u, init); } catch (e) { await fetch(u, Object.assign({}, init, { mode: 'no-cors' })); return false; }
-    if (!res.ok) throw new Error('A planilha respondeu HTTP ' + res.status);
-    let data = null; try { data = await res.json(); } catch (e) { throw new Error('Resposta inesperada: o Apps Script foi implantado como App da Web com acesso "Qualquer pessoa"?'); }
-    if (!data || data.sucesso !== true) throw new Error('Planilha: ' + ((data && data.erro) || 'registro não confirmado'));
+    let res;
+    try { res = await tfetch(u, init); }
+    catch (e) {
+      if (e && e.name === 'AbortError') throw new Error('A planilha demorou demais para responder.');
+      if (!cego) throw e;
+      await tfetch(u, Object.assign({}, init, { mode: 'no-cors' })); // sem rede, isto também falha (TypeError) e cai em "sem conexão"
+      throw new Error(NAO_CONF);
+    }
+    if (!res.ok) throw new Error('A planilha respondeu HTTP ' + res.status + '.');
+    try { return await res.json(); } catch (e) { throw new Error('Resposta inesperada: o Apps Script foi implantado como App da Web com acesso "Qualquer pessoa"?'); }
+  }
+  async function post(u, body) {
+    const data = await call(u, body, true);
+    if (!data || data.sucesso !== true) throw new Error('Planilha: ' + ((data && data.erro) || 'registro não confirmado') + '.');
     return true;
+  }
+  async function ping() { // teste de ponta a ponta, sem criar linha
+    const u = url(); if (!u) return { ok: false, msg: 'Este arquivo ainda não tem o link da planilha (sheetsEndpoint).' };
+    try { const d = await call(u, JSON.stringify({ tipo: 'ping' }), false); return d && d.sucesso === true && d.ping ? { ok: true, respostas: d.respostas } : { ok: false, msg: (d && d.erro) || 'A planilha respondeu, mas não reconheceu o teste: o Codigo.gs colado é a versão mais recente (e foi implantado como nova versão)?' }; }
+    catch (e) { return { ok: false, msg: e instanceof TypeError ? 'Não consegui ler a resposta da planilha. Causas comuns: o acesso do App da Web não está como "Qualquer pessoa", o link não termina em /exec, ou esta rede bloqueia script.google.com.' : e.message }; }
   }
   async function flush() {
     if (busy || !url()) return; clearTimeout(timer);
     const item = box.pending.find(i => i.nextAt <= Date.now()); if (!item) { schedule(); return; }
     busy = true; notify();
     try { await post(url(), item.body); box.pending = box.pending.filter(i => i !== item); box.sent[item.key] = item.fp; box.lastOk = new Date().toISOString(); box.lastErr = null; }
-    catch (e) { item.tries++; item.nextAt = Date.now() + Math.min(MAXR, RETRY * Math.pow(2, item.tries - 1)); box.lastErr = e instanceof TypeError ? 'Sem conexão com a planilha.' : e.message; }
+    catch (e) { item.tries++; item.nextAt = Date.now() + Math.min(MAXR, RETRY * Math.pow(2, item.tries - 1)); box.lastErr = e instanceof TypeError ? 'Sem conexão com a planilha (internet fora do ar ou rede bloqueando o Google).' : e.message; }
     busy = false; write(); notify(); if (box.pending.length) schedule();
   }
   function schedule() { clearTimeout(timer); if (!box.pending.length || !url()) return; timer = setTimeout(flush, Math.max(0, Math.min(...box.pending.map(i => i.nextAt)) - Date.now())); }
@@ -1552,7 +1577,7 @@ const Sync = (() => {
   window.addEventListener('online', () => { box.pending.forEach(i => i.nextAt = 0); flush(); });
   window.addEventListener('pagehide', beacon);
   setTimeout(flush, 800);
-  return { put, status, on: f => ls.add(f), flush };
+  return { put, status, on: f => ls.add(f), flush, ping };
 })();
 
 function buildRow() {
@@ -2617,12 +2642,28 @@ SCREENS.final = {
     const n = $('#bigN'); setTimeout(() => { if (n) n.style.transform = `rotate(${n.dataset.ang}deg)`; }, REDUCED ? 0 : 450);
     setTimeout(() => { const b = $('#bigc'); if (b) b.classList.add('settled'); Sound.bell(); miniCompass(); }, REDUCED ? 0 : 3400);
     const el = $('#sync');
-    const paint = st => { if (!el || !el.isConnected) return; if (!st.enabled) { el.innerHTML = '<span class="dot"></span>Carta guardada neste navegador (a planilha da facilitação ainda não foi ligada).'; return; }
-      el.innerHTML = st.pending ? `<span class="dot ${st.lastErr ? 'err' : 'wait'}"></span>${st.lastErr ? 'Tentando enviar à facilitação: ' + esc(st.lastErr) : 'Enviando à facilitação…'}` : '<span class="dot ok"></span>Carta enviada à facilitação. No encontro, sua agulha entra no mostrador do time.'; };
+    const fb = '<span class="fb"><button type="button" data-a="copiar-resp">Copiar minhas respostas</button><button type="button" data-a="baixar-resp">Baixar arquivo</button></span>';
+    const paint = st => { if (!el || !el.isConnected) return; const hint = $('#ctrls .hint');
+      if (!st.enabled) { el.innerHTML = '<span class="dot"></span>Guardada só neste navegador (arquivo sem link da planilha):' + fb; if (hint) hint.textContent = 'envie as respostas à facilitação'; return; }
+      if (st.pending) { el.innerHTML = `<span class="dot ${st.lastErr ? 'err' : 'wait'}"></span>${st.lastErr ? 'Ainda não chegou à facilitação. ' + esc(st.lastErr) + ' Tento de novo sozinho; mantenha esta página aberta. Plano B:' + fb : 'Enviando à facilitação…'}`; if (hint) hint.textContent = 'aguarde o envio'; return; }
+      el.innerHTML = '<span class="dot ok"></span>Carta enviada à facilitação. No encontro, sua agulha entra no mostrador do time.'; if (hint) hint.textContent = 'pode fechar esta página'; };
     Sync.on(paint); paint(Sync.status());
   },
-  nav() { return { back: true, alt: [{ a: 'replay', label: ICON.replay + ' Ver de novo', short: ICON.replay, cls: '' }], hint: 'pode fechar esta página' }; }
+  nav() { return { back: true, alt: [{ a: 'replay', label: ICON.replay + ' Ver de novo', short: ICON.replay, cls: '' }], hint: (() => { const st = Sync.status(); return !st.enabled ? 'envie as respostas à facilitação' : st.pending ? 'aguarde o envio' : 'pode fechar esta página'; })() }; }
 };
+
+/* ---------- plano B: levar as respostas à facilitação sem a planilha ---------- */
+const respostaJson = () => JSON.stringify({ linhas: [buildRow()] }, null, 1);
+async function copiarResp(btn) {
+  const txt = respostaJson(); let ok = false;
+  try { await navigator.clipboard.writeText(txt); ok = true; } catch (e) { try { const t = document.createElement('textarea'); t.value = txt; t.style.cssText = 'position:fixed;left:-9999px;top:0'; document.body.appendChild(t); t.select(); ok = document.execCommand('copy'); t.remove(); } catch (e2) { } }
+  if (btn) { const o = btn.textContent; btn.textContent = ok ? 'Copiado ✓ cole numa mensagem' : 'Não deu: use "Baixar arquivo"'; setTimeout(() => { btn.textContent = o; }, 3200); }
+}
+function baixarResp() {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([respostaJson()], { type: 'application/json' }));
+  a.download = 'bussola-dts-' + (normName(S.nome).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'resposta') + '.json';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
 
 /* ---------- recomeçar do porto: zera tudo e os vídeos dos atos passam de novo ---------- */
 function askRestart() {
@@ -2693,6 +2734,8 @@ document.addEventListener('click', e => {
     case 'keep': if (!busy) { rxLocked = true; go(S.step + 1, { fast: true }); } break;
     case 'sound': Sound.setOn(!Sound.on); dock(); break;
     case 'painel': location.search = '?painel'; break;
+    case 'copiar-resp': copiarResp(el); break;
+    case 'baixar-resp': baixarResp(); break;
     case 'reset': askRestart(); break;
     case 'reset-no': closeRestart(); break;
     case 'reset-yes': restartAll(); break;
@@ -2806,10 +2849,17 @@ function painel() {
       const keep = S; S = Sfake; const row = buildRow(); S = keep; return row;
     });
   }
+  // A senha do painel é digitada aqui e fica só nesta aba: não vai dentro do arquivo que os diretores recebem.
+  let senhaMem = ''; const senhaPainel = () => { try { return sessionStorage.getItem('bussola-painel-senha') || senhaMem; } catch (e) { return senhaMem; } };
+  const guardaSenha = v => { senhaMem = v; try { sessionStorage.setItem('bussola-painel-senha', v); } catch (e) { } };
+  function parseAny(t) { t = String(t).trim(); if (!t) return []; if (t[0] === '[' || t[0] === '{') { const j = JSON.parse(t); return Array.isArray(j) ? j : Array.isArray(j.linhas) ? j.linhas : j.sessionId ? [j] : []; } return parseCsv(t); }
+  const juntar = rs => { const base = /exemplo/.test(fonte) ? [] : rows, m = new Map(); [...base, ...rs].forEach((r, k) => m.set(String(r.sessionId || r.nome || k), r)); return [...m.values()]; };
   async function fetchLive() {
     const u = String(CFG.sheetsEndpoint || '').trim(); if (!u) throw new Error('Sem link da planilha no config.');
-    const res = await fetch(u + '?painel=1&token=' + encodeURIComponent(CFG.painelToken || ''), { cache: 'no-store' });
-    const data = await res.json(); if (!data || !Array.isArray(data.linhas)) throw new Error((data && data.erro) || 'resposta inesperada');
+    const tok = CFG.painelToken || senhaPainel(); if (!tok) throw new Error('digite a senha do painel (o TOKEN do Codigo.gs).');
+    const res = await fetch(u + '?painel=1&token=' + encodeURIComponent(tok), { cache: 'no-store' });
+    const data = await res.json(); if (data && data.erro === 'token inválido') throw new Error('senha do painel incorreta.');
+    if (!data || !Array.isArray(data.linhas)) throw new Error((data && data.erro) || 'resposta inesperada');
     return data.linhas;
   }
   function setRows(rs, f) { rows = normalize(rs); fonte = f; draw(); }
@@ -2894,7 +2944,8 @@ function painel() {
         <div class="pstats"><div><b>${n || '—'}</b><span>bússolas</span></div><div><b>${durMed ? Math.floor(durMed / 60) + ':' + String(Math.round(durMed % 60)).padStart(2, '0') : '—'}</b><span>tempo médio</span></div><div><b>${n ? Math.round(mean('aderencia')) : '—'}</b><span>aderência média ao plano</span></div><div><b>${n ? fmt1(mean('velocidadeMed') || 0) + ' s' : '—'}</b><span>reflexo médio</span></div></div>
         <div class="pcard src noprint">
           <div class="eyebrow">De onde vêm as respostas</div>
-          <div class="row" style="margin-top:.6em"><button class="pbtn main" data-p="live">Ler a planilha ao vivo</button><button class="pbtn" data-p="local">Respostas deste navegador</button><button class="pbtn" data-p="demo">Ver com dados de exemplo</button><button class="pbtn" data-p="print">Imprimir / PDF</button><button class="pbtn" data-p="copy">Copiar resumo</button></div>
+          <div class="row" style="margin-top:.6em">${CFG.painelToken ? '' : '<input id="ptoken" type="password" autocomplete="off" placeholder="Senha do painel (o TOKEN do Codigo.gs)">'}<button class="pbtn main" data-p="live">Ler a planilha ao vivo</button><button class="pbtn" data-p="ptest">Testar o envio</button></div>
+          <div class="row" style="margin-top:.5em"><button class="pbtn" data-p="local">Respostas deste navegador</button><button class="pbtn" data-p="files">Abrir arquivos de resposta</button><input id="pfiles" type="file" accept=".json,.csv,.txt" multiple hidden><button class="pbtn" data-p="demo">Ver com dados de exemplo</button><button class="pbtn" data-p="print">Imprimir / PDF</button><button class="pbtn" data-p="copy">Copiar resumo</button></div>
           <label for="paste" style="display:block;margin-top:.9em">Ou cole aqui o CSV exportado da planilha (aba Respostas) ou o JSON do painel</label><textarea id="paste" rows="3" placeholder="Colar e clicar em Carregar"></textarea>
           <div class="row"><button class="pbtn" data-p="paste">Carregar o que foi colado</button><span class="small" id="srcmsg"></span></div>
         </div>`],
@@ -2955,13 +3006,16 @@ function painel() {
     PAGES = pages.map(p => p[0]); pIdx = Math.min(pIdx, PAGES.length - 1);
     el.innerHTML = pages.map(([t, h], i) => `<section class="ps ${i === pIdx ? 'on' : ''}" data-t="${t}">${h}</section>`).join('');
     painelNav();
-    el.querySelector('[data-p="live"]').onclick = async () => { const m = document.getElementById('srcmsg'); m.textContent = 'Lendo a planilha…'; try { setRows(await fetchLive(), 'planilha (ao vivo, atualiza a cada 30 s)'); clearInterval(liveTimer); liveTimer = setInterval(async () => { try { const rs = await fetchLive(); if (rs.length !== rows.length) setRows(rs, 'planilha (ao vivo, atualiza a cada 30 s)'); } catch (e) { } }, 30000); } catch (e) { m.textContent = 'Não deu para ler a planilha: ' + e.message; } };
+    el.querySelector('[data-p="ptest"]').onclick = async () => { const m = document.getElementById('srcmsg'); m.textContent = 'Testando…'; const r = await Sync.ping(); m.textContent = r.ok ? `✔ A planilha respondeu (${r.respostas} resposta${r.respostas === 1 ? '' : 's'} guardada${r.respostas === 1 ? '' : 's'}). As respostas dos diretores vão chegar.` : '✘ ' + r.msg; };
+    el.querySelector('[data-p="files"]').onclick = () => document.getElementById('pfiles').click();
+    document.getElementById('pfiles').onchange = async e => { const m = document.getElementById('srcmsg'); let all = [], ruins = 0; for (const f of e.target.files) { try { all = all.concat(parseAny(await f.text())); } catch (er) { ruins++; } } if (all.length) setRows(juntar(all), 'arquivos de resposta'); document.getElementById('srcmsg').textContent = `${all.length} resposta(s) lida(s)${ruins ? `, ${ruins} arquivo(s) não entendido(s)` : ''}.`; };
+    el.querySelector('[data-p="live"]').onclick = async () => { const m = document.getElementById('srcmsg'); const tk = document.getElementById('ptoken'); if (tk && tk.value.trim()) guardaSenha(tk.value.trim()); m.textContent = 'Lendo a planilha…'; try { setRows(await fetchLive(), 'planilha (ao vivo, atualiza a cada 30 s)'); clearInterval(liveTimer); liveTimer = setInterval(async () => { try { const rs = await fetchLive(); if (rs.length !== rows.length) setRows(rs, 'planilha (ao vivo, atualiza a cada 30 s)'); } catch (e) { } }, 30000); } catch (e) { m.textContent = 'Não deu para ler a planilha: ' + e.message; } };
     el.querySelector('[data-p="local"]').onclick = () => { const rs = []; try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.finishedAt) { const keep = S; S = d; rs.push(buildRow()); S = keep; } } catch (e) { } setRows(rs, 'este navegador'); if (!rs.length) document.getElementById('srcmsg').textContent = 'Nenhuma resposta concluída neste navegador.'; };
     el.querySelector('[data-p="demo"]').onclick = () => setRows(demo(), 'dados de exemplo (fictícios)');
     el.querySelector('[data-p="print"]').onclick = () => window.print();
     el.querySelector('[data-p="copy"]').onclick = () => { const txt = resumoTexto(rows, gaps, pautas, mean, manif); navigator.clipboard.writeText(txt).then(() => document.getElementById('srcmsg').textContent = 'Resumo copiado.'); };
     const nb = el.querySelector('[data-p="names"]'); if (nb) nb.onclick = () => { showNames = !showNames; draw(); };
-    el.querySelector('[data-p="paste"]').onclick = () => { const t = document.getElementById('paste').value.trim(); if (!t) return; try { let rs; if (t[0] === '[' || t[0] === '{') { const j = JSON.parse(t); rs = Array.isArray(j) ? j : j.linhas || []; } else rs = parseCsv(t); setRows(rs, 'colado'); document.getElementById('srcmsg').textContent = rs.length + ' linha(s) lidas.'; } catch (e) { document.getElementById('srcmsg').textContent = 'Não entendi o conteúdo colado: ' + e.message; } };
+    el.querySelector('[data-p="paste"]').onclick = () => { const t = document.getElementById('paste').value.trim(); if (!t) return; try { const rs = parseAny(t); setRows(juntar(rs), 'colado'); document.getElementById('srcmsg').textContent = rs.length + ' linha(s) lidas.'; } catch (e) { document.getElementById('srcmsg').textContent = 'Não entendi o conteúdo colado: ' + e.message; } };
   }
   function heroTexto(rows, mean, teamAng, ph) {
     const n = rows.length; if (!n) return '<p class="lede">Quando as respostas chegarem, aqui aparece a leitura do time: para onde aponta, o quanto está junto e a distância para o planejamento.</p>';
