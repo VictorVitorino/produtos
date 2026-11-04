@@ -19,7 +19,7 @@ var COLUNAS = [
   'arquetipo', 'aderencia', 'angulo', 'x', 'y', 'opiniaoFormada', 'velocidadeMed', 'hesitacoes', 'revisoes', 'coerencia',
   'PORTA', 'FOCO', 'RECEITA', 'PRODUTO', 'IA', 'FABRICA', 'ANCORAS', 'PILARES', 'CONSOL', 'PESSOAS',
   'rota', 'mesaP1', 'mesaP2', 'mesaP3', 'mesaP4', 'mesaP5', 'nucleo', 'atendeu', 'caixaPostal', 'contrato', 'ia',
-  'prioridade', 'produtos2027', 'contratacoes',
+  'prioridade', 'produtos2027', 'carga2027', 'cargaNova', 'contratacoes',
   'hoje_front', 'hoje_qualidade', 'hoje_vender', 'hoje_expandir', 'hoje_pessoas', 'hoje_ofertas',
   'ideal_front', 'ideal_qualidade', 'ideal_vender', 'ideal_expandir', 'ideal_pessoas', 'ideal_ofertas',
   'casco_confianca', 'casco_conflito', 'casco_compromisso', 'casco_cobranca', 'casco_resultado',
@@ -88,7 +88,8 @@ var CASCO_ = [['confianca', 'Confiança'], ['conflito', 'Conflito produtivo'], [
 function resumo_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName('Resumo') || ss.insertSheet('Resumo');
-  var col = function (nome) { var i = COLUNAS.indexOf(nome); return colLetter_(i + 1); };
+  var resp = aba_(), hdr = resp.getRange(1, 1, 1, Math.max(1, resp.getLastColumn())).getValues()[0];
+  var col = function (nome) { var i = hdr.indexOf(nome); if (i < 0) i = COLUNAS.indexOf(nome); return colLetter_(i + 1); }; // pela linha de títulos real da aba
   var faixa = function (k) { return ABA + '!' + col(k) + '2:' + col(k); };
   var media = function (k, casas) { return '=IFERROR(ROUND(AVERAGE(' + faixa(k) + '),' + (casas || 0) + '),"")'; };
   var plano = { PORTA: 40, FOCO: 80, RECEITA: 80, PRODUTO: 85, IA: 90, FABRICA: 85, ANCORAS: 100, PILARES: 100, CONSOL: 100, PESSOAS: 100 };
@@ -110,6 +111,9 @@ function resumo_() {
   linha('');
   titulo('Porão: caixas por pilar', 'Média do time', 'Planejamento FY27');
   [['mesaP1', 'Reestruturação e turnaround de TI', 25], ['mesaP2', 'Programas críticos e eficiência do gasto', 35], ['mesaP3', 'M&A', 25], ['mesaP4', 'Operações e verticais', 10], ['mesaP5', 'Apostas novas', 5]].forEach(function (m) { linha(m[1], media(m[0]), m[2]); });
+  linha('');
+  titulo('Manifesto de carga', 'Média do time', 'Hoje');
+  linha('Produtos no catálogo de 2027', media('produtos2027'), 33);
   linha('');
   titulo('Papel do diretor (% do tempo)', 'Hoje', '2027');
   PAPEIS_.forEach(function (p) { linha(p[1], media('hoje_' + p[0]), media('ideal_' + p[0])); });

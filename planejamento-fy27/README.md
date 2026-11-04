@@ -6,15 +6,15 @@ Diagnóstico de engajamento para os diretores executivos de DTS. É uma travessi
 |---|---|---|
 | I · O porto | Abertura e nome do comandante | — |
 | II · A tempestade | Oito escolhas de “isto ou aquilo”, até 30 segundos cada (dá tempo de ler antes de escolher), contadas com histórias do mar (o reboque ou a revisão do motor, a rede ou o anzol, o próprio estaleiro ou os parceiros). Mede instinto, velocidade e hesitação. | 1 a 8 |
-| III · A navegação | Carta náutica (rota), porão (100 caixas por pilar), rádio de bordo (quem atender) e contrato (fixo × resultado). | 9 a 12 |
-| IV · Águas profundas | Sonar (IA), diário de bordo (pelo que ser lembrado), lastro (tamanho do catálogo) e tripulação (duas contratações). | 13 a 16 |
+| III · A navegação | Carta náutica (rota), porão (100 caixas por pilar), rádio de bordo (quem atender) e contrato (fixo × resultado: os valores da parte fixa, da parte variável e da faixa que o frete pode render mudam enquanto a pessoa arrasta). | 9 a 12 |
+| IV · Águas profundas | Sonar (IA), diário de bordo (pelo que ser lembrado), manifesto de carga (quais dos 33 produtos de hoje embarcam em 2027; cada um vira um contêiner no convés, e dá para embarcar até três cargas novas) e tripulação (duas contratações sênior, com o que cada perfil faz e a frente que fortalece). | 13 a 16 |
 | V · O casco | Quarto de serviço (como o tempo do diretor se divide hoje e em 2027), os cinco rebites da integridade do time e o apito de bordo (a quem cada um recorre). | 17 a 20 |
 | VI · O farol | O dilema central, com calma: o resgate na tempestade (a consultoria que o CFO chama quando a TI falhou) ou o prático do canal (a que o CIO chama para não falhar). | 21 |
 | VII · O amanhecer | Mensagem na garrafa e a revelação da bússola: arquétipo (rebocador de salvamento, prático de confiança, guarda costeira, estaleiro da frota ou resgate que fica a bordo), posição no dilema, papel em 2027, leitura do casco, reflexo e hesitações. | 22 |
 
 | Arquivo | O que é |
 |---|---|
-| `bussola-dts-2027.html` | A dinâmica (participante) e, com `?painel` no fim do link, o painel da facilitação em dez páginas. Arquivo único, sem dependências além das fontes do Google. |
+| `bussola-dts-2027.html` | A dinâmica (participante) e, com `?painel` no fim do link, o painel da facilitação em onze páginas. Arquivo único, sem dependências além das fontes do Google. |
 | `google-apps-script/Codigo.gs` | Script da planilha que recebe as respostas e devolve ao painel. |
 | `google-apps-script/LEIAME.md` | Passo a passo: ligar a planilha, publicar o link, rodar ao vivo ou antes do encontro, ler o painel. |
 
@@ -24,4 +24,4 @@ O palco é um quadro 16:9 centralizado, com o fundo externo visível e a navega�
 
 Foi testado a 100% de zoom em 1280×720, 1366×768, 1440×900, 1536×864 (Full HD com escala de 125%), 1600×900, 1680×1050, 1920×1080 e 2560×1440: nenhuma tela corta ou rola. No celular e no tablet em pé, o palco ocupa a tela inteira e rola por dentro.
 
-O que a bússola mede e de onde vêm as posições do planejamento está descrito no LEIAME (seção 5) e no início do script do HTML (`DIMS`, `PLAN_MESA`).
+O que a bússola mede e de onde vêm as posições do planejamento está descrito no LEIAME (seção 5) e no início do script do HTML (`DIMS`, `PLAN_MESA`). O catálogo de hoje, usado no manifesto de carga, está em `CATALOGO` (slide 15 do Planejamento FY27).

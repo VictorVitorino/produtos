@@ -163,7 +163,7 @@ svg{display:block}
 .ship{position:absolute;left:var(--ship-x,30cqw);width:17cqw;aspect-ratio:300/130;top:calc(78cqh - 5.9cqw);transition:left 2.8s var(--ease-io),width 2.6s var(--ease-io),top 2.6s var(--ease-io),opacity 1.2s ease;z-index:2}
 .ship.corner{width:12cqw;top:calc(78cqh - 4.16cqw)}
 .ship.far{width:4.4cqw;top:calc(56.8cqh - 1.53cqw)}
-.ship.hide{opacity:0}
+.ship.hide,.ship.tuck{opacity:0}
 .ship .hull-in{position:absolute;inset:0;transform-origin:50% 80%;animation:rock 6s ease-in-out infinite}
 .ship svg{width:100%;height:100%}
 .ship .lit{fill:#FCD1A2}
@@ -540,7 +540,7 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
 .logbook .stamp{top:-.5em;bottom:auto;right:3.6em}
 .holdship .stamp{left:0;right:0;width:max-content;margin-inline:auto;top:32%;bottom:auto}
 
-/* lastro (roupa) */
+/* manifesto de carga (roupa): o navio e a linha d’água */
 .ballast{padding:1em 1.1em .9em}
 .bview{position:relative;height:16em;border-radius:8px;overflow:hidden;overflow:clip;background:linear-gradient(180deg,#0f3352 0%,#1d4566 54%,#0b2d4a 54.2%,#041a2d 100%)}
 .bview .bship{position:absolute;left:12%;right:12%;top:var(--top,22%);height:46%;transition:top .6s var(--spring)}
@@ -773,6 +773,68 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
 @keyframes rollUp{to{transform:rotate(-1.2deg) translate(30%,30%) scale(.1,.05);opacity:0}}
 @keyframes throw{0%{transform:rotate(-24deg)}30%{transform:translate(-30%,-120%) rotate(-200deg)}65%{transform:translate(-120%,40%) rotate(-330deg);opacity:1}100%{transform:translate(-240%,60%) rotate(-370deg);opacity:0}}
 
+/* contrato (manobra 12): a faixa do que o frete pode render */
+.faixa{margin-top:.55em}
+.fx-l{font:700 .62em var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
+.fx-tr{position:relative;height:.62em;border-radius:99px;background:rgba(0,43,73,.1);margin:.45em 0 .3em}
+.fx-tr i{position:absolute;top:0;bottom:0;border-radius:99px;background:var(--navy);transition:left .45s var(--ease),width .45s var(--ease)}
+.fx-tr em{position:absolute;top:-.3em;bottom:-.3em;width:2px;margin-left:-1px;background:var(--orange)}
+.fx-v{display:flex;justify-content:space-between;gap:.6em;font-size:max(11px,.76em);color:var(--ink-2)}
+.fx-v span:nth-child(2){font-weight:700;color:var(--navy);text-align:center}
+.contract .ends{margin-top:-.1em}
+
+/* manifesto de carga (manobra 15): cada produto de hoje é um contêiner */
+.content.scr-roupa{grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);column-gap:2.2em}
+.bview.sm{height:9.6em}
+.bview.sm .bship{left:5%;right:5%;height:58%}
+.bcount{position:absolute;left:.75em;top:.55em;z-index:2;display:flex;align-items:baseline;gap:.45em;text-shadow:0 .1em .4em rgba(0,0,0,.4)}
+.bcount b{font-family:var(--serif);font-weight:700;font-size:2.3em;line-height:1;color:#fff}
+.bcount span{font-family:var(--hand);font-size:1.02em;color:var(--peach)}
+.manifest{padding:1.35em 1.05em .75em}
+.mgrid{columns:2;column-gap:1.1em}
+.mg{break-inside:avoid;margin-bottom:.65em}
+.mgh{display:flex;justify-content:space-between;align-items:baseline;gap:.6em;border-bottom:1.5px solid var(--navy);padding-bottom:.18em;margin-bottom:.22em}
+.mgh b{font:700 .62em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--navy)}
+.mgh span{font:700 .62em var(--mono);color:var(--ink-2);white-space:nowrap}
+.ctr{display:flex;align-items:center;gap:.55em;width:100%;text-align:left;padding:.2em .4em;border-radius:4px;border:1px solid transparent;color:var(--ink-2);font-size:max(11px,.74em);line-height:1.2;transition:background .2s,border-color .2s,color .2s}
+.ctr i{flex:none;position:relative;width:1.6em;height:1em;border-radius:2px;border:1.5px dashed rgba(0,43,73,.32);transition:all .25s var(--ease)}
+.ctr:hover{background:rgba(255,255,255,.65);border-color:rgba(0,43,73,.14);color:var(--navy)}
+.ctr.on{background:#fff;border-color:rgba(0,43,73,.16);color:var(--navy);font-weight:600}
+.ctr.on i{border:1px solid #B4570A;background:repeating-linear-gradient(90deg,#FCD1A2 0 .2em,#F9A345 .2em .28em)}
+.ctr.drop i{animation:ctrDrop .5s var(--spring)}
+.bview .cdrop{animation:cdrop .55s var(--spring) both}
+@keyframes cdrop{0%{transform:translateY(-34px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes ctrDrop{0%{transform:translateY(-1.1em) scale(1.25);opacity:0}60%{opacity:1}100%{transform:none}}
+.newcargo{display:flex;flex-direction:column;gap:.38em}
+.newcargo label{font:700 .62em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--light-blue);line-height:1.4}
+.ncrow{display:flex;gap:.4em}
+.ncrow input{flex:1;min-width:0;font:inherit;font-size:.9em;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(191,208,225,.3);border-radius:8px;padding:.5em .7em}
+.ncrow input::placeholder{color:rgba(191,208,225,.5)}
+.ncrow input:focus{outline:none;border-color:var(--peach);box-shadow:0 0 0 3px rgba(252,209,162,.15)}
+.ncadd{flex:none;padding:0 .9em;border-radius:8px;border:1px solid var(--peach);color:var(--peach);font-weight:700;font-size:.84em;transition:all .2s}
+.ncadd:hover:not(:disabled){background:var(--peach);color:var(--navy)}
+.ncadd:disabled{opacity:.3;cursor:default}
+.ncl{display:flex;flex-wrap:wrap;gap:.35em}
+.ncl:empty{display:none}
+.ncc{display:inline-flex;align-items:center;gap:.45em;padding:.2em .25em .2em .5em;border-radius:6px;background:rgba(94,138,180,.22);border:1px solid rgba(191,208,225,.45);color:#fff;font-size:.8em;line-height:1.2;animation:popScale .4s var(--spring)}
+.ncc i{flex:none;width:1.3em;height:.8em;border-radius:2px;background:repeating-linear-gradient(90deg,#BFD0E1 0 .2em,#7EA1C3 .2em .28em)}
+.ncc button{width:1.5em;height:1.5em;border-radius:50%;color:var(--peach);font-weight:700;line-height:1}
+.ncc button:hover{background:rgba(252,209,162,.2)}
+
+/* tripulação (manobra 16): quem cada perfil é e o que fortalece */
+.content.scr-pessoas{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);column-gap:2.3em}
+.content.scr-pessoas .crew{gap:.5em}
+.mate{position:relative;align-items:start;grid-template-columns:2.5em 1fr;gap:.65em;padding:.52em .7em .5em}
+.mate .ic{width:2.5em;height:2.5em}
+.mate .mt{display:flex;flex-direction:column;gap:.18em;min-width:0}
+.mate .mt b{font-family:var(--serif);font-weight:700;font-size:1em;line-height:1.15;color:var(--navy)}
+.mate .mt span{font-size:max(11px,.75em);line-height:1.3;color:var(--ink-2)}
+.mate .mt em{font-style:normal;font-weight:700;font-size:max(10.5px,.68em);line-height:1.3;color:var(--rust);margin-top:.1em}
+.mate .aboard{position:absolute;bottom:-.7em;right:.8em;z-index:1;font:700 .56em var(--mono);letter-spacing:.14em;text-transform:uppercase;background:var(--navy);color:var(--peach);padding:.3em .55em;border-radius:3px;animation:popScale .4s var(--spring)}
+.slot>span:last-child{min-width:0}
+.slot b{display:block;font-family:var(--serif);font-weight:700;font-size:1.04em;line-height:1.2;color:#fff}
+.slot small{display:block;font-size:.84em;line-height:1.3;color:var(--peach);margin-top:.15em}
+
 /* ---------------------------------------------------------------------
    6 · RESPONSIVO
    Largura: notebook (padrão), telas estreitas e celular.
@@ -786,6 +848,9 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
   .hstack{height:17em}
   .hstack .crate{height:1.45em}
   .bview{height:13.5em}
+  .bview.sm{height:8.4em}
+  .ctr{padding:.14em .4em}
+  .mate .mt span{line-height:1.25}
 }
 @media (max-height:720px){:root{--dock:52px;--gap:12px}.dbtn,.count{height:34px;font-size:13px}.dbtn.icon{width:34px}.voyage .pt span{font-size:10px}}
 @media (max-height:620px){:root{--gap:8px}}
@@ -813,6 +878,8 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
   .radio{grid-template-columns:1fr 1fr}
   .holds{gap:.35em}.hstack{height:13em}.hsub{display:none}
   .crew{grid-template-columns:1fr}.mate.last{width:100%}
+  .mgrid{columns:1}.ctr{padding:.4em .45em;font-size:.86em}
+  .bview.sm{height:11em}
   .prow{grid-template-areas:'lab val ctl' 'trk trk trk';grid-template-columns:1fr auto auto;row-gap:.35em}
   .plab{grid-area:lab}.pval{grid-area:val}.pctl{grid-area:ctl}.ptrack{grid-area:trk}
   .rv{grid-template-columns:1fr}.kscale{align-self:flex-start}
@@ -906,11 +973,11 @@ body.painel .content{padding:4.4em 2.2em 1.6em;display:block;color:var(--ink);ba
 .tbl td{border-bottom:1px solid var(--navy-20);padding:.45em .5em;vertical-align:top}
 .tbl .num{text-align:right;white-space:nowrap}
 .tbl tr.plan td{background:var(--orange-20)}
-.pautas{list-style:none;display:flex;flex-direction:column;gap:.6em}
-.pautas li{display:grid;grid-template-columns:2.2em 1fr;gap:.8em;align-items:start;background:#fff;border:1px solid var(--navy-20);border-left:4px solid var(--orange);border-radius:8px;padding:.75em 1em}
-.pautas i{width:2.2em;height:2.2em;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font:700 .9em var(--mono);font-style:normal}
-.pautas b{display:block;color:var(--navy);font-size:1.02em}
-.pautas span{display:block;font-size:.88em;color:var(--ink-2);margin-top:.2em}
+.pautas{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55em .7em;align-items:stretch}
+.pautas li{display:grid;grid-template-columns:2em 1fr;gap:.7em;align-items:start;background:#fff;border:1px solid var(--navy-20);border-left:4px solid var(--orange);border-radius:8px;padding:.6em .85em}
+.pautas i{width:2em;height:2em;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font:700 .9em var(--mono);font-style:normal}
+.pautas b{display:block;color:var(--navy);font-size:.94em;line-height:1.3}
+.pautas span{display:block;font-size:.82em;line-height:1.35;color:var(--ink-2);margin-top:.2em}
 .bars{display:flex;flex-direction:column;gap:.55em}
 .brow{display:grid;grid-template-columns:12em 1fr 2.6em;gap:.7em;align-items:center;font-size:.86em}
 .brow .tr{position:relative;height:.9em;background:var(--ice);border-radius:99px}
@@ -941,12 +1008,30 @@ body.painel .content{padding:4.4em 2.2em 1.6em;display:block;color:var(--ink);ba
 .pcard.navy p{color:var(--light-blue);font-size:.88em;line-height:1.5}
 .phead{display:flex;justify-content:space-between;align-items:center;gap:1em}
 .pcols3{display:grid;grid-template-columns:repeat(3,1fr);gap:1em}
+.mgp{break-inside:avoid;margin-bottom:.7em}
+.mgph{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--navy);padding-bottom:.15em;margin-bottom:.3em}
+.mgph b{font:700 .66em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--navy)}
+.mgph span{font:700 .62em var(--mono);color:var(--ink-2)}
+.pcols3.cargacols{grid-template-columns:1.16fr 1.16fr .78fr}
+.cargacols .pcard{padding:.85em 1em}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) 3.2em 1.4em;gap:.5em;align-items:center;font-size:.72em;line-height:1.18;padding:.1em 0;color:var(--ink)}
+.hrow{font-size:.8em;padding:.16em 0}.hrow span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbars{display:flex;flex-direction:column}
+.mrow .tr{position:relative;height:.7em;background:var(--ice);border-radius:99px}
+.mrow .tr i{position:absolute;left:0;top:0;bottom:0;background:var(--steel);border-radius:99px}
+.mrow b{font-family:var(--serif);color:var(--navy);text-align:right}
+.mrow.hi{font-weight:700;color:var(--navy)}.mrow.hi .tr i{background:var(--navy)}
+.mrow.lo{color:var(--ink-2);opacity:.65}.mrow.lo span{text-decoration:line-through;text-decoration-color:rgba(0,43,73,.35)}
+.nlist{display:flex;flex-direction:column;gap:.3em;font-size:.86em}
+.nlist div{display:flex;justify-content:space-between;gap:.6em;border-bottom:1px dashed var(--navy-20);padding-bottom:.2em}
+.nlist b{font-family:var(--serif);color:var(--navy)}
+
 .brow.nm2{grid-template-columns:9em 1fr 2em}
 .frases{display:grid;grid-template-columns:1fr 1fr;gap:.7em}
 .frases>div{font-family:var(--hand);font-size:1.05em;line-height:1.35;color:var(--navy);background:#fff;border:1px solid var(--navy-20);border-left:4px solid var(--orange);border-radius:6px;padding:.7em .9em}
 .frases small{display:block;font:700 .66em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);margin-top:.4em}
 .foot{font-size:.76em;color:var(--ink-2);line-height:1.45;margin-top:auto;padding-top:.6em;border-top:1px dotted var(--navy-40)}
-@media (max-aspect-ratio:5/4),(max-width:760px){.hero-grid,.pcols,.pcols3,.frases{grid-template-columns:1fr}.b2{grid-template-columns:1fr 4em}.b2 .tr2{grid-column:1/-1;order:3}.rv2{grid-template-columns:1fr 3em}.rv2 .dist{grid-column:1/-1}.pstats{grid-template-columns:1fr 1fr}.brow{grid-template-columns:8em 1fr 2.2em}}
+@media (max-aspect-ratio:5/4),(max-width:760px){.hero-grid,.pcols,.pcols3,.pcols3.cargacols,.pautas,.frases{grid-template-columns:1fr}.b2{grid-template-columns:1fr 4em}.b2 .tr2{grid-column:1/-1;order:3}.rv2{grid-template-columns:1fr 3em}.rv2 .dist{grid-column:1/-1}.pstats{grid-template-columns:1fr 1fr}.brow{grid-template-columns:8em 1fr 2.2em}}
 @media print{
   @page{size:A4 landscape;margin:10mm}
   html,body{height:auto;overflow:visible;background:#fff}
@@ -1180,13 +1265,13 @@ const PRIO = [
   { id: 'estrategia', txt: 'Desenhar a estratégia digital e medir a maturidade de TI', top: false }
 ];
 const PERFIS = [
-  { id: 'excio', txt: 'Ex-CIO operador, que assume a área do cliente', plan: true },
-  { id: 'programas', txt: 'Gerente de programas de ERP e fiscal', plan: true },
-  { id: 'ma', txt: 'Especialista em tecnologia para M&A', plan: true },
-  { id: 'eng', txt: 'Engenheiro de IA e plataforma, para montar a fábrica', eng: true },
-  { id: 'setor', txt: 'Especialista setorial: saúde, varejo ou financeiro' },
-  { id: 'comercial', txt: 'Executivo comercial para abrir portas com CIOs', cio: true },
-  { id: 'dados', txt: 'Cientista de dados' }
+  { id: 'excio', curto: 'Ex-CIO operador', txt: 'Ex-CIO operador', faz: 'Assume a TI do cliente na crise, como CIO interino, e reorganiza a área.', frente: 'CIO interino e liderança embarcada', plan: true },
+  { id: 'programas', curto: 'Programas de ERP e fiscal', txt: 'Gerente de programas de ERP e fiscal', faz: 'Põe no trilho programas atrasados, como ERP e reforma tributária.', frente: 'Remediação de programas e PMO', plan: true },
+  { id: 'ma', curto: 'Tecnologia para M&A', txt: 'Especialista em tecnologia para M&A', faz: 'Diligência, integração e separação de TI na compra e venda de empresas.', frente: 'Due diligence, integração e carve-out', plan: true },
+  { id: 'eng', curto: 'Engenheiro de IA', txt: 'Engenheiro de IA e plataforma', faz: 'Monta a fábrica própria de DTS: agentes, automações e sistemas.', frente: 'Fábrica própria e automação', eng: true },
+  { id: 'setor', curto: 'Especialista setorial', txt: 'Especialista setorial', faz: 'Conhece saúde, varejo ou financeiro por dentro e abre uma vertical.', frente: 'Ofertas por setor' },
+  { id: 'comercial', curto: 'Executivo comercial', txt: 'Executivo comercial', faz: 'Abre portas e cuida da relação com CIOs o ano todo, fora dos projetos.', frente: 'Relação contínua com o CIO', cio: true },
+  { id: 'dados', curto: 'Cientista de dados', txt: 'Cientista de dados', faz: 'Constrói modelos e análises de dados dentro dos projetos.', frente: 'Dados e IA nos projetos' }
 ];
 const ESPELHO = [
   { id: 'A', mar: 'O resgate na tempestade', txt: '…o CFO chama quando a TI falhou.', sub: 'Entramos na crise, com acesso ao CEO e ao conselho.', porta: 10 },
@@ -1223,6 +1308,14 @@ const CHAMADOS = [
   { id: 'proposta', q: 'para montar uma proposta difícil e fechar a venda?', tema: 'Proposta difícil e fechamento' }
 ];
 const CARGOS = ['Diretor', 'Senior Director', 'Managing Director'];
+// Catálogo de hoje (Planejamento FY27, slide 15): 33 produtos em quatro pilares. É o manifesto de carga da manobra 15.
+const CATALOGO = [
+  { id: 'adv', pilar: 'IT Advisory', curto: 'IT Advisory', itens: ['Tech Maturity & Value Assessment', 'C-Level Tech Enablement', 'Embedded Tech Leadership', 'Interim CIO/CTO Leadership', 'Digital Strategy & Roadmapping', 'Operating Model Design & Tech Org Restructuring', 'IT Resilience & Business Continuity Planning', 'Tech Spend Optimization', 'Tax Incentives', 'Strategic Tech Tax Planning'] },
+  { id: 'trf', pilar: 'Transformação Tecnológica', curto: 'Transformação Tecnológica', itens: ['Sourcing Strategy & Implementation', 'TMO', 'PMO', 'Execução e Remediação de programas', 'IT Governance Strategy e ITSM Implementation', 'Diagnóstico de Maturidade Ágil', 'Implementação de ATO'] },
+  { id: 'ma', pilar: 'Technology M&A Advisory & Transformation', curto: 'Technology M&A', itens: ['Technology Due Diligence Risk Assessment', 'IT M&A Strategy and Design', 'Day 1 Readiness & Transition Roadmap', 'IT Post Merger Integration Office', 'IT Carve-Out & Transition Office', 'Tech Exit Readiness & Value Creation', 'M&A Technology Advisory & Value Office'] },
+  { id: 'mod', pilar: 'Modernização Tecnológica e Evolução Digital', curto: 'Modernização e Evolução Digital', itens: ['Desenho de Arquitetura de Sistemas e Infra', 'Modernização de aplicações e infraestrutura', 'Diagnóstico de Infraestrutura', 'Cloud Migration Support & Leadership', 'Eficiência em Cloud (FinOps)', 'Observability strategy', 'Gestão e controle de testes / QA (Redwolf)', 'Customer & User Experience', 'Automação Inteligente e Aumento de Produtividade'] }
+];
+const PRODUTOS = CATALOGO.flatMap(g => g.itens.map((nome, k) => ({ id: g.id + (k + 1), nome, g: g.id, pilar: g.curto })));
 
 /* ===================================================================== */
 /* 2 · ROTEIRO: a sequência de telas                                     */
@@ -1246,7 +1339,7 @@ const KEY = 'bussola-dts-2027';
 const newId = () => 'bx-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
 function fresh() {
   return { v: VERSION, sessionId: newId(), nome: '', email: '', cargo: '', startedAt: null, finishedAt: null, step: 0, maxStep: 0,
-    a: { treino: null, rx: {}, rota: null, mesa: [0, 0, 0, 0, 0], mesaMoves: 0, tel: { atender: [], postal: null }, contrato: { v: 50, moves: 0 }, ia: null, prio: [], roupa: { n: 33, moves: 0 }, pessoas: [], espelho: null, frase: '',
+    a: { treino: null, rx: {}, rota: null, mesa: [0, 0, 0, 0, 0], mesaMoves: 0, tel: { atender: [], postal: null }, contrato: { v: 50, moves: 0 }, ia: null, prio: [], roupa: { n: 33, moves: 0 }, carga: [], cargaNova: [], pessoas: [], espelho: null, frase: '',
       papel: { hoje: [0, 0, 0, 0, 0, 0], ideal: null, movesH: 0, movesI: 0 }, casco: [null, null, null, null, null], chama: { porta: [], trilho: [], proposta: [] } },
     t: {}, enteredAt: null, result: null };
 }
@@ -1281,7 +1374,7 @@ function compute(a) {
   const esp = ESPELHO.find(e => e.id === a.espelho);
   const engChosen = a.pessoas.includes('eng'), cioChosen = a.pessoas.includes('comercial');
   const planPerfis = a.pessoas.filter(id => (PERFIS.find(p => p.id === id) || {}).plan).length;
-  const n = a.roupa.n;
+  const n = a.roupa.moves && a.roupa.n ? a.roupa.n : 33; // sem resposta: o tamanho de hoje
   const d = {
     PORTA: clamp(mix([[esp ? esp.porta : null, .45], [rxAvg(['r1', 'r2']), .35], [telPorta.length ? avg(telPorta) : null, .2]]) + (cioChosen ? 8 : 0)),
     FOCO: clamp(mix([[rota ? rota.foco : null, .35], [rxAvg(['r3', 'r8']), .25], [focoMesa, .2], [clamp(100 - (n - 18) * 3.3), .2]])),
@@ -1380,7 +1473,7 @@ function buildRow() {
     arquetipo: ARQUETIPOS[r.quad].nome, aderencia: r.aderencia, angulo: r.ang, x: r.x, y: r.y, opiniaoFormada: r.conv, velocidadeMed: r.velocidade, hesitacoes: r.hesitacoes, coerencia: r.coerencia,
     PORTA: Math.round(r.d.PORTA), FOCO: Math.round(r.d.FOCO), RECEITA: Math.round(r.d.RECEITA), PRODUTO: Math.round(r.d.PRODUTO), IA: Math.round(r.d.IA), FABRICA: Math.round(r.d.FABRICA), ANCORAS: Math.round(r.d.ANCORAS), PILARES: Math.round(r.d.PILARES), CONSOL: Math.round(r.d.CONSOL), PESSOAS: Math.round(r.d.PESSOAS),
     rota: a.rota, mesaP1: a.mesa[0], mesaP2: a.mesa[1], mesaP3: a.mesa[2], mesaP4: a.mesa[3], mesaP5: a.mesa[4], nucleo: r.nucleo,
-    atendeu: a.tel.atender.join(' > '), caixaPostal: a.tel.postal, contrato: a.contrato.v, ia: a.ia, prioridade: a.prio.join(' > '), produtos2027: a.roupa.n, contratacoes: a.pessoas.join(' + '), espelho: a.espelho, frase: a.frase };
+    atendeu: a.tel.atender.join(' > '), caixaPostal: a.tel.postal, contrato: a.contrato.v, ia: a.ia, prioridade: a.prio.join(' > '), produtos2027: a.roupa.moves ? a.roupa.n : '', carga2027: (a.carga || []).map(id => (PRODUTOS.find(p => p.id === id) || {}).nome).filter(Boolean).join('; '), cargaNova: (a.cargaNova || []).join('; '), contratacoes: a.pessoas.join(' + '), espelho: a.espelho, frase: a.frase };
   REFLEX.forEach(x => { const v = a.rx[x.id] || {}; row[x.id] = v.side == null ? 'hesitou' : v.side === 'L' ? x.L : x.R; row[x.id + '_ms'] = v.ms == null ? '' : v.ms; });
   row.revisoes = REFLEX.filter(x => (a.rx[x.id] || {}).revisto).length;
   row.cargo = S.cargo || '';
@@ -1526,6 +1619,16 @@ function placeShip(x) {
   s.classList.toggle('hide', act === 'profundo');
   s.style.setProperty('--ship-x', (x != null ? x : id === 'capa' ? 52 : id === 'final' ? 46 : 1.5) + 'cqw');
 }
+// O navio do canto nunca fica sob o texto: se algum bloco da tela cruza a área dele, ele sai de cena.
+function shipRoom() {
+  const s = $('#ship'); if (!s || !s.classList.contains('corner')) { if (s) s.classList.remove('tuck'); return; }
+  const W = stage.clientWidth / 100, H = stage.clientHeight / 100, tall = matchMedia('(max-aspect-ratio:5/4),(max-width:760px)').matches;
+  const sw = tall ? Math.max(12 * W, 92) : 12 * W, top = 78 * H - (tall ? Math.max(4.16 * W, 32) : 4.16 * W);
+  const z = { l: 1.5 * W - 6, r: 1.5 * W + sw + 10, t: top - 6, b: top + sw * 130 / 300 + 6 };
+  const pos = el => { let x = 0, y = 0, e = el; while (e && e !== app) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return e === app ? { x, y: y - app.scrollTop, w: el.offsetWidth, h: el.offsetHeight } : null; };
+  const hit = $$('[data-in]', app).some(el => { const p = pos(el); return p && p.w && p.h && p.x < z.r && p.x + p.w > z.l && p.y < z.b && p.y + p.h > z.t; });
+  s.classList.toggle('tuck', hit);
+}
 function lightning(strong) {
   if (REDUCED) return;
   const b = $('#bolt'), f = $('#flash');
@@ -1606,7 +1709,7 @@ function render() {
   app.scrollTop = 0;
   stage.classList.remove('spot-on', 'pressure');
   if (SCR.mount) SCR.mount();
-  dock(); hud(); voyage(); clock();
+  dock(); hud(); voyage(); clock(); shipRoom();
 }
 async function go(i, o = {}) {
   if (busy) return; busy = true;
@@ -1678,7 +1781,7 @@ function compassSvg(needles, opt = {}) {
 /* 7 · AS TELAS                                                          */
 /* ===================================================================== */
 function contratoTxt(v) { return v <= 10 ? 'Tudo fixo, sem risco' : v < 45 ? `${100 - v}% para o fixo` : v <= 55 ? 'Meio a meio' : v < 90 ? `${v}% para o resultado` : 'Tudo no resultado'; }
-function roupaTxt(n) { return n <= 17 ? 'só o essencial' : n <= 26 ? 'enxuto: poucas e boas escolhas' : n <= 33 ? 'quase como hoje' : 'mais que hoje'; }
+function roupaTxt(n) { return n <= 12 ? 'só o essencial' : n <= 20 ? 'enxuto: poucas e boas' : n < 30 ? 'mais leve que hoje' : n <= 33 ? 'quase como hoje' : 'mais que hoje'; }
 const ey = (...parts) => `<div class="eyebrow" data-in>${parts.join('<span class="sep">·</span>')}</div>`;
 const dtsLine = t => `<p class="dts" data-in><b>Em DTS</b>${t}</p>`;
 function splitChars(text, start = 0) {
@@ -1937,6 +2040,10 @@ function balanceSvg() {
     <g class="pan" id="panR"><path d="M260 40 L242 82 M260 40 L278 82" stroke="#33556D" stroke-width="1.2"/><path d="M234 82 H286 Q280 96 260 96 Q240 96 234 82 Z" fill="#E9DEC4" stroke="#33556D"/><g id="coinsR"></g><text x="260" y="112" text-anchor="middle" font-family="Courier Prime, monospace" font-size="10" font-weight="700" fill="#33556D">RESULTADO</text></g>
   </svg>`;
 }
+// ---- contrato: os valores acompanham o arraste (de 0 = tudo fixo a 100 = tudo no resultado)
+const brl = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + ' mi';
+const pctBR = p => (Math.round(p * 100) / 100).toLocaleString('pt-BR') + '%';
+function contratoVals(v) { const t = v / 100, fixo = 1 - .4 * t; return { fixo, pct: 25 * t, piso: fixo, teto: fixo + 1.2 * t }; }
 SCREENS.contrato = {
   layout: 'split',
   html() {
@@ -1944,23 +2051,33 @@ SCREENS.contrato = {
     return `<div class="col">
       ${ey(`Manobra ${mNum('contrato')}`, '<b>O contrato do armador</b>')}
       <h2 class="q" data-in>O mesmo frete, dois jeitos de assinar. Arraste até onde você assinaria.</h2>
-      <p class="note" data-in>Como o pescador escolhe entre a diária e uma parte da pesca.</p>
+      <p class="small" data-in>Na ponta esquerda, tudo fixo: R$ 1,0 mi garantidos. Na direita, R$ 0,6 mi fixos mais 25% da economia que o projeto gerar. Os valores do contrato mudam enquanto você arrasta.</p>
+      <p class="note" data-in>Como o pescador que escolhe entre a diária e uma parte da pesca.</p>
       ${dtsLine('preço por hora e escopo fechado, ou preço ligado ao resultado.')}
     </div>
     <div class="col r" data-in><div class="chart contract">
       <div class="ttl">Contrato de frete<small>temporada 2027 · DTS</small></div>
-      <div class="clauses"><div class="clause" id="clA"><div class="k">Cláusula A</div><b>R$ 1,0 mi fixo</b><span>garantido, independe do resultado</span></div><div class="clause" id="clB"><div class="k">Cláusula B</div><b>R$ 0,6 mi + 25% da economia</b><span>pode chegar a R$ 1,8 mi, pode ficar em R$ 0,6 mi</span></div></div>
+      <div class="clauses">
+        <div class="clause" id="clA"><div class="k">Parte fixa</div><b id="cFix"></b><span>garantida, independe do resultado</span></div>
+        <div class="clause" id="clB"><div class="k">Parte variável</div><b id="cVar"></b><span id="cVarTxt"></span></div>
+      </div>
       <div class="balance">${balanceSvg()}</div>
       <div class="rope"><input class="helmslider" type="range" min="0" max="100" step="5" value="${v}" data-a="contrato" aria-label="Entre fixo e resultado"></div>
-      <div class="ends"><div><b>Tudo fixo</b>segurança</div><div><b>Tudo no resultado</b>risco e prêmio</div></div>
+      <div class="ends"><div><b>Tudo fixo</b>R$ 1,0 mi garantido</div><div><b>Tudo no resultado</b>R$ 0,6 mi + 25% da economia</div></div>
+      <div class="faixa"><div class="fx-l">Quanto o frete pode render</div><div class="fx-tr"><i id="fxR"></i><em style="left:50%" title="R$ 1,0 mi"></em></div><div class="fx-v"><span>R$ 0</span><span id="fxTxt"></span><span>R$ 2,0 mi</span></div></div>
       <div class="sign"><span class="who">Assinado pelo comandante</span><span class="val" id="contratoTxt">${contratoTxt(v)}</span></div>
     </div></div>`;
   },
   mount() { this.update(); },
   update() {
-    const v = S.a.contrato.v, th = (v - 50) / 50 * 12, dy = Math.sin(th * Math.PI / 180) * 110;
+    const v = S.a.contrato.v, th = (v - 50) / 50 * 12, dy = Math.sin(th * Math.PI / 180) * 110, c = contratoVals(v);
     $('#beam').style.transform = `rotate(${th}deg)`; $('#panL').style.transform = `translateY(${-dy}px)`; $('#panR').style.transform = `translateY(${dy}px)`;
     const nC = 1 + Math.round(v / 100 * 7); $('#coinsR').innerHTML = Array.from({ length: nC }, (_, k) => `<ellipse cx="260" cy="${78 - k * 5}" rx="12" ry="3.4" fill="${k > 2 ? '#F9A345' : '#FCD1A2'}" stroke="#B4570A" stroke-width=".8"/>`).join('');
+    $('#cFix').textContent = brl(c.fixo);
+    $('#cVar').textContent = c.pct ? pctBR(c.pct) + ' da economia' : 'sem parte variável';
+    $('#cVarTxt').textContent = c.pct ? `pode chegar a ${brl(c.teto)}, pode ficar em ${brl(c.piso)}` : 'o valor não muda com o resultado';
+    const fx = $('#fxR'); fx.style.left = (c.piso / 2 * 100) + '%'; fx.style.width = Math.max(1, (c.teto - c.piso) / 2 * 100) + '%';
+    $('#fxTxt').textContent = c.pct ? `de ${brl(c.piso)} a ${brl(c.teto)}` : `${brl(c.fixo)}, garantido`;
     $('#clA').classList.toggle('hi', v < 50); $('#clB').classList.toggle('hi', v > 50); $('#contratoTxt').textContent = contratoTxt(v);
   },
   nav() { return { back: true, next: { label: 'Seguir viagem →', ok: true } }; }
@@ -2029,50 +2146,73 @@ function ballastShip() {
     <text x="300" y="132" font-family="Courier Prime, monospace" font-weight="700" font-size="10" letter-spacing="1.4" fill="#DFE8F0">DTS 2027</text>
   </svg>`;
 }
-function roupaCargo(n) {
-  const out = []; const cols = 10;
-  for (let k = 0; k < n; k++) { const row = Math.floor(k / cols), col = k % cols; out.push(`<rect x="${40 + col * 25}" y="${88 - row * 15}" width="23" height="13" rx="1.5" fill="${['#5E8AB4', '#33556D', '#99AAB6', '#FCD1A2'][(k + row) % 4]}" stroke="#041a2d" stroke-width=".8"/>`); }
+function roupaCargo(n, novas = 0, drop = -1) {
+  const out = [], cols = 10;
+  for (let k = 0; k < n + novas; k++) {
+    const row = Math.floor(k / cols), col = k % cols, x = 40 + col * 25, y = 88 - row * 15, nova = k >= n;
+    const fill = nova ? (k % 2 ? '#BFD0E1' : '#7EA1C3') : (k + row) % 3 ? '#FCD1A2' : '#F9A345';
+    out.push(`<g class="${k === drop ? 'cdrop' : ''}"><rect x="${x}" y="${y}" width="23" height="13" rx="1.5" fill="${fill}" stroke="#041a2d" stroke-width=".8"/><path d="M${x + 6} ${y + 2.5}v8M${x + 11.5} ${y + 2.5}v8M${x + 17} ${y + 2.5}v8" stroke="${nova ? '#33556D' : '#B4570A'}" stroke-opacity=".5" stroke-width=".8"/></g>`);
+  }
   return out.join('');
+}
+
+// ---- manifesto de carga: os produtos de hoje viram contêineres no convés
+const cargaCount = () => (S.a.carga || []).length + (S.a.cargaNova || []).length;
+function cargaSync() { S.a.roupa.n = cargaCount(); S.a.roupa.moves++; }
+const novasHtml = () => (S.a.cargaNova || []).map((x, i) => `<span class="ncc"><i></i>${esc(x)}<button data-a="carganova-del" data-i="${i}" aria-label="Tirar ${esc(x)}">×</button></span>`).join('');
+function manifestGroup(g) {
+  const sel = S.a.carga || [], on = g.itens.filter((_, k) => sel.includes(g.id + (k + 1))).length;
+  return `<div class="mg"><div class="mgh" title="${esc(g.pilar)}"><b>${esc(g.curto)}</b><span id="mgc-${g.id}">${on} de ${g.itens.length}</span></div>${g.itens.map((nome, k) => { const id = g.id + (k + 1); return `<button class="ctr ${sel.includes(id) ? 'on' : ''}" data-a="carga" data-id="${id}" aria-pressed="${sel.includes(id)}"><i></i><span>${esc(nome)}</span></button>`; }).join('')}</div>`;
 }
 SCREENS.roupa = {
   layout: 'split',
   html() {
-    const n = S.a.roupa.n;
     return `<div class="col">
-      ${ey(`Manobra ${mNum('roupa')}`, '<b>O lastro</b>')}
-      <h2 class="q" data-in>Hoje o navio leva 33 produtos no catálogo. Com quantos produtos DTS zarpa em 2027?</h2>
-      <p class="note" data-in>Navio pesado demais não ganha velocidade; leve demais, não aguenta o mar.</p>
-      <div class="bignum" data-in><b id="rN">${n}</b><span id="rT">${roupaTxt(n)}</span></div>
-      <div data-in><input class="helmslider" type="range" min="10" max="40" step="1" value="${n}" data-a="roupa" aria-label="Quantidade de produtos no catálogo de 2027"><div class="dark-ends"><span><b>10</b>só o essencial</span><span><b>40</b>tudo e mais um pouco</span></div></div>
+      ${ey(`Manobra ${mNum('roupa')}`, '<b>O manifesto de carga</b>')}
+      <h2 class="q" data-in>Hoje o navio leva 33 produtos. Quais embarcam em 2027?</h2>
+      <p class="small" data-in>Toque nos produtos que seguem no catálogo de 2027: cada um vira um contêiner no convés. O que fica no cais sai do catálogo ou se junta a outro.</p>
+      <div class="bview sm" data-in><div class="bcount"><b id="rN">0</b><span id="rT"></span></div><div class="bship" id="bship">${ballastShip()}</div><div class="lowwater"></div><div class="wl"></div></div>
+      <div class="newcargo" data-in><label for="novaCarga">Falta um produto? Embarque uma carga nova (até 3)</label><div class="ncrow"><input id="novaCarga" maxlength="60" autocomplete="off" placeholder="Nome do produto novo"><button class="ncadd" data-a="carganova">Embarcar</button></div><div class="ncl" id="ncl">${novasHtml()}</div></div>
     </div>
-    <div class="col r" data-in><div class="chart ballast"><span class="tag">Linha d’água</span>
-      <div class="bview"><div class="bship" id="bship">${ballastShip()}</div><div class="lowwater"></div><div class="wl"></div></div>
-      <div class="gauges"><div class="gauge"><span class="gl">Velocidade</span><span class="gt"><i id="gV"></i></span></div><div class="gauge"><span class="gl">Estabilidade</span><span class="gt"><i id="gE"></i></span></div></div>
+    <div class="col r" data-in><div class="chart manifest"><span class="tag">Manifesto de carga · catálogo de hoje</span>
+      <div class="mgrid" id="mgrid">${CATALOGO.map(manifestGroup).join('')}</div>
     </div></div>`;
   },
   mount() { this.update(); },
-  update() {
-    const n = S.a.roupa.n, f = (n - 10) / 30;
-    $('#rN').textContent = n; $('#rT').textContent = roupaTxt(n);
-    $('#cargo').innerHTML = roupaCargo(n);
+  update(added, novaAdded) {
+    const sel = S.a.carga || [], nv = (S.a.cargaNova || []).length, n = cargaCount(), f = clamp((n - 10) / 30, 0, 1);
+    $$('#mgrid .ctr').forEach(b => { const on = sel.includes(b.dataset.id); if (on && added === b.dataset.id) { b.classList.remove('drop'); void b.offsetWidth; b.classList.add('drop'); } b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    CATALOGO.forEach(g => { const el = $('#mgc-' + g.id); if (el) el.textContent = `${g.itens.filter((_, k) => sel.includes(g.id + (k + 1))).length} de ${g.itens.length}`; });
+    const nOld = Math.min(sel.length, 40 - nv); $('#cargo').innerHTML = roupaCargo(nOld, nv, added ? nOld - 1 : novaAdded ? nOld + nv - 1 : -1);
     $('#bship').style.setProperty('--top', (6 + f * 20).toFixed(1) + '%');
-    $('#gV').style.width = (92 - f * 74).toFixed(0) + '%'; $('#gE').style.width = (18 + f * 74).toFixed(0) + '%';
+    $('#rN').textContent = n; $('#rT').textContent = n ? `a bordo · ${roupaTxt(n)}` : 'convés vazio';
+    $('#ncl').innerHTML = novasHtml();
+    const add = $('[data-a="carganova"]'); if (add) add.disabled = (S.a.cargaNova || []).length >= 3;
   },
-  nav() { return { back: true, next: { label: 'Seguir viagem →', ok: true } }; }
+  nav() { return { back: true, next: { label: 'Seguir viagem →', ok: cargaCount() > 0 } }; }
 };
+function cargaNovaAdd() {
+  const inp = $('#novaCarga'); if (!inp) return; const v = inp.value.trim().replace(/\s+/g, ' ');
+  const L = S.a.cargaNova || (S.a.cargaNova = []);
+  if (!v || L.length >= 3 || L.some(x => normName(x) === normName(v))) { inp.focus(); return; }
+  L.push(v); inp.value = ''; cargaSync(); save(); SCR.update(null, true); dock(); miniCompass(); Sound.crate(); inp.focus();
+}
 
-const slotsHtml = () => [0, 1].map(k => { const id = S.a.pessoas[k]; const p = PERFIS.find(x => x.id === id); return `<div class="slot ${p ? 'full' : ''}"><span class="sn">Vaga ${k + 1}</span>${p ? `${crewIcon(p.id).replace('#002B49', '#FCD1A2')}<span>${p.txt}</span>` : '<span>ninguém a bordo ainda</span>'}</div>`; }).join('');
-const crewHtml = () => PERFIS.map((o, k) => { const on = S.a.pessoas.includes(o.id); return `<button class="mate ${on ? 'on' : ''} ${!on && S.a.pessoas.length >= 2 ? 'dim' : ''} ${k === PERFIS.length - 1 && PERFIS.length % 2 ? 'last' : ''}" data-a="pessoa" data-id="${o.id}"><span class="ic">${crewIcon(o.id)}</span><b>${o.txt}</b></button>`; }).join('');
+// ---- tripulação: o cenário explicado e o que cada perfil fortalece
+const slotsHtml = () => [0, 1].map(k => { const id = S.a.pessoas[k]; const p = PERFIS.find(x => x.id === id); return `<div class="slot ${p ? 'full' : ''}"><span class="sn">Vaga ${k + 1}</span>${p ? `${crewIcon(p.id).replace('#002B49', '#FCD1A2')}<span><b>${p.txt}</b><small>${p.frente}</small></span>` : '<span>vaga aberta</span>'}</div>`; }).join('');
+const crewHtml = () => PERFIS.map((o, k) => { const on = S.a.pessoas.includes(o.id); return `<button class="mate ${on ? 'on' : ''} ${!on && S.a.pessoas.length >= 2 ? 'dim' : ''} ${k === PERFIS.length - 1 && PERFIS.length % 2 ? 'last' : ''}" data-a="pessoa" data-id="${o.id}" aria-pressed="${on}"><span class="ic">${crewIcon(o.id)}</span><span class="mt"><b>${o.txt}</b><span>${o.faz}</span><em>Fortalece: ${o.frente}</em></span>${on ? '<span class="aboard">a bordo</span>' : ''}</button>`; }).join('');
 SCREENS.pessoas = {
   layout: 'split',
   html() {
     return `<div class="col">
       ${ey(`Manobra ${mNum('pessoas')}`, '<b>A tripulação</b>')}
-      <h2 class="q" data-in>Só duas vagas sênior na tripulação de 2027. Quem embarca?</h2>
+      <h2 class="q" data-in>O orçamento de 2027 paga só duas contratações sênior. Quem embarca?</h2>
+      <p class="small" data-in>Cada perfil traz um trabalho e um tipo de venda que hoje faltam ou são poucos em DTS. Pense na rota que você traçou e nas cargas que embarcou: quem mais faz falta para elas darem certo?</p>
+      <p class="note" data-in>Antes de zarpar, o comandante completa a tripulação: quem embarca muda o que o navio consegue fazer.</p>
       <div class="slots" data-in id="slots">${slotsHtml()}</div>
-      ${dtsLine('as duas contratações que mais mudam o ano.')}
+      ${dtsLine('contratar é escolher em que DTS quer ser forte em 2027.')}
     </div>
-    <div class="col r" data-in><div class="chart"><span class="tag">Lista de embarque</span><div class="crew" id="crew">${crewHtml()}</div></div></div>`;
+    <div class="col r" data-in><div class="chart"><span class="tag">Fichas de embarque · escolha duas</span><div class="crew" id="crew">${crewHtml()}</div></div></div>`;
   },
   update() { $('#slots').innerHTML = slotsHtml(); $('#crew').innerHTML = crewHtml(); },
   nav() { return { back: true, next: { label: 'Seguir viagem →', ok: S.a.pessoas.length === 2 } }; }
@@ -2386,6 +2526,9 @@ document.addEventListener('click', e => {
     case 'postal': { const id = el.dataset.id, t = S.a.tel; t.postal = t.postal === id ? null : id; const k = t.atender.indexOf(id); if (k >= 0) t.atender.splice(k, 1); save(); SCR.update(); dock(); miniCompass(); break; }
     case 'ia': S.a.ia = el.dataset.id; save(); SCR.update(); dock(); miniCompass(); break;
     case 'prio': { const id = el.dataset.id, p = S.a.prio, k = p.indexOf(id); if (k >= 0) p.splice(k, 1); else p.push(id); save(); SCR.update(); dock(); miniCompass(); break; }
+    case 'carga': { const id = el.dataset.id, L = S.a.carga || (S.a.carga = []), k = L.indexOf(id); if (k >= 0) L.splice(k, 1); else { L.push(id); Sound.crate(); } cargaSync(); save(); SCR.update(k < 0 ? id : null); dock(); miniCompass(); break; }
+    case 'carganova': cargaNovaAdd(); break;
+    case 'carganova-del': { (S.a.cargaNova || []).splice(+el.dataset.i, 1); cargaSync(); save(); SCR.update(); dock(); miniCompass(); const inp = $('#novaCarga'); if (inp) inp.focus(); break; }
     case 'pessoa': { const id = el.dataset.id, p = S.a.pessoas, k = p.indexOf(id); if (k >= 0) p.splice(k, 1); else if (p.length < 2) p.push(id); else return; save(); SCR.update(); dock(); miniCompass(); break; }
     case 'espelho': S.a.espelho = el.dataset.id; save(); SCR.update(); dock(); miniCompass(); break;
     case 'cargo': S.cargo = S.cargo === el.dataset.v ? '' : el.dataset.v; save(); $$('.seg button').forEach(b => b.classList.toggle('on', b.dataset.v === S.cargo)); break;
@@ -2401,15 +2544,14 @@ $('#cartela').addEventListener('click', () => cartelaSkip && cartelaSkip());
 document.addEventListener('input', e => {
   const el = e.target; if (!el.dataset) return;
   if (el.dataset.a === 'contrato') { S.a.contrato.v = +el.value; S.a.contrato.moves++; save(); SCR.update(); }
-  if (el.dataset.a === 'roupa') { S.a.roupa.n = +el.value; S.a.roupa.moves++; save(); SCR.update(); miniCompass(); }
   if (el.id === 'frase') { const c = $('#fcnt'); if (c) c.textContent = el.value.length + '/140'; }
   if (el.classList && el.classList.contains('nmi')) chamadoInput(el);
 });
-document.addEventListener('change', e => { if (e.target.dataset && /contrato|roupa/.test(e.target.dataset.a || '')) miniCompass(); });
+document.addEventListener('change', e => { if (e.target.dataset && e.target.dataset.a === 'contrato') miniCompass(); });
 document.addEventListener('keydown', e => {
   if (PAINEL) return;
   if ($('#cartela').classList.contains('on')) { if (['Enter', ' ', 'Escape'].includes(e.key)) { e.preventDefault(); cartelaSkip && cartelaSkip(); } return; }
-  if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) { if (e.key === 'Enter' && (e.target.id === 'nome' || e.target.id === 'email')) { e.preventDefault(); startTrip(); } return; }
+  if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) { if (e.key === 'Enter' && (e.target.id === 'nome' || e.target.id === 'email')) { e.preventDefault(); startTrip(); } if (e.key === 'Enter' && e.target.id === 'novaCarga') { e.preventDefault(); cargaNovaAdd(); } return; }
   if (isRxStep()) {
     if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') { e.preventDefault(); answerReflex('L', stepId() === 'rx_treino'); }
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') { e.preventDefault(); answerReflex('R', stepId() === 'rx_treino'); }
@@ -2419,7 +2561,7 @@ document.addEventListener('keydown', e => {
 });
 app.addEventListener('scroll', () => { if (app.scrollLeft) app.scrollLeft = 0; });
 stage.addEventListener('scroll', () => { stage.scrollTop = 0; stage.scrollLeft = 0; });
-window.addEventListener('resize', () => { voyage(); if (stage.classList.contains('spot-on')) aimSpot(); });
+window.addEventListener('resize', () => { voyage(); shipRoom(); if (stage.classList.contains('spot-on')) aimSpot(); });
 document.addEventListener('pointerdown', () => Sound.unlock(), { once: true });
 
 /* ===================================================================== */
@@ -2451,6 +2593,7 @@ function painel() {
     if (cur || row.length) { row.push(cur); rows.push(row); }
     const h = rows.shift() || []; return rows.filter(r => r.length > 1).map(r => Object.fromEntries(h.map((k, i) => [k, r[i]])));
   }
+  const NUCLEO_DEMO = ['adv1', 'adv3', 'adv4', 'adv6', 'adv8', 'trf1', 'trf3', 'trf4', 'ma1', 'ma2', 'ma3', 'ma4', 'ma5', 'mod2', 'mod4', 'mod5', 'mod9'];
   function demo() {
     const perfis = [
       ['Diretor 1', { PORTA: 18, FOCO: 82, esp: 'A', rota: 'B', mesa: [30, 35, 25, 10, 0] }], ['Diretora 2', { PORTA: 44, FOCO: 78, esp: 'C', rota: 'B', mesa: [20, 40, 20, 10, 10] }],
@@ -2466,7 +2609,7 @@ function painel() {
       const pool = CALLS.map(c => c.id); const pick = []; while (pick.length < 3) { const c = pool[Math.floor(rnd() * pool.length)]; if (!pick.includes(c)) pick.push(c); }
       a.tel = { atender: pick, postal: pool.filter(c => !pick.includes(c))[Math.floor(rnd() * 6)] };
       a.contrato = { v: Math.round(clamp(DIMS.RECEITA.plan + (rnd() - .5) * 90) / 5) * 5, moves: 2 }; a.ia = ['a', 'b', 'b', 'c', 'd', 'b'][Math.floor(rnd() * 6)];
-      a.prio = PRIO.map(x => x.id).sort(() => rnd() - .5); a.roupa = { n: Math.round(14 + rnd() * 22), moves: 1 };
+      a.prio = PRIO.map(x => x.id).sort(() => rnd() - .5); a.carga = PRODUTOS.filter(x => rnd() < (NUCLEO_DEMO.includes(x.id) ? .86 : .3)).map(x => x.id); a.cargaNova = [['Governança e valor de IA'], [], ['Radar das investidas', 'Governança e Valor de IA'], [], ['Tech para private equity'], [], [], ['Radar das Investidas']][i]; a.roupa = { n: a.carga.length + a.cargaNova.length, moves: 1 };
       const pp = PERFIS.map(x => x.id).sort(() => rnd() - .5); a.pessoas = pp.slice(0, 2);
       a.frase = ['a conta de TI não fecha e o CFO precisa de uma resposta em semanas', 'o ERP travou e a reforma tributária não espera', 'o fundo quer saber quanto a tecnologia vale antes de assinar', 'quer alguém olhando a TI com ele todo mês', 'precisa transformar a operação, não só o sistema', 'o CIO saiu e a área precisa de comando', 'quer provar o retorno da IA para o conselho', ''][i];
       const H = [[40, 20, 15, 10, 10, 5], [35, 25, 15, 10, 10, 5], [30, 15, 20, 15, 10, 10], [45, 25, 10, 5, 10, 5], [30, 20, 20, 15, 10, 5], [50, 20, 10, 5, 10, 5], [35, 15, 25, 10, 5, 10], [25, 15, 25, 20, 5, 10]][i];
@@ -2508,6 +2651,13 @@ function painel() {
     const chamas = CHAMADOS.map(c => { const cnt = new Map(); let none = 0, total = 0;
       rows.forEach(r => String(r['chama_' + c.id] || '').split(';').map(s => s.trim()).filter(Boolean).forEach(nm => { if (nm === '—') { none++; return; } total++; const k = normName(nm), x = cnt.get(k) || { nome: nm, n: 0 }; x.n++; cnt.set(k, x); }));
       const list = [...cnt.values()].sort((a, b) => b.n - a.n); return { c, list, none, total, top: list.length && total ? list[0].n / total : 0 }; });
+    const cargaRows = rows.filter(r => String(r.carga2027 || '').trim()), nc = cargaRows.length;
+    const embSets = cargaRows.map(r => new Set(String(r.carga2027).split(';').map(s => normName(s)).filter(Boolean)));
+    const prodStats = PRODUTOS.map(x => { const k = normName(x.nome), v = embSets.filter(s => s.has(k)).length; return { x, v, f: nc ? v / nc : 0 }; });
+    const novasM = new Map(); rows.forEach(r => String(r.cargaNova || '').split(';').map(s => s.trim()).filter(Boolean).forEach(nm => { const k = normName(nm), o = novasM.get(k) || { nome: nm, n: 0 }; o.n++; novasM.set(k, o); }));
+    const novas = [...novasM.values()].sort((a, b) => b.n - a.n);
+    const hires = PERFIS.map(x => ({ x, n: rows.filter(r => String(r.contratacoes || '').split(' + ').includes(x.id)).length })).sort((a, b) => b.n - a.n);
+    const manif = nc ? `Manifesto de carga (${nc} respostas): média de ${Math.round(mean('produtos2027') || 0)} produtos a bordo (hoje são 33). No cais para 3 de cada 4: ${prodStats.filter(s => s.f <= .25).map(s => s.x.nome).join(', ') || 'nenhum'}. Cargas novas: ${novas.map(x => `${x.nome} (${x.n})`).join(', ') || 'nenhuma'}. Tripulação: ${hires.filter(h => h.n).map(h => `${h.x.txt} ${h.n}`).join(' · ')}.` : '';
     const pautas = [];
     if (n) {
       const gp = gaps.find(g => g.k === 'PORTA'); const esq = rows.filter(r => r.PORTA < 40).length, dir = rows.filter(r => r.PORTA > 60).length;
@@ -2520,6 +2670,14 @@ function painel() {
       const gi = gaps.find(g => g.k === 'IA'); if (gi && gi.gap <= -25) pautas.push({ t: 'O time vê a IA como frente própria de DTS, não como base dos produtos com Data & IA.', s: 'Alinhar a fronteira com Data & IA antes de falar com clientes.' });
       const ga = gaps.find(g => g.k === 'ANCORAS'); if (ga && ga.team < 60) pautas.push({ t: 'As âncoras do núcleo (custo de TI, programas críticos, M&A) não foram a primeira escolha do time.', s: 'Validar as âncoras 1.1, 2.3, 2.7 e 3.2–3.4, ou trocá-las.' });
       const gc = gaps.find(g => g.k === 'CONSOL'); if (gc && gc.team < 60) pautas.push({ t: `O time entra em 2027 com ${Math.round(mean('produtos2027'))} produtos em média, contra 23 do plano.`, s: 'Aprovar (ou não) as consolidações de 33 para 23 e o que deixa de ser vendido à parte.' });
+      if (nc) {
+        const cais = prodStats.filter(s => s.f <= .25);
+        if (cais.length) pautas.push({ t: `${cais.length} produto${cais.length > 1 ? 's' : ''} de hoje fica${cais.length > 1 ? 'm' : ''} no cais para 3 de cada 4 diretores${cais.length > 3 ? ', como' : ':'} ${cais.slice(0, 3).map(s => s.x.nome).join(', ')}.`, s: 'Confirmar a saída do catálogo ou a fusão com outro produto.' });
+        const div = prodStats.filter(s => s.f >= .4 && s.f <= .6);
+        if (div.length >= 3) pautas.push({ t: `Sem consenso sobre ${div.length} produtos: metade do time embarca, metade deixa no cais.`, s: `Começar por ${div.slice(0, 3).map(s => s.x.nome).join(', ')}.` });
+        const nv = novas.filter(x => x.n >= 2); if (nv.length) pautas.push({ t: `Carga nova pedida por mais de um diretor: ${nv.slice(0, 3).map(x => `“${esc(x.nome)}” (${x.n})`).join(', ')}.`, s: 'Avaliar como oferta candidata de FY27.' });
+      }
+      if (hires[0] && hires[0].n >= Math.max(2, n / 2)) pautas.push({ t: `A contratação mais pedida: ${hires[0].x.txt} (${hires[0].n} de ${n}).`, s: `Fortalece: ${hires[0].x.frente}. Confirmar se cabe no orçamento de 2027.` });
       const hes = {}; rows.forEach(r => { try { const st = JSON.parse(r.estado || '{}'); (st.result && st.result.hesTemas || []).forEach(t => hes[t] = (hes[t] || 0) + 1); } catch (e) { } });
       const topHes = Object.entries(hes).sort((a, b) => b[1] - a[1]).slice(0, 2); if (topHes.length && topHes[0][1] >= 2) pautas.push({ t: `Onde o time hesitou: ${topHes.map(h => `${h[0].toLowerCase()} (${h[1]})`).join(' e ')}.`, s: 'Temas em que o instinto travou merecem tempo na plenária.' });
       const coer = mean('coerencia'); if (coer != null && coer < 70) pautas.push({ t: `Instinto e reflexão divergem (coerência média ${Math.round(coer)}%).`, s: 'O que o time diz pensando difere do que escolhe no reflexo: expor a diferença abre a conversa.' });
@@ -2587,6 +2745,18 @@ function painel() {
           <div class="pcard"><h2>O porão: time × plano</h2><div class="bars">${MESAS.map((m, i) => bar(m.nome, mean('mesaP' + (i + 1)), PLAN_MESA[i])).join('')}</div><p class="small">Barras: média de caixas do time em cada porão. Marca laranja: o planejamento (${PLAN_MESA.join(' · ')}). Núcleo (P1+P2+P3) do time: ${n ? Math.round(mean('nucleo')) : '—'}% contra 85% do plano.</p></div>
           <div class="pcard"><h2>Os mostradores</h2><div class="bars">${dimKeys.filter(k => !['PORTA', 'FOCO', 'PILARES'].includes(k)).map(k => bar(DIMS[k].nome, mean(k), DIMS[k].plan)).join('')}</div><p class="small">0 = ${['RECEITA', 'PRODUTO', 'IA', 'FABRICA'].map(k => DIMS[k].esq.toLowerCase()).join(' / ')}; 100 = o lado do plano. Marca laranja: posição do planejamento.</p></div>
         </div>`],
+      ['Carga', `<h2>O manifesto de carga e a tripulação de 2027</h2>
+        <div class="pcols3 cargacols">
+          ${[[0, 1], [2, 3]].map(ix => `<div class="pcard">${ix.map(gi => { const g = CATALOGO[gi], st = prodStats.filter(s => s.x.g === g.id); return `<div class="mgp"><div class="mgph"><b title="${esc(g.pilar)}">${esc(g.curto)}</b><span>${nc ? Math.round(avg(st.map(s => s.f)) * 100) + '% a bordo' : ''}</span></div>${st.map(s => `<div class="mrow ${nc && s.f >= .75 ? 'hi' : nc && s.f <= .25 ? 'lo' : ''}"><span>${esc(s.x.nome)}</span><div class="tr"><i style="width:${s.f * 100}%"></i></div><b>${nc ? s.v : '—'}</b></div>`).join('')}</div>`; }).join('')}</div>`).join('')}
+          <div class="pcard">
+            <div class="kpis light"><div class="kpi hi"><div class="l">Produtos a bordo</div><div class="v">${n && mean('produtos2027') != null ? Math.round(mean('produtos2027')) : '—'}</div><div class="d">média do time · hoje são 33</div></div></div>
+            <h2 style="font-size:1.02em;margin-top:.8em">Cargas novas</h2>
+            ${novas.length ? `<div class="nlist">${novas.slice(0, 6).map(x => `<div><span>${esc(x.nome)}</span><b>${x.n}</b></div>`).join('')}</div>` : '<p class="small">Nenhuma carga nova sugerida.</p>'}
+            <h2 style="font-size:1.02em;margin-top:.8em">A tripulação: quem embarca</h2>
+            <div class="hbars">${hires.map(h => `<div class="mrow hrow"><span title="${esc(h.x.txt)}: ${esc(h.x.faz)}">${h.x.curto}</span><div class="tr"><i style="width:${n ? h.n / n * 100 : 0}%"></i></div><b>${h.n}</b></div>`).join('')}</div>
+            <p class="small" style="margin-top:.7em">Barras: quantos diretores embarcam cada produto${nc ? ` (de ${nc})` : ''}. Negrito: 3 de cada 4 ou mais. Riscado: 1 de cada 4 ou menos. Tripulação: votos por perfil, duas vagas por diretor.</p>
+          </div>
+        </div>`],
       ['Reflexos', `<div class="pcols">
           <div class="pcard"><h2>O rádio de bordo: quem o time atende primeiro</h2><table class="tbl"><thead><tr><th>Chamado</th><th class="num">Atendido</th><th class="num">1º</th><th class="num">Sem resposta</th></tr></thead><tbody>${tel.map(x => `<tr><td><b>${x.c.quem}</b> “${x.c.txt}” <span class="small">${x.c.core ? 'âncora do núcleo' : x.c.neg ? 'o plano deixa de vender à parte' : x.c.exp ? 'expansão' : x.c.cand ? 'oferta candidata' : 'prevenção com o CIO'}</span></td><td class="num">${x.at}</td><td class="num">${x.first}</td><td class="num">${x.postal}</td></tr>`).join('')}</tbody></table></div>
           <div class="pcard"><h2>Reflexo e hesitação</h2>
@@ -2604,7 +2774,7 @@ function painel() {
     el.querySelector('[data-p="local"]').onclick = () => { const rs = []; try { const d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && d.finishedAt) { const keep = S; S = d; rs.push(buildRow()); S = keep; } } catch (e) { } setRows(rs, 'este navegador'); if (!rs.length) document.getElementById('srcmsg').textContent = 'Nenhuma resposta concluída neste navegador.'; };
     el.querySelector('[data-p="demo"]').onclick = () => setRows(demo(), 'dados de exemplo (fictícios)');
     el.querySelector('[data-p="print"]').onclick = () => window.print();
-    el.querySelector('[data-p="copy"]').onclick = () => { const txt = resumoTexto(rows, gaps, pautas, mean); navigator.clipboard.writeText(txt).then(() => document.getElementById('srcmsg').textContent = 'Resumo copiado.'); };
+    el.querySelector('[data-p="copy"]').onclick = () => { const txt = resumoTexto(rows, gaps, pautas, mean, manif); navigator.clipboard.writeText(txt).then(() => document.getElementById('srcmsg').textContent = 'Resumo copiado.'); };
     const nb = el.querySelector('[data-p="names"]'); if (nb) nb.onclick = () => { showNames = !showNames; draw(); };
     el.querySelector('[data-p="paste"]').onclick = () => { const t = document.getElementById('paste').value.trim(); if (!t) return; try { let rs; if (t[0] === '[' || t[0] === '{') { const j = JSON.parse(t); rs = Array.isArray(j) ? j : j.linhas || []; } else rs = parseCsv(t); setRows(rs, 'colado'); document.getElementById('srcmsg').textContent = rs.length + ' linha(s) lidas.'; } catch (e) { document.getElementById('srcmsg').textContent = 'Não entendi o conteúdo colado: ' + e.message; } };
   }
@@ -2621,10 +2791,11 @@ function painel() {
       <p class="lede" style="font-size:17px">${diff < 25 ? 'Direção parecida com a do planejamento' : diff < 60 ? 'Direção próxima, com desvio em relação ao planejamento' : 'Direção diferente da do planejamento'} (${Math.round(diff)}° de diferença). No dilema CFO × CIO o time está <b>${juntos}</b>.</p>
       <div class="arqs">${arqs.map(([a, c]) => `<div><b>${c}</b><div>${esc(a)}<span>${esc((Object.values(ARQUETIPOS).find(x => x.nome === a) || {}).txt || '')}</span></div></div>`).join('')}</div>`;
   }
-  function resumoTexto(rows, gaps, pautas, mean) {
+  function resumoTexto(rows, gaps, pautas, mean, manif) {
     const n = rows.length; const L = [`Bússola DTS 2027 · resumo (${n} respostas)`, ''];
     Object.keys(DIMS).forEach(k => L.push(`${DIMS[k].nome}: time ${n ? Math.round(mean(k)) : '—'} · plano ${DIMS[k].plan}`));
     L.push('', 'Mesa de investimento (time × plano): ' + MESAS.map((m, i) => `${m.nome} ${n ? Math.round(mean('mesaP' + (i + 1))) : '—'}/${PLAN_MESA[i]}`).join(' · '));
+    if (manif) L.push('', manif);
     L.push('', 'Pautas sugeridas:'); pautas.forEach((p, i) => L.push(`${i + 1}. ${p.t} ${p.s}`));
     L.push('', 'Por pessoa:'); rows.forEach(r => L.push(`- ${r.nome}: ${r.arquetipo} · aderência ${r.aderencia} · reflexo ${r.velocidadeMed == null ? '—' : fmt1(r.velocidadeMed) + 's'} · hesitações ${r.hesitacoes} · coerência ${r.coerencia}%`));
     return L.join('\n');
