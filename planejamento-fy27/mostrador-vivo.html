@@ -149,6 +149,40 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .plf .id b{font:700 .9em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--peach)}
 .plf .id .vz{color:var(--navy-40)}
 .plf button{height:2.2em;padding:0 1em;border-radius:8px;border:1px solid var(--line);color:#fff;font-size:.72em;font-weight:600}
+.plx{display:flex;gap:.5em;align-items:center}
+.plx button[data-c="copia-plano"]{height:2.2em;padding:0 1em;border-radius:8px;border:1px solid var(--line);color:#fff;font-size:.72em;font-weight:600}
+.pl .sw-tabs{display:flex;gap:.3em;border-bottom:1px solid var(--line)}
+.pl .sw-tabs button{display:flex;align-items:center;gap:.45em;padding:.5em .85em;font-size:.78em;font-weight:600;color:var(--blue-40);border-bottom:3px solid transparent;margin-bottom:-1px}
+.pl .sw-tabs button span{display:grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;font:700 .85em var(--mono);background:rgba(255,255,255,.08);color:var(--ice)}
+.pl .sw-tabs button.on{color:#fff;border-bottom-color:var(--orange,#F78C16)}
+.pl .sw-tabs button.on span{background:var(--peach);color:var(--navy)}
+.plb{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:.7em}
+.plb .plg{flex:1}
+.pl .sw-n{flex:none;display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;font:700 .72em var(--mono);background:var(--peach);color:var(--navy);vertical-align:middle}
+.pl .sw-vz{font-size:.74em;color:var(--navy-40);font-style:italic}
+.pl .sw-q{display:block;font:700 .56em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue-40)}
+.pl .sw-somos{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:.7em}
+.pl .sw-somos article{display:flex;gap:.8em;padding:1em 1.1em;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.pl .sw-somos b{display:block;font-family:var(--serif);font-size:1.45em;line-height:1.15;color:#fff;margin:.15em 0 .4em}
+.pl .sw-somos p{font-size:1.08em;line-height:1.45;color:var(--ice)}
+.pl .sw-somos .sw-cmp{margin-top:.7em;font-size:.76em;color:var(--blue-40);border-left:2px solid var(--peach);padding-left:.6em}
+.pl .sw-somos .sw-cmp i{font:700 .9em var(--mono);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--peach);margin-right:.3em}
+.pl .sw-gp{flex:1;display:grid;grid-template-rows:auto repeat(4,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+.pl .sw-gh,.pl .sw-gr{display:grid;grid-template-columns:1fr 1.4fr 1.4fr;gap:1.2em;padding:.75em 1.1em;align-items:center}
+.pl .sw-gh{background:rgba(255,255,255,.05);font:700 .62em var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.pl .sw-gh .g{color:var(--green)}.pl .sw-gh .p{color:#F08A8A}
+.pl .sw-gr+.sw-gr{border-top:1px solid var(--line)}
+.pl .sw-gr>div{display:flex;gap:.6em;align-items:flex-start}
+.pl .sw-gr b{font-family:var(--serif);font-size:1em;line-height:1.2;color:#fff}
+.pl .sw-gr p{font-size:.9em;line-height:1.45;color:var(--ice);padding-left:.7em}
+.pl .sw-gr p.g{border-left:3px solid var(--green)}.pl .sw-gr p.p{border-left:3px solid var(--red)}
+.pl .sw-ff{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:.7em;min-height:0}
+.pl .sw-col{padding:.9em 1.1em;border-radius:12px;border:1px solid var(--line);background:var(--card);border-top:4px solid var(--green);overflow:auto}
+.pl .sw-col.w{border-top-color:var(--red)}
+.pl .sw-col h4{font:700 .66em var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#fff;margin-bottom:.6em}
+.pl .sw-col ul{list-style:none;display:flex;flex-direction:column;gap:.8em}
+.pl .sw-col li{display:flex;gap:.6em;align-items:flex-start;font-size:.95em;line-height:1.4;color:var(--ice)}
+.pl .sw-leg{font-size:.62em;color:var(--blue-40)}
 @media (max-aspect-ratio:4/3){.stage{width:100vw;height:100vh;aspect-ratio:auto}.qs{grid-template-columns:1fr;grid-template-rows:none}.plen{grid-template-columns:1fr}.ui{overflow:auto}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media print{.ctl,.gate,.toast,.banner{display:none!important}}
@@ -416,7 +450,51 @@ function frentes(sg) {
     if (up && up.d >= 5 && ACAO_PAPEL_MAIS[up.id]) acoes.push(ACAO_PAPEL_MAIS[up.id]);
     (sg.dependencias || []).forEach(t => acoes.push(`Formar uma segunda referência no time para "${minus(t)}", hoje concentrado em uma pessoa.`));
     (sg.lacunas || []).forEach(t => acoes.push(`Desenvolver ou buscar quem cubra "${minus(t)}": parte do time não tem a quem recorrer.`));
+    sg._up = up; sg._dn = dn; sg._idx = idx; sg._w = w;
     F.push({ id: 'time', pergunta: 'O time está pronto para isso?', resposta: resp, disse: sg.ev.time, significa: sig.trim(), compara: 'O planejamento não fixa uma meta para o casco: ele é a leitura do próprio time. No encontro, as notas de todos são somadas.', conversa: 'O que sai da agenda do diretor para o papel de 2027 caber?', acoes: acoes.slice(0, 3) }); }
+  return enriquecer(F, sg);
+}
+
+/* ---------- Somos assim · ganhos e perdas · forças e fraquezas ---------- */
+function enriquecer(F, sg) {
+  const eu = sg.modo === 'eu', sw = sg.sw || {}, pre = s => s ? (eu ? 'Na sua visão, ' + minus(s) : s) : '';
+  const nomeP = id => minus((PAPEIS.find(x => x.id === id) || {}).nome || '');
+  const preco = sg.receita == null ? null : sg.receita >= 60 ? 'res' : sg.receita <= 40 ? 'fixo' : 'misto';
+  const ventoN = sg.vento == null ? null : VENTOS[clamp(Math.round(sg.vento), 1, 5) - 1];
+  const T = {
+    tipo: { crise: ['Somos o resgate: entramos quando a TI do cliente já deu errado e o CFO precisa de alguém de confiança.', 'Acesso direto a CFO, CEO e conselho; projetos urgentes, com orçamento aprovado e preço defensável.', 'A relação tende a acabar com a crise: pouca recompra e pouca presença quando o cliente está bem.'],
+      meio: ['Somos o resgate que fica a bordo: entramos pela dor de hoje e ficamos para o cliente não falhar de novo.', 'Junta o acesso e a urgência da crise com a receita recorrente de quem fica depois dela.', 'Exige uma segunda fase pronta para vender; sem ela, voltamos a ser só o resgate.'],
+      prev: ['Somos o prático do CIO: acompanhamos a TI de perto para ela não falhar.', 'Relação longa, receita recorrente e conhecimento profundo do cliente.', 'Menos acesso ao CFO e ao CEO, e a necessidade de ser lembrado antes de o problema existir.'] },
+    foco: { foco: ['Somos especialistas: poucos problemas, resolvidos melhor do que ninguém.', 'Ser a primeira escolha do cliente nesses problemas, com time especialista e uma mensagem fácil de repetir.', 'Deixar de vender à parte produtos que hoje fazem parte do catálogo' + (sg.cais && sg.cais.length ? `, como ${sg.cais.slice(0, 2).join(' e ')}.` : '.')],
+      equil: ['Somos um núcleo forte com algumas apostas, abertas com critério.', 'Mantém o que funciona e testa crescimento com risco controlado.', 'Se as apostas não tiverem dono e prazo, viramos "um pouco de tudo".'],
+      amplo: ['Somos generalistas de tecnologia: atendemos muitos problemas e mercados.', 'Mais mercado para vender e menos dependência de poucos temas.', 'Time e esforço espalhados; o cliente não sabe exatamente para que nos chamar.'] },
+    preco: { res: ['Preço defensável e margem maior quando o resultado aparece; a conversa com o CFO vira conversa de valor.', 'Receita menos previsível e a obrigação de medir o resultado desde o primeiro dia.'],
+      fixo: ['Receita previsível e menos risco para DTS.', 'Competimos por hora e por preço, longe do valor que entregamos.'],
+      misto: ['Equilíbrio entre previsibilidade e prêmio pelo resultado.', 'Pode não convencer nem quem quer segurança nem quem quer resultado.'] },
+    casco: { firme: ['Confiança para dividir contas e metas sem atrito.', 'Conforto: casco firme não garante que o papel do diretor mude.'],
+      aten: ['Há confiança suficiente para começar a mudança.', 'Se o ponto mais frágil não melhorar, as metas coletivas viram cobrança informal.'],
+      vaza: ['O problema aparece antes de se distribuírem as metas, e ainda dá tempo de tratar.', 'Sem integridade no time, o plano de 2027 não se sustenta.'] }
+  };
+  F.forEach(f => {
+    let s = '', g = '', p = '';
+    if (f.id === 'tipo' && sg.zP) [s, g, p] = T.tipo[sg.zP];
+    if (f.id === 'foco' && sg.zF) { [s, g, p] = T.foco[sg.zF]; if (sg.nProd != null) s += ` ${eu ? 'Você levaria' : 'Levamos'} ${sg.nProd} dos 33 produtos de hoje.`; }
+    if (f.id === 'venda' && (sg.mesaTop != null || ventoN)) {
+      s = `Somos ${sg.mesaTop != null ? `vendedores de ${minus(MESAS[sg.mesaTop].nome)}` : 'vendedores'}${preco ? `, com ${preco === 'res' ? 'preço ligado ao resultado' : preco === 'fixo' ? 'preço fixo' : 'preço misto'}` : ''}${ventoN ? `, e hoje vendemos como "${minus(ventoN.nome)}": ${ventoN.txt}` : ''}.`;
+      if (preco) [g, p] = T.preco[preco];
+    }
+    if (f.id === 'time') {
+      const st = sg._idx == null ? null : sg._idx >= 75 ? 'firme' : sg._idx >= 55 ? 'aten' : 'vaza';
+      if (sg.topHoje || st) s = `Somos um time ${sg.topHoje ? `que passa a maior parte da semana em ${minus(sg.topHoje)}` : 'em transição'}${sg._up && sg._up.d > 0 ? ` e quer, em 2027, mais ${nomeP(sg._up.id)}` : ''}.`;
+      const gg = [], pp = [];
+      if (sg._up && sg._up.d >= 5) gg.push(`Mais tempo para ${nomeP(sg._up.id)}.`);
+      if (sg._dn && sg._dn.d <= -5) pp.push(`Menos tempo em ${nomeP(sg._dn.id)}: alguém precisa assumir isso.`);
+      if (st) { gg.push(T.casco[st][0]); pp.push(T.casco[st][1]); }
+      g = gg.join(' '); p = pp.join(' ');
+    }
+    f.somos = pre(s); f.ganho = g; f.perda = p;
+    f.forcas = (sw[f.id] && sw[f.id].f) || []; f.fraquezas = (sw[f.id] && sw[f.id].w) || [];
+  });
   return F;
 }
 
@@ -442,12 +520,54 @@ function sinaisEu(a, r) {
   if (P.ideal) { const dl = PAPEIS.map((x, i) => ({ x, d: P.ideal[i] - (P.hoje[i] || 0) })); const up = dl.reduce((m, b) => b.d > m.d ? b : m), dn = dl.reduce((m, b) => b.d < m.d ? b : m); if (up.d > 0 && dn.d < 0) ev.time.push(`Em 2027 quer mais ${minus(up.x.nome)} (+${up.d}) e menos ${minus(dn.x.nome)} (${dn.d}).`); }
   const cs = a.casco || []; if (cs.length === 5 && cs.every(x => x != null)) { const lo = cs.indexOf(Math.min(...cs)); ev.time.push(`Deu a nota mais baixa (${cs[lo]} de 5) para: "${CASCO[lo].txt}"`); }
   const cal = esp ? ZP(esp.porta) : null;
-  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev };
+  const swE = { tipo: { f: [], w: [] }, foco: { f: [], w: [] }, venda: { f: [], w: [] }, time: { f: [], w: [] } };
+  if (c1) (c1.porta === 0 ? swE.tipo.f.push(`Você atenderia primeiro ${c1.quem === 'Patrocinador do ERP' ? 'o patrocinador do ERP' : 'o ' + c1.quem}: urgência e acesso ao C-level são o seu terreno.`) : c1.id === 'cio_prev' ? swE.tipo.f.push('Você atenderia primeiro o CIO que quer acompanhamento: relação contínua é o seu terreno.') : null);
+  if (esp && esp.id === 'C') swE.tipo.f.push('Com calma, você escolheu entrar pela dor e ficar, a rota que o plano propõe.');
+  if (cal && cal !== ZP(d.PORTA)) swE.tipo.w.push('Seu instinto e sua escolha com calma apontaram para lados diferentes: a porta de entrada ainda não está clara.');
+  if (!(a.tel.atender || []).includes('cio_prev')) swE.tipo.w.push('Você não atenderia o CIO que quer acompanhamento mensal: a porta da prevenção fica fechada.');
+  if (nP != null && nP <= 23) swE.foco.f.push(`Coragem para enxugar: manteve ${nP} dos 33 produtos.`);
+  if (a.rota === 'B') swE.foco.f.push('Escolheu a rota com foco declarado: três destinos e um desvio.');
+  if (nP != null && nP >= 30) swE.foco.w.push(`Catálogo pesado: manteve ${nP} dos 33 produtos (o plano propõe 23).`);
+  if (a.rota === 'A') swE.foco.w.push('Prefere a estrada de sempre, que o plano quer mudar.');
+  if (ZF(d.FOCO) === 'foco' && nP != null && nP >= 30) swE.foco.w.push('Fala em foco, mas quase todo o catálogo continua a bordo.');
+  if (d.RECEITA >= 65) swE.venda.f.push('Disposto a cobrar pelo resultado, como o plano propõe.');
+  if (side('r5') === 'R') swE.venda.f.push('Prefere deixar instrumentos a relatórios: mentalidade de produto.');
+  if (tot && (a.mesa[0] + a.mesa[1] + a.mesa[2]) >= 80) swE.venda.f.push(`Esforço concentrado no núcleo: ${a.mesa[0] + a.mesa[1] + a.mesa[2]} de 100 caixas.`);
+  if (w && a.vento <= 2) swE.venda.w.push(`Vê a venda de DTS como reativa: "${minus(w.nome)}".`);
+  if (an.length) swE.venda.w.push(`${an.join(' e ')}: o que mais trava a sua venda.`);
+  if (d.RECEITA <= 40) swE.venda.w.push('Prefere preço fixo, longe do valor que DTS entrega.');
+  if (cs.length === 5 && cs.every(x => x != null)) { const hi = cs.indexOf(Math.max(...cs)), lo = cs.indexOf(Math.min(...cs)); if (cs[hi] >= 4) swE.time.f.push(`${CASCO[hi].nome}: nota ${cs[hi]} de 5, um ponto firme do casco.`); if (cs[lo] <= 3) swE.time.w.push(`${CASCO[lo].nome}: nota ${cs[lo]} de 5. ${SIGNIFICA_REBITE[CASCO[lo].id]}`); }
+  if (P.hoje && P.ideal) { const iv = PAPEIS.findIndex(x => x.id === 'vender'); if (P.ideal[iv] > P.hoje[iv]) swE.time.f.push(`Quer mais tempo vendendo: de ${P.hoje[iv]}% para ${P.ideal[iv]}% da semana.`); const ib = PAPEIS.findIndex(x => x.id === 'burocracias'); if (P.hoje[ib] >= 10) swE.time.w.push(`Burocracias tomam ${P.hoje[ib]}% da sua semana.`); }
+  const iTop = P.hoje && sum(P.hoje) === 100 ? P.hoje.indexOf(Math.max(...P.hoje)) : -1;
+  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [] };
 }
 function planoTexto(F, titulo) {
-  const L = [titulo, ''];
-  F.forEach((f, i) => { L.push(`${i + 1}. ${f.pergunta}`, `   Resposta: ${f.resposta || 'sem resposta ainda'}`); if (f.significa) L.push(`   O que quer dizer: ${f.significa}`); if (f.compara) L.push(`   Comparado ao plano: ${f.compara}`); if (f.conversa) L.push(`   Para conversar: ${f.conversa}`); f.acoes.forEach(a => L.push(`   [ ] ${a}`)); L.push(''); });
-  return L.join('\n');
+  const L = [titulo, '', 'SOMOS ASSIM'];
+  F.forEach((f, i) => L.push(`${i + 1}. ${f.pergunta} ${f.resposta || 'sem resposta ainda'}. ${f.somos || ''}`));
+  L.push('', 'GANHOS E PERDAS'); F.forEach((f, i) => { if (f.ganho || f.perda) L.push(`${i + 1}. Ganhamos: ${f.ganho || '—'} | Perdemos: ${f.perda || '—'}`); });
+  L.push('', 'FORÇAS'); F.forEach((f, i) => f.forcas.forEach(x => L.push(`+ (${i + 1}) ${x}`)));
+  L.push('', 'FRAQUEZAS'); F.forEach((f, i) => f.fraquezas.forEach(x => L.push(`− (${i + 1}) ${x}`)));
+  L.push('', 'POSSÍVEIS AÇÕES'); F.forEach((f, i) => f.acoes.forEach(a => L.push(`[ ] (${i + 1}) ${a}`)));
+  return L.join('\n') + '\n';
+}
+
+/* ---------- a leitura em 4 abas (carta e mostrador usam o mesmo desenho) ---------- */
+const ABAS = [
+  { k: 'somos', t: 'Somos assim', d: 'Quem DTS é, em uma frase por frente' },
+  { k: 'gp', t: 'Ganhos e perdas', d: 'O que cada escolha traz e o que custa' },
+  { k: 'ff', t: 'Forças e fraquezas', d: 'O que ajuda e o que trava, com os números' },
+  { k: 'acoes', t: 'Possíveis ações', d: 'Sugestões em aberto: o time decide' }
+];
+function abasHTML(aba, attr) {
+  return `<nav class="sw-tabs" role="tablist">${ABAS.map((x, i) => `<button type="button" role="tab" aria-selected="${i === aba}" class="${i === aba ? 'on' : ''}" ${attr}="${i}"><span>${i + 1}</span>${x.t}</button>`).join('')}</nav>`;
+}
+function abaHTML(F, aba, eu) {
+  const vazio = '<p class="sw-vz">Ainda sem respostas suficientes nesta frente.</p>', nb = i => `<span class="sw-n">${i + 1}</span>`;
+  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><span class="sw-q">${f.pergunta}</span><b>${f.resposta || 'Sem resposta ainda'}</b>${f.somos ? `<p>${esc(f.somos)}</p>` : vazio}${f.compara ? `<p class="sw-cmp"><i>Frente ao plano</i> ${esc(f.compara)}</p>` : ''}</div></article>`).join('')}</div>`;
+  if (aba === 1) return `<div class="sw-gp"><div class="sw-gh"><span></span><span class="g">▲ ${eu ? 'O que você ganha' : 'O que ganhamos'}</span><span class="p">▼ ${eu ? 'O que você perde' : 'O que perdemos'}</span></div>${F.map((f, i) => `<div class="sw-gr"><div>${nb(i)}<b>${f.resposta || f.pergunta}</b></div><p class="g">${esc(f.ganho || '—')}</p><p class="p">${esc(f.perda || '—')}</p></div>`).join('')}</div>`;
+  if (aba === 2) { const col = (k, t, cls) => { const it = F.flatMap((f, i) => f[k].map(x => `<li>${nb(i)}<span>${esc(x)}</span></li>`)); return `<div class="sw-col ${cls}"><h4>${t}</h4>${it.length ? `<ul>${it.join('')}</ul>` : vazio}</div>`; };
+    return `<div class="sw-ff">${col('forcas', eu ? 'Suas forças' : 'Forças', 'f')}${col('fraquezas', eu ? 'Suas fraquezas' : 'Fraquezas', 'w')}</div><p class="sw-leg">${F.map((f, i) => `${nb(i)} ${f.pergunta.replace(/\?$/, '')}`).join(' · ')}</p>`; }
+  return '';
 }
 /* ===================================================================== */
 /* MOSTRADOR VIVO · lê a planilha, conta cada resposta e escreve o        */
@@ -652,7 +772,39 @@ function sinaisTime(A) {
   const dependencias = [], lacunas = [];
   CHAMADOS.forEach(c => { const cnt = {}; let tot = 0, nin = 0; P.filter(p => passou(p, 'chamado')).forEach(p => ((p.a.chama || {})[c.id] || []).forEach(nm => { if (nm === '—') { nin++; return; } tot++; const k = normName(nm); cnt[k] = (cnt[k] || 0) + 1; })); const top = Math.max(0, ...Object.values(cnt)); if (tot >= 4 && top / tot >= .45) dependencias.push(c.tema); if (nin >= Math.max(2, A.n / 4)) lacunas.push(c.tema); });
   const fTop = A.farol.n ? [...A.farol.c].sort((a, b) => b.n - a.n)[0] : null, fz = fTop ? ZP((ESPELHO.find(e => e.id === fTop.id) || {}).porta) : null, zp = ZP(A.dim.PORTA);
-  return { modo: 'time', zP: zp, zF: ZF(A.dim.FOCO), nProd: A.carga.n ? Math.round(A.carga.m) : null, receita: A.dim.RECEITA, vento: A.vento.n ? A.vento.m : null, anc: anc.map(o => o.x.id), mesaTop: mt, papel, casco, dependencias, lacunas, dissonancia: !!(fz && zp && fz !== zp), farol: fTop ? fTop.nome : null, ev };
+  const sw = { tipo: { f: [], w: [] }, foco: { f: [], w: [] }, venda: { f: [], w: [] }, time: { f: [], w: [] } }, de = (a, b) => `${a} de ${b}`;
+  if (A.tel.n) { const crise = sum(A.tel.c.filter(o => o.c.porta === 0).map(o => o.first)), cio = A.tel.c.find(o => o.c.id === 'cio_prev');
+    if (crise >= A.tel.n / 2) sw.tipo.f.push(`Acesso ao C-level: ${de(crise, A.tel.n)} atenderiam primeiro um chamado de crise (CFO, CEO, fundo ou ERP).`);
+    if (cio && cio.at <= A.tel.n / 3) sw.tipo.w.push(`Só ${de(cio.at, A.tel.n)} atenderiam o CIO que quer acompanhamento mensal: a porta da prevenção quase não abre.`);
+    else if (cio && cio.at >= A.tel.n * .6) sw.tipo.f.push(`${de(cio.at, A.tel.n)} atenderiam o CIO que quer acompanhamento: há abertura para receita recorrente.`); }
+  if (A.farol.n) { const by = id => A.farol.c.find(c => c.id === id).n, cA = by('A'), cB = by('B'), cC = by('C');
+    if (cC > A.farol.n / 2) sw.tipo.f.push(`Com calma, ${de(cC, A.farol.n)} escolhem entrar pela dor e ficar, a rota do plano.`);
+    if (cA && cB && Math.min(cA, cB) >= A.farol.n / 4) sw.tipo.w.push(`O time se divide entre o CFO na crise (${cA}) e o CIO na prevenção (${cB}): a porta de entrada não é consenso.`); }
+  if (fz && zp && fz !== zp) sw.tipo.w.push('Discurso e instinto não batem: com calma o time diz uma coisa, nos reflexos e no rádio faz outra.');
+  if (A.carga.n) { const fica = A.carga.prod.filter(o => o.f >= .75), meio = A.carga.prod.filter(o => o.f > .35 && o.f < .65);
+    if (fica.length) sw.foco.f.push(`Núcleo claro: ${fica.length} produtos seguem para 3 de cada 4 diretores${fica[0] ? `, como ${fica[0].x.nome}` : ''}.`);
+    if (A.carga.m >= 28) sw.foco.w.push(`Catálogo pesado: em média ${Math.round(A.carga.m)} dos 33 produtos seguem (o plano propõe 23).`);
+    else if (A.carga.m <= 25) sw.foco.f.push(`Coragem para enxugar: em média ${Math.round(A.carga.m)} dos 33 produtos seguem.`);
+    if (meio.length >= 4) sw.foco.w.push(`${meio.length} produtos dividem o time ao meio${meio[0] ? `, como ${meio[0].x.nome}` : ''}: decisão pendente.`); }
+  if (A.rota.n) { const rb = (A.rota.c.find(c => c.id === 'B') || {}).n || 0, ra = (A.rota.c.find(c => c.id === 'A') || {}).n || 0;
+    if (rb > A.rota.n / 2) sw.foco.f.push(`${de(rb, A.rota.n)} escolhem a rota com foco declarado.`);
+    if (ra >= A.rota.n / 3) sw.foco.w.push(`${de(ra, A.rota.n)} preferem a estrada de sempre, que o plano quer mudar.`); }
+  if (A.contrato.n) { if (A.contrato.res > A.contrato.n / 2) sw.venda.f.push(`${de(A.contrato.res, A.contrato.n)} topam cobrar pelo resultado, como o plano propõe.`); if (A.contrato.fixo > A.contrato.n / 2) sw.venda.w.push(`${de(A.contrato.fixo, A.contrato.n)} preferem preço fixo, longe do valor que DTS entrega.`); }
+  { const x = rx('r5'); if (x && x.n && x.R > x.n / 2) sw.venda.f.push(`${de(x.R, x.n)} preferem deixar instrumentos a relatórios: mentalidade de produto.`); }
+  if (A.mesa.n && A.mesa.nucleo >= 75) sw.venda.f.push(`Esforço concentrado no núcleo: ${Math.round(A.mesa.nucleo)} de 100 caixas em reestruturação, programas e M&A.`);
+  else if (A.mesa.n && A.mesa.nucleo < 60) sw.venda.w.push(`Esforço disperso: só ${Math.round(A.mesa.nucleo)} de 100 caixas no núcleo.`);
+  if (A.vento.n && A.vento.m <= 2.6) sw.venda.w.push(`Venda reativa: o time dá ${fmt1(A.vento.m)} de 5 para o vento comercial de DTS.`);
+  else if (A.vento.n && A.vento.m >= 3.6) sw.venda.f.push(`Já há rotina comercial: ${fmt1(A.vento.m)} de 5 no vento da venda.`);
+  if (anc[0]) sw.venda.w.push(`${anc[0].x.nome}: o que mais trava a venda para ${de(anc[0].n, A.vento.n)}.`);
+  if (A.casco.n) { const cc = A.casco.c, hi = cc.reduce((a, b) => b.m > a.m ? b : a), lo = cc.reduce((a, b) => b.m < a.m ? b : a);
+    if (hi.m >= 3.8) sw.time.f.push(`${hi.x.nome}: ${fmt1(hi.m)} de 5, o ponto mais firme do casco.`);
+    if (lo.m <= 3.2) sw.time.w.push(`${lo.x.nome}: ${fmt1(lo.m)} de 5. ${SIGNIFICA_REBITE[lo.x.id]}`); }
+  if (pp.nH) { const iv = pp.c.find(c => c.x.id === 'vender'), bu = pp.c.find(c => c.x.id === 'burocracias');
+    if (iv && pp.nI && (iv.i || 0) - (iv.h || 0) >= 5) sw.time.f.push(`Vontade de vender: de ${Math.round(iv.h || 0)}% para ${Math.round(iv.i || 0)}% da semana.`);
+    if (bu && (bu.h || 0) >= 10) sw.time.w.push(`Burocracias tomam ${Math.round(bu.h)}% da semana do diretor.`); }
+  dependencias.forEach(t => sw.time.w.push(`"${t}" depende de uma pessoa só.`)); lacunas.forEach(t => sw.time.w.push(`Ninguém a quem recorrer em "${t}".`));
+  const hTop = pp.nH ? pp.c.reduce((a, b) => (b.h || 0) > (a.h || 0) ? b : a) : null, cais = A.carga.n ? A.carga.prod.filter(o => o.f <= .25).map(o => o.x.nome).reverse() : [];
+  return { sw, topHoje: hTop ? hTop.x.nome : null, cais, modo: 'time', zP: zp, zF: ZF(A.dim.FOCO), nProd: A.carga.n ? Math.round(A.carga.m) : null, receita: A.dim.RECEITA, vento: A.vento.n ? A.vento.m : null, anc: anc.map(o => o.x.id), mesaTop: mt, papel, casco, dependencias, lacunas, dissonancia: !!(fz && zp && fz !== zp), farol: fTop ? fTop.nome : null, ev };
 }
 
 /* ---------------- as quatro frentes na tela ---------------- */
@@ -671,21 +823,24 @@ function cartaoFrente(f, i, A) {
 let planoEst = (() => { try { return JSON.parse(localStorage.getItem('mostrador-plano') || '{}'); } catch (e) { return {}; } })();
 planoEst.marca = planoEst.marca || {}; planoEst.extra = planoEst.extra || { tipo: [], foco: [], venda: [], time: [] };
 const guardaPlano = () => { try { localStorage.setItem('mostrador-plano', JSON.stringify(planoEst)); } catch (e) { } };
-function abrirPlano() {
+let planoAba = 0;
+function abrirPlano(aba) {
+  if (aba != null) planoAba = aba;
   const F = frentes(sinaisTime(A)), ideias = A.P.map(p => p.acao).filter(Boolean);
   const g = $('#plano'); g.classList.add('on');
-  g.innerHTML = `<div class="pl"><div class="plh"><div><span class="eb">Plano de ação do time · ${A.nD} bússola${A.nD === 1 ? '' : 's'} concluída${A.nD === 1 ? '' : 's'}</span><h2>O que fazer com este diagnóstico</h2><p>Sugestões a partir das respostas. O time decide: toque para aprovar ou descartar, e acrescente outras ações.</p></div><button class="x" data-c="fecha-plano" aria-label="Fechar">×</button></div>
-    <div class="plg">${F.map((f, i) => `<section><div class="fh"><span class="nb">${i + 1}</span><div><span class="fq">${f.pergunta}</span><b>${f.resposta || 'Ainda sem resposta'}</b></div></div>
-      ${f.disse.length ? `<ul class="ev">${f.disse.slice(0, 3).map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
-      ${f.conversa && f.resposta ? `<p class="cv">${f.conversa}</p>` : ''}
+  const acoes = `<div class="plg">${F.map((f, i) => `<section><div class="fh"><span class="nb">${i + 1}</span><div><span class="fq">${f.pergunta}</span><b>${f.resposta || 'Ainda sem resposta'}</b></div></div>
       <div class="acs">${[...f.acoes, ...planoEst.extra[f.id]].map(a => { const m = planoEst.marca[a] || ''; return `<button class="acao ${m}" data-ac="${esc(a)}">${esc(a)}</button>`; }).join('')}<input class="nova" data-fr="${f.id}" placeholder="+ outra ação (Enter para incluir)"></div></section>`).join('')}</div>
-    <div class="plf"><div class="id"><b>Ideias dos diretores</b>${ideias.length ? ideias.slice(0, 6).map(x => `<span>“${esc(x)}”</span>`).join('') : '<span class="vz">Nenhuma ainda: cada diretor pode propor uma ação no fim da bússola.</span>'}</div><button data-c="copia-plano">Copiar plano</button></div></div>`;
+    <div class="plf"><div class="id"><b>Ideias dos diretores</b>${ideias.length ? ideias.slice(0, 6).map(x => `<span>“${esc(x)}”</span>`).join('') : '<span class="vz">Nenhuma ainda: cada diretor pode propor uma ação no fim da bússola.</span>'}</div></div>`;
+  g.innerHTML = `<div class="pl"><div class="plh"><div><span class="eb">Diagnóstico e plano do time · ${A.nD} bússola${A.nD === 1 ? '' : 's'} concluída${A.nD === 1 ? '' : 's'}</span><h2>${['Somos assim', 'O que ganhamos e o que perdemos', 'Nossas forças e fraquezas', 'Possíveis ações: o time decide'][planoAba]}</h2><p>${planoAba < 3 ? ABAS[planoAba].d + ', a partir das respostas do time.' : 'Sugestões a partir das respostas. Toque para aprovar ou descartar, e acrescente outras ações.'}</p></div><div class="plx"><button data-c="copia-plano">Copiar plano</button><button class="x" data-c="fecha-plano" aria-label="Fechar">×</button></div></div>
+    ${abasHTML(planoAba, 'data-c="aba" data-i')}
+    <div class="plb">${planoAba < 3 ? abaHTML(F, planoAba, false) : acoes}</div></div>`;
 }
 function textoPlanoTime() {
-  const F = frentes(sinaisTime(A)); const L = [`BÚSSOLA DTS 2027 · PLANO DE AÇÃO DO TIME (${A.nD} bússolas)`, ''];
-  F.forEach((f, i) => { L.push(`${i + 1}. ${f.pergunta}`, `   Resposta do time: ${f.resposta || 'sem resposta ainda'}`); if (f.significa) L.push(`   O que quer dizer: ${f.significa}`); if (f.compara) L.push(`   Comparado ao plano: ${f.compara}`); [...f.acoes, ...planoEst.extra[f.id]].forEach(a => { const m = planoEst.marca[a]; L.push(`   ${m === 'ok' ? '[aprovada]' : m === 'nao' ? '[descartada]' : '[a decidir]'} ${a}`); }); L.push(''); });
-  const ideias = A.P.map(p => p.acao).filter(Boolean); if (ideias.length) { L.push('Ideias dos diretores:'); ideias.forEach(x => L.push(`- ${x}`)); }
-  return L.join('\n');
+  const F = frentes(sinaisTime(A)); let t = planoTexto(F, `BÚSSOLA DTS 2027 · DIAGNÓSTICO E PLANO DO TIME (${A.nD} bússolas)`);
+  const extra = F.flatMap((f, i) => planoEst.extra[f.id].map(a => `[ ] (${i + 1}) ${a}`)); if (extra.length) t = t.replace(/\n$/, '\n' + extra.join('\n') + '\n');
+  t = t.replace(/^\[ \] \((\d)\) (.*)$/gm, (all, n, a) => { const m = planoEst.marca[a]; return `${m === 'ok' ? '[aprovada]' : m === 'nao' ? '[descartada]' : '[a decidir]'} (${n}) ${a}`; });
+  const ideias = A.P.map(p => p.acao).filter(Boolean); if (ideias.length) t += '\nIDEIAS DOS DIRETORES\n' + ideias.map(x => `- ${x}`).join('\n') + '\n';
+  return t;
 }
 
 /* ---------------- desenho ---------------- */
@@ -774,8 +929,9 @@ document.addEventListener('click', async e => {
   const c = e.target.closest('[data-c]');
   if (c) { const k = c.dataset.c;
     if (k === 'ref') ciclo();
-    if (k === 'plano') abrirPlano();
+    if (k === 'plano') abrirPlano(0);
     if (k === 'limpa' && confirm('Apagar as marcações e as ações acrescentadas no plano de ação?')) { planoEst = { marca: {}, extra: { tipo: [], foco: [], venda: [], time: [] } }; guardaPlano(); desenhar(); }
+    if (k === 'aba') abrirPlano(+c.dataset.i);
     if (k === 'fecha-plano') $('#plano').classList.remove('on');
     if (k === 'copia-plano') { const txt = textoPlanoTime(); try { await navigator.clipboard.writeText(txt); } catch (er) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); } avisar('📋 Plano de ação copiado'); }
     if (k === 'full') { const s = $('#stage'); document.fullscreenElement ? document.exitFullscreen() : (s.requestFullscreen ? s.requestFullscreen() : null); }

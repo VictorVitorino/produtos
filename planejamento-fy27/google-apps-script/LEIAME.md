@@ -34,6 +34,19 @@ A carta de cada diretor e o mostrador do time usam o mesmo motor. Cada frente re
 
 Faixas usadas: porta de entrada abaixo de 38 é crise, acima de 62 é prevenção, entre elas é "entrar e ficar"; foco acima de 62 é foco, abaixo de 38 é amplitude. Quando o farol (com calma) e os reflexos apontam para lados diferentes, o diagnóstico diz isso. No fim da carta, cada diretor pode propor outra ação; ela vai para a coluna `acaoPropria` da planilha e aparece no plano de ação do mostrador, sem nome.
 
+### A leitura em 4 abas (carta de cada diretor e mostrador do time)
+
+O botão do plano de ação abre a mesma leitura nos dois lugares, em 4 abas:
+
+| Aba | O que mostra | De onde vem |
+|---|---|---|
+| 1 · Somos assim | Uma frase de identidade por frente ("Somos o resgate que fica a bordo…") e como ela se compara ao planejamento | Zona de cada frente: porta, foco, preço e vento, papel e casco |
+| 2 · Ganhos e perdas | O que cada escolha traz e o que custa, frente a frente | Texto próprio de cada zona; os produtos que ficam no cais e o papel que perde tempo entram pelo nome |
+| 3 · Forças e fraquezas | Uma SWOT interna, com números ("9 de 14 topam cobrar pelo resultado", "Cobrança mútua: 2,1 de 5") | Regras sobre as respostas: maioria, um terço, médias do casco ≥ 3,8 ou ≤ 3,2, burocracia ≥ 10% |
+| 4 · Possíveis ações | Ações sugeridas por frente, em aberto. No mostrador: aprovar, descartar e acrescentar, mais as ideias dos diretores | Mapas de ação por zona, âncora da venda, ponto do casco e papel |
+
+Na carta individual, a aba 3 fala de "suas forças" e "suas fraquezas", a partir das respostas da própria pessoa. "Copiar plano" leva as 4 partes em texto.
+
 ## Mostrador vivo (o resultado na tela, enquanto respondem)
 
 Abra `mostrador-vivo.html` no computador do projetor e digite a senha do painel (o TOKEN do `Codigo.gs`); ela fica guardada só naquele computador. A tela lê a planilha a cada 8 segundos e mostra:

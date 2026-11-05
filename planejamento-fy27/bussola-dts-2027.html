@@ -928,6 +928,50 @@ button.c-take:hover{background:#0b3a5e;transform:translateY(-1px)}
 .pcard2 .pf button{height:2.4em;padding:0 1.1em;border-radius:8px;border:1.5px solid var(--navy);color:var(--navy);font:700 .8em var(--sans)}
 .pcard2 .pf .yes{background:var(--navy);color:#fff}
 @media (max-width:760px){.fg{grid-template-columns:1fr}}
+/* plano em 4 abas: somos assim · ganhos e perdas · forças e fraquezas · ações */
+.pcard2{height:min(40em,100%)}
+.pcard2 .pbody{flex:1}
+.sw-tabs{display:flex;gap:.3em;padding:.5em 1.3em 0;border-bottom:1px solid rgba(0,43,73,.15)}
+.sw-tabs button{display:flex;align-items:center;gap:.45em;padding:.55em .8em;font:700 .74em var(--sans);color:var(--ink-2);border-bottom:3px solid transparent;margin-bottom:-1px}
+.sw-tabs button span{display:grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;font:700 .85em var(--mono);background:rgba(0,43,73,.08);color:var(--navy)}
+.sw-tabs button.on{color:var(--navy);border-bottom-color:var(--orange)}
+.sw-tabs button.on span{background:var(--navy);color:#fff}
+.sw-n{flex:none;display:inline-grid;place-items:center;width:1.45em;height:1.45em;border-radius:50%;font:700 .72em var(--mono);background:var(--navy);color:#fff;vertical-align:middle}
+.sw-vz{font-size:.78em;color:var(--ink-2);font-style:italic}
+.sw-q{display:block;font:700 .58em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.sw-somos{display:grid;grid-template-columns:1fr 1fr;gap:.7em}
+.sw-somos article{display:flex;gap:.7em;padding:.8em .9em;border:1px solid rgba(0,43,73,.14);border-radius:10px;background:rgba(255,255,255,.65)}
+.sw-somos b{display:block;font-family:var(--serif);font-size:1.12em;line-height:1.15;color:var(--navy);margin:.15em 0 .35em}
+.sw-somos p{font-size:.8em;line-height:1.45;color:var(--ink)}
+.sw-somos .sw-cmp{margin-top:.45em;font-size:.7em;color:var(--ink-2);border-left:2px solid var(--orange);padding-left:.6em}
+.sw-somos .sw-cmp i{font:700 .9em var(--mono);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-right:.3em}
+.sw-gp{display:flex;flex-direction:column;border:1px solid rgba(0,43,73,.14);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.65)}
+.sw-gh,.sw-gr{display:grid;grid-template-columns:1fr 1.35fr 1.35fr;gap:1em;padding:.6em .9em}
+.sw-gh{background:var(--navy);font:700 .62em var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.sw-gh .g{color:#9ACC3C}.sw-gh .p{color:#F4A3A3}
+.sw-gr+.sw-gr{border-top:1px solid rgba(0,43,73,.12)}
+.sw-gr>div{display:flex;gap:.5em;align-items:flex-start}
+.sw-gr b{font-family:var(--serif);font-size:.92em;line-height:1.2;color:var(--navy)}
+.sw-gr p{font-size:.78em;line-height:1.42;color:var(--ink)}
+.sw-gr p.g{border-left:3px solid #9ACC3C;padding-left:.6em}.sw-gr p.p{border-left:3px solid #CF3D3D;padding-left:.6em}
+.sw-ff{display:grid;grid-template-columns:1fr 1fr;gap:.7em}
+.sw-col{padding:.8em .9em;border-radius:10px;border:1px solid rgba(0,43,73,.14);background:rgba(255,255,255,.65);border-top:4px solid #9ACC3C}
+.sw-col.w{border-top-color:#CF3D3D}
+.sw-col h4{font:700 .64em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--navy);margin-bottom:.5em}
+.sw-col ul{list-style:none;display:flex;flex-direction:column;gap:.5em}
+.sw-col li{display:flex;gap:.55em;align-items:flex-start;font-size:.8em;line-height:1.4;color:var(--ink)}
+.sw-leg{margin-top:.5em;font-size:.62em;color:var(--ink-2)}
+.sw-ac{display:grid;grid-template-columns:1fr 1fr;gap:.7em}
+.sw-ac section{padding:.75em .9em;border:1px solid rgba(0,43,73,.14);border-radius:10px;background:rgba(255,255,255,.65)}
+.sw-ac h4{display:flex;gap:.5em;align-items:center;font:700 .62em var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:.45em}
+.sw-ac ul{list-style:none;display:flex;flex-direction:column;gap:.35em}
+.sw-ac li{position:relative;padding-left:1.4em;font-size:.78em;line-height:1.4;color:var(--ink)}
+.sw-ac li:not(.sw-vz)::before{content:"";position:absolute;left:0;top:.2em;width:.85em;height:.85em;border:1.5px solid var(--navy);border-radius:3px}
+.sw-ac .own{grid-column:1/-1}
+.sw-ac .own textarea{width:100%;font:inherit;font-size:.85em;padding:.5em .7em;border-radius:8px;border:1px solid var(--navy-40);background:#fff;color:var(--ink);resize:vertical}
+.sw-ac .own .cnt2{display:block;text-align:right;font-size:.62em;color:var(--ink-2)}
+@media (max-width:760px){.sw-somos,.sw-ff,.sw-ac{grid-template-columns:1fr}.sw-gh{display:none}.sw-gr{grid-template-columns:1fr;gap:.4em}.sw-tabs{overflow-x:auto}.sw-tabs button{white-space:nowrap}}
+
 
 /* recomeçar do porto */
 .askbox{position:absolute;inset:0;z-index:60;display:grid;place-items:center;padding:1.2em;font-size:clamp(13px,2.42cqh,19px);background:rgba(2,11,20,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s}
@@ -1744,7 +1788,51 @@ function frentes(sg) {
     if (up && up.d >= 5 && ACAO_PAPEL_MAIS[up.id]) acoes.push(ACAO_PAPEL_MAIS[up.id]);
     (sg.dependencias || []).forEach(t => acoes.push(`Formar uma segunda referência no time para "${minus(t)}", hoje concentrado em uma pessoa.`));
     (sg.lacunas || []).forEach(t => acoes.push(`Desenvolver ou buscar quem cubra "${minus(t)}": parte do time não tem a quem recorrer.`));
+    sg._up = up; sg._dn = dn; sg._idx = idx; sg._w = w;
     F.push({ id: 'time', pergunta: 'O time está pronto para isso?', resposta: resp, disse: sg.ev.time, significa: sig.trim(), compara: 'O planejamento não fixa uma meta para o casco: ele é a leitura do próprio time. No encontro, as notas de todos são somadas.', conversa: 'O que sai da agenda do diretor para o papel de 2027 caber?', acoes: acoes.slice(0, 3) }); }
+  return enriquecer(F, sg);
+}
+
+/* ---------- Somos assim · ganhos e perdas · forças e fraquezas ---------- */
+function enriquecer(F, sg) {
+  const eu = sg.modo === 'eu', sw = sg.sw || {}, pre = s => s ? (eu ? 'Na sua visão, ' + minus(s) : s) : '';
+  const nomeP = id => minus((PAPEIS.find(x => x.id === id) || {}).nome || '');
+  const preco = sg.receita == null ? null : sg.receita >= 60 ? 'res' : sg.receita <= 40 ? 'fixo' : 'misto';
+  const ventoN = sg.vento == null ? null : VENTOS[clamp(Math.round(sg.vento), 1, 5) - 1];
+  const T = {
+    tipo: { crise: ['Somos o resgate: entramos quando a TI do cliente já deu errado e o CFO precisa de alguém de confiança.', 'Acesso direto a CFO, CEO e conselho; projetos urgentes, com orçamento aprovado e preço defensável.', 'A relação tende a acabar com a crise: pouca recompra e pouca presença quando o cliente está bem.'],
+      meio: ['Somos o resgate que fica a bordo: entramos pela dor de hoje e ficamos para o cliente não falhar de novo.', 'Junta o acesso e a urgência da crise com a receita recorrente de quem fica depois dela.', 'Exige uma segunda fase pronta para vender; sem ela, voltamos a ser só o resgate.'],
+      prev: ['Somos o prático do CIO: acompanhamos a TI de perto para ela não falhar.', 'Relação longa, receita recorrente e conhecimento profundo do cliente.', 'Menos acesso ao CFO e ao CEO, e a necessidade de ser lembrado antes de o problema existir.'] },
+    foco: { foco: ['Somos especialistas: poucos problemas, resolvidos melhor do que ninguém.', 'Ser a primeira escolha do cliente nesses problemas, com time especialista e uma mensagem fácil de repetir.', 'Deixar de vender à parte produtos que hoje fazem parte do catálogo' + (sg.cais && sg.cais.length ? `, como ${sg.cais.slice(0, 2).join(' e ')}.` : '.')],
+      equil: ['Somos um núcleo forte com algumas apostas, abertas com critério.', 'Mantém o que funciona e testa crescimento com risco controlado.', 'Se as apostas não tiverem dono e prazo, viramos "um pouco de tudo".'],
+      amplo: ['Somos generalistas de tecnologia: atendemos muitos problemas e mercados.', 'Mais mercado para vender e menos dependência de poucos temas.', 'Time e esforço espalhados; o cliente não sabe exatamente para que nos chamar.'] },
+    preco: { res: ['Preço defensável e margem maior quando o resultado aparece; a conversa com o CFO vira conversa de valor.', 'Receita menos previsível e a obrigação de medir o resultado desde o primeiro dia.'],
+      fixo: ['Receita previsível e menos risco para DTS.', 'Competimos por hora e por preço, longe do valor que entregamos.'],
+      misto: ['Equilíbrio entre previsibilidade e prêmio pelo resultado.', 'Pode não convencer nem quem quer segurança nem quem quer resultado.'] },
+    casco: { firme: ['Confiança para dividir contas e metas sem atrito.', 'Conforto: casco firme não garante que o papel do diretor mude.'],
+      aten: ['Há confiança suficiente para começar a mudança.', 'Se o ponto mais frágil não melhorar, as metas coletivas viram cobrança informal.'],
+      vaza: ['O problema aparece antes de se distribuírem as metas, e ainda dá tempo de tratar.', 'Sem integridade no time, o plano de 2027 não se sustenta.'] }
+  };
+  F.forEach(f => {
+    let s = '', g = '', p = '';
+    if (f.id === 'tipo' && sg.zP) [s, g, p] = T.tipo[sg.zP];
+    if (f.id === 'foco' && sg.zF) { [s, g, p] = T.foco[sg.zF]; if (sg.nProd != null) s += ` ${eu ? 'Você levaria' : 'Levamos'} ${sg.nProd} dos 33 produtos de hoje.`; }
+    if (f.id === 'venda' && (sg.mesaTop != null || ventoN)) {
+      s = `Somos ${sg.mesaTop != null ? `vendedores de ${minus(MESAS[sg.mesaTop].nome)}` : 'vendedores'}${preco ? `, com ${preco === 'res' ? 'preço ligado ao resultado' : preco === 'fixo' ? 'preço fixo' : 'preço misto'}` : ''}${ventoN ? `, e hoje vendemos como "${minus(ventoN.nome)}": ${ventoN.txt}` : ''}.`;
+      if (preco) [g, p] = T.preco[preco];
+    }
+    if (f.id === 'time') {
+      const st = sg._idx == null ? null : sg._idx >= 75 ? 'firme' : sg._idx >= 55 ? 'aten' : 'vaza';
+      if (sg.topHoje || st) s = `Somos um time ${sg.topHoje ? `que passa a maior parte da semana em ${minus(sg.topHoje)}` : 'em transição'}${sg._up && sg._up.d > 0 ? ` e quer, em 2027, mais ${nomeP(sg._up.id)}` : ''}.`;
+      const gg = [], pp = [];
+      if (sg._up && sg._up.d >= 5) gg.push(`Mais tempo para ${nomeP(sg._up.id)}.`);
+      if (sg._dn && sg._dn.d <= -5) pp.push(`Menos tempo em ${nomeP(sg._dn.id)}: alguém precisa assumir isso.`);
+      if (st) { gg.push(T.casco[st][0]); pp.push(T.casco[st][1]); }
+      g = gg.join(' '); p = pp.join(' ');
+    }
+    f.somos = pre(s); f.ganho = g; f.perda = p;
+    f.forcas = (sw[f.id] && sw[f.id].f) || []; f.fraquezas = (sw[f.id] && sw[f.id].w) || [];
+  });
   return F;
 }
 
@@ -1770,12 +1858,54 @@ function sinaisEu(a, r) {
   if (P.ideal) { const dl = PAPEIS.map((x, i) => ({ x, d: P.ideal[i] - (P.hoje[i] || 0) })); const up = dl.reduce((m, b) => b.d > m.d ? b : m), dn = dl.reduce((m, b) => b.d < m.d ? b : m); if (up.d > 0 && dn.d < 0) ev.time.push(`Em 2027 quer mais ${minus(up.x.nome)} (+${up.d}) e menos ${minus(dn.x.nome)} (${dn.d}).`); }
   const cs = a.casco || []; if (cs.length === 5 && cs.every(x => x != null)) { const lo = cs.indexOf(Math.min(...cs)); ev.time.push(`Deu a nota mais baixa (${cs[lo]} de 5) para: "${CASCO[lo].txt}"`); }
   const cal = esp ? ZP(esp.porta) : null;
-  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev };
+  const swE = { tipo: { f: [], w: [] }, foco: { f: [], w: [] }, venda: { f: [], w: [] }, time: { f: [], w: [] } };
+  if (c1) (c1.porta === 0 ? swE.tipo.f.push(`Você atenderia primeiro ${c1.quem === 'Patrocinador do ERP' ? 'o patrocinador do ERP' : 'o ' + c1.quem}: urgência e acesso ao C-level são o seu terreno.`) : c1.id === 'cio_prev' ? swE.tipo.f.push('Você atenderia primeiro o CIO que quer acompanhamento: relação contínua é o seu terreno.') : null);
+  if (esp && esp.id === 'C') swE.tipo.f.push('Com calma, você escolheu entrar pela dor e ficar, a rota que o plano propõe.');
+  if (cal && cal !== ZP(d.PORTA)) swE.tipo.w.push('Seu instinto e sua escolha com calma apontaram para lados diferentes: a porta de entrada ainda não está clara.');
+  if (!(a.tel.atender || []).includes('cio_prev')) swE.tipo.w.push('Você não atenderia o CIO que quer acompanhamento mensal: a porta da prevenção fica fechada.');
+  if (nP != null && nP <= 23) swE.foco.f.push(`Coragem para enxugar: manteve ${nP} dos 33 produtos.`);
+  if (a.rota === 'B') swE.foco.f.push('Escolheu a rota com foco declarado: três destinos e um desvio.');
+  if (nP != null && nP >= 30) swE.foco.w.push(`Catálogo pesado: manteve ${nP} dos 33 produtos (o plano propõe 23).`);
+  if (a.rota === 'A') swE.foco.w.push('Prefere a estrada de sempre, que o plano quer mudar.');
+  if (ZF(d.FOCO) === 'foco' && nP != null && nP >= 30) swE.foco.w.push('Fala em foco, mas quase todo o catálogo continua a bordo.');
+  if (d.RECEITA >= 65) swE.venda.f.push('Disposto a cobrar pelo resultado, como o plano propõe.');
+  if (side('r5') === 'R') swE.venda.f.push('Prefere deixar instrumentos a relatórios: mentalidade de produto.');
+  if (tot && (a.mesa[0] + a.mesa[1] + a.mesa[2]) >= 80) swE.venda.f.push(`Esforço concentrado no núcleo: ${a.mesa[0] + a.mesa[1] + a.mesa[2]} de 100 caixas.`);
+  if (w && a.vento <= 2) swE.venda.w.push(`Vê a venda de DTS como reativa: "${minus(w.nome)}".`);
+  if (an.length) swE.venda.w.push(`${an.join(' e ')}: o que mais trava a sua venda.`);
+  if (d.RECEITA <= 40) swE.venda.w.push('Prefere preço fixo, longe do valor que DTS entrega.');
+  if (cs.length === 5 && cs.every(x => x != null)) { const hi = cs.indexOf(Math.max(...cs)), lo = cs.indexOf(Math.min(...cs)); if (cs[hi] >= 4) swE.time.f.push(`${CASCO[hi].nome}: nota ${cs[hi]} de 5, um ponto firme do casco.`); if (cs[lo] <= 3) swE.time.w.push(`${CASCO[lo].nome}: nota ${cs[lo]} de 5. ${SIGNIFICA_REBITE[CASCO[lo].id]}`); }
+  if (P.hoje && P.ideal) { const iv = PAPEIS.findIndex(x => x.id === 'vender'); if (P.ideal[iv] > P.hoje[iv]) swE.time.f.push(`Quer mais tempo vendendo: de ${P.hoje[iv]}% para ${P.ideal[iv]}% da semana.`); const ib = PAPEIS.findIndex(x => x.id === 'burocracias'); if (P.hoje[ib] >= 10) swE.time.w.push(`Burocracias tomam ${P.hoje[ib]}% da sua semana.`); }
+  const iTop = P.hoje && sum(P.hoje) === 100 ? P.hoje.indexOf(Math.max(...P.hoje)) : -1;
+  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [] };
 }
 function planoTexto(F, titulo) {
-  const L = [titulo, ''];
-  F.forEach((f, i) => { L.push(`${i + 1}. ${f.pergunta}`, `   Resposta: ${f.resposta || 'sem resposta ainda'}`); if (f.significa) L.push(`   O que quer dizer: ${f.significa}`); if (f.compara) L.push(`   Comparado ao plano: ${f.compara}`); if (f.conversa) L.push(`   Para conversar: ${f.conversa}`); f.acoes.forEach(a => L.push(`   [ ] ${a}`)); L.push(''); });
-  return L.join('\n');
+  const L = [titulo, '', 'SOMOS ASSIM'];
+  F.forEach((f, i) => L.push(`${i + 1}. ${f.pergunta} ${f.resposta || 'sem resposta ainda'}. ${f.somos || ''}`));
+  L.push('', 'GANHOS E PERDAS'); F.forEach((f, i) => { if (f.ganho || f.perda) L.push(`${i + 1}. Ganhamos: ${f.ganho || '—'} | Perdemos: ${f.perda || '—'}`); });
+  L.push('', 'FORÇAS'); F.forEach((f, i) => f.forcas.forEach(x => L.push(`+ (${i + 1}) ${x}`)));
+  L.push('', 'FRAQUEZAS'); F.forEach((f, i) => f.fraquezas.forEach(x => L.push(`− (${i + 1}) ${x}`)));
+  L.push('', 'POSSÍVEIS AÇÕES'); F.forEach((f, i) => f.acoes.forEach(a => L.push(`[ ] (${i + 1}) ${a}`)));
+  return L.join('\n') + '\n';
+}
+
+/* ---------- a leitura em 4 abas (carta e mostrador usam o mesmo desenho) ---------- */
+const ABAS = [
+  { k: 'somos', t: 'Somos assim', d: 'Quem DTS é, em uma frase por frente' },
+  { k: 'gp', t: 'Ganhos e perdas', d: 'O que cada escolha traz e o que custa' },
+  { k: 'ff', t: 'Forças e fraquezas', d: 'O que ajuda e o que trava, com os números' },
+  { k: 'acoes', t: 'Possíveis ações', d: 'Sugestões em aberto: o time decide' }
+];
+function abasHTML(aba, attr) {
+  return `<nav class="sw-tabs" role="tablist">${ABAS.map((x, i) => `<button type="button" role="tab" aria-selected="${i === aba}" class="${i === aba ? 'on' : ''}" ${attr}="${i}"><span>${i + 1}</span>${x.t}</button>`).join('')}</nav>`;
+}
+function abaHTML(F, aba, eu) {
+  const vazio = '<p class="sw-vz">Ainda sem respostas suficientes nesta frente.</p>', nb = i => `<span class="sw-n">${i + 1}</span>`;
+  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><span class="sw-q">${f.pergunta}</span><b>${f.resposta || 'Sem resposta ainda'}</b>${f.somos ? `<p>${esc(f.somos)}</p>` : vazio}${f.compara ? `<p class="sw-cmp"><i>Frente ao plano</i> ${esc(f.compara)}</p>` : ''}</div></article>`).join('')}</div>`;
+  if (aba === 1) return `<div class="sw-gp"><div class="sw-gh"><span></span><span class="g">▲ ${eu ? 'O que você ganha' : 'O que ganhamos'}</span><span class="p">▼ ${eu ? 'O que você perde' : 'O que perdemos'}</span></div>${F.map((f, i) => `<div class="sw-gr"><div>${nb(i)}<b>${f.resposta || f.pergunta}</b></div><p class="g">${esc(f.ganho || '—')}</p><p class="p">${esc(f.perda || '—')}</p></div>`).join('')}</div>`;
+  if (aba === 2) { const col = (k, t, cls) => { const it = F.flatMap((f, i) => f[k].map(x => `<li>${nb(i)}<span>${esc(x)}</span></li>`)); return `<div class="sw-col ${cls}"><h4>${t}</h4>${it.length ? `<ul>${it.join('')}</ul>` : vazio}</div>`; };
+    return `<div class="sw-ff">${col('forcas', eu ? 'Suas forças' : 'Forças', 'f')}${col('fraquezas', eu ? 'Suas fraquezas' : 'Fraquezas', 'w')}</div><p class="sw-leg">${F.map((f, i) => `${nb(i)} ${f.pergunta.replace(/\?$/, '')}`).join(' · ')}</p>`; }
+  return '';
 }
 
 /* ===================================================================== */
@@ -2803,7 +2933,7 @@ SCREENS.final = {
       <div class="eyebrow">Carta do comandante <span class="sep">·</span> <b>${esc(S.nome || 'comandante')}</b>${CFG.mostrarAderencia ? ` <span class="sep">·</span> aderência ao plano ${r.aderencia}/100` : ''}</div>
       <div class="arch-name" id="archName">${nm}</div>
       <p class="c-lema later" style="--i:0">${arq.lema} <b>Desafio:</b> ${arq.desafio}.</p>
-      <div class="c-grid">${FR.map((f, i) => `<div class="c-card later" style="--i:${i + 1}"><div class="c-k"><span class="c-n">${i + 1}</span><span>${f.pergunta}</span></div><b class="c-v">${f.resposta || 'Sem resposta suficiente'}</b><span class="c-d">${(f.significa.match(/^[^.]*\./) || [f.significa])[0]}</span></div>`).join('')}</div>
+      <div class="c-grid">${FR.map((f, i) => `<div class="c-card later" style="--i:${i + 1}"><div class="c-k"><span class="c-n">${i + 1}</span><span>${f.pergunta}</span></div><b class="c-v">${f.resposta || 'Sem resposta suficiente'}</b><span class="c-d">${(t => (t.match(/^[^.]*\./) || [t])[0])((f.somos || f.significa || '').replace(/^Na sua visão, s/, 'S'))}</span></div>`).join('')}</div>
       <div class="c-storm later" style="--i:5">${CI.bolt}<span>${storm}</span></div>
       <button type="button" class="c-take c-plan later" style="--i:6" data-a="plano"><span class="k">Seu plano de ação</span><b>Ver por que cada resposta e as ações sugeridas →</b></button>
       <div class="sync later" style="--i:7" id="sync"></div>
@@ -2825,17 +2955,18 @@ SCREENS.final = {
 };
 
 /* ---------- o diagnóstico completo e o plano de ação (abre pelo botão da carta) ---------- */
-function abrirPlano() {
-  const r = S.result || (S.result = compute(S.a)), F = frentes(sinaisEu(S.a, r)), comPlano = CFG.mostrarPlano !== false;
+let planoAba = 0;
+function abrirPlano(aba) {
+  if (aba != null) planoAba = aba;
+  const r = S.result || (S.result = compute(S.a)), F0 = frentes(sinaisEu(S.a, r)), F = CFG.mostrarPlano !== false ? F0 : F0.map(f => ({ ...f, compara: '' }));
   let m = $('#planobox'); if (!m) { m = document.createElement('div'); m.id = 'planobox'; m.className = 'planobox'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.addEventListener('click', e => { if (e.target === m) fecharPlano(); }); stage.appendChild(m); }
-  m.innerHTML = `<div class="pcard2"><div class="ph"><div><span class="k">Bússola DTS 2027 · ${esc(S.nome || 'comandante')}</span><h3>Seu diagnóstico e plano de ação</h3><p>Para cada frente: o que você respondeu, o que isso quer dizer e o que dá para fazer. As ações são sugestões: no encontro, o time decide estas e outras.</p></div><button type="button" class="x" data-a="plano-fechar" aria-label="Fechar">×</button></div>
-    <div class="pbody">${F.map((f, i) => `<section class="fr"><div class="fh"><span class="c-n">${i + 1}</span><div><span class="fq">${f.pergunta}</span><b>${f.resposta || 'Sem resposta suficiente'}</b></div></div>
-      <div class="fg"><div><h4>O que você respondeu</h4><ul>${(f.disse.length ? f.disse : ['Esta parte não foi respondida.']).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-      <div><h4>O que isso quer dizer</h4><p>${f.significa}</p>${comPlano && f.compara ? `<h4>Comparado ao planejamento</h4><p>${f.compara}</p>` : ''}<h4>Para conversar no encontro</h4><p class="cv">${f.conversa}</p></div>
-      <div class="ac"><h4>Ações sugeridas</h4><ul>${f.acoes.map(a => `<li>${a}</li>`).join('') || '<li>Sem sugestão: faltam respostas nesta frente.</li>'}</ul></div></div></section>`).join('')}
-      <section class="fr own"><h4>E você, que outra ação proporia para DTS em 2027?</h4><textarea id="acaoPropria" maxlength="280" rows="2" placeholder="Escreva aqui. Vai para a facilitação, sem nome, junto com sua bússola.">${esc(S.a.acao || '')}</textarea><span class="cnt2" id="acaoCnt">${(S.a.acao || '').length}/280</span></section></div>
-    <div class="pf"><button type="button" data-a="plano-copiar">Copiar meu plano</button><button type="button" class="yes" data-a="plano-fechar">Fechar</button></div></div>`;
-  m.classList.add('on'); setTimeout(() => { const b = m.querySelector('.x'); if (b) b.focus(); }, 60);
+  const acoes = `<div class="sw-ac">${F.map((f, i) => `<section><h4><span class="sw-n">${i + 1}</span>${f.pergunta}</h4><ul>${f.acoes.map(a => `<li>${a}</li>`).join('') || '<li class="sw-vz">Sem sugestão: faltam respostas nesta frente.</li>'}</ul></section>`).join('')}
+      <section class="own"><h4>E você, que outra ação proporia para DTS em 2027?</h4><textarea id="acaoPropria" maxlength="280" rows="2" placeholder="Escreva aqui. Vai para a facilitação, sem nome, junto com sua bússola.">${esc(S.a.acao || '')}</textarea><span class="cnt2" id="acaoCnt">${(S.a.acao || '').length}/280</span></section></div>`;
+  m.innerHTML = `<div class="pcard2"><div class="ph"><div><span class="k">Bússola DTS 2027 · ${esc(S.nome || 'comandante')}</span><h3>Seu diagnóstico e plano de ação</h3><p>${ABAS[planoAba].d}.</p></div><button type="button" class="x" data-a="plano-fechar" aria-label="Fechar">×</button></div>
+    ${abasHTML(planoAba, 'data-a="plano-aba" data-i')}
+    <div class="pbody">${planoAba < 3 ? abaHTML(F, planoAba, true) : acoes}</div>
+    <div class="pf"><button type="button" data-a="plano-copiar">Copiar meu plano</button>${planoAba < 3 ? `<button type="button" class="yes" data-a="plano-aba" data-i="${planoAba + 1}">${ABAS[planoAba + 1].t} →</button>` : '<button type="button" class="yes" data-a="plano-fechar">Fechar</button>'}</div></div>`;
+  m.classList.add('on'); setTimeout(() => { const b = m.querySelector('.sw-tabs .on'); if (b) b.focus(); }, 60);
 }
 function fecharPlano() { const m = $('#planobox'); if (m) m.classList.remove('on'); }
 async function copiarPlano(btn) { const r = S.result || compute(S.a), F = frentes(sinaisEu(S.a, r)); let txt = planoTexto(F, `Bússola DTS 2027 · plano de ação · ${S.nome || ''}`); if (S.a.acao) txt += `\nMinha ação: ${S.a.acao}\n`; try { await navigator.clipboard.writeText(txt); btn.textContent = 'Copiado ✓'; } catch (e) { btn.textContent = 'Não deu para copiar'; } setTimeout(() => { btn.textContent = 'Copiar meu plano'; }, 2500); }
@@ -2920,7 +3051,8 @@ document.addEventListener('click', e => {
     case 'keep': if (!busy) { rxLocked = true; go(S.step + 1, { fast: true }); } break;
     case 'sound': Sound.setOn(!Sound.on); dock(); break;
     case 'painel': location.search = '?painel'; break;
-    case 'plano': abrirPlano(); break;
+    case 'plano': abrirPlano(0); break;
+    case 'plano-aba': abrirPlano(+el.dataset.i); break;
     case 'plano-fechar': fecharPlano(); break;
     case 'plano-copiar': copiarPlano(el); break;
     case 'copiar-resp': copiarResp(el); break;
