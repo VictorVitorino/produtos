@@ -2933,7 +2933,7 @@ SCREENS.final = {
       <div class="eyebrow">Carta do comandante <span class="sep">·</span> <b>${esc(S.nome || 'comandante')}</b>${CFG.mostrarAderencia ? ` <span class="sep">·</span> aderência ao plano ${r.aderencia}/100` : ''}</div>
       <div class="arch-name" id="archName">${nm}</div>
       <p class="c-lema later" style="--i:0">${arq.lema} <b>Desafio:</b> ${arq.desafio}.</p>
-      <div class="c-grid">${FR.map((f, i) => `<div class="c-card later" style="--i:${i + 1}"><div class="c-k"><span class="c-n">${i + 1}</span><span>${f.pergunta}</span></div><b class="c-v">${f.resposta || 'Sem resposta suficiente'}</b><span class="c-d">${(t => (t.match(/^[^.]*\./) || [t])[0])((f.somos || f.significa || '').replace(/^Na sua visão, s/, 'S'))}</span></div>`).join('')}</div>
+      <div class="c-grid">${FR.map((f, i) => `<div class="c-card later" style="--i:${i + 1}"><div class="c-k"><span class="c-n">${i + 1}</span><span>${f.pergunta}</span></div><b class="c-v">${f.resposta || 'Sem resposta suficiente'}</b><span class="c-d">${(t => (t.match(/^[^.:]*/) || [t])[0] + '.')((f.somos || f.significa || '').replace(/^Na sua visão, s/, 'S'))}</span></div>`).join('')}</div>
       <div class="c-storm later" style="--i:5">${CI.bolt}<span>${storm}</span></div>
       <button type="button" class="c-take c-plan later" style="--i:6" data-a="plano"><span class="k">Seu plano de ação</span><b>Ver por que cada resposta e as ações sugeridas →</b></button>
       <div class="sync later" style="--i:7" id="sync"></div>
