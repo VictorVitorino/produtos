@@ -45,10 +45,10 @@ O botão do plano de ação abre a mesma leitura nos dois lugares, em 4 abas:
 
 | Aba | O que mostra | De onde vem |
 |---|---|---|
-| 1 · Somos assim | Uma frase de identidade por frente, a **decisão proposta** (o que já dá para definir) e a comparação com o planejamento | Zona de cada frente: porta, foco, preço e vento, papel e casco |
+| 1 · Somos assim | O **diagnóstico** de cada uma das 4 perguntas, sem ação: a resposta, uma frase de identidade ("Somos o resgate que fica a bordo…"), uma etiqueta de alinhamento ao planejamento e até 3 fatos com números ("5 de 7 pagariam o reboque…") | Zona de cada frente e contagens das respostas do time |
 | 2 · Ganhos e perdas | O que cada escolha traz e o que custa, frente a frente | Texto próprio de cada zona; os produtos que ficam no cais e o papel que perde tempo entram pelo nome |
-| 3 · SWOT | Quadro 2x2: forças e fraquezas (dentro de DTS, com números: "9 de 14 topam cobrar pelo resultado") e oportunidades e ameaças (o mercado de 2027: CBS da reforma tributária, fim da manutenção padrão do SAP ECC, fundos, IA generativa, Big Four e integradoras). Até 6 itens por quadrante, um de cada frente primeiro | Regras sobre as respostas (maioria, um terço, médias do casco) e uma tabela de mercado por escolha |
-| 4 · Possíveis ações | Por frente: a decisão proposta e as ações sugeridas, em aberto. No mostrador: aprovar, descartar e acrescentar, mais as ideias dos diretores | Mapas de ação por zona, âncora da venda, ponto do casco e papel |
+| 3 · SWOT | Quadro 2x2: forças e fraquezas (dentro de DTS, com números: "9 de 14 topam cobrar pelo resultado") e oportunidades e ameaças (o mercado de 2027: CBS da reforma tributária, fim da manutenção padrão do SAP ECC, fundos, IA generativa, Big Four e integradoras). Até 4 itens por quadrante, um de cada frente primeiro | Regras sobre as respostas (maioria, um terço, médias do casco; também aponta quando o discurso não bate com o catálogo) e uma tabela de mercado por escolha |
+| 4 · Possíveis ações | Por frente: a **decisão proposta** (o que já dá para definir) e as ações sugeridas, em aberto. No mostrador: aprovar, descartar e acrescentar, mais as ideias dos diretores | Mapas de ação por zona, âncora da venda, ponto do casco e papel |
 
 Na carta individual, a aba 3 fala de "suas forças" e "suas fraquezas", a partir das respostas da própria pessoa; oportunidades e ameaças são as do mercado para a escolha dela. "Copiar plano" leva tudo em texto, inclusive as decisões propostas.
 
