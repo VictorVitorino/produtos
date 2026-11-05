@@ -687,16 +687,20 @@ function sinaisEu(a, r) {
   else if (nP != null && nP >= 28) swE.foco.w.push(`Catálogo pesado: manteve ${nP} dos 33 produtos (o plano propõe 23).`);
   if (ZF(d.FOCO) === 'amplo' && nP != null && nP <= 20) swE.foco.w.push(`Pede amplitude, mas enxugou o catálogo: manteve ${nP} dos 33 produtos.`);
   if (a.rota === 'A') swE.foco.w.push('Prefere a estrada de sempre, que o plano quer mudar.');
-  if (d.RECEITA >= 65) swE.venda.f.push('Disposto a cobrar pelo resultado, como o plano propõe.');
+  if (a.contrato && a.contrato.moves && a.contrato.v >= 65) swE.venda.f.push('Disposto a cobrar pelo resultado, como o plano propõe.');
   if (side('r5') === 'R') swE.venda.f.push('Prefere deixar instrumentos a relatórios: mentalidade de produto.');
   if (tot && (a.mesa[0] + a.mesa[1] + a.mesa[2]) >= 80) swE.venda.f.push(`Esforço concentrado no núcleo: ${a.mesa[0] + a.mesa[1] + a.mesa[2]} de 100 caixas.`);
   if (w && a.vento <= 2) swE.venda.w.push(`Vê a venda de DTS como reativa: "${minus(w.nome)}".`);
   if (an.length) swE.venda.w.push(`${an.join(' e ')}: o que mais trava a sua venda.`);
-  if (d.RECEITA <= 40) swE.venda.w.push('Prefere preço fixo, longe do valor que DTS entrega.');
+  if (a.contrato && a.contrato.moves && a.contrato.v <= 35) swE.venda.w.push('Prefere preço fixo, longe do valor que DTS entrega.');
   if (cs.length === 5 && cs.every(x => x != null)) { const hi = cs.indexOf(Math.max(...cs)), lo = cs.indexOf(Math.min(...cs)); if (cs[hi] >= 4) swE.time.f.push(`${CASCO[hi].nome}: nota ${cs[hi]} de 5, um ponto firme do casco.`); if (cs[lo] <= 3) swE.time.w.push(`${CASCO[lo].nome}: nota ${cs[lo]} de 5. ${SIGNIFICA_REBITE[CASCO[lo].id]}`); }
   if (P.hoje && P.ideal) { const iv = PAPEIS.findIndex(x => x.id === 'vender'); if (P.ideal[iv] >= P.hoje[iv] + 5 && P.ideal[iv] >= 10) swE.time.f.push(`Quer mais tempo vendendo: de ${P.hoje[iv]}% para ${P.ideal[iv]}% da semana.`); const ib = PAPEIS.findIndex(x => x.id === 'burocracias'); if (P.hoje[ib] >= 10) swE.time.w.push(`Burocracias tomam ${P.hoje[ib]}% da sua semana.`); }
   const iTop = P.hoje && sum(P.hoje) === 100 ? P.hoje.indexOf(Math.max(...P.hoje)) : -1;
-  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [], ia: a.ia || null, novas: (a.cargaNova || []).map(nome => ({ nome, n: 1 })) };
+  const pzE = a.contrato && a.contrato.moves ? (a.contrato.v <= 35 ? 'fixo' : a.contrato.v >= 65 ? 'res' : 'misto') : undefined;
+  if (pzE === 'fixo' && side('r4') === 'L') swE.venda.w.push('Preço e instinto não batem: no contrato você escolheu fixo, mas no reflexo pagaria o pescador pela pesca (resultado).');
+  if (pzE === 'res' && side('r4') === 'R') swE.venda.w.push('Preço e instinto não batem: no contrato você escolheu resultado, mas no reflexo pagaria o pescador pela diária.');
+  const mo = tot ? a.mesa.map((v, i) => ({ v, i })).sort((x, y) => y.v - x.v || x.i - y.i) : null, mesa2 = mo && mo[0].v === mo[1].v ? mo[1].i : null;
+  return { mesa2, precoZ: pzE, modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [], ia: a.ia || null, novas: (a.cargaNova || []).map(nome => ({ nome, n: 1 })) };
 }
 function planoTexto(F, titulo) {
   const L = [titulo, '', 'SOMOS ASSIM'];

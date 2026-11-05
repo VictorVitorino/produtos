@@ -943,6 +943,8 @@ button.c-take:hover{background:#0b3a5e;transform:translateY(-1px)}
 .sw-somos article{display:flex;gap:.7em;padding:.8em .9em;border:1px solid rgba(0,43,73,.14);border-radius:10px;background:rgba(255,255,255,.65)}
 .sw-somos b{display:block;font-family:var(--serif);font-size:1.12em;line-height:1.15;color:var(--navy);margin:.15em 0 .35em}
 .sw-somos p{font-size:.8em;line-height:1.45;color:var(--ink)}
+.sw-mar{margin:0 0 .3em;font-family:var(--serif);font-style:italic;font-size:.8em;color:var(--ink-2)}
+.sw-mar::before{content:"⚓";font-style:normal;margin-right:.35em;color:var(--orange)}
 .sw-tag{display:inline-block;margin:0 0 .35em;padding:.15em .6em;border-radius:99px;font:700 .64em var(--sans);letter-spacing:.03em;border:1px solid rgba(0,43,73,.25);color:var(--navy);background:rgba(0,43,73,.05)}
 .sw-tag.dif{border-color:var(--orange);background:rgba(247,140,22,.12)}
 .sw-somos .sw-som{font-size:.84em;line-height:1.45;color:var(--ink)}
@@ -1711,6 +1713,8 @@ function buildRow() {
 const ZP = v => v == null ? null : v < 38 ? 'crise' : v > 62 ? 'prev' : 'meio';   // porta de entrada (plano: meio)
 const ZF = v => v == null ? null : v < 38 ? 'amplo' : v > 62 ? 'foco' : 'equil';  // foco do portfólio (plano: foco)
 const minus = s => s ? s[0].toLowerCase() + s.slice(1) : s;
+const precoZ = sg => sg.precoZ !== undefined ? sg.precoZ : sg.receita == null ? null : sg.receita >= 60 ? 'res' : sg.receita <= 40 ? 'fixo' : 'misto';
+const PRECO_TXT = { res: 'preço ligado ao resultado', fixo: 'preço fixo', misto: 'preço misto', div: 'preço ainda sem consenso' };
 const ACAO_ANCORA = {
   tempo: 'Reservar horas fixas por semana, para cada diretor, só para venda e originação.',
   oferta: 'Escrever uma página por produto âncora: a dor, a entrega e o preço, numa frase que qualquer diretor repita.',
@@ -1760,6 +1764,9 @@ function frentes(sg) {
     const A = { crise: ['Criar uma oferta de continuidade para depois do resgate (por exemplo, PMO ou TMO de 6 a 12 meses).', 'Revisitar os clientes resgatados nos últimos 2 anos com uma proposta de acompanhamento.', 'Medir quantos resgates viram contrato recorrente.'],
       meio: ['Escolher as 3 dores de entrada de DTS e a oferta de permanência de cada uma.', 'Fazer uma revisão com o cliente 90 dias depois de cada entrega, para propor a próxima fase.', 'Medir recompra: quanto da receita vem de clientes que já atendemos.'],
       prev: ['Desenhar uma oferta recorrente para o CIO (acompanhamento mensal da TI).', 'Montar uma agenda de relacionamento com CIOs: encontros, conteúdo e diagnósticos curtos.', 'Manter uma porta de entrada pela crise, para abrir contas novas.'] };
+    R.div = 'Time dividido sobre a porta de entrada'; S.div = `Não há uma porta de entrada comum: ${(sg.divTxt || {}).tipo || 'o time se divide'}.`;
+    C.div = 'O planejamento propõe entrar pela crise e ficar depois dela. O time ainda não converge para uma porta.'; P.div = 'Qual porta de entrada DTS escolhe para 2027?';
+    A.div = ['Escolher a porta de entrada comum de DTS para 2027.', 'Desenhar uma oferta que una as duas visões: entrar pela dor de hoje e ficar como acompanhamento.', 'Alinhar o discurso comercial de todos os diretores.'];
     F.push({ id: 'tipo', pergunta: 'Que tipo de consultoria DTS quer ser?', resposta: z ? R[z] : null, disse: sg.ev.tipo, significa: z ? S[z] : '', compara: z ? C[z] + (sg.dissonancia && sg.farol ? ` Repare: no farol, com calma, ${eu ? 'você escolheu' : 'a maioria escolheu'} "${minus(sg.farol)}", mas ${eu ? 'seus reflexos e o rádio' : 'os reflexos e o rádio do time'} puxaram para ${minus(R[z])}. Vale conversar sobre essa diferença.` : '') : '', conversa: z ? P[z] : '', acoes: z ? A[z] : [] }); }
   // ---------- 2 · Poucas coisas muito bem, ou muitas coisas?
   { const z = sg.zF, n = sg.nProd;
@@ -1768,31 +1775,38 @@ function frentes(sg) {
     let sig = z ? S[z] : '';
     if (z === 'foco' && n != null && n >= 30) sig += ' Mas atenção: o discurso é de foco e quase todo o catálogo de hoje continua a bordo.';
     if (z === 'amplo' && n != null && n <= 20) sig += ' Curioso: pede amplitude, mas enxuga o catálogo.';
-    const comp = !z ? '' : (z === 'foco' ? 'O planejamento também propõe foco' : 'O planejamento propõe mais foco do que isso') + ': um núcleo forte e 23 produtos (hoje são 33).' + (n != null ? ` ${eu ? 'Você ficou' : 'O time ficou, em média,'} com ${n} produtos.` : '');
+    R.div = 'Time dividido sobre o foco'; S.div = `Parte do time quer concentrar, parte quer abrir frentes: ${(sg.divTxt || {}).foco || ''}.`;
+    if (z === 'div') sig = S.div;
+    const comp = !z ? '' : z === 'div' ? 'O planejamento propõe foco: um núcleo forte e 23 produtos (hoje são 33). O time ainda não converge para um lado.' + (n != null ? ` Em média, ficaram ${n} produtos.` : '') : (z === 'foco' ? 'O planejamento também propõe foco' : 'O planejamento propõe mais foco do que isso') + ': um núcleo forte e 23 produtos (hoje são 33).' + (n != null ? ` ${eu ? 'Você ficou' : 'O time ficou, em média,'} com ${n} produtos.` : '');
     const P = { foco: 'Quais produtos saem do catálogo, e quem é dono de cada um que fica?', equil: 'Quais são as poucas apostas novas, e com que critério entram?', amplo: 'DTS tem time e investimento para tantas frentes?' };
     const A = { foco: ['Definir os produtos âncora de 2027 e um dono para cada.', 'Fundir ou aposentar os produtos que ficaram no cais.', 'Concentrar a maior parte do esforço comercial no núcleo.'],
       equil: ['Fechar o núcleo de produtos âncora e escolher no máximo 2 apostas novas.', 'Dar a cada aposta um responsável, uma meta e uma data para revisar.', 'Aposentar o que não é núcleo nem aposta.'],
       amplo: ['Priorizar as frentes pelo tamanho do mercado e pela chance de ganhar.', 'Abrir frentes novas com parceiros antes de montar time próprio.', 'Revisar em 6 meses e fechar o que não ganhou tração.'] };
+    P.div = 'Quantas frentes DTS sustenta com o time de hoje?';
+    A.div = ['Definir o núcleo de 2027 com critérios objetivos: receita, margem e chance de ganhar.', 'Decidir, produto a produto, o que fica, o que funde e o que sai.', 'Rever as apostas em 6 meses.'];
     F.push({ id: 'foco', pergunta: 'DTS deve fazer poucas coisas muito bem, ou muitas coisas?', resposta: z ? R[z] : null, disse: sg.ev.foco, significa: sig, compara: comp, conversa: z ? P[z] : '', acoes: z ? A[z] : [] }); }
   // ---------- 3 · Como DTS deve vender e cobrar?
   { const v = sg.vento, rc = sg.receita, anc = sg.anc || [], ok = sg.mesaTop != null || v != null;
-    const preco = rc == null ? '' : rc >= 60 ? 'preço ligado ao resultado' : rc <= 40 ? 'preço fixo' : 'preço misto';
-    const resp = !ok ? null : (sg.mesaTop != null ? `Esforço em ${minus(MESAS[sg.mesaTop].nome)}` : 'Vender com método') + (preco ? `, com ${preco}` : '');
+    const pz = precoZ(sg), preco = pz ? PRECO_TXT[pz] : '';
+    const esforco = sg.mesaTop == null ? 'Vender com método' : sg.mesa2 != null ? `Esforço dividido entre ${minus(MESAS[sg.mesaTop].nome)} e ${minus(MESAS[sg.mesa2].nome)}` : `Esforço em ${minus(MESAS[sg.mesaTop].nome)}`;
+    const resp = !ok ? null : esforco + (preco ? `, com ${preco}` : '');
     const mat = v == null ? '' : v <= 2 ? 'Hoje a venda de DTS depende de o cliente aparecer. Para crescer, ela precisa de método e de rotina.' : v < 4 ? 'Cada diretor vende do seu jeito. Falta um método comum.' : 'Já existe rotina comercial. O desafio é ganhar escala.';
     const trava = anc.length ? ` O que mais trava: ${anc.map(id => minus((ANCORAS_VENDA.find(x => x.id === id) || {}).nome || '')).join(' e ')}.` : '';
     let comp = 'O planejamento propõe preço ligado ao resultado e esforço concentrado em reestruturação, programas críticos e M&A.';
-    if (rc != null && rc < 60) comp += ` ${eu ? 'Você prefere' : 'O time prefere'} um preço mais fixo do que o plano.`;
+    if (pz === 'fixo' || pz === 'misto') comp += ` ${eu ? 'Você prefere' : 'O time prefere'} um preço mais fixo do que o plano.`;
+    if (pz === 'div') comp += ' O time ainda não tem consenso sobre como cobrar.';
     if (sg.mesaTop != null && sg.mesaTop >= 3) comp += ` A aposta principal ${eu ? 'que você fez' : 'do time'} está fora desse núcleo.`;
     const acoes = anc.map(id => ACAO_ANCORA[id]).filter(Boolean).slice(0, 2);
     if (v != null && v < 4) acoes.push('Criar um rito comercial semanal: pipeline, propostas e próximos passos de cada diretor.');
-    if (rc != null && rc < 60) acoes.push('Testar 2 propostas com parte do preço ligada ao resultado.');
+    if (pz && pz !== 'res') acoes.push(pz === 'div' ? 'Escolher o modelo de preço padrão de DTS e testá-lo em 2 propostas.' : 'Testar 2 propostas com parte do preço ligada ao resultado.');
     F.push({ id: 'venda', pergunta: 'Como DTS deve vender e cobrar?', resposta: resp, disse: sg.ev.venda, significa: (mat + trava).trim(), compara: ok ? comp : '', conversa: 'O que precisa mudar na rotina dos diretores para a venda virar método?', acoes: acoes.slice(0, 3) }); }
   // ---------- 4 · O time está pronto para isso?
   { const c = sg.casco, idx = c && c.length === 5 && c.every(x => x != null) ? Math.round((avg(c) - 1) / 4 * 100) : null;
     const lo = idx != null ? c.indexOf(Math.min(...c)) : -1, w = lo >= 0 ? CASCO[lo] : null;
     const pp = sg.papel, dl = pp && pp.h && pp.i ? PAPEIS.map((x, i) => ({ id: x.id, nome: x.nome, d: (pp.i[i] || 0) - (pp.h[i] || 0) })) : [];
     const up = dl.length ? dl.reduce((a, b) => b.d > a.d ? b : a) : null, dn = dl.length ? dl.reduce((a, b) => b.d < a.d ? b : a) : null;
-    const resp = idx == null ? (up && up.d > 0 ? 'Pronto, se o papel do diretor mudar' : null) : idx >= 75 ? 'Sim: o casco está firme' : idx >= 55 ? 'Quase: o casco tem pontos de atenção' : 'Ainda não: o casco está vazando';
+    const st = idx == null ? null : idx >= 75 && Math.min(...c) >= 3.2 ? 'firme' : idx >= 55 ? 'aten' : 'vaza';
+    const resp = st == null ? (up && up.d > 0 ? 'Pronto, se o papel do diretor mudar' : null) : { firme: 'Sim: o casco está firme', aten: 'Quase: o casco tem pontos de atenção', vaza: 'Ainda não: o casco está vazando' }[st];
     let sig = '';
     if (up && up.d >= 5 && dn && dn.d <= -5) sig += `Para ganhar tempo em "${minus(up.nome)}", o diretor precisa tirar tempo de "${minus(dn.nome)}". `;
     if (w && c[lo] <= 3) sig += SIGNIFICA_REBITE[w.id] + ' É o ponto mais frágil.';
@@ -1803,7 +1817,7 @@ function frentes(sg) {
     if (up && up.d >= 5 && ACAO_PAPEL_MAIS[up.id]) acoes.push(ACAO_PAPEL_MAIS[up.id]);
     (sg.dependencias || []).forEach(t => acoes.push(`Formar uma segunda referência no time para "${minus(t)}", hoje concentrado em uma pessoa.`));
     (sg.lacunas || []).forEach(t => acoes.push(`Desenvolver ou buscar quem cubra "${minus(t)}": parte do time não tem a quem recorrer.`));
-    sg._up = up; sg._dn = dn; sg._idx = idx; sg._w = w;
+    sg._up = up; sg._dn = dn; sg._idx = idx; sg._w = w; sg._st = st;
     F.push({ id: 'time', pergunta: 'O time está pronto para isso?', resposta: resp, disse: sg.ev.time, significa: sig.trim(), compara: 'O planejamento não fixa uma meta para o casco: ele é a leitura do próprio time. No encontro, as notas de todos são somadas.', conversa: 'O que sai da agenda do diretor para o papel de 2027 caber?', acoes: acoes.slice(0, 3) }); }
   return enriquecer(F, sg);
 }
@@ -1815,6 +1829,7 @@ const MERCADO = {
       a: ['Big Four e boutiques disputam o mesmo resgate; sem uma fase 2, o cliente volta a comprar por preço.', 'Crise é cíclica: num ano calmo, o pipeline seca.'] },
     meio: { o: ['Os gatilhos de 2027 (CBS, fim da manutenção do SAP ECC, integrações pós-fusão) abrem a porta e pedem acompanhamento de 12 a 24 meses.', 'CFOs preferem um responsável único do resgate até a estabilização.'],
       a: ['Integradoras e Big Four tentam ficar com a fase 2, com times maiores e mais baratos.', 'Sem a fase 2 pronta, a porta fecha quando a crise passa.'] },
+    div: { o: ['Os gatilhos de 2027 (CBS em vigor, fim da manutenção padrão do SAP ECC) servem às duas portas: resgate e acompanhamento.'], a: ['Mensagem difusa: o cliente não sabe se chama DTS na crise ou para prevenir.'] },
     prev: { o: ['CIOs pressionados por custo e por IA buscam acompanhamento contínuo: TMO, governança de TI e de IA.', 'Receita recorrente suaviza os ciclos de crise.'],
       a: ['Serviços gerenciados de integradoras e Big Four competem por escala e preço.', 'O orçamento do CIO é menor e o ciclo de venda, mais longo que o do CFO.'] } },
   foco: {
@@ -1822,11 +1837,13 @@ const MERCADO = {
       a: ['Se o núcleo esfriar (por exemplo, menos transações), há pouco colchão.', 'Concorrentes com catálogo amplo ocupam o espaço que DTS deixar.'] },
     equil: { o: ['IA aplicada, dados e cibersegurança são as frentes com demanda em alta para as apostas.', 'O núcleo forte financia as apostas sem pôr a prática em risco.'],
       a: ['Aposta sem dono vira dispersão: cada uma pede time e venda próprios.', 'Especialistas chegam antes nas apostas que DTS testar devagar.'] },
+    div: { o: ['Em problema crítico, cliente e fundo pagam prêmio por especialista.'], a: ['Sem foco declarado, Big Four e integradoras ocupam o espaço pela escala.'] },
     amplo: { o: ['O gasto com tecnologia segue crescendo: mais frentes, mais portas.', 'Menos dependência de um único ciclo (transações ou crises).'],
       a: ['Contra Big Four e integradoras, amplitude sem escala vira disputa por preço.', 'Marca difusa: o cliente não sabe para que chamar DTS.'] } },
   preco: {
     res: { o: ['CFOs aceitam honorário de êxito quando a economia é mensurável: custo de TI, contratos, sinergias.'], a: ['O resultado depende de decisões do cliente: sem linha de base e métrica no contrato, a margem fica em risco.'] },
     fixo: { o: ['Preço fixo facilita entrar em clientes novos e conservadores.'], a: ['A IA generativa encolhe as horas de análise e relatório: quem cobra por hora vê o preço cair.'] },
+    div: { o: ['Há espaço para testar o honorário de êxito onde a economia é mensurável.'], a: ['A IA generativa encolhe as horas cobradas; sem modelo comum, o preço vira desconto.'] },
     misto: { o: ['Fixo para cobrir o time e êxito sobre a economia: formato que o CFO já conhece.'], a: ['Sem critério de quando usar cada parte, a negociação vira desconto.'] } },
   time: { o: ['A IA generativa tira horas de produção (relatórios, análises, apresentações) e devolve tempo ao diretor para vender e formar o time.'],
     a: ['O mercado disputa sêniores de tecnologia: conhecimento concentrado em uma pessoa é risco de saída.'] }
@@ -1836,17 +1853,20 @@ const MERCADO = {
 function enriquecer(F, sg) {
   const eu = sg.modo === 'eu', sw = sg.sw || {}, pre = s => s ? (eu ? 'Na sua visão, ' + minus(s) : s) : '';
   const nomeP = id => minus((PAPEIS.find(x => x.id === id) || {}).nome || '');
-  const preco = sg.receita == null ? null : sg.receita >= 60 ? 'res' : sg.receita <= 40 ? 'fixo' : 'misto';
+  const preco = precoZ(sg);
   const ventoN = sg.vento == null ? null : VENTOS[clamp(Math.round(sg.vento), 1, 5) - 1];
   const T = {
     tipo: { crise: ['Somos o resgate: entramos quando a TI do cliente já deu errado e o CFO precisa de alguém de confiança.', 'Acesso direto a CFO, CEO e conselho; projetos urgentes, com orçamento aprovado e preço defensável.', 'A relação tende a acabar com a crise: pouca recompra e pouca presença quando o cliente está bem.'],
       meio: ['Somos o resgate que fica a bordo: entramos pela dor de hoje e ficamos para o cliente não falhar de novo.', 'Junta o acesso e a urgência da crise com a receita recorrente de quem fica depois dela.', 'Exige uma segunda fase pronta para vender; sem ela, voltamos a ser só o resgate.'],
+      div: [`Ainda não somos uma coisa só: ${(sg.divTxt || {}).tipo || ''}.`, 'As duas portas ficam cobertas: o resgate na crise e o acompanhamento do CIO.', 'Cada diretor apresenta uma DTS diferente ao mercado.'],
       prev: ['Somos o prático do CIO: acompanhamos a TI de perto para ela não falhar.', 'Relação longa, receita recorrente e conhecimento profundo do cliente.', 'Menos acesso ao CFO e ao CEO, e a necessidade de ser lembrado antes de o problema existir.'] },
     foco: { foco: ['Somos especialistas: poucos problemas, resolvidos melhor do que ninguém.', 'Ser a primeira escolha do cliente nesses problemas, com time especialista e uma mensagem fácil de repetir.', 'Deixar de vender à parte produtos que hoje fazem parte do catálogo' + (sg.cais && sg.cais.length ? `, como ${sg.cais.slice(0, 2).join(' e ')}.` : '.')],
       equil: ['Somos um núcleo forte com algumas apostas, abertas com critério.', 'Mantém o que funciona e testa crescimento com risco controlado.', 'Se as apostas não tiverem dono e prazo, viramos "um pouco de tudo".'],
+      div: [`Ainda não somos uma coisa só: ${(sg.divTxt || {}).foco || ''}.`, 'O debate sobre o catálogo já está aberto, e com números na mesa.', 'Sem um foco comum, o esforço comercial se espalha.'],
       amplo: ['Somos generalistas de tecnologia: atendemos muitos problemas e mercados.', 'Mais mercado para vender e menos dependência de poucos temas.', 'Time e esforço espalhados; o cliente não sabe exatamente para que nos chamar.'] },
     preco: { res: ['Preço defensável e margem maior quando o resultado aparece; a conversa com o CFO vira conversa de valor.', 'Receita menos previsível e a obrigação de medir o resultado desde o primeiro dia.'],
       fixo: ['Receita previsível e menos risco para DTS.', 'Competimos por hora e por preço, longe do valor que entregamos.'],
+      div: ['Abertura para testar modelos diferentes por cliente.', 'Sem um modelo comum, cada proposta é negociada do zero e tende a virar desconto.'],
       misto: ['Equilíbrio entre previsibilidade e prêmio pelo resultado.', 'Pode não convencer nem quem quer segurança nem quem quer resultado.'] },
     casco: { firme: ['Confiança para dividir contas e metas sem atrito.', 'Casco firme não garante, sozinho, que o papel do diretor mude.'],
       aten: ['Há confiança suficiente para começar a mudança.', 'Se o ponto mais frágil não melhorar, as metas coletivas viram cobrança informal.'],
@@ -1855,13 +1875,13 @@ function enriquecer(F, sg) {
   F.forEach(f => {
     let s = '', g = '', p = '';
     if (f.id === 'tipo' && sg.zP) [s, g, p] = T.tipo[sg.zP];
-    if (f.id === 'foco' && sg.zF) { [s, g, p] = T.foco[sg.zF]; if (sg.nProd != null) s += ` ${eu ? 'Você levaria' : 'Levamos'} ${sg.nProd} dos 33 produtos de hoje.`; }
+    if (f.id === 'foco' && sg.zF) { [s, g, p] = T.foco[sg.zF]; if (sg.nProd != null) s += ` ${eu ? 'Você levaria' : 'Em média, levamos'} ${sg.nProd} dos 33 produtos de hoje.`; }
     if (f.id === 'venda' && (sg.mesaTop != null || ventoN)) {
-      s = `Somos ${sg.mesaTop != null ? `vendedores de ${minus(MESAS[sg.mesaTop].nome)}` : 'vendedores'}${preco ? `, com ${preco === 'res' ? 'preço ligado ao resultado' : preco === 'fixo' ? 'preço fixo' : 'preço misto'}` : ''}${ventoN ? `, e hoje vendemos como "${minus(ventoN.nome)}": ${ventoN.txt}` : ''}.`;
+      s = `Somos ${sg.mesaTop != null ? `vendedores de ${minus(MESAS[sg.mesaTop].nome)}` : 'vendedores'}${preco === 'div' ? ', ainda sem acordo sobre como cobrar' : preco ? `, com ${PRECO_TXT[preco]}` : ''}${ventoN ? `, e hoje vendemos como "${minus(ventoN.nome)}": ${ventoN.txt}` : ''}.`;
       if (preco) [g, p] = T.preco[preco];
     }
     if (f.id === 'time') {
-      const st = sg._idx == null ? null : sg._idx >= 75 ? 'firme' : sg._idx >= 55 ? 'aten' : 'vaza';
+      const st = sg._st;
       if (sg.topHoje || st) s = `Somos um time ${sg.topHoje ? `que passa a maior parte da semana em ${minus(sg.topHoje)}` : 'em transição'}${sg._up && sg._up.d > 0 ? ` e quer, em 2027, mais ${nomeP(sg._up.id)}` : ''}.`;
       const gg = [], pp = [];
       if (sg._up && sg._up.d >= 5) gg.push(`Mais tempo para ${nomeP(sg._up.id)}.`);
@@ -1873,10 +1893,10 @@ function enriquecer(F, sg) {
     let o = [], a = [], d = '';
     const nomeA = id => minus((ANCORAS_VENDA.find(x => x.id === id) || {}).nome || '');
     if (f.id === 'tipo' && sg.zP) { o = MERCADO.tipo[sg.zP].o.slice(); a = MERCADO.tipo[sg.zP].a.slice();
-      d = { crise: 'Manter a crise como porta de entrada, mas vender a fase 2 (TMO de 6 a 12 meses) antes de encerrar cada resgate.', meio: 'Assumir o modelo "entrar e ficar": três dores de entrada e uma oferta de permanência para cada, com a fase 2 já na proposta.', prev: 'Testar uma oferta recorrente para CIOs em 2 clientes atuais, mantendo a crise como porta para contas novas.' }[sg.zP];
+      d = { crise: 'Manter a crise como porta de entrada, mas vender a fase 2 (TMO de 6 a 12 meses) antes de encerrar cada resgate.', meio: 'Assumir o modelo "entrar e ficar": três dores de entrada e uma oferta de permanência para cada, com a fase 2 já na proposta.', prev: 'Testar uma oferta recorrente para CIOs em 2 clientes atuais, mantendo a crise como porta para contas novas.', div: 'Escolher a porta de entrada comum de DTS antes de distribuir metas: hoje o time se divide.' }[sg.zP];
       if (sg.dissonancia) d += ` Antes, alinhar discurso e prática: com calma ${eu ? 'você escolhe' : 'o time escolhe'} uma porta, no reflexo outra.`; }
     if (f.id === 'foco' && sg.zF) { o = MERCADO.foco[sg.zF].o.slice(); a = MERCADO.foco[sg.zF].a.slice();
-      d = { foco: `Fechar o catálogo de 2027 em até 23 produtos, com um dono por produto âncora${sg.nProd != null && sg.nProd > 23 ? ` (${eu ? 'você manteve' : 'a média do time é'} ${sg.nProd})` : ''}.`, equil: 'Fechar o núcleo e limitar a 2 apostas, cada uma com dono, meta e data de revisão.', amplo: 'Provar escala no núcleo antes de abrir frentes; as novas entram com parceiros.' }[sg.zF];
+      d = { foco: `Fechar o catálogo de 2027 em até 23 produtos, com um dono por produto âncora${sg.nProd != null && sg.nProd > 23 ? ` (${eu ? 'você manteve' : 'a média do time é'} ${sg.nProd})` : ''}.`, equil: 'Fechar o núcleo e limitar a 2 apostas, cada uma com dono, meta e data de revisão.', amplo: 'Provar escala no núcleo antes de abrir frentes; as novas entram com parceiros.', div: 'Fechar o catálogo de 2027 com critérios objetivos, produto a produto: hoje o time se divide.' }[sg.zF];
       (sg.novas || []).slice(0, 2).forEach(x => o.unshift(`Produto novo ${eu ? 'que você propôs' : 'proposto pelo time'}: ${x.nome}${x.n > 1 ? ` (${x.n} diretores)` : ''}.`));
       if (sg.ia === 'b') o.push(`IA dentro de cada produto, com Data & IA: ${eu ? 'você vê' : 'o time vê'} a IA como diferencial do portfólio, sem montar outra prática.`);
       if (sg.ia === 'a' || sg.ia === 'd') a.push('Montar IA própria disputa espaço com Data & IA e pede o investimento que o núcleo também precisa.'); }
@@ -1886,21 +1906,27 @@ function enriquecer(F, sg) {
       if (sg.vento != null && sg.vento >= 3.6) o.push('Com rotina comercial instalada, dá para escalar vendendo junto com as outras práticas da A&M.');
       d = preco === 'res' ? (sg.vento != null && sg.vento <= 2.6 ? `${eu ? 'Você já aceita' : 'O time já aceita'} cobrar por resultado; falta método: rito comercial semanal e pipeline único já no 1º trimestre.` : 'Escalar a venda por resultado: modelo padrão de honorário de êxito e meta comercial por diretor.')
         : preco === 'fixo' ? 'Testar honorário de êxito em 2 propostas de custo de TI em 90 dias, com linha de base e métrica no contrato.'
-        : preco === 'misto' ? 'Padronizar o modelo misto: o fixo cobre o time, o êxito incide sobre a economia medida.' : 'Instalar um rito comercial semanal: pipeline, propostas e próximos passos de cada diretor.';
+        : preco === 'misto' ? 'Padronizar o modelo misto: o fixo cobre o time, o êxito incide sobre a economia medida.'
+        : preco === 'div' ? 'Escolher o modelo de preço padrão de DTS e testá-lo em 2 propostas em 90 dias.' : 'Instalar um rito comercial semanal: pipeline, propostas e próximos passos de cada diretor.';
       if ((sg.anc || [])[0]) d += ` Primeira trava a remover: ${nomeA(sg.anc[0])}.`; }
     if (f.id === 'time' && (sg._idx != null || sg._up)) { o = MERCADO.time.o.slice(); a = MERCADO.time.a.slice();
       (sg.dependencias || []).forEach(t => a.unshift(`"${t}" depende de uma pessoa só: se ela sair, o tema sai junto.`));
-      const st = sg._idx == null ? null : sg._idx >= 75 ? 'firme' : sg._idx >= 55 ? 'aten' : 'vaza';
+      const st = sg._st;
       d = st === 'vaza' && sg._w ? `Tratar "${minus(sg._w.nome)}" antes de distribuir metas coletivas: é o ponto que mais vaza.`
         : sg._up && sg._up.d >= 5 && sg._dn && sg._dn.d <= -5 ? `Liberar tempo de ${nomeP(sg._dn.id)} para ${nomeP(sg._up.id)}, com regra clara do que passa para os gerentes.`
         : st === 'firme' ? 'Usar a confiança do time para assumir metas coletivas de venda já em 2027.' : sg._w ? `Reforçar "${minus(sg._w.nome)}" no primeiro trimestre, com um ritual simples no encontro mensal.` : ''; }
     f.oport = o.slice(0, 3); f.ameaca = a.slice(0, 3); f.decisao = d;
     // etiqueta curta: como a resposta se compara ao planejamento (só diagnóstico)
     let al = null;
-    if (f.id === 'tipo' && sg.zP) al = { crise: ['dif', 'Mais perto da crise que o planejamento'], meio: ['ok', 'Alinhado ao planejamento'], prev: ['dif', 'Mais perto da prevenção que o planejamento'] }[sg.zP];
-    if (f.id === 'foco' && sg.zF) al = { foco: ['ok', 'Alinhado ao planejamento'], equil: ['dif', 'Menos foco que o planejamento'], amplo: ['dif', 'Bem menos foco que o planejamento'] }[sg.zF];
-    if (f.id === 'venda' && (sg.mesaTop != null || preco)) { const dd = []; if (preco === 'fixo' || preco === 'misto') dd.push('preço menos ligado ao resultado'); if (sg.mesaTop != null && sg.mesaTop >= 3) dd.push('esforço fora do núcleo'); al = dd.length ? ['dif', 'Difere do planejamento: ' + dd.join(' e ')] : ['ok', 'Alinhado ao planejamento']; }
+    if (f.id === 'tipo' && sg.zP) al = { crise: ['dif', 'Mais perto da crise que o planejamento'], meio: ['ok', 'Alinhado ao planejamento'], prev: ['dif', 'Mais perto da prevenção que o planejamento'], div: ['dif', 'Time dividido: sem consenso'] }[sg.zP];
+    if (f.id === 'foco' && sg.zF) al = { foco: ['ok', 'Alinhado ao planejamento'], equil: ['dif', 'Menos foco que o planejamento'], amplo: ['dif', 'Bem menos foco que o planejamento'], div: ['dif', 'Time dividido: sem consenso'] }[sg.zF];
+    if (f.id === 'venda' && (sg.mesaTop != null || preco)) { const dd = []; if (preco === 'fixo' || preco === 'misto') dd.push('preço menos ligado ao resultado'); if (preco === 'div') dd.push('preço sem consenso'); if (sg.mesaTop != null && sg.mesaTop >= 3) dd.push('esforço fora do núcleo'); al = dd.length ? ['dif', 'Difere do planejamento: ' + dd.join(' e ')] : ['ok', 'Alinhado ao planejamento']; }
     f.alinha = al;
+    const MAR = { tipo: { crise: 'Rebocador: chegamos quando o motor já parou.', meio: 'Rebocador que sobe a bordo e vira tripulação.', prev: 'Prático: guiamos o navio antes das pedras.', div: 'Metade da tripulação quer rebocar, metade quer pilotar.' },
+      foco: { foco: 'Poucas rotas, muito bem navegadas.', equil: 'Um porto seguro e algumas rotas de teste.', amplo: 'Muitas rotas abertas ao mesmo tempo.', div: 'A tripulação ainda discute quantas rotas abrir.' },
+      venda: { res: 'Pagos pela pesca, e não pela diária.', fixo: 'Pagos pela diária, com ou sem peixe.', misto: 'Diária garantida e um bônus pela pesca.', div: 'Ainda não combinamos como o pescador recebe.' },
+      time: { firme: 'Casco firme: pronto para mar aberto.', aten: 'Casco firme, com alguns rebites para apertar.', vaza: 'O casco faz água: reparo antes de zarpar.' } };
+    f.mar = f.id === 'tipo' ? MAR.tipo[sg.zP] : f.id === 'foco' ? MAR.foco[sg.zF] : f.id === 'venda' ? MAR.venda[preco] : MAR.time[sg._st]; f.mar = f.mar || '';
     f.somos = pre(s); f.ganho = g; f.perda = p;
     f.forcas = (sw[f.id] && sw[f.id].f) || []; f.fraquezas = (sw[f.id] && sw[f.id].w) || [];
   });
@@ -1940,16 +1966,20 @@ function sinaisEu(a, r) {
   else if (nP != null && nP >= 28) swE.foco.w.push(`Catálogo pesado: manteve ${nP} dos 33 produtos (o plano propõe 23).`);
   if (ZF(d.FOCO) === 'amplo' && nP != null && nP <= 20) swE.foco.w.push(`Pede amplitude, mas enxugou o catálogo: manteve ${nP} dos 33 produtos.`);
   if (a.rota === 'A') swE.foco.w.push('Prefere a estrada de sempre, que o plano quer mudar.');
-  if (d.RECEITA >= 65) swE.venda.f.push('Disposto a cobrar pelo resultado, como o plano propõe.');
+  if (a.contrato && a.contrato.moves && a.contrato.v >= 65) swE.venda.f.push('Disposto a cobrar pelo resultado, como o plano propõe.');
   if (side('r5') === 'R') swE.venda.f.push('Prefere deixar instrumentos a relatórios: mentalidade de produto.');
   if (tot && (a.mesa[0] + a.mesa[1] + a.mesa[2]) >= 80) swE.venda.f.push(`Esforço concentrado no núcleo: ${a.mesa[0] + a.mesa[1] + a.mesa[2]} de 100 caixas.`);
   if (w && a.vento <= 2) swE.venda.w.push(`Vê a venda de DTS como reativa: "${minus(w.nome)}".`);
   if (an.length) swE.venda.w.push(`${an.join(' e ')}: o que mais trava a sua venda.`);
-  if (d.RECEITA <= 40) swE.venda.w.push('Prefere preço fixo, longe do valor que DTS entrega.');
+  if (a.contrato && a.contrato.moves && a.contrato.v <= 35) swE.venda.w.push('Prefere preço fixo, longe do valor que DTS entrega.');
   if (cs.length === 5 && cs.every(x => x != null)) { const hi = cs.indexOf(Math.max(...cs)), lo = cs.indexOf(Math.min(...cs)); if (cs[hi] >= 4) swE.time.f.push(`${CASCO[hi].nome}: nota ${cs[hi]} de 5, um ponto firme do casco.`); if (cs[lo] <= 3) swE.time.w.push(`${CASCO[lo].nome}: nota ${cs[lo]} de 5. ${SIGNIFICA_REBITE[CASCO[lo].id]}`); }
   if (P.hoje && P.ideal) { const iv = PAPEIS.findIndex(x => x.id === 'vender'); if (P.ideal[iv] >= P.hoje[iv] + 5 && P.ideal[iv] >= 10) swE.time.f.push(`Quer mais tempo vendendo: de ${P.hoje[iv]}% para ${P.ideal[iv]}% da semana.`); const ib = PAPEIS.findIndex(x => x.id === 'burocracias'); if (P.hoje[ib] >= 10) swE.time.w.push(`Burocracias tomam ${P.hoje[ib]}% da sua semana.`); }
   const iTop = P.hoje && sum(P.hoje) === 100 ? P.hoje.indexOf(Math.max(...P.hoje)) : -1;
-  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [], ia: a.ia || null, novas: (a.cargaNova || []).map(nome => ({ nome, n: 1 })) };
+  const pzE = a.contrato && a.contrato.moves ? (a.contrato.v <= 35 ? 'fixo' : a.contrato.v >= 65 ? 'res' : 'misto') : undefined;
+  if (pzE === 'fixo' && side('r4') === 'L') swE.venda.w.push('Preço e instinto não batem: no contrato você escolheu fixo, mas no reflexo pagaria o pescador pela pesca (resultado).');
+  if (pzE === 'res' && side('r4') === 'R') swE.venda.w.push('Preço e instinto não batem: no contrato você escolheu resultado, mas no reflexo pagaria o pescador pela diária.');
+  const mo = tot ? a.mesa.map((v, i) => ({ v, i })).sort((x, y) => y.v - x.v || x.i - y.i) : null, mesa2 = mo && mo[0].v === mo[1].v ? mo[1].i : null;
+  return { mesa2, precoZ: pzE, modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [], ia: a.ia || null, novas: (a.cargaNova || []).map(nome => ({ nome, n: 1 })) };
 }
 function planoTexto(F, titulo) {
   const L = [titulo, '', 'SOMOS ASSIM'];
@@ -1976,7 +2006,7 @@ function abasHTML(aba, attr) {
 }
 function abaHTML(F, aba, eu) {
   const vazio = '<p class="sw-vz">Ainda sem respostas suficientes nesta frente.</p>', nb = i => `<span class="sw-n">${i + 1}</span>`;
-  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><h4 class="sw-q">${f.pergunta}</h4><b>${f.resposta || 'Sem resposta ainda'}</b>${f.alinha ? `<span class="sw-tag ${f.alinha[0]}">${f.alinha[1]}</span>` : ''}${f.somos ? `<p class="sw-som">${esc(f.somos)}</p>` : vazio}${(f.disse || []).length ? `<ul class="sw-facts">${f.disse.slice(0, 3).map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</div></article>`).join('')}</div>`;
+  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><h4 class="sw-q">${f.pergunta}</h4><b>${f.resposta || 'Sem resposta ainda'}</b>${f.mar ? `<p class="sw-mar">${f.mar}</p>` : ''}${f.alinha ? `<span class="sw-tag ${f.alinha[0]}">${f.alinha[1]}</span>` : ''}${f.somos ? `<p class="sw-som">${esc(f.somos)}</p>` : vazio}${(f.disse || []).length ? `<ul class="sw-facts">${f.disse.slice(0, 3).map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</div></article>`).join('')}</div>`;
   if (aba === 1) return `<div class="sw-gp"><div class="sw-gh"><span>Frente</span><span class="g">▲ ${eu ? 'O que você ganha' : 'O que ganhamos'}</span><span class="p">▼ ${eu ? 'O que você perde' : 'O que perdemos'}</span></div>${F.map((f, i) => `<div class="sw-gr"><div>${nb(i)}<span><em>${f.pergunta}</em><b>${f.resposta || 'Sem resposta ainda'}</b></span></div><p class="g">${esc(f.ganho || '—')}</p><p class="p">${esc(f.perda || '—')}</p></div>`).join('')}</div>`;
   if (aba === 2) { const q = (k, L, t, sub, cls) => { // até 4 por quadrante: primeiro um de cada frente, depois o segundo, e assim por diante
       const sel = []; for (let r = 0; sel.length < 4 && r < 4; r++) F.forEach((f, i) => { const x = (f[k] || [])[r]; if (x && sel.length < 4) sel.push({ i, r, x }); });
