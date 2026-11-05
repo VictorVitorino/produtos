@@ -38,8 +38,8 @@
 html{font-size:15px}
 @media (min-width:1440px){html{font-size:15.5px}}
 @media (min-width:1600px){html{font-size:16px}}
-@media (min-width:1800px) and (min-height:900px){html{font-size:17px}}
-@media (min-width:2200px) and (min-height:1100px){html{font-size:19px}}
+@media (min-width:1800px) and (min-height:900px){html{font-size:16px}}
+@media (min-width:2200px) and (min-height:1100px){html{font-size:17.5px}}
 @media (max-width:1366px){html{font-size:14.5px}}
 @media (max-width:1280px){html{font-size:14px}}
 @media (max-height:820px){html{font-size:14.5px}:root{--gap:.75rem;--py:.95rem}}
@@ -189,18 +189,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 
 /* tamanho de leitura da agenda: cresce com a tela, para quem está sentado longe do projetor */
-.plano{--fs:clamp(1rem,calc(1.55vh + .42vw),1.15rem)}
+.plano{--fs:clamp(.95rem,calc(1.25vh + .36vw),1.06rem)}
 /* 1 · somos assim: diagnóstico, sem ação */
 .pl .sw-somos{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--gap)}
-.pl .sw-somos article{display:flex;gap:.9rem;padding:.95rem 1.2rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.pl .sw-somos article{display:flex;gap:.9rem;padding:.9rem 1.15rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);min-height:0;overflow:auto}
 .pl .sw-somos .sw-n{width:1.9rem;height:1.9rem;font-size:.9rem}
 .pl .sw-q{font-size:calc(var(--fs)*.88);font-weight:600;line-height:1.25;color:var(--ink3)}
-.pl .sw-somos b{display:block;font-family:var(--serif);font-size:calc(var(--fs)*1.45);line-height:1.15;color:var(--ink);margin:.2rem 0 .4rem}
+.pl .sw-somos b{display:block;font-family:var(--serif);font-size:calc(var(--fs)*1.32);line-height:1.15;color:var(--ink);margin:.2rem 0 .4rem}
 .pl .sw-tag{display:inline-block;margin-bottom:.45rem;padding:.18rem .65rem;border-radius:99px;font-size:calc(var(--fs)*.72);font-weight:700;border:1px solid var(--line);color:var(--ink2);background:var(--soft)}
 .pl .sw-tag.dif{border-color:var(--orange);background:rgba(247,140,22,.12);color:var(--ink)}
-.pl .sw-som{font-size:calc(var(--fs)*1.1);line-height:1.38;color:var(--ink)}
+.pl .sw-som{font-size:var(--fs);line-height:1.38;color:var(--ink)}
 .pl .sw-facts{list-style:none;margin-top:.55rem;display:flex;flex-direction:column;gap:.3rem}
-.pl .sw-facts li{position:relative;padding-left:1rem;font-size:calc(var(--fs)*.94);line-height:1.35;color:var(--ink2)}
+.pl .sw-facts li{position:relative;padding-left:1rem;font-size:calc(var(--fs)*.9);line-height:1.35;color:var(--ink2)}
 .pl .sw-facts li::before{content:"";position:absolute;left:0;top:.55em;width:.42rem;height:.42rem;border-radius:50%;background:var(--ink)}
 
 /* 2 · ganhos e perdas: ocupa a tela toda */
@@ -208,7 +208,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pl .sw-gh,.pl .sw-gr{display:grid;grid-template-columns:1fr 1.5fr 1.5fr;gap:1.6rem;padding:.7rem 1.4rem}
 .pl .sw-gh{align-items:center;background:var(--soft);font-size:calc(var(--fs)*.78);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
 .pl .sw-gh .g{color:var(--g-ink)}.pl .sw-gh .p{color:var(--r-ink)}
-.pl .sw-gr{align-items:center;overflow:hidden}
+.pl .sw-gr{align-items:center;min-height:0;overflow:auto}
 .pl .sw-gr+.sw-gr{border-top:1px solid var(--line)}
 .pl .sw-gr>div{display:flex;gap:.8rem;align-items:flex-start}
 .pl .sw-gr .sw-n{width:1.9rem;height:1.9rem;font-size:.9rem}
@@ -976,7 +976,18 @@ function abrirPlano(aba) {
   g.innerHTML = `<div class="pl"><div class="plh"><div><h2>${['Somos assim', 'O que ganhamos e o que perdemos', 'SWOT de DTS para 2027', 'Possíveis ações: o time decide'][planoAba]}</h2><p>${planoAba < 3 ? ABAS[planoAba].d + '.' : 'Sugestões a partir das respostas: toque para aprovar ou descartar, e acrescente outras.'} Base: ${A.nD} bússola${A.nD === 1 ? '' : 's'} concluída${A.nD === 1 ? '' : 's'}.</p></div><div class="plx"><button data-c="copia-plano">Copiar plano</button><button class="x" data-c="fecha-plano" aria-label="Fechar">×</button></div></div>
     ${abasHTML(planoAba, 'data-c="aba" data-i')}
     <div class="plb">${planoAba < 3 ? abaHTML(F, planoAba, false) : acoes}</div></div>`;
+  ajustaFonte();
 }
+/* a letra do plano é a maior que cabe: começa grande e desce até nada transbordar (dados reais variam muito) */
+function ajustaFonte() {
+  const g = $('#plano'); if (!g || !g.classList.contains('on')) return;
+  const sobra = () => { const b = g.querySelector('.plb'); if (b && b.scrollHeight > b.clientHeight + 1) return true; return [...g.querySelectorAll('.sw-somos article,.sw-gr,.sw-qd,.plg section')].some(e => e.scrollHeight > e.clientHeight + 1); };
+  if (innerWidth <= 960) { g.style.removeProperty('--fs'); return; }
+  let fs = Math.min(23, Math.max(14, innerHeight * .021 + innerWidth * .0045));
+  g.style.setProperty('--fs', fs + 'px');
+  while (sobra() && fs > 12.5) { fs -= .5; g.style.setProperty('--fs', fs + 'px'); }
+}
+let ajusteT = null; addEventListener('resize', () => { clearTimeout(ajusteT); ajusteT = setTimeout(ajustaFonte, 120); });
 function textoPlanoTime() {
   const F = frentes(sinaisTime(A)); let t = planoTexto(F, `BÚSSOLA DTS 2027 · DIAGNÓSTICO E PLANO DO TIME (${A.nD} bússolas)`);
   const extra = F.flatMap((f, i) => planoEst.extra[f.id].map(a => `[ ] (${i + 1}) ${a}`)); if (extra.length) t = t.replace(/\n$/, '\n' + extra.join('\n') + '\n');
