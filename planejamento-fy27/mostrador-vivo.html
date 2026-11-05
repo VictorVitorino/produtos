@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mostrador vivo · Bússola DTS 2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Kalam:wght@400;700&family=Libre+Franklin:wght@400;500;600;700;800&family=Zilla+Slab:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&family=Zilla+Slab:wght@500;600;700&display=swap">
 <!-- =====================================================================
      MOSTRADOR VIVO · o painel de resultados para projetar no encontro
      Lê a mesma planilha da bússola (Apps Script) e se atualiza sozinho.
@@ -21,186 +21,237 @@
   };
 </script>
 <style>
+/* ---------- tokens: claro (padrão A&M) e escuro neutro ---------- */
 :root{
-  --navy:#002B49; --navy-80:#33556D; --navy-40:#99AAB6; --navy-20:#CCD5DB;
-  --steel:#5E8AB4; --blue-80:#7EA1C3; --blue-40:#BFD0E1; --ice:#DFE8F0;
-  --peach:#FCD1A2; --orange:#F78C16; --rust:#B4570A; --green:#9ACC3C; --yellow:#F9C20A; --red:#CF3D3D;
-  --line:rgba(191,208,225,.16); --card:rgba(255,255,255,.035);
+  --navy:#002B49; --orange:#F78C16; --peach:#FCD1A2; --pos:#9ACC3C; --att:#F9C20A; --neg:#CF3D3D;
+  --bg:#F5F7F8; --surface:#FFFFFF; --ink:#002B49; --ink2:#33556D; --ink3:#5F7688; --line:#D7DDE2; --soft:#EBEEF1;
+  --d1:#002B49; --d2:#5E8AB4; --d3:#99AAB6; --badge:#002B49; --badge-fg:#FFFFFF; --g-ink:#4F7A17; --r-ink:#B42E2E;
   --serif:'Zilla Slab',Georgia,serif; --sans:'Libre Franklin',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --mono:'Courier Prime',ui-monospace,Menlo,monospace; --hand:'Kalam','Comic Sans MS',cursive; --ease:cubic-bezier(.2,.8,.2,1);
+  --mono:'Courier Prime',ui-monospace,Menlo,monospace; --ease:cubic-bezier(.2,.8,.2,1);
+  --gap:.9rem; --px:2rem; --py:1.15rem; --r:10px;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#020d18;color:var(--ice);font-family:var(--sans)}
-body{display:grid;place-items:center;overflow:hidden}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-.stage{position:relative;width:min(100vw,calc(100vh * 16 / 9));aspect-ratio:16/9;container-type:size;overflow:hidden;background:radial-gradient(110% 80% at 15% -10%,#0d3a5e 0%,#05203a 45%,#020d18 100%)}
-.ui{position:absolute;inset:0;font-size:2.15cqh;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;gap:.9em;padding:1.3em 2em .9em}
+:root[data-tema="escuro"]{
+  --bg:#111316; --surface:#191C20; --ink:#F2F4F6; --ink2:#C2C9D0; --ink3:#8C96A0; --line:#2B3036; --soft:#24282D;
+  --d1:#F2F4F6; --d2:#7EA1C3; --d3:#5C6772; --badge:#F2F4F6; --badge-fg:#111316; --g-ink:#A9D45A; --r-ink:#F08A8A;
+}
+/* ---------- escala por viewport (zoom 100%): largura e altura ---------- */
+html{font-size:15px}
+@media (min-width:1440px){html{font-size:15.5px}}
+@media (min-width:1600px){html{font-size:16px}}
+@media (min-width:1800px) and (min-height:900px){html{font-size:17px}}
+@media (min-width:2200px) and (min-height:1100px){html{font-size:19px}}
+@media (max-width:1366px){html{font-size:14.5px}}
+@media (max-width:1280px){html{font-size:14px}}
+@media (max-height:820px){html{font-size:14.5px}:root{--gap:.75rem;--py:.95rem}}
+@media (max-height:720px){html{font-size:13.5px}:root{--gap:.65rem;--py:.8rem;--px:1.6rem}}
+@media (max-height:640px){html{font-size:12.5px}:root{--gap:.55rem;--py:.65rem;--px:1.4rem}}
+@media (max-width:1100px){:root{--px:1.3rem}}
 
-.hd{display:flex;align-items:center;justify-content:space-between;gap:1.5em}
-.brand .eyebrow{font:700 .6em var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--blue-40)}
-.brand .eyebrow b{color:var(--peach)}
-.brand h1{display:flex;align-items:center;gap:.6em;margin-top:.15em;font-family:var(--serif);font-weight:700;font-size:1.45em;line-height:1;color:#fff}
-.live{display:inline-flex;align-items:center;gap:.45em;font:700 .42em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--peach);border:1px solid rgba(252,209,162,.45);border-radius:99px;padding:.45em .9em .4em}
-.live i{width:.8em;height:.8em;border-radius:50%;background:var(--orange);animation:pulse 1.6s infinite}
-.live.off{color:var(--navy-40);border-color:var(--line)}.live.off i{background:var(--navy-40);animation:none}
-.live.demo{color:var(--blue-40);border-color:rgba(191,208,225,.45)}.live.demo i{background:var(--blue-80)}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(247,140,22,.6)}70%{box-shadow:0 0 0 .7em rgba(247,140,22,0)}100%{box-shadow:0 0 0 0 rgba(247,140,22,0)}}
-.count{display:flex;gap:1.6em;align-items:baseline}
-.hdr{display:flex;align-items:center;gap:1.4em}
-.acts{display:flex;flex-direction:column;gap:.35em}
-.acts button{display:inline-flex;align-items:center;gap:.45em;height:2.1em;padding:0 .9em;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:.62em;font-weight:600;color:var(--ice);white-space:nowrap}
-.acts button:hover{color:#fff;border-color:var(--peach)}
-.acts button svg{width:1.15em;height:1.15em}
-.acts button.zera:hover{border-color:var(--red);color:#fff;background:rgba(207,61,61,.18)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.stage{position:relative;width:100vw;height:100vh;height:100dvh;overflow:hidden;background:var(--bg)}
+.ui{position:absolute;top:0;bottom:0;left:0;right:0;margin:0 auto;width:100%;max-width:1760px;overflow-y:auto;display:grid;grid-template-rows:auto auto minmax(min-content,1fr) auto auto;gap:var(--gap);padding:var(--py) var(--px)}
+
+/* cabeçalho */
+.hd{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.brand h1{display:flex;align-items:center;gap:.7rem;font-family:var(--serif);font-weight:700;font-size:1.5rem;line-height:1;color:var(--ink)}
+.live{display:inline-flex;align-items:center;gap:.4rem;font:600 .68rem var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);border:1px solid var(--line);border-radius:99px;padding:.32rem .7rem;background:var(--surface)}
+.live i{width:.5rem;height:.5rem;border-radius:50%;background:var(--orange);animation:pulse 1.6s infinite}
+.live.off i{background:var(--d3);animation:none}
+.live.demo i{background:var(--d2);animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(247,140,22,.55)}70%{box-shadow:0 0 0 .45rem rgba(247,140,22,0)}100%{box-shadow:0 0 0 0 rgba(247,140,22,0)}}
+.hdr{display:flex;align-items:center;gap:1.6rem}
+.count{display:flex;gap:1.4rem;align-items:baseline}
+.ct{display:flex;align-items:baseline;gap:.45rem}
+.ct b{font-family:var(--serif);font-weight:700;font-size:1.85rem;line-height:1;color:var(--ink)}
+.ct>span{font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.ct.hi b{box-shadow:inset 0 -.18em 0 rgba(247,140,22,.55)}
+.acts{display:flex;gap:.5rem}
+.acts button,.ctl button,.plx button[data-c="copia-plano"]{display:inline-flex;align-items:center;gap:.45rem;height:2.15rem;padding:0 .85rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-size:.82rem;font-weight:600;color:var(--ink);white-space:nowrap;transition:border-color .2s,background .2s}
+.acts button:hover,.ctl button:hover,.plx button:hover{border-color:var(--ink2)}
+.acts button svg,.ctl button svg{width:1rem;height:1rem}
+.acts button.zera:hover{border-color:var(--neg);color:var(--r-ink)}
 .acts button[disabled]{opacity:.5;pointer-events:none}
 
-.ct{display:flex;align-items:baseline;gap:.4em}
-.ct b{font-family:var(--serif);font-weight:700;font-size:2.3em;line-height:1;color:#fff}
-.ct span{font:700 .58em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--blue-40)}
-.ct.hi b{color:var(--peach)}
+/* manchete */
+.headline{border-left:3px solid var(--orange);padding:.1rem 0 .1rem 1rem}
+.headline h2{font-family:var(--serif);font-weight:700;font-size:1.85rem;line-height:1.1;color:var(--ink)}
+.headline p{font-size:.95rem;line-height:1.45;color:var(--ink2);margin-top:.3rem;max-width:72rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.headline p b{color:var(--ink)}
 
-.headline{border-left:4px solid var(--orange);padding:.15em 0 .2em 1em}
-.headline .eb{font:700 .58em var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--peach)}
-.headline h2{font-family:var(--serif);font-weight:700;font-size:2.35em;line-height:1.04;color:#fff;margin-top:.12em}
-.headline p{font-size:.9em;line-height:1.4;color:var(--blue-40);margin-top:.3em}
-.headline p b{color:#fff}
+/* as 4 frentes */
+.qs{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--gap)}
+.qc{display:grid;grid-template-columns:1.9rem minmax(0,1fr);gap:0 .85rem;align-content:start;padding:1rem 1.2rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.qc .nb{grid-row:1/6;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.9rem;color:var(--badge-fg);background:var(--badge)}
+.qc .qq{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.qc .qq h3{font-size:1.05rem;font-weight:600;line-height:1.3;color:var(--ink)}
+.qc .qq span{flex:none;font-size:.74rem;color:var(--ink3)}
+.qc .ans{font-family:var(--serif);font-weight:700;font-size:1.45rem;line-height:1.15;color:var(--ink);margin-top:.3rem}
+.qc .fact{font-size:.9rem;line-height:1.45;color:var(--ink2);margin-top:.35rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.qc .fact b{color:var(--ink)}
+.qc .viz{margin-top:.7rem}
+.qc .wait{font-size:.92rem;font-style:italic;color:var(--ink3);margin-top:.5rem}
 
-.qs{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.8em;min-height:0}
-.qc{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:0 .9em;align-content:start;padding:.85em 1.2em .8em;border:1px solid var(--line);border-radius:14px;background:var(--card);min-height:0;overflow:hidden}
-.qc .nb{grid-row:1/5;width:1.9em;height:1.9em;border-radius:50%;display:grid;place-items:center;font:700 .95em var(--mono);color:var(--navy);background:var(--peach)}
-.qc .qq{font:700 .62em var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--blue-40);display:flex;justify-content:space-between;gap:1em}
-.qc .qq span{color:var(--navy-40);letter-spacing:.08em}
-.qc .ans{font-family:var(--serif);font-weight:700;font-size:1.68em;line-height:1.08;color:#fff;margin-top:.22em}
-.qc .ans em{font-style:normal;color:var(--peach)}
-.qc .fact{font-size:.8em;line-height:1.4;color:var(--ice);margin-top:.35em}
-.qc .fact b{color:#fff}
-.qc .viz{margin-top:.6em}
-.qc .wait{font-family:var(--hand);font-size:1.05em;color:var(--navy-40);margin-top:.6em}
-
-.stk{display:flex;height:1.1em;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.06)}
+.stk{display:flex;height:.85rem;border-radius:4px;overflow:hidden;background:var(--soft)}
 .stk i{display:block;height:100%;transition:flex-grow 1.1s var(--ease)}
-.stk-l{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:.35em;font:700 .52em var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--blue-40)}
-.stk-l span:nth-child(2){text-align:center;color:var(--peach)}.stk-l span:last-child{text-align:right}
-.bars{display:flex;flex-direction:column;gap:.28em}
-.bar{display:grid;grid-template-columns:var(--lw,11em) minmax(0,1fr) 2.8em;align-items:center;gap:.7em;font-size:.72em}
-.bar>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--blue-40)}
-.bar.top>span:first-child{color:#fff;font-weight:700}
-.bar .v{font-family:var(--serif);font-weight:700;color:#fff;text-align:right}
-.tr{position:relative;height:.6em;border-radius:99px;background:rgba(255,255,255,.07)}
-.tr i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--steel);width:var(--to);animation:grow 1.1s var(--ease)}
-.tr i.hi{background:#fff}
-.tr em{position:absolute;top:-.3em;bottom:-.3em;width:3px;margin-left:-1.5px;border-radius:2px;background:var(--orange);left:var(--p)}
+.stk-l{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:.35rem;font-size:.74rem;color:var(--ink3)}
+.stk-l span:nth-child(2){text-align:center;color:var(--ink);font-weight:600}.stk-l span:last-child{text-align:right}
+.bars{display:flex;flex-direction:column;gap:.35rem}
+.bar{display:grid;grid-template-columns:var(--lw,12.5rem) minmax(0,1fr) 3rem;align-items:center;gap:.75rem;font-size:.84rem}
+.bar>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink2)}
+.bar.top>span:first-child{color:var(--ink);font-weight:600}
+.bar .v{font-family:var(--serif);font-weight:700;color:var(--ink);text-align:right}
+.tr{position:relative;height:.5rem;border-radius:99px;background:var(--soft)}
+.tr i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--d2);width:var(--to);animation:grow 1.1s var(--ease)}
+.tr i.hi{background:var(--d1)}
+.tr em{position:absolute;top:-.3rem;bottom:-.3rem;width:3px;margin-left:-1.5px;border-radius:2px;background:var(--orange);left:var(--p)}
 @keyframes grow{from{width:var(--from)}}
-.dots{display:flex;gap:1.1em}
-.dots div{display:flex;flex-direction:column;align-items:center;gap:.25em;font:700 .5em var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--blue-40)}
-.dots i{width:2.6em;height:2.6em;border-radius:50%;display:grid;place-items:center;font:700 1.9em var(--serif);font-style:normal;color:var(--navy)}
+.dots{display:flex;gap:1.2rem;flex-wrap:wrap}
+.dots div{display:flex;flex-direction:column;align-items:center;gap:.3rem;font-size:.72rem;color:var(--ink3)}
+.dots i{width:2.3rem;height:2.3rem;border-radius:50%;display:grid;place-items:center;font:700 1rem var(--serif);font-style:normal;color:#002B49}
+.dots i.neg{color:#fff}
 
-.plen{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:1em;align-items:start;padding:.8em 1.2em;border:1px solid rgba(247,140,22,.5);border-radius:14px;background:rgba(247,140,22,.05)}
-.plen .k{font:700 .6em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--peach);padding-top:.25em;white-space:nowrap}
-.plen div{display:grid;grid-template-columns:1.5em 1fr;gap:.55em;font-size:.76em;line-height:1.35;color:var(--ice)}
-.plen div b.n{display:grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;background:var(--orange);color:var(--navy);font:700 .85em var(--mono)}
-.plen div span b{color:#fff}
+/* faixa do plano */
+.plen{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:1.2rem;padding:.8rem 1.2rem;border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:var(--r);background:var(--surface)}
+.plen .k{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.plen .pt{font-size:.92rem;color:var(--ink2)}.plen .pt b{color:var(--ink);font-family:var(--serif)}
+.plen .abre{height:2.35rem;padding:0 1.2rem;border-radius:6px;background:var(--badge);color:var(--badge-fg);font-weight:700;font-size:.9rem;white-space:nowrap}
+.plen .abre:hover{opacity:.88}
 
-.ft{display:flex;align-items:center;justify-content:space-between;gap:1em}
-.ft .st{font-size:.58em;color:var(--navy-40)}
-.ctl{display:flex;gap:.45em}
-.ctl button{display:inline-flex;align-items:center;gap:.4em;height:2em;padding:0 .8em;border-radius:7px;border:1px solid var(--line);font-size:.56em;font-weight:600;color:var(--blue-40)}
-.ctl button:hover{color:#fff;border-color:var(--peach)}
-.ctl button svg{width:1.2em;height:1.2em}
+/* rodapé */
+.ft{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.ft .st{font-size:.76rem;color:var(--ink3)}
+.ctl{display:flex;gap:.45rem;flex-wrap:wrap}
+.ctl button{height:1.95rem;font-size:.78rem;color:var(--ink2)}
 
-.toast{position:absolute;left:50%;top:1.1em;transform:translate(-50%,.6em);opacity:0;pointer-events:none;z-index:5;padding:.55em 1.1em;border-radius:99px;background:rgba(2,13,24,.92);border:1px solid rgba(247,140,22,.6);font-size:.8em;color:#fff;transition:all .5s var(--ease);white-space:nowrap}
+/* avisos e portão */
+.toast{position:absolute;left:50%;bottom:3.4rem;transform:translate(-50%,.5rem);opacity:0;pointer-events:none;z-index:7;padding:.5rem 1rem;border-radius:99px;background:#002B49;color:#fff;font-size:.88rem;transition:all .5s var(--ease);white-space:nowrap;box-shadow:0 .4rem 1.2rem rgba(0,43,73,.18)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .toast b{color:var(--peach)}
-.banner{position:absolute;left:50%;bottom:3.4em;transform:translateX(-50%);z-index:5;padding:.45em 1em;border-radius:8px;background:rgba(207,61,61,.2);border:1px solid rgba(207,61,61,.6);font-size:.66em;color:#fff;display:none}
+.banner{position:absolute;left:50%;bottom:3.2rem;transform:translateX(-50%);z-index:9;padding:.45rem 1rem;border-radius:6px;background:#FCEBEB;border:1px solid var(--neg);font-size:.8rem;color:#7A1F1F;display:none}
 .banner.on{display:block}
-.gate{position:absolute;inset:0;z-index:10;display:grid;place-items:center;background:rgba(2,13,24,.78);backdrop-filter:blur(4px)}
+.gate{position:absolute;inset:0;z-index:10;display:grid;place-items:center;background:rgba(0,43,73,.28);backdrop-filter:blur(3px)}
 .gate.off{display:none}
-.gcard{width:min(30em,90%);padding:1.4em 1.5em;border-radius:14px;background:#F3ECDC;color:#18324a;box-shadow:0 1.4em 3em rgba(0,0,0,.55)}
-.gcard .k{font:700 .62em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--rust)}
-.gcard h2{font-family:var(--serif);font-size:1.5em;color:var(--navy);margin:.3em 0 .35em;line-height:1.1}
-.gcard p{font-size:.78em;line-height:1.45;color:#33556D}
-.gcard input{width:100%;margin-top:.8em;font:inherit;font-size:.9em;padding:.6em .8em;border-radius:8px;border:1px solid var(--navy-40);background:#fff;color:var(--navy)}
-.gcard .row{display:flex;gap:.6em;justify-content:flex-end;margin-top:1em;flex-wrap:wrap}
-.gcard .row button{height:2.5em;padding:0 1.1em;border-radius:8px;border:1.5px solid var(--navy);color:var(--navy);font-weight:700;font-size:.8em}
-.gcard .row .go{background:var(--navy);color:#fff}
-.gcard .msg{min-height:1.3em;margin-top:.6em;font-size:.72em;color:var(--red)}
-.plen{grid-template-columns:auto minmax(0,1fr) auto;align-items:center}
-.plen .pt{display:block;font-size:.82em;color:var(--ice)}.plen .pt b{color:#fff;font-family:var(--serif)}
-.plen .abre{height:2.3em;padding:0 1.2em;border-radius:8px;background:var(--orange);color:var(--navy);font-weight:700;font-size:.82em;white-space:nowrap}
-.plen .abre:hover{background:#ffa033}
-.plano{position:absolute;inset:0;z-index:8;display:none;place-items:center;padding:1.2em 1.6em;background:radial-gradient(110% 80% at 15% -10%,#0b3150 0%,#04182a 50%,#020d18 100%);backdrop-filter:blur(4px);font-size:2.05cqh}
-.plano.on{display:grid}
-.pl{display:flex;flex-direction:column;gap:.7em;width:100%;height:100%;min-height:0}
-.plh{display:flex;justify-content:space-between;gap:1em;align-items:flex-start}
-.plh .eb{font:700 .6em var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--peach)}
-.plh h2{font-family:var(--serif);font-size:1.8em;color:#fff;line-height:1.05;margin:.1em 0 .15em}
-.plh p{font-size:.8em;color:var(--blue-40)}
-.plh .x{width:1.9em;height:1.9em;border-radius:50%;border:1.5px solid var(--line);color:#fff;font-size:1.2em}
-.plg{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7em}
-.plg section{display:flex;flex-direction:column;gap:.5em;padding:.8em .9em;border:1px solid var(--line);border-radius:12px;background:var(--card);min-height:0;overflow:auto}
-.plg .fh{display:flex;gap:.6em;align-items:flex-start}
-.plg .nb{flex:none;width:1.7em;height:1.7em;border-radius:50%;display:grid;place-items:center;font:700 .85em var(--mono);color:var(--navy);background:var(--peach)}
-.plg .fq{display:block;font:700 .54em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue-40)}
-.plg .fh b{font-family:var(--serif);font-size:1.05em;line-height:1.15;color:#fff}
-.plg .ev{list-style:none;display:flex;flex-direction:column;gap:.3em}
-.plg .ev li{font-size:.66em;line-height:1.35;color:var(--blue-40);padding-left:.8em;border-left:2px solid var(--line)}
-.plg .cv{font-family:var(--serif);font-weight:600;font-size:.8em;line-height:1.3;color:var(--peach)}
-.acs{display:flex;flex-direction:column;gap:.35em;margin-top:auto}
-.acao{text-align:left;font-size:.68em;line-height:1.35;padding:.5em .65em .5em 2.1em;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ice);position:relative}
-.acao::before{content:"";position:absolute;left:.65em;top:.55em;width:.95em;height:.95em;border-radius:3px;border:1.5px solid var(--blue-80)}
-.acao.ok{border-color:rgba(154,204,60,.7);background:rgba(154,204,60,.12);color:#fff}.acao.ok::before{background:var(--green);border-color:var(--green)}
-.acao.nao{opacity:.45;text-decoration:line-through}.acao.nao::before{border-color:var(--red);background:rgba(207,61,61,.4)}
-.nova{font:inherit;font-size:.66em;padding:.5em .65em;border-radius:8px;border:1px dashed rgba(191,208,225,.4);background:transparent;color:#fff}
-.nova::placeholder{color:var(--navy-40)}
-.plf{display:flex;align-items:center;justify-content:space-between;gap:1em}
-.plf .id{display:flex;flex-wrap:wrap;gap:.3em .9em;align-items:baseline;font-size:.68em;color:var(--ice)}
-.plf .id b{font:700 .9em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--peach)}
-.plf .id .vz{color:var(--navy-40)}
-.plf button{height:2.2em;padding:0 1em;border-radius:8px;border:1px solid var(--line);color:#fff;font-size:.72em;font-weight:600}
-.plx{display:flex;gap:.5em;align-items:center}
-.plx button[data-c="copia-plano"]{height:2.2em;padding:0 1em;border-radius:8px;border:1px solid var(--line);color:#fff;font-size:.72em;font-weight:600}
-.pl .sw-tabs{display:flex;gap:.3em;border-bottom:1px solid var(--line)}
-.pl .sw-tabs button{display:flex;align-items:center;gap:.45em;padding:.5em .85em;font-size:.78em;font-weight:600;color:var(--blue-40);border-bottom:3px solid transparent;margin-bottom:-1px}
-.pl .sw-tabs button span{display:grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;font:700 .85em var(--mono);background:rgba(255,255,255,.08);color:var(--ice)}
-.pl .sw-tabs button.on{color:#fff;border-bottom-color:var(--orange,#F78C16)}
-.pl .sw-tabs button.on span{background:var(--peach);color:var(--navy)}
-.plb{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:.7em}
-.plb .plg{flex:1}
-.pl .sw-n{flex:none;display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;font:700 .72em var(--mono);background:var(--peach);color:var(--navy);vertical-align:middle}
-.pl .sw-vz{font-size:.74em;color:var(--navy-40);font-style:italic}
-.pl .sw-q{display:block;font:700 .56em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue-40)}
-.pl .sw-somos{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:.7em}
-.pl .sw-somos article{display:flex;gap:.8em;padding:1em 1.1em;border:1px solid var(--line);border-radius:12px;background:var(--card)}
-.pl .sw-somos b{display:block;font-family:var(--serif);font-size:1.45em;line-height:1.15;color:#fff;margin:.15em 0 .4em}
-.pl .sw-somos p{font-size:1.08em;line-height:1.45;color:var(--ice)}
-.pl .sw-somos .sw-cmp{margin-top:.7em;font-size:.76em;color:var(--blue-40);border-left:2px solid var(--peach);padding-left:.6em}
-.pl .sw-somos .sw-cmp i{font:700 .9em var(--mono);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--peach);margin-right:.3em}
-.pl .sw-gp{flex:1;display:grid;grid-template-rows:auto repeat(4,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
-.pl .sw-gh,.pl .sw-gr{display:grid;grid-template-columns:1fr 1.4fr 1.4fr;gap:1.2em;padding:.75em 1.1em;align-items:center}
-.pl .sw-gh{background:rgba(255,255,255,.05);font:700 .62em var(--mono);letter-spacing:.14em;text-transform:uppercase}
-.pl .sw-gh .g{color:var(--green)}.pl .sw-gh .p{color:#F08A8A}
+.gcard{width:min(30rem,92%);padding:1.4rem 1.5rem;border-radius:var(--r);background:#fff;color:#002B49;border:1px solid #D7DDE2;box-shadow:0 1rem 2.5rem rgba(0,43,73,.2)}
+.gcard .k{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#33556D}
+.gcard h2{font-family:var(--serif);font-size:1.45rem;color:#002B49;margin:.3rem 0 .35rem;line-height:1.1}
+.gcard p{font-size:.9rem;line-height:1.45;color:#33556D}
+.gcard input{width:100%;margin-top:.8rem;font:inherit;font-size:.95rem;padding:.6rem .8rem;border-radius:6px;border:1px solid #99AAB6;background:#fff;color:#002B49}
+.gcard .row{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem;flex-wrap:wrap}
+.gcard .row button{height:2.4rem;padding:0 1.1rem;border-radius:6px;border:1px solid #002B49;color:#002B49;font-weight:700;font-size:.88rem}
+.gcard .row .go{background:#002B49;color:#fff}
+.gcard .msg{min-height:1.3em;margin-top:.6rem;font-size:.82rem;color:#B42E2E}
+
+/* ---------- plano de ação do time (tela cheia, 4 abas) ---------- */
+.plano{position:absolute;inset:0;z-index:8;display:none;background:var(--bg)}
+.plano.on{display:block}
+.pl{position:absolute;top:0;bottom:0;left:0;right:0;margin:0 auto;width:100%;max-width:1760px;display:flex;flex-direction:column;gap:var(--gap);padding:var(--py) var(--px)}
+.plh{display:flex;justify-content:space-between;gap:1.2rem;align-items:flex-start}
+.plh h2{font-family:var(--serif);font-weight:700;font-size:1.65rem;color:var(--ink);line-height:1.1}
+.plh p{font-size:.92rem;color:var(--ink2);margin-top:.25rem}
+.plx{display:flex;gap:.5rem;align-items:center}
+.plh .x{width:2.15rem;height:2.15rem;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.2rem;line-height:1}
+.pl .sw-tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line)}
+.pl .sw-tabs button{display:flex;align-items:center;gap:.5rem;padding:.6rem .95rem;font-size:.95rem;font-weight:600;color:var(--ink3);border-bottom:3px solid transparent;margin-bottom:-1px}
+.pl .sw-tabs button span{display:grid;place-items:center;width:1.45rem;height:1.45rem;border-radius:50%;font-size:.78rem;font-weight:700;background:var(--soft);color:var(--ink2)}
+.pl .sw-tabs button:hover{color:var(--ink)}
+.pl .sw-tabs button.on{color:var(--ink);border-bottom-color:var(--orange)}
+.pl .sw-tabs button.on span{background:var(--badge);color:var(--badge-fg)}
+.plb{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--gap)}
+.pl .sw-n{flex:none;display:inline-grid;place-items:center;width:1.45rem;height:1.45rem;border-radius:50%;font-size:.74rem;font-weight:700;background:var(--badge);color:var(--badge-fg)}
+.pl .sw-vz{font-size:.86rem;color:var(--ink3);font-style:italic}
+
+/* 1 · somos assim */
+.pl .sw-somos{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(min-content,1fr);gap:var(--gap)}
+.pl .sw-somos article{display:flex;gap:.9rem;padding:1.05rem 1.25rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.pl .sw-somos .sw-n{width:1.9rem;height:1.9rem;font-size:.9rem}
+.pl .sw-q{font-size:1.15rem;font-weight:600;line-height:1.3;color:var(--ink)}
+.pl .sw-somos b{display:block;font-family:var(--serif);font-size:1.3rem;line-height:1.2;color:var(--ink);margin:.3rem 0 .45rem}
+.pl .sw-somos p{font-size:.95rem;line-height:1.5;color:var(--ink2)}
+.pl .sw-dec{margin-top:.7rem;padding:.6rem .8rem;border-radius:6px;background:var(--bg);border-left:3px solid var(--d1);color:var(--ink)!important}
+.pl .sw-dec i,.pl .sw-cmp i{display:block;font-style:normal;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-bottom:.15rem}
+.pl .sw-cmp{margin-top:.6rem;font-size:.82rem!important;color:var(--ink3)!important}
+.pl .sw-cmp i{display:inline;margin-right:.35rem;color:var(--ink2)}
+
+/* 2 · ganhos e perdas */
+.pl .sw-gp{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.pl .sw-gh,.pl .sw-gr{display:grid;grid-template-columns:1.15fr 1.4fr 1.4fr;gap:1.4rem;padding:.85rem 1.25rem}
+.pl .sw-gh{background:var(--soft);font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}
+.pl .sw-gh .g{color:var(--g-ink)}.pl .sw-gh .p{color:var(--r-ink)}
 .pl .sw-gr+.sw-gr{border-top:1px solid var(--line)}
-.pl .sw-gr>div{display:flex;gap:.6em;align-items:flex-start}
-.pl .sw-gr b{font-family:var(--serif);font-size:1em;line-height:1.2;color:#fff}
-.pl .sw-gr p{font-size:.9em;line-height:1.45;color:var(--ice);padding-left:.7em}
-.pl .sw-gr p.g{border-left:3px solid var(--green)}.pl .sw-gr p.p{border-left:3px solid var(--red)}
-.pl .sw-ff{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:.7em;min-height:0}
-.pl .sw-col{padding:.9em 1.1em;border-radius:12px;border:1px solid var(--line);background:var(--card);border-top:4px solid var(--green);overflow:auto}
-.pl .sw-col.w{border-top-color:var(--red)}
-.pl .sw-col h4{font:700 .66em var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#fff;margin-bottom:.6em}
-.pl .sw-col ul{list-style:none;display:flex;flex-direction:column;gap:.8em}
-.pl .sw-col li{display:flex;gap:.6em;align-items:flex-start;font-size:.95em;line-height:1.4;color:var(--ice)}
-.pl .sw-leg{font-size:.62em;color:var(--blue-40)}
-@media (max-aspect-ratio:4/3){.stage{width:100vw;height:100vh;aspect-ratio:auto}.qs{grid-template-columns:1fr;grid-template-rows:none}.plen{grid-template-columns:1fr}.ui{overflow:auto}}
+.pl .sw-gr>div{display:flex;gap:.7rem;align-items:flex-start}
+.pl .sw-gr em{display:block;font-style:normal;font-size:.8rem;color:var(--ink3);line-height:1.3}
+.pl .sw-gr b{display:block;font-family:var(--serif);font-size:1.05rem;line-height:1.25;color:var(--ink);margin-top:.15rem}
+.pl .sw-gr p{font-size:.93rem;line-height:1.5;color:var(--ink2);padding-left:.85rem}
+.pl .sw-gr p.g{border-left:3px solid var(--pos)}.pl .sw-gr p.p{border-left:3px solid var(--neg)}
+
+/* 3 · SWOT */
+.pl .sw-swot{flex:1;min-height:0;display:grid;grid-template-columns:1.6rem 1fr 1fr;grid-template-rows:auto minmax(0,1fr) minmax(0,1fr);gap:.55rem var(--gap)}
+.pl .sw-ax{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;justify-content:center}
+.pl .sw-ax.c1{grid-area:1/2}.pl .sw-ax.c2{grid-area:1/3}
+.pl .sw-ax.r1,.pl .sw-ax.r2{writing-mode:vertical-rl;transform:rotate(180deg)}
+.pl .sw-ax.r1{grid-area:2/1}.pl .sw-ax.r2{grid-area:3/1}
+.pl .sw-qd{min-height:0;overflow:auto;padding:.9rem 1.15rem;border:1px solid var(--line);border-top:4px solid var(--c);border-radius:var(--r);background:var(--surface)}
+.pl .sw-qd.s{grid-area:2/2;--c:var(--pos)}.pl .sw-qd.w{grid-area:2/3;--c:var(--neg)}.pl .sw-qd.o{grid-area:3/2;--c:var(--d2)}.pl .sw-qd.t{grid-area:3/3;--c:var(--att)}
+.pl .sw-qd header{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem}
+.pl .sw-L{font:700 1.9rem/1 var(--serif);color:var(--c)}
+.pl .sw-qd h4{font-size:1.02rem;font-weight:700;color:var(--ink)}
+.pl .sw-qd small{display:block;font-size:.76rem;color:var(--ink3)}
+.pl .sw-qd ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.pl .sw-qd li{display:flex;gap:.6rem;align-items:flex-start;font-size:.9rem;line-height:1.45;color:var(--ink)}
+.pl .sw-qd li .sw-n{margin-top:.05rem}
+.pl .sw-leg{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;font-size:.78rem;color:var(--ink3)}
+.pl .sw-leg .sep{display:inline-block;width:.9rem}
+
+/* 4 · possíveis ações */
+.plg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);align-items:stretch}
+.plg .dec{font-size:.84rem;line-height:1.45;color:var(--ink);padding:.55rem .7rem;border-radius:6px;background:var(--bg);border-left:3px solid var(--d1)}
+.plg .dec i{display:block;font-style:normal;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.15rem}
+.plg .nova{margin-top:auto}
+.plg section{display:flex;flex-direction:column;gap:.65rem;padding:.95rem 1rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.plg .fh{display:flex;gap:.65rem;align-items:flex-start}
+.plg .nb{flex:none;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.82rem;color:var(--badge-fg);background:var(--badge)}
+.plg .fq{display:block;font-size:.82rem;font-weight:600;line-height:1.3;color:var(--ink3)}
+.plg .fh b{display:block;font-family:var(--serif);font-size:1.05rem;line-height:1.2;color:var(--ink);margin-top:.15rem}
+.acs{display:flex;flex-direction:column;gap:.45rem}
+.acao{text-align:left;font-size:.86rem;line-height:1.45;padding:.6rem .7rem .6rem 2.2rem;border-radius:7px;border:1px solid var(--line);background:var(--bg);color:var(--ink);position:relative;transition:border-color .2s,background .2s}
+.acao:hover{border-color:var(--ink3)}
+.acao::before{content:"";position:absolute;left:.7rem;top:.72rem;width:.9rem;height:.9rem;border-radius:3px;border:1.5px solid var(--ink2);background:var(--surface)}
+.acao.ok{border-color:var(--pos);background:rgba(154,204,60,.13)}.acao.ok::before{background:var(--pos);border-color:var(--pos)}
+.acao.nao{opacity:.5;text-decoration:line-through}.acao.nao::before{border-color:var(--neg);background:rgba(207,61,61,.35)}
+.nova{font:inherit;font-size:.84rem;padding:.55rem .7rem;border-radius:7px;border:1px dashed var(--line);background:transparent;color:var(--ink)}
+.nova::placeholder{color:var(--ink3)}
+.nova:focus{outline:none;border-color:var(--ink2);border-style:solid}
+.plf{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.plf .id{display:flex;flex-wrap:wrap;gap:.35rem 1rem;align-items:baseline;font-size:.88rem;color:var(--ink2)}
+.plf .id b{font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
+.plf .id span{font-style:italic}
+.plf .id .vz{color:var(--ink3)}
+
+/* ---------- quebras por largura ---------- */
+@media (max-height:720px){.pl .sw-somos article{padding:.8rem 1rem}.pl .sw-somos p{font-size:.9rem;line-height:1.45}.pl .sw-dec{margin-top:.5rem;padding:.45rem .7rem}.pl .sw-qd{padding:.75rem 1rem}.pl .sw-qd header{margin-bottom:.45rem}.pl .sw-L{font-size:1.6rem}.pl .sw-qd li{font-size:.86rem;line-height:1.4}}
+@media (max-width:1100px){.plg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1280px){.bar{grid-template-columns:var(--lw,10rem) minmax(0,1fr) 2.6rem}}
+@media (max-width:960px){
+  body{overflow:auto}.stage{height:auto;min-height:100vh}.ui{position:relative;overflow:visible;grid-template-rows:none}
+  .qs{grid-template-columns:1fr;grid-template-rows:none}.plen{grid-template-columns:1fr}
+  .pl{position:relative;min-height:100vh}.plano{overflow:auto}
+  .pl .sw-somos{grid-template-columns:1fr}
+  .pl .sw-gh{display:none}.pl .sw-gr{grid-template-columns:1fr;gap:.5rem}
+  .pl .sw-swot{grid-template-columns:1fr;grid-template-rows:none}.pl .sw-ax{display:none}.pl .sw-qd{grid-area:auto!important}
+}
+@media (max-width:640px){.plg{grid-template-columns:1fr}.hdr{width:100%;justify-content:space-between}.pl .sw-tabs{overflow-x:auto}.pl .sw-tabs button{white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-@media print{.ctl,.gate,.toast,.banner{display:none!important}}
+@media print{.ctl,.acts,.gate,.toast,.banner{display:none!important}}
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
   <div class="ui">
     <header class="hd">
-      <div class="brand"><div class="eyebrow">Alvarez &amp; Marsal · DTS · <b>Bússola 2027</b></div><h1>Resultado ao vivo <span class="live off" id="live"><i></i><span id="liveTxt">conectando</span></span></h1></div>
+      <div class="brand"><h1>Resultado ao vivo <span class="live off" id="live"><i></i><span id="liveTxt">conectando</span></span></h1></div>
       <div class="hdr"><div class="count" id="count"></div><div class="acts" id="acts"></div></div>
     </header>
     <section class="headline" id="headline"></section>
@@ -463,6 +514,30 @@ function frentes(sg) {
   return enriquecer(F, sg);
 }
 
+/* ---------- o mercado de 2027: oportunidades e ameaças externas, por escolha ---------- */
+const MERCADO = {
+  tipo: {
+    crise: { o: ['2027 concentra gatilhos de crise: a CBS da reforma tributária entra em vigor e a manutenção padrão do SAP ECC termina. Programa atrasado vira resgate.', 'Fundos seguem comprando e vendendo empresas: diligência e separação de TI com prazo curto.'],
+      a: ['Big Four e boutiques disputam o mesmo resgate; sem uma fase 2, o cliente volta a comprar por preço.', 'Crise é cíclica: num ano calmo, o pipeline seca.'] },
+    meio: { o: ['Os gatilhos de 2027 (CBS, fim da manutenção do SAP ECC, integrações pós-fusão) abrem a porta e pedem acompanhamento de 12 a 24 meses.', 'CFOs preferem um responsável único do resgate até a estabilização.'],
+      a: ['Integradoras e Big Four tentam ficar com a fase 2, com times maiores e mais baratos.', 'Sem a fase 2 pronta, a porta fecha quando a crise passa.'] },
+    prev: { o: ['CIOs pressionados por custo e por IA buscam acompanhamento contínuo: TMO, governança de TI e de IA.', 'Receita recorrente suaviza os ciclos de crise.'],
+      a: ['Serviços gerenciados de integradoras e Big Four competem por escala e preço.', 'O orçamento do CIO é menor e o ciclo de venda, mais longo que o do CFO.'] } },
+  foco: {
+    foco: { o: ['Em problema crítico, cliente e fundo pagam prêmio por especialista: honorário maior e venda mais curta.', 'Mensagem simples facilita vender junto com os MDs das outras práticas da A&M.'],
+      a: ['Se o núcleo esfriar (por exemplo, menos transações), há pouco colchão.', 'Concorrentes com catálogo amplo ocupam o espaço que DTS deixar.'] },
+    equil: { o: ['IA aplicada, dados e cibersegurança são as frentes com demanda em alta para as apostas.', 'O núcleo forte financia as apostas sem pôr a prática em risco.'],
+      a: ['Aposta sem dono vira dispersão: cada uma pede time e venda próprios.', 'Especialistas chegam antes nas apostas que DTS testar devagar.'] },
+    amplo: { o: ['O gasto com tecnologia segue crescendo: mais frentes, mais portas.', 'Menos dependência de um único ciclo (transações ou crises).'],
+      a: ['Contra Big Four e integradoras, amplitude sem escala vira disputa por preço.', 'Marca difusa: o cliente não sabe para que chamar DTS.'] } },
+  preco: {
+    res: { o: ['CFOs aceitam honorário de êxito quando a economia é mensurável: custo de TI, contratos, sinergias.'], a: ['O resultado depende de decisões do cliente: sem linha de base e métrica no contrato, a margem fica em risco.'] },
+    fixo: { o: ['Preço fixo facilita entrar em clientes novos e conservadores.'], a: ['A IA generativa encolhe as horas de análise e relatório: quem cobra por hora vê o preço cair.'] },
+    misto: { o: ['Fixo para cobrir o time e êxito sobre a economia: formato que o CFO já conhece.'], a: ['Sem critério de quando usar cada parte, a negociação vira desconto.'] } },
+  time: { o: ['A IA generativa tira horas de produção (relatórios, análises, apresentações) e devolve tempo ao diretor para vender e formar o time.'],
+    a: ['O mercado disputa sêniores de tecnologia: conhecimento concentrado em uma pessoa é risco de saída.'] }
+};
+
 /* ---------- Somos assim · ganhos e perdas · forças e fraquezas ---------- */
 function enriquecer(F, sg) {
   const eu = sg.modo === 'eu', sw = sg.sw || {}, pre = s => s ? (eu ? 'Na sua visão, ' + minus(s) : s) : '';
@@ -500,6 +575,32 @@ function enriquecer(F, sg) {
       if (st) { gg.push(T.casco[st][0]); pp.push(T.casco[st][1]); }
       g = gg.join(' '); p = pp.join(' ');
     }
+    // oportunidades e ameaças (o mercado, de fora para dentro) e a decisão proposta (o que já dá para definir)
+    let o = [], a = [], d = '';
+    const nomeA = id => minus((ANCORAS_VENDA.find(x => x.id === id) || {}).nome || '');
+    if (f.id === 'tipo' && sg.zP) { o = MERCADO.tipo[sg.zP].o.slice(); a = MERCADO.tipo[sg.zP].a.slice();
+      d = { crise: 'Manter a crise como porta de entrada, mas vender a fase 2 (TMO de 6 a 12 meses) antes de encerrar cada resgate.', meio: 'Assumir o modelo "entrar e ficar": três dores de entrada e uma oferta de permanência para cada, com a fase 2 já na proposta.', prev: 'Testar uma oferta recorrente para CIOs em 2 clientes atuais, mantendo a crise como porta para contas novas.' }[sg.zP];
+      if (sg.dissonancia) d += ` Antes, alinhar discurso e prática: com calma ${eu ? 'você escolhe' : 'o time escolhe'} uma porta, no reflexo outra.`; }
+    if (f.id === 'foco' && sg.zF) { o = MERCADO.foco[sg.zF].o.slice(); a = MERCADO.foco[sg.zF].a.slice();
+      d = { foco: `Fechar o catálogo de 2027 em até 23 produtos, com um dono por produto âncora${sg.nProd != null && sg.nProd > 23 ? ` (${eu ? 'você manteve' : 'a média do time é'} ${sg.nProd})` : ''}.`, equil: 'Fechar o núcleo e limitar a 2 apostas, cada uma com dono, meta e data de revisão.', amplo: 'Provar escala no núcleo antes de abrir frentes; as novas entram com parceiros.' }[sg.zF];
+      (sg.novas || []).slice(0, 2).forEach(x => o.unshift(`Produto novo ${eu ? 'que você propôs' : 'proposto pelo time'}: ${x.nome}${x.n > 1 ? ` (${x.n} diretores)` : ''}.`));
+      if (sg.ia === 'b') o.push(`IA dentro de cada produto, com Data & IA: ${eu ? 'você vê' : 'o time vê'} a IA como diferencial do portfólio, sem montar outra prática.`);
+      if (sg.ia === 'a' || sg.ia === 'd') a.push('Montar IA própria disputa espaço com Data & IA e pede o investimento que o núcleo também precisa.'); }
+    if (f.id === 'venda' && (preco || ventoN)) {
+      if (preco) { o = MERCADO.preco[preco].o.slice(); a = MERCADO.preco[preco].a.slice(); }
+      if (sg.vento != null && sg.vento <= 2.6) a.push('Sem rotina comercial, o pipeline depende de indicação, e o concorrente chega antes.');
+      if (sg.vento != null && sg.vento >= 3.6) o.push('Com rotina comercial instalada, dá para escalar vendendo junto com as outras práticas da A&M.');
+      d = preco === 'res' ? (sg.vento != null && sg.vento <= 2.6 ? `${eu ? 'Você já aceita' : 'O time já aceita'} cobrar por resultado; falta método: rito comercial semanal e pipeline único já no 1º trimestre.` : 'Escalar a venda por resultado: modelo padrão de honorário de êxito e meta comercial por diretor.')
+        : preco === 'fixo' ? 'Testar honorário de êxito em 2 propostas de custo de TI em 90 dias, com linha de base e métrica no contrato.'
+        : preco === 'misto' ? 'Padronizar o modelo misto: o fixo cobre o time, o êxito incide sobre a economia medida.' : 'Instalar um rito comercial semanal: pipeline, propostas e próximos passos de cada diretor.';
+      if ((sg.anc || [])[0]) d += ` Primeira trava a remover: ${nomeA(sg.anc[0])}.`; }
+    if (f.id === 'time' && (sg._idx != null || sg._up)) { o = MERCADO.time.o.slice(); a = MERCADO.time.a.slice();
+      (sg.dependencias || []).forEach(t => a.unshift(`"${t}" depende de uma pessoa só: se ela sair, o tema sai junto.`));
+      const st = sg._idx == null ? null : sg._idx >= 75 ? 'firme' : sg._idx >= 55 ? 'aten' : 'vaza';
+      d = st === 'vaza' && sg._w ? `Tratar "${minus(sg._w.nome)}" antes de distribuir metas coletivas: é o ponto que mais vaza.`
+        : sg._up && sg._up.d >= 5 && sg._dn && sg._dn.d <= -5 ? `Liberar tempo de ${nomeP(sg._dn.id)} para ${nomeP(sg._up.id)}, com regra clara do que passa para os gerentes.`
+        : st === 'firme' ? 'Usar a confiança do time para assumir metas coletivas de venda já em 2027.' : sg._w ? `Reforçar "${minus(sg._w.nome)}" no primeiro trimestre, com um ritual simples no encontro mensal.` : ''; }
+    f.oport = o.slice(0, 3); f.ameaca = a.slice(0, 3); f.decisao = d;
     f.somos = pre(s); f.ganho = g; f.perda = p;
     f.forcas = (sw[f.id] && sw[f.id].f) || []; f.fraquezas = (sw[f.id] && sw[f.id].w) || [];
   });
@@ -547,7 +648,7 @@ function sinaisEu(a, r) {
   if (cs.length === 5 && cs.every(x => x != null)) { const hi = cs.indexOf(Math.max(...cs)), lo = cs.indexOf(Math.min(...cs)); if (cs[hi] >= 4) swE.time.f.push(`${CASCO[hi].nome}: nota ${cs[hi]} de 5, um ponto firme do casco.`); if (cs[lo] <= 3) swE.time.w.push(`${CASCO[lo].nome}: nota ${cs[lo]} de 5. ${SIGNIFICA_REBITE[CASCO[lo].id]}`); }
   if (P.hoje && P.ideal) { const iv = PAPEIS.findIndex(x => x.id === 'vender'); if (P.ideal[iv] > P.hoje[iv]) swE.time.f.push(`Quer mais tempo vendendo: de ${P.hoje[iv]}% para ${P.ideal[iv]}% da semana.`); const ib = PAPEIS.findIndex(x => x.id === 'burocracias'); if (P.hoje[ib] >= 10) swE.time.w.push(`Burocracias tomam ${P.hoje[ib]}% da sua semana.`); }
   const iTop = P.hoje && sum(P.hoje) === 100 ? P.hoje.indexOf(Math.max(...P.hoje)) : -1;
-  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [] };
+  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [], ia: a.ia || null, novas: (a.cargaNova || []).map(nome => ({ nome, n: 1 })) };
 }
 function planoTexto(F, titulo) {
   const L = [titulo, '', 'SOMOS ASSIM'];
@@ -555,15 +656,18 @@ function planoTexto(F, titulo) {
   L.push('', 'GANHOS E PERDAS'); F.forEach((f, i) => { if (f.ganho || f.perda) L.push(`${i + 1}. Ganhamos: ${f.ganho || '—'} | Perdemos: ${f.perda || '—'}`); });
   L.push('', 'FORÇAS'); F.forEach((f, i) => f.forcas.forEach(x => L.push(`+ (${i + 1}) ${x}`)));
   L.push('', 'FRAQUEZAS'); F.forEach((f, i) => f.fraquezas.forEach(x => L.push(`− (${i + 1}) ${x}`)));
+  L.push('', 'OPORTUNIDADES (MERCADO)'); F.forEach((f, i) => (f.oport || []).forEach(x => L.push(`+ (${i + 1}) ${x}`)));
+  L.push('', 'AMEAÇAS (MERCADO)'); F.forEach((f, i) => (f.ameaca || []).forEach(x => L.push(`− (${i + 1}) ${x}`)));
+  L.push('', 'DECISÕES PROPOSTAS'); F.forEach((f, i) => { if (f.decisao) L.push(`${i + 1}. ${f.decisao}`); });
   L.push('', 'POSSÍVEIS AÇÕES'); F.forEach((f, i) => f.acoes.forEach(a => L.push(`[ ] (${i + 1}) ${a}`)));
   return L.join('\n') + '\n';
 }
 
 /* ---------- a leitura em 4 abas (carta e mostrador usam o mesmo desenho) ---------- */
 const ABAS = [
-  { k: 'somos', t: 'Somos assim', d: 'Quem DTS é, em uma frase por frente' },
-  { k: 'gp', t: 'Ganhos e perdas', d: 'O que cada escolha traz e o que custa' },
-  { k: 'ff', t: 'Forças e fraquezas', d: 'O que ajuda e o que trava, com os números' },
+  { k: 'somos', t: 'Somos assim', d: 'Quem DTS é em cada frente, e a decisão que já dá para tomar' },
+  { k: 'gp', t: 'Ganhos e perdas', d: 'O que cada escolha traz e o que ela custa' },
+  { k: 'swot', t: 'SWOT', d: 'Forças e fraquezas (dentro de DTS) · oportunidades e ameaças (o mercado de 2027)' },
   { k: 'acoes', t: 'Possíveis ações', d: 'Sugestões em aberto: o time decide' }
 ];
 function abasHTML(aba, attr) {
@@ -571,10 +675,15 @@ function abasHTML(aba, attr) {
 }
 function abaHTML(F, aba, eu) {
   const vazio = '<p class="sw-vz">Ainda sem respostas suficientes nesta frente.</p>', nb = i => `<span class="sw-n">${i + 1}</span>`;
-  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><span class="sw-q">${f.pergunta}</span><b>${f.resposta || 'Sem resposta ainda'}</b>${f.somos ? `<p>${esc(f.somos)}</p>` : vazio}${f.compara ? `<p class="sw-cmp"><i>Frente ao plano</i> ${esc(f.compara)}</p>` : ''}</div></article>`).join('')}</div>`;
-  if (aba === 1) return `<div class="sw-gp"><div class="sw-gh"><span></span><span class="g">▲ ${eu ? 'O que você ganha' : 'O que ganhamos'}</span><span class="p">▼ ${eu ? 'O que você perde' : 'O que perdemos'}</span></div>${F.map((f, i) => `<div class="sw-gr"><div>${nb(i)}<b>${f.resposta || f.pergunta}</b></div><p class="g">${esc(f.ganho || '—')}</p><p class="p">${esc(f.perda || '—')}</p></div>`).join('')}</div>`;
-  if (aba === 2) { const col = (k, t, cls) => { const it = F.flatMap((f, i) => f[k].map(x => `<li>${nb(i)}<span>${esc(x)}</span></li>`)); return `<div class="sw-col ${cls}"><h4>${t}</h4>${it.length ? `<ul>${it.join('')}</ul>` : vazio}</div>`; };
-    return `<div class="sw-ff">${col('forcas', eu ? 'Suas forças' : 'Forças', 'f')}${col('fraquezas', eu ? 'Suas fraquezas' : 'Fraquezas', 'w')}</div><p class="sw-leg">${F.map((f, i) => `${nb(i)} ${f.pergunta.replace(/\?$/, '')}`).join(' · ')}</p>`; }
+  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><h4 class="sw-q">${f.pergunta}</h4><b>${f.resposta || 'Sem resposta ainda'}</b>${f.somos ? `<p>${esc(f.somos)}</p>` : vazio}${f.decisao ? `<p class="sw-dec"><i>Decisão proposta</i>${esc(f.decisao)}</p>` : ''}${f.compara ? `<p class="sw-cmp"><i>Frente ao plano</i> ${esc(f.compara)}</p>` : ''}</div></article>`).join('')}</div>`;
+  if (aba === 1) return `<div class="sw-gp"><div class="sw-gh"><span>Frente</span><span class="g">▲ ${eu ? 'O que você ganha' : 'O que ganhamos'}</span><span class="p">▼ ${eu ? 'O que você perde' : 'O que perdemos'}</span></div>${F.map((f, i) => `<div class="sw-gr"><div>${nb(i)}<span><em>${f.pergunta}</em><b>${f.resposta || 'Sem resposta ainda'}</b></span></div><p class="g">${esc(f.ganho || '—')}</p><p class="p">${esc(f.perda || '—')}</p></div>`).join('')}</div>`;
+  if (aba === 2) { const q = (k, L, t, sub, cls) => { // até 6 por quadrante: primeiro um de cada frente, depois o segundo, e assim por diante
+      const sel = []; for (let r = 0; sel.length < 6 && r < 4; r++) F.forEach((f, i) => { const x = (f[k] || [])[r]; if (x && sel.length < 6) sel.push({ i, r, x }); });
+      const it = sel.sort((a, b) => a.i - b.i || a.r - b.r).map(o => `<li>${nb(o.i)}<span>${esc(o.x)}</span></li>`); return `<section class="sw-qd ${cls}"><header><span class="sw-L">${L}</span><div><h4>${t}</h4><small>${sub}</small></div></header>${it.length ? `<ul>${it.join('')}</ul>` : vazio}</section>`; };
+    return `<div class="sw-swot"><span class="sw-ax c1">Ajuda</span><span class="sw-ax c2">Atrapalha</span><span class="sw-ax r1">Dentro de DTS</span><span class="sw-ax r2">Mercado 2027</span>
+      ${q('forcas', 'S', eu ? 'Suas forças' : 'Forças', eu ? 'nas suas respostas' : 'nas respostas do time', 's')}${q('fraquezas', 'W', eu ? 'Suas fraquezas' : 'Fraquezas', eu ? 'nas suas respostas' : 'nas respostas do time', 'w')}
+      ${q('oport', 'O', 'Oportunidades', 'no mercado, para a escolha feita', 'o')}${q('ameaca', 'T', 'Ameaças', 'no mercado, para a escolha feita', 't')}</div>
+      <p class="sw-leg">${F.map((f, i) => `${nb(i)} ${f.pergunta.replace(/\?$/, '')}`).join('<span class="sep"></span>')}</p>`; }
   return '';
 }
 /* ===================================================================== */
@@ -755,7 +864,7 @@ function contarAnimado(root) {
 }
 const bar = (k, label, v, max, o = {}) => { const w = max ? clamp(v / max * 100) : 0; return `<div class="bar ${o.top ? 'top' : ''}"><span title="${esc(o.title || label)}">${label}</span><div class="tr"><i class="${o.top ? 'hi' : ''}" style="${anim(k, w)}"></i>${o.plan != null ? `<em style="--p:${clamp(o.plan / max * 100)}%" title="plano"></em>` : ''}</div><span class="v">${o.txt ?? Math.round(v)}</span></div>`; };
 const corCasco = m => m == null ? '#7EA1C3' : m < 2.6 ? '#CF3D3D' : m < 3.5 ? '#F9C20A' : '#9ACC3C';
-const card = (nb, pergunta, n, corpo) => `<article class="qc"><span class="nb">${nb}</span><div class="qq">${pergunta}<span>${n ? `${n} resp.` : 'aguardando'}</span></div>${corpo}</article>`;
+const card = (nb, pergunta, n, corpo) => `<article class="qc"><span class="nb">${nb}</span><div class="qq"><h3>${pergunta}</h3><span>${n ? `${n} resposta${n > 1 ? 's' : ''}` : 'aguardando'}</span></div>${corpo}</article>`;
 
 /* ---------------- sinais do TIME para o motor das 4 frentes ---------------- */
 function sinaisTime(A) {
@@ -812,7 +921,8 @@ function sinaisTime(A) {
     if (bu && (bu.h || 0) >= 10) sw.time.w.push(`Burocracias tomam ${Math.round(bu.h)}% da semana do diretor.`); }
   dependencias.forEach(t => sw.time.w.push(`"${t}" depende de uma pessoa só.`)); lacunas.forEach(t => sw.time.w.push(`Ninguém a quem recorrer em "${t}".`));
   const hTop = pp.nH ? pp.c.reduce((a, b) => (b.h || 0) > (a.h || 0) ? b : a) : null, cais = A.carga.n ? A.carga.prod.filter(o => o.f <= .25).map(o => o.x.nome).reverse() : [];
-  return { sw, topHoje: hTop ? hTop.x.nome : null, cais, modo: 'time', zP: zp, zF: ZF(A.dim.FOCO), nProd: A.carga.n ? Math.round(A.carga.m) : null, receita: A.dim.RECEITA, vento: A.vento.n ? A.vento.m : null, anc: anc.map(o => o.x.id), mesaTop: mt, papel, casco, dependencias, lacunas, dissonancia: !!(fz && zp && fz !== zp), farol: fTop ? fTop.nome : null, ev };
+  const iaTop = A.ia.n && A.ia.c[0].n / A.ia.n >= .4 ? A.ia.c[0].id : null, novas = A.carga.n ? A.carga.novas.filter(x => x.n >= 2) : [];
+  return { sw, topHoje: hTop ? hTop.x.nome : null, cais, ia: iaTop, novas, modo: 'time', zP: zp, zF: ZF(A.dim.FOCO), nProd: A.carga.n ? Math.round(A.carga.m) : null, receita: A.dim.RECEITA, vento: A.vento.n ? A.vento.m : null, anc: anc.map(o => o.x.id), mesaTop: mt, papel, casco, dependencias, lacunas, dissonancia: !!(fz && zp && fz !== zp), farol: fTop ? fTop.nome : null, ev };
 }
 
 /* ---------------- as quatro frentes na tela ---------------- */
@@ -820,10 +930,10 @@ const espera = '<p class="wait">A resposta aparece aqui assim que os diretores p
 function cartaoFrente(f, i, A) {
   const nResp = [A.farol.n, A.carga.n || A.rota.n, A.vento.n || A.mesa.n, A.casco.n || A.papel.nI][i];
   let viz = '';
-  if (i === 0 && A.farol.n) { const by = id => A.farol.c.find(c => c.id === id).n; viz = `<div class="viz"><div class="stk"><i style="flex-grow:${by('A')};background:#5E8AB4"></i><i style="flex-grow:${by('C')};background:#F78C16"></i><i style="flex-grow:${by('B')};background:#BFD0E1"></i></div><div class="stk-l"><span>CFO · crise</span><span>fica a bordo · plano</span><span>CIO · prevenção</span></div></div>`; }
+  if (i === 0 && A.farol.n) { const by = id => A.farol.c.find(c => c.id === id).n; viz = `<div class="viz"><div class="stk"><i style="flex-grow:${by('A')};background:var(--d1)"></i><i style="flex-grow:${by('C')};background:var(--orange)"></i><i style="flex-grow:${by('B')};background:var(--d3)"></i></div><div class="stk-l"><span>CFO · crise</span><span>fica a bordo · plano</span><span>CIO · prevenção</span></div></div>`; }
   if (i === 1 && A.carga.n) viz = `<div class="viz bars">${bar('cat', 'Produtos a bordo', A.carga.m, 33, { plan: 23, top: true, txt: Math.round(A.carga.m) + '/33' })}</div>`;
   if (i === 2 && A.vento.n) viz = `<div class="viz bars">${A.anc.slice(0, 3).map((o, k) => bar('a' + o.x.id, o.x.nome, o.n, A.vento.n, { top: k === 0, txt: pc(o.n, A.vento.n) + '%', title: o.x.txt })).join('')}</div>`;
-  if (i === 3 && A.casco.n) viz = `<div class="viz dots">${A.casco.c.map(x => `<div><i style="background:${corCasco(x.m)}">${fmt1(x.m)}</i>${x.x.curto}</div>`).join('')}</div>`;
+  if (i === 3 && A.casco.n) viz = `<div class="viz dots">${A.casco.c.map(x => `<div><i class="${x.m != null && x.m < 2.6 ? 'neg' : ''}" style="background:${corCasco(x.m)}">${fmt1(x.m)}</i>${x.x.curto}</div>`).join('')}</div>`;
   return card(i + 1, f.pergunta, nResp, f.resposta ? `<div class="ans">${f.resposta}</div><p class="fact">${f.significa}</p>${viz}` : espera);
 }
 
@@ -836,10 +946,10 @@ function abrirPlano(aba) {
   if (aba != null) planoAba = aba;
   const F = frentes(sinaisTime(A)), ideias = A.P.map(p => p.acao).filter(Boolean);
   const g = $('#plano'); g.classList.add('on');
-  const acoes = `<div class="plg">${F.map((f, i) => `<section><div class="fh"><span class="nb">${i + 1}</span><div><span class="fq">${f.pergunta}</span><b>${f.resposta || 'Ainda sem resposta'}</b></div></div>
-      <div class="acs">${[...f.acoes, ...planoEst.extra[f.id]].map(a => { const m = planoEst.marca[a] || ''; return `<button class="acao ${m}" data-ac="${esc(a)}">${esc(a)}</button>`; }).join('')}<input class="nova" data-fr="${f.id}" placeholder="+ outra ação (Enter para incluir)"></div></section>`).join('')}</div>
+  const acoes = `<div class="plg">${F.map((f, i) => `<section><div class="fh"><span class="nb">${i + 1}</span><div><span class="fq">${f.pergunta}</span><b>${f.resposta || 'Ainda sem resposta'}</b></div></div>${f.decisao ? `<p class="dec"><i>Decisão proposta</i>${esc(f.decisao)}</p>` : ''}
+      <div class="acs">${[...f.acoes, ...planoEst.extra[f.id]].map(a => { const m = planoEst.marca[a] || ''; return `<button class="acao ${m}" data-ac="${esc(a)}">${esc(a)}</button>`; }).join('')}</div><input class="nova" data-fr="${f.id}" placeholder="+ outra ação (Enter para incluir)"></section>`).join('')}</div>
     <div class="plf"><div class="id"><b>Ideias dos diretores</b>${ideias.length ? ideias.slice(0, 6).map(x => `<span>“${esc(x)}”</span>`).join('') : '<span class="vz">Nenhuma ainda: cada diretor pode propor uma ação no fim da bússola.</span>'}</div></div>`;
-  g.innerHTML = `<div class="pl"><div class="plh"><div><span class="eb">Diagnóstico e plano do time · ${A.nD} bússola${A.nD === 1 ? '' : 's'} concluída${A.nD === 1 ? '' : 's'}</span><h2>${['Somos assim', 'O que ganhamos e o que perdemos', 'Nossas forças e fraquezas', 'Possíveis ações: o time decide'][planoAba]}</h2><p>${planoAba < 3 ? ABAS[planoAba].d + ', a partir das respostas do time.' : 'Sugestões a partir das respostas. Toque para aprovar ou descartar, e acrescente outras ações.'}</p></div><div class="plx"><button data-c="copia-plano">Copiar plano</button><button class="x" data-c="fecha-plano" aria-label="Fechar">×</button></div></div>
+  g.innerHTML = `<div class="pl"><div class="plh"><div><h2>${['Somos assim', 'O que ganhamos e o que perdemos', 'SWOT de DTS para 2027', 'Possíveis ações: o time decide'][planoAba]}</h2><p>${planoAba < 3 ? ABAS[planoAba].d + '.' : 'Sugestões a partir das respostas: toque para aprovar ou descartar, e acrescente outras.'} Base: ${A.nD} bússola${A.nD === 1 ? '' : 's'} concluída${A.nD === 1 ? '' : 's'}.</p></div><div class="plx"><button data-c="copia-plano">Copiar plano</button><button class="x" data-c="fecha-plano" aria-label="Fechar">×</button></div></div>
     ${abasHTML(planoAba, 'data-c="aba" data-i')}
     <div class="plb">${planoAba < 3 ? abaHTML(F, planoAba, false) : acoes}</div></div>`;
 }
@@ -858,7 +968,7 @@ function desenhar() {
   $('#count').innerHTML = `<div class="ct hi"><b>${numero('kD', A.nD)}</b><span>concluídas</span></div><div class="ct"><b>${numero('kG', A.nG)}</b><span>respondendo agora</span></div>`;
   const F = frentes(sinaisTime(A)), nAc = sum(F.map(f => f.acoes.length)), ideias = A.P.filter(p => p.acao).length, aprov = Object.values(planoEst.marca).filter(m => m === 'ok').length;
   const top = A.arq[0], resumo = A.nD && F[0].resposta ? `<b>${top.n} de ${A.nD}</b> ${top.n === 1 ? 'diretor pensa' : 'diretores pensam'} assim. Em resumo: ${minus(F[0].resposta)}${F[1].resposta ? `, com ${minus(F[1].resposta)}` : ''}${F[3].resposta ? `. Time: ${minus(F[3].resposta)}` : ''}.` : D.sub;
-  $('#headline').innerHTML = `<div class="eb">${D.eb}</div><h2>${D.titulo}</h2><p>${resumo}</p>`;
+  $('#headline').innerHTML = `<h2>${D.titulo}</h2><p>${resumo}</p>`;
   $('#qs').innerHTML = F.map((f, i) => cartaoFrente(f, i, A)).join('');
   $('#plen').innerHTML = `<span class="k">Plano de ação</span><div class="pt">${nAc ? `<b>${nAc}</b> ações sugeridas a partir das respostas${aprov ? ` · <b>${aprov}</b> aprovadas` : ''}${ideias ? ` · <b>${ideias}</b> ideias dos diretores` : ''}. O time decide estas e outras.` : 'As sugestões aparecem quando as respostas chegarem.'}</div><button class="abre" data-c="plano">Abrir o plano de ação →</button>`;
   if ($('#plano').classList.contains('on')) abrirPlano();
@@ -946,13 +1056,15 @@ const Demo = (() => {
 
 /* ---------------- início ---------------- */
 const IC = { lixo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>', full: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>', ref: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>', copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>' };
+try { if (localStorage.getItem('mostrador-tema') === 'escuro') document.documentElement.dataset.tema = 'escuro'; } catch (e) { }
 $('#acts').innerHTML = `<button data-c="ref">${IC.ref}Atualizar</button><button class="zera" data-c="zera">${IC.lixo}Limpar resultados</button>`;
-$('#ctl').innerHTML = `<button data-c="copy">${IC.copy}Copiar diagnóstico</button><button data-c="limpa" title="Apagar as marcações e ações acrescentadas no plano">Limpar plano</button><button data-c="full">${IC.full}Tela cheia</button>`;
+$('#ctl').innerHTML = `<button data-c="copy">${IC.copy}Copiar diagnóstico</button><button data-c="limpa" title="Apagar as marcações e ações acrescentadas no plano">Limpar plano</button><button data-c="tema" title="Alternar tema claro e escuro">Tema</button><button data-c="full">${IC.full}Tela cheia</button>`;
 document.addEventListener('click', async e => {
   const c = e.target.closest('[data-c]');
   if (c) { const k = c.dataset.c;
     if (k === 'ref') { c.disabled = true; await ciclo(); c.disabled = false; avisar(ultimaOk && Date.now() - ultimaOk < 5000 ? '↻ Atualizado agora' : 'Não consegui ler a planilha agora'); }
     if (k === 'zera') limparResultados(c);
+    if (k === 'tema') { const r = document.documentElement, t = r.dataset.tema === 'escuro' ? '' : 'escuro'; if (t) r.dataset.tema = t; else delete r.dataset.tema; try { localStorage.setItem('mostrador-tema', t); } catch (er) { } }
     if (k === 'plano') abrirPlano(0);
     if (k === 'limpa' && confirm('Apagar as marcações e as ações acrescentadas no plano de ação?')) { planoEst = { marca: {}, extra: { tipo: [], foco: [], venda: [], time: [] } }; guardaPlano(); desenhar(); }
     if (k === 'aba') abrirPlano(+c.dataset.i);

@@ -938,29 +938,38 @@ button.c-take:hover{background:#0b3a5e;transform:translateY(-1px)}
 .sw-tabs button.on span{background:var(--navy);color:#fff}
 .sw-n{flex:none;display:inline-grid;place-items:center;width:1.45em;height:1.45em;border-radius:50%;font:700 .72em var(--mono);background:var(--navy);color:#fff;vertical-align:middle}
 .sw-vz{font-size:.78em;color:var(--ink-2);font-style:italic}
-.sw-q{display:block;font:700 .58em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.sw-q{display:block;font-family:var(--sans);font-size:.92em;font-weight:700;line-height:1.3;color:var(--navy)}
 .sw-somos{display:grid;grid-template-columns:1fr 1fr;gap:.7em}
 .sw-somos article{display:flex;gap:.7em;padding:.8em .9em;border:1px solid rgba(0,43,73,.14);border-radius:10px;background:rgba(255,255,255,.65)}
 .sw-somos b{display:block;font-family:var(--serif);font-size:1.12em;line-height:1.15;color:var(--navy);margin:.15em 0 .35em}
 .sw-somos p{font-size:.8em;line-height:1.45;color:var(--ink)}
 .sw-somos .sw-cmp{margin-top:.45em;font-size:.7em;color:var(--ink-2);border-left:2px solid var(--orange);padding-left:.6em}
-.sw-somos .sw-cmp i{font:700 .9em var(--mono);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-right:.3em}
+.sw-somos .sw-cmp i{font:700 .85em var(--sans);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-right:.3em}
+.sw-somos .sw-dec{margin-top:.5em;padding:.45em .65em;border-radius:6px;background:rgba(0,43,73,.05);border-left:3px solid var(--navy);font-size:.78em;color:var(--ink)}
+.sw-somos .sw-dec i{display:block;font:700 .8em var(--sans);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:.1em}
 .sw-gp{display:flex;flex-direction:column;border:1px solid rgba(0,43,73,.14);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.65)}
 .sw-gh,.sw-gr{display:grid;grid-template-columns:1fr 1.35fr 1.35fr;gap:1em;padding:.6em .9em}
 .sw-gh{background:var(--navy);font:700 .62em var(--mono);letter-spacing:.14em;text-transform:uppercase}
 .sw-gh .g{color:#9ACC3C}.sw-gh .p{color:#F4A3A3}
 .sw-gr+.sw-gr{border-top:1px solid rgba(0,43,73,.12)}
 .sw-gr>div{display:flex;gap:.5em;align-items:flex-start}
-.sw-gr b{font-family:var(--serif);font-size:.92em;line-height:1.2;color:var(--navy)}
+.sw-gr em{display:block;font-style:normal;font-size:.7em;color:var(--ink-2);line-height:1.3}
+.sw-gr b{display:block;font-family:var(--serif);font-size:.92em;line-height:1.2;color:var(--navy);margin-top:.1em}
 .sw-gr p{font-size:.78em;line-height:1.42;color:var(--ink)}
 .sw-gr p.g{border-left:3px solid #9ACC3C;padding-left:.6em}.sw-gr p.p{border-left:3px solid #CF3D3D;padding-left:.6em}
-.sw-ff{display:grid;grid-template-columns:1fr 1fr;gap:.7em}
-.sw-col{padding:.8em .9em;border-radius:10px;border:1px solid rgba(0,43,73,.14);background:rgba(255,255,255,.65);border-top:4px solid #9ACC3C}
-.sw-col.w{border-top-color:#CF3D3D}
-.sw-col h4{font:700 .64em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--navy);margin-bottom:.5em}
-.sw-col ul{list-style:none;display:flex;flex-direction:column;gap:.5em}
-.sw-col li{display:flex;gap:.55em;align-items:flex-start;font-size:.8em;line-height:1.4;color:var(--ink)}
-.sw-leg{margin-top:.5em;font-size:.62em;color:var(--ink-2)}
+.sw-swot{display:grid;grid-template-columns:1.3em 1fr 1fr;grid-template-rows:auto auto auto;gap:.35em .6em}
+.sw-ax{font:700 .56em var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;justify-content:center}
+.sw-ax.c1{grid-area:1/2}.sw-ax.c2{grid-area:1/3}.sw-ax.r1,.sw-ax.r2{writing-mode:vertical-rl;transform:rotate(180deg)}.sw-ax.r1{grid-area:2/1}.sw-ax.r2{grid-area:3/1}
+.sw-qd{padding:.65em .8em;border-radius:10px;border:1px solid rgba(0,43,73,.14);background:rgba(255,255,255,.7);border-top:4px solid var(--c)}
+.sw-qd.s{grid-area:2/2;--c:#9ACC3C}.sw-qd.w{grid-area:2/3;--c:#CF3D3D}.sw-qd.o{grid-area:3/2;--c:#5E8AB4}.sw-qd.t{grid-area:3/3;--c:#F9C20A}
+.sw-qd header{display:flex;align-items:center;gap:.5em;margin-bottom:.4em}
+.sw-L{font:700 1.35em/1 var(--serif);color:var(--c)}
+.sw-qd h4{font:700 .8em var(--sans);color:var(--navy)}
+.sw-qd small{display:block;font-size:.6em;color:var(--ink-2)}
+.sw-qd ul{list-style:none;display:flex;flex-direction:column;gap:.4em}
+.sw-qd li{display:flex;gap:.5em;align-items:flex-start;font-size:.74em;line-height:1.4;color:var(--ink)}
+.sw-leg{display:flex;flex-wrap:wrap;align-items:center;gap:.3em;margin-top:.5em;font-size:.62em;color:var(--ink-2)}
+.sw-leg .sep{display:inline-block;width:.8em}
 .sw-ac{display:grid;grid-template-columns:1fr 1fr;gap:.7em}
 .sw-ac section{padding:.75em .9em;border:1px solid rgba(0,43,73,.14);border-radius:10px;background:rgba(255,255,255,.65)}
 .sw-ac h4{display:flex;gap:.5em;align-items:center;font:700 .62em var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:.45em}
@@ -970,7 +979,7 @@ button.c-take:hover{background:#0b3a5e;transform:translateY(-1px)}
 .sw-ac .own{grid-column:1/-1}
 .sw-ac .own textarea{width:100%;font:inherit;font-size:.85em;padding:.5em .7em;border-radius:8px;border:1px solid var(--navy-40);background:#fff;color:var(--ink);resize:vertical}
 .sw-ac .own .cnt2{display:block;text-align:right;font-size:.62em;color:var(--ink-2)}
-@media (max-width:760px){.sw-somos,.sw-ff,.sw-ac{grid-template-columns:1fr}.sw-gh{display:none}.sw-gr{grid-template-columns:1fr;gap:.4em}.sw-tabs{overflow-x:auto}.sw-tabs button{white-space:nowrap}}
+@media (max-width:760px){.sw-swot{grid-template-columns:1fr}.sw-ax{display:none}.sw-qd{grid-area:auto!important}.sw-somos,.sw-ac{grid-template-columns:1fr}.sw-gh{display:none}.sw-gr{grid-template-columns:1fr;gap:.4em}.sw-tabs{overflow-x:auto}.sw-tabs button{white-space:nowrap}}
 
 
 /* recomeçar do porto */
@@ -1793,6 +1802,30 @@ function frentes(sg) {
   return enriquecer(F, sg);
 }
 
+/* ---------- o mercado de 2027: oportunidades e ameaças externas, por escolha ---------- */
+const MERCADO = {
+  tipo: {
+    crise: { o: ['2027 concentra gatilhos de crise: a CBS da reforma tributária entra em vigor e a manutenção padrão do SAP ECC termina. Programa atrasado vira resgate.', 'Fundos seguem comprando e vendendo empresas: diligência e separação de TI com prazo curto.'],
+      a: ['Big Four e boutiques disputam o mesmo resgate; sem uma fase 2, o cliente volta a comprar por preço.', 'Crise é cíclica: num ano calmo, o pipeline seca.'] },
+    meio: { o: ['Os gatilhos de 2027 (CBS, fim da manutenção do SAP ECC, integrações pós-fusão) abrem a porta e pedem acompanhamento de 12 a 24 meses.', 'CFOs preferem um responsável único do resgate até a estabilização.'],
+      a: ['Integradoras e Big Four tentam ficar com a fase 2, com times maiores e mais baratos.', 'Sem a fase 2 pronta, a porta fecha quando a crise passa.'] },
+    prev: { o: ['CIOs pressionados por custo e por IA buscam acompanhamento contínuo: TMO, governança de TI e de IA.', 'Receita recorrente suaviza os ciclos de crise.'],
+      a: ['Serviços gerenciados de integradoras e Big Four competem por escala e preço.', 'O orçamento do CIO é menor e o ciclo de venda, mais longo que o do CFO.'] } },
+  foco: {
+    foco: { o: ['Em problema crítico, cliente e fundo pagam prêmio por especialista: honorário maior e venda mais curta.', 'Mensagem simples facilita vender junto com os MDs das outras práticas da A&M.'],
+      a: ['Se o núcleo esfriar (por exemplo, menos transações), há pouco colchão.', 'Concorrentes com catálogo amplo ocupam o espaço que DTS deixar.'] },
+    equil: { o: ['IA aplicada, dados e cibersegurança são as frentes com demanda em alta para as apostas.', 'O núcleo forte financia as apostas sem pôr a prática em risco.'],
+      a: ['Aposta sem dono vira dispersão: cada uma pede time e venda próprios.', 'Especialistas chegam antes nas apostas que DTS testar devagar.'] },
+    amplo: { o: ['O gasto com tecnologia segue crescendo: mais frentes, mais portas.', 'Menos dependência de um único ciclo (transações ou crises).'],
+      a: ['Contra Big Four e integradoras, amplitude sem escala vira disputa por preço.', 'Marca difusa: o cliente não sabe para que chamar DTS.'] } },
+  preco: {
+    res: { o: ['CFOs aceitam honorário de êxito quando a economia é mensurável: custo de TI, contratos, sinergias.'], a: ['O resultado depende de decisões do cliente: sem linha de base e métrica no contrato, a margem fica em risco.'] },
+    fixo: { o: ['Preço fixo facilita entrar em clientes novos e conservadores.'], a: ['A IA generativa encolhe as horas de análise e relatório: quem cobra por hora vê o preço cair.'] },
+    misto: { o: ['Fixo para cobrir o time e êxito sobre a economia: formato que o CFO já conhece.'], a: ['Sem critério de quando usar cada parte, a negociação vira desconto.'] } },
+  time: { o: ['A IA generativa tira horas de produção (relatórios, análises, apresentações) e devolve tempo ao diretor para vender e formar o time.'],
+    a: ['O mercado disputa sêniores de tecnologia: conhecimento concentrado em uma pessoa é risco de saída.'] }
+};
+
 /* ---------- Somos assim · ganhos e perdas · forças e fraquezas ---------- */
 function enriquecer(F, sg) {
   const eu = sg.modo === 'eu', sw = sg.sw || {}, pre = s => s ? (eu ? 'Na sua visão, ' + minus(s) : s) : '';
@@ -1830,6 +1863,32 @@ function enriquecer(F, sg) {
       if (st) { gg.push(T.casco[st][0]); pp.push(T.casco[st][1]); }
       g = gg.join(' '); p = pp.join(' ');
     }
+    // oportunidades e ameaças (o mercado, de fora para dentro) e a decisão proposta (o que já dá para definir)
+    let o = [], a = [], d = '';
+    const nomeA = id => minus((ANCORAS_VENDA.find(x => x.id === id) || {}).nome || '');
+    if (f.id === 'tipo' && sg.zP) { o = MERCADO.tipo[sg.zP].o.slice(); a = MERCADO.tipo[sg.zP].a.slice();
+      d = { crise: 'Manter a crise como porta de entrada, mas vender a fase 2 (TMO de 6 a 12 meses) antes de encerrar cada resgate.', meio: 'Assumir o modelo "entrar e ficar": três dores de entrada e uma oferta de permanência para cada, com a fase 2 já na proposta.', prev: 'Testar uma oferta recorrente para CIOs em 2 clientes atuais, mantendo a crise como porta para contas novas.' }[sg.zP];
+      if (sg.dissonancia) d += ` Antes, alinhar discurso e prática: com calma ${eu ? 'você escolhe' : 'o time escolhe'} uma porta, no reflexo outra.`; }
+    if (f.id === 'foco' && sg.zF) { o = MERCADO.foco[sg.zF].o.slice(); a = MERCADO.foco[sg.zF].a.slice();
+      d = { foco: `Fechar o catálogo de 2027 em até 23 produtos, com um dono por produto âncora${sg.nProd != null && sg.nProd > 23 ? ` (${eu ? 'você manteve' : 'a média do time é'} ${sg.nProd})` : ''}.`, equil: 'Fechar o núcleo e limitar a 2 apostas, cada uma com dono, meta e data de revisão.', amplo: 'Provar escala no núcleo antes de abrir frentes; as novas entram com parceiros.' }[sg.zF];
+      (sg.novas || []).slice(0, 2).forEach(x => o.unshift(`Produto novo ${eu ? 'que você propôs' : 'proposto pelo time'}: ${x.nome}${x.n > 1 ? ` (${x.n} diretores)` : ''}.`));
+      if (sg.ia === 'b') o.push(`IA dentro de cada produto, com Data & IA: ${eu ? 'você vê' : 'o time vê'} a IA como diferencial do portfólio, sem montar outra prática.`);
+      if (sg.ia === 'a' || sg.ia === 'd') a.push('Montar IA própria disputa espaço com Data & IA e pede o investimento que o núcleo também precisa.'); }
+    if (f.id === 'venda' && (preco || ventoN)) {
+      if (preco) { o = MERCADO.preco[preco].o.slice(); a = MERCADO.preco[preco].a.slice(); }
+      if (sg.vento != null && sg.vento <= 2.6) a.push('Sem rotina comercial, o pipeline depende de indicação, e o concorrente chega antes.');
+      if (sg.vento != null && sg.vento >= 3.6) o.push('Com rotina comercial instalada, dá para escalar vendendo junto com as outras práticas da A&M.');
+      d = preco === 'res' ? (sg.vento != null && sg.vento <= 2.6 ? `${eu ? 'Você já aceita' : 'O time já aceita'} cobrar por resultado; falta método: rito comercial semanal e pipeline único já no 1º trimestre.` : 'Escalar a venda por resultado: modelo padrão de honorário de êxito e meta comercial por diretor.')
+        : preco === 'fixo' ? 'Testar honorário de êxito em 2 propostas de custo de TI em 90 dias, com linha de base e métrica no contrato.'
+        : preco === 'misto' ? 'Padronizar o modelo misto: o fixo cobre o time, o êxito incide sobre a economia medida.' : 'Instalar um rito comercial semanal: pipeline, propostas e próximos passos de cada diretor.';
+      if ((sg.anc || [])[0]) d += ` Primeira trava a remover: ${nomeA(sg.anc[0])}.`; }
+    if (f.id === 'time' && (sg._idx != null || sg._up)) { o = MERCADO.time.o.slice(); a = MERCADO.time.a.slice();
+      (sg.dependencias || []).forEach(t => a.unshift(`"${t}" depende de uma pessoa só: se ela sair, o tema sai junto.`));
+      const st = sg._idx == null ? null : sg._idx >= 75 ? 'firme' : sg._idx >= 55 ? 'aten' : 'vaza';
+      d = st === 'vaza' && sg._w ? `Tratar "${minus(sg._w.nome)}" antes de distribuir metas coletivas: é o ponto que mais vaza.`
+        : sg._up && sg._up.d >= 5 && sg._dn && sg._dn.d <= -5 ? `Liberar tempo de ${nomeP(sg._dn.id)} para ${nomeP(sg._up.id)}, com regra clara do que passa para os gerentes.`
+        : st === 'firme' ? 'Usar a confiança do time para assumir metas coletivas de venda já em 2027.' : sg._w ? `Reforçar "${minus(sg._w.nome)}" no primeiro trimestre, com um ritual simples no encontro mensal.` : ''; }
+    f.oport = o.slice(0, 3); f.ameaca = a.slice(0, 3); f.decisao = d;
     f.somos = pre(s); f.ganho = g; f.perda = p;
     f.forcas = (sw[f.id] && sw[f.id].f) || []; f.fraquezas = (sw[f.id] && sw[f.id].w) || [];
   });
@@ -1877,7 +1936,7 @@ function sinaisEu(a, r) {
   if (cs.length === 5 && cs.every(x => x != null)) { const hi = cs.indexOf(Math.max(...cs)), lo = cs.indexOf(Math.min(...cs)); if (cs[hi] >= 4) swE.time.f.push(`${CASCO[hi].nome}: nota ${cs[hi]} de 5, um ponto firme do casco.`); if (cs[lo] <= 3) swE.time.w.push(`${CASCO[lo].nome}: nota ${cs[lo]} de 5. ${SIGNIFICA_REBITE[CASCO[lo].id]}`); }
   if (P.hoje && P.ideal) { const iv = PAPEIS.findIndex(x => x.id === 'vender'); if (P.ideal[iv] > P.hoje[iv]) swE.time.f.push(`Quer mais tempo vendendo: de ${P.hoje[iv]}% para ${P.ideal[iv]}% da semana.`); const ib = PAPEIS.findIndex(x => x.id === 'burocracias'); if (P.hoje[ib] >= 10) swE.time.w.push(`Burocracias tomam ${P.hoje[ib]}% da sua semana.`); }
   const iTop = P.hoje && sum(P.hoje) === 100 ? P.hoje.indexOf(Math.max(...P.hoje)) : -1;
-  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [] };
+  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev, sw: swE, topHoje: iTop >= 0 ? PAPEIS[iTop].nome : null, cais: nP != null ? PRODUTOS.filter(x => !(a.carga || []).includes(x.id)).map(x => x.nome) : [], ia: a.ia || null, novas: (a.cargaNova || []).map(nome => ({ nome, n: 1 })) };
 }
 function planoTexto(F, titulo) {
   const L = [titulo, '', 'SOMOS ASSIM'];
@@ -1885,15 +1944,18 @@ function planoTexto(F, titulo) {
   L.push('', 'GANHOS E PERDAS'); F.forEach((f, i) => { if (f.ganho || f.perda) L.push(`${i + 1}. Ganhamos: ${f.ganho || '—'} | Perdemos: ${f.perda || '—'}`); });
   L.push('', 'FORÇAS'); F.forEach((f, i) => f.forcas.forEach(x => L.push(`+ (${i + 1}) ${x}`)));
   L.push('', 'FRAQUEZAS'); F.forEach((f, i) => f.fraquezas.forEach(x => L.push(`− (${i + 1}) ${x}`)));
+  L.push('', 'OPORTUNIDADES (MERCADO)'); F.forEach((f, i) => (f.oport || []).forEach(x => L.push(`+ (${i + 1}) ${x}`)));
+  L.push('', 'AMEAÇAS (MERCADO)'); F.forEach((f, i) => (f.ameaca || []).forEach(x => L.push(`− (${i + 1}) ${x}`)));
+  L.push('', 'DECISÕES PROPOSTAS'); F.forEach((f, i) => { if (f.decisao) L.push(`${i + 1}. ${f.decisao}`); });
   L.push('', 'POSSÍVEIS AÇÕES'); F.forEach((f, i) => f.acoes.forEach(a => L.push(`[ ] (${i + 1}) ${a}`)));
   return L.join('\n') + '\n';
 }
 
 /* ---------- a leitura em 4 abas (carta e mostrador usam o mesmo desenho) ---------- */
 const ABAS = [
-  { k: 'somos', t: 'Somos assim', d: 'Quem DTS é, em uma frase por frente' },
-  { k: 'gp', t: 'Ganhos e perdas', d: 'O que cada escolha traz e o que custa' },
-  { k: 'ff', t: 'Forças e fraquezas', d: 'O que ajuda e o que trava, com os números' },
+  { k: 'somos', t: 'Somos assim', d: 'Quem DTS é em cada frente, e a decisão que já dá para tomar' },
+  { k: 'gp', t: 'Ganhos e perdas', d: 'O que cada escolha traz e o que ela custa' },
+  { k: 'swot', t: 'SWOT', d: 'Forças e fraquezas (dentro de DTS) · oportunidades e ameaças (o mercado de 2027)' },
   { k: 'acoes', t: 'Possíveis ações', d: 'Sugestões em aberto: o time decide' }
 ];
 function abasHTML(aba, attr) {
@@ -1901,10 +1963,15 @@ function abasHTML(aba, attr) {
 }
 function abaHTML(F, aba, eu) {
   const vazio = '<p class="sw-vz">Ainda sem respostas suficientes nesta frente.</p>', nb = i => `<span class="sw-n">${i + 1}</span>`;
-  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><span class="sw-q">${f.pergunta}</span><b>${f.resposta || 'Sem resposta ainda'}</b>${f.somos ? `<p>${esc(f.somos)}</p>` : vazio}${f.compara ? `<p class="sw-cmp"><i>Frente ao plano</i> ${esc(f.compara)}</p>` : ''}</div></article>`).join('')}</div>`;
-  if (aba === 1) return `<div class="sw-gp"><div class="sw-gh"><span></span><span class="g">▲ ${eu ? 'O que você ganha' : 'O que ganhamos'}</span><span class="p">▼ ${eu ? 'O que você perde' : 'O que perdemos'}</span></div>${F.map((f, i) => `<div class="sw-gr"><div>${nb(i)}<b>${f.resposta || f.pergunta}</b></div><p class="g">${esc(f.ganho || '—')}</p><p class="p">${esc(f.perda || '—')}</p></div>`).join('')}</div>`;
-  if (aba === 2) { const col = (k, t, cls) => { const it = F.flatMap((f, i) => f[k].map(x => `<li>${nb(i)}<span>${esc(x)}</span></li>`)); return `<div class="sw-col ${cls}"><h4>${t}</h4>${it.length ? `<ul>${it.join('')}</ul>` : vazio}</div>`; };
-    return `<div class="sw-ff">${col('forcas', eu ? 'Suas forças' : 'Forças', 'f')}${col('fraquezas', eu ? 'Suas fraquezas' : 'Fraquezas', 'w')}</div><p class="sw-leg">${F.map((f, i) => `${nb(i)} ${f.pergunta.replace(/\?$/, '')}`).join(' · ')}</p>`; }
+  if (aba === 0) return `<div class="sw-somos">${F.map((f, i) => `<article>${nb(i)}<div><h4 class="sw-q">${f.pergunta}</h4><b>${f.resposta || 'Sem resposta ainda'}</b>${f.somos ? `<p>${esc(f.somos)}</p>` : vazio}${f.decisao ? `<p class="sw-dec"><i>Decisão proposta</i>${esc(f.decisao)}</p>` : ''}${f.compara ? `<p class="sw-cmp"><i>Frente ao plano</i> ${esc(f.compara)}</p>` : ''}</div></article>`).join('')}</div>`;
+  if (aba === 1) return `<div class="sw-gp"><div class="sw-gh"><span>Frente</span><span class="g">▲ ${eu ? 'O que você ganha' : 'O que ganhamos'}</span><span class="p">▼ ${eu ? 'O que você perde' : 'O que perdemos'}</span></div>${F.map((f, i) => `<div class="sw-gr"><div>${nb(i)}<span><em>${f.pergunta}</em><b>${f.resposta || 'Sem resposta ainda'}</b></span></div><p class="g">${esc(f.ganho || '—')}</p><p class="p">${esc(f.perda || '—')}</p></div>`).join('')}</div>`;
+  if (aba === 2) { const q = (k, L, t, sub, cls) => { // até 6 por quadrante: primeiro um de cada frente, depois o segundo, e assim por diante
+      const sel = []; for (let r = 0; sel.length < 6 && r < 4; r++) F.forEach((f, i) => { const x = (f[k] || [])[r]; if (x && sel.length < 6) sel.push({ i, r, x }); });
+      const it = sel.sort((a, b) => a.i - b.i || a.r - b.r).map(o => `<li>${nb(o.i)}<span>${esc(o.x)}</span></li>`); return `<section class="sw-qd ${cls}"><header><span class="sw-L">${L}</span><div><h4>${t}</h4><small>${sub}</small></div></header>${it.length ? `<ul>${it.join('')}</ul>` : vazio}</section>`; };
+    return `<div class="sw-swot"><span class="sw-ax c1">Ajuda</span><span class="sw-ax c2">Atrapalha</span><span class="sw-ax r1">Dentro de DTS</span><span class="sw-ax r2">Mercado 2027</span>
+      ${q('forcas', 'S', eu ? 'Suas forças' : 'Forças', eu ? 'nas suas respostas' : 'nas respostas do time', 's')}${q('fraquezas', 'W', eu ? 'Suas fraquezas' : 'Fraquezas', eu ? 'nas suas respostas' : 'nas respostas do time', 'w')}
+      ${q('oport', 'O', 'Oportunidades', 'no mercado, para a escolha feita', 'o')}${q('ameaca', 'T', 'Ameaças', 'no mercado, para a escolha feita', 't')}</div>
+      <p class="sw-leg">${F.map((f, i) => `${nb(i)} ${f.pergunta.replace(/\?$/, '')}`).join('<span class="sep"></span>')}</p>`; }
   return '';
 }
 
