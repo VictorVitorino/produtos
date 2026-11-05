@@ -34,6 +34,18 @@ A carta de cada diretor e o mostrador do time usam o mesmo motor. Cada frente re
 
 Faixas usadas: porta de entrada abaixo de 38 é crise, acima de 62 é prevenção, entre elas é "entrar e ficar"; foco acima de 62 é foco, abaixo de 38 é amplitude. Quando o farol (com calma) e os reflexos apontam para lados diferentes, o diagnóstico diz isso. No fim da carta, cada diretor pode propor outra ação; ela vai para a coluna `acaoPropria` da planilha e aparece no plano de ação do mostrador, sem nome.
 
+### Regras de veracidade do diagnóstico do time
+
+O diagnóstico nunca afirma o que os dados não sustentam:
+
+- **Base única:** o plano (as 4 abas) usa só as bússolas concluídas; todo "X de N" tem N igual ou menor que esse total. Com menos de 3 bússolas, o subtítulo avisa "leitura preliminar".
+- **Média não esconde divisão:** se os dois extremos (crise × prevenção, ou foco × amplitude) têm pelo menos 30% cada, a frente diz "Time dividido". Fora disso, a resposta é a zona da média só se ela tiver pelo menos 30% das pessoas; senão, a zona mais votada. Nunca aparece uma resposta que ninguém deu.
+- **Preço pela maioria dos votos:** "fixo", "misto" ou "resultado" só com metade ou mais dos votos; senão, "preço ainda sem consenso".
+- **Esforço comercial:** se as duas maiores mesas ficam a menos de 3 caixas, "Esforço dividido entre…".
+- **Casco firme** só com média alta e nenhuma nota abaixo de 3,2.
+- **Contradições viram fraqueza:** discurso × instinto na porta de entrada, foco declarado × catálogo, preço no contrato × preço no reflexo.
+- Testado com 25 times sintéticos (6 divididos de propósito), recalculando cada afirmação a partir dos dados brutos.
+
 ### Atualizar e Limpar resultados (topo do mostrador)
 
 - **Atualizar:** lê a planilha na hora. O mostrador já se atualiza sozinho a cada 8 segundos; o botão serve para não esperar.
