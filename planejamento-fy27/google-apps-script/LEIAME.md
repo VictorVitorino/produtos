@@ -21,6 +21,16 @@ Se mudar o `Codigo.gs` depois de implantado: **Implantar → Gerenciar implanta�
 - Plano B: na tela final aparecem **Copiar minhas respostas** e **Baixar arquivo**. A pessoa manda o texto ou o arquivo para você, e no painel você usa **Abrir arquivos de resposta** (ou cola o texto) para incluí-las.
 - Quem recomeça e responde de novo: vale a resposta mais recente; a antiga fica na planilha marcada como "substituída" e não entra no Resumo nem no painel.
 
+## Mostrador vivo (o resultado na tela, enquanto respondem)
+
+Abra `mostrador-vivo.html` no computador do projetor e digite a senha do painel (o TOKEN do `Codigo.gs`); ela fica guardada só naquele computador. A tela lê a planilha a cada 8 segundos e mostra:
+
+- **Manchete:** o diagnóstico do time em uma frase (o arquétipo que predomina, porta de entrada e foco contra o plano).
+- **Quatro perguntas:** que consultoria DTS quer ser (farol), onde concentrar o esforço (porão), o que mais segura a venda (âncoras e vento comercial) e se a tripulação está pronta (casco e papel em 2027). Cada uma conta quem já passou por aquela pergunta, então os números sobem enquanto o time responde.
+- **Para a plenária:** as três decisões que os dados pedem.
+
+Contadores no topo mostram concluídas e quem está respondendo agora. **Copiar diagnóstico** leva o texto com os números para o PPT. Para ensaiar sem respostas, abra com `?demo` no fim do endereço (dados fictícios). Não envie este arquivo aos diretores.
+
 ## 3. Publicar o link para os diretores
 
 A bússola é um arquivo HTML só. Opções:

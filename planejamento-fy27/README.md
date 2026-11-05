@@ -17,6 +17,7 @@ Cada troca de ato abre com o vídeo do ato, que espera a pessoa clicar em "Segui
 | Arquivo | O que é |
 |---|---|
 | `bussola-dts-2027.html` | A dinâmica (participante) e, com `?painel` no fim do link, o painel da facilitação em onze páginas. Arquivo único, sem dependências além das fontes do Google. |
+| `mostrador-vivo.html` | O resultado ao vivo, para projetar no encontro. Arquivo separado, ligado à mesma planilha: se atualiza sozinho a cada 8 segundos e responde quatro perguntas (que consultoria DTS quer ser, onde concentrar o esforço, o que segura a venda, se a tripulação está pronta), com a manchete do diagnóstico e três decisões para a plenária. Pede a senha do painel; `?demo` no fim do link mostra uma simulação para ensaio. |
 | `google-apps-script/Codigo.gs` | Script da planilha que recebe as respostas e devolve ao painel. |
 | `google-apps-script/LEIAME.md` | Passo a passo: ligar a planilha, publicar o link, rodar ao vivo ou antes do encontro, ler o painel. |
 

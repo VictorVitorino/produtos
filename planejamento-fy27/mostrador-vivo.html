@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mostrador vivo · Bússola DTS 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Kalam:wght@400;700&family=Libre+Franklin:wght@400;500;600;700;800&family=Zilla+Slab:wght@500;600;700&display=swap">
+<!-- =====================================================================
+     MOSTRADOR VIVO · o painel de resultados para projetar no encontro
+     Lê a mesma planilha da bússola (Apps Script) e se atualiza sozinho.
+     Abra este arquivo no computador do projetor, digite a senha do painel
+     (o TOKEN do Codigo.gs) e deixe na tela. Não envie este arquivo aos diretores.
+     ===================================================================== -->
+<script id="mostrador-config">
+  window.MOSTRADOR_CONFIG = {
+    sheetsEndpoint: 'https://script.google.com/macros/s/AKfycbxEJxSQi9gT5BWQWhPkEl3NQW_EIAg0W65EDpOe59HN6wjx4Zvxf2fsPJIX7Z7j_WW4VA/exec',   // o mesmo link /exec da bússola
+    painelToken: '',      // deixe vazio: a senha é digitada na tela e fica só neste computador
+    intervaloSeg: 8,      // de quantos em quantos segundos ler a planilha
+    rotacaoSeg: 25        // tempo de cada página na rotação automática
+  };
+</script>
+<style>
+:root{
+  --navy:#002B49; --navy-80:#33556D; --navy-40:#99AAB6; --navy-20:#CCD5DB;
+  --steel:#5E8AB4; --blue-80:#7EA1C3; --blue-40:#BFD0E1; --ice:#DFE8F0;
+  --peach:#FCD1A2; --orange:#F78C16; --rust:#B4570A; --green:#9ACC3C; --yellow:#F9C20A; --red:#CF3D3D;
+  --line:rgba(191,208,225,.16); --card:rgba(255,255,255,.035);
+  --serif:'Zilla Slab',Georgia,serif; --sans:'Libre Franklin',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Courier Prime',ui-monospace,Menlo,monospace; --hand:'Kalam','Comic Sans MS',cursive; --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#020d18;color:var(--ice);font-family:var(--sans)}
+body{display:grid;place-items:center;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.stage{position:relative;width:min(100vw,calc(100vh * 16 / 9));aspect-ratio:16/9;container-type:size;overflow:hidden;background:radial-gradient(110% 80% at 15% -10%,#0d3a5e 0%,#05203a 45%,#020d18 100%)}
+.ui{position:absolute;inset:0;font-size:2.15cqh;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;gap:.9em;padding:1.3em 2em .9em}
+
+.hd{display:flex;align-items:center;justify-content:space-between;gap:1.5em}
+.brand .eyebrow{font:700 .6em var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--blue-40)}
+.brand .eyebrow b{color:var(--peach)}
+.brand h1{display:flex;align-items:center;gap:.6em;margin-top:.15em;font-family:var(--serif);font-weight:700;font-size:1.45em;line-height:1;color:#fff}
+.live{display:inline-flex;align-items:center;gap:.45em;font:700 .42em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--peach);border:1px solid rgba(252,209,162,.45);border-radius:99px;padding:.45em .9em .4em}
+.live i{width:.8em;height:.8em;border-radius:50%;background:var(--orange);animation:pulse 1.6s infinite}
+.live.off{color:var(--navy-40);border-color:var(--line)}.live.off i{background:var(--navy-40);animation:none}
+.live.demo{color:var(--blue-40);border-color:rgba(191,208,225,.45)}.live.demo i{background:var(--blue-80)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(247,140,22,.6)}70%{box-shadow:0 0 0 .7em rgba(247,140,22,0)}100%{box-shadow:0 0 0 0 rgba(247,140,22,0)}}
+.count{display:flex;gap:1.6em;align-items:baseline}
+.ct{display:flex;align-items:baseline;gap:.4em}
+.ct b{font-family:var(--serif);font-weight:700;font-size:2.3em;line-height:1;color:#fff}
+.ct span{font:700 .58em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--blue-40)}
+.ct.hi b{color:var(--peach)}
+
+.headline{border-left:4px solid var(--orange);padding:.15em 0 .2em 1em}
+.headline .eb{font:700 .58em var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--peach)}
+.headline h2{font-family:var(--serif);font-weight:700;font-size:2.35em;line-height:1.04;color:#fff;margin-top:.12em}
+.headline p{font-size:.9em;line-height:1.4;color:var(--blue-40);margin-top:.3em}
+.headline p b{color:#fff}
+
+.qs{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.8em;min-height:0}
+.qc{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:0 .9em;align-content:start;padding:.85em 1.2em .8em;border:1px solid var(--line);border-radius:14px;background:var(--card);min-height:0;overflow:hidden}
+.qc .nb{grid-row:1/5;width:1.9em;height:1.9em;border-radius:50%;display:grid;place-items:center;font:700 .95em var(--mono);color:var(--navy);background:var(--peach)}
+.qc .qq{font:700 .62em var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--blue-40);display:flex;justify-content:space-between;gap:1em}
+.qc .qq span{color:var(--navy-40);letter-spacing:.08em}
+.qc .ans{font-family:var(--serif);font-weight:700;font-size:1.68em;line-height:1.08;color:#fff;margin-top:.22em}
+.qc .ans em{font-style:normal;color:var(--peach)}
+.qc .fact{font-size:.8em;line-height:1.4;color:var(--ice);margin-top:.35em}
+.qc .fact b{color:#fff}
+.qc .viz{margin-top:.6em}
+.qc .wait{font-family:var(--hand);font-size:1.05em;color:var(--navy-40);margin-top:.6em}
+
+.stk{display:flex;height:1.1em;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.06)}
+.stk i{display:block;height:100%;transition:flex-grow 1.1s var(--ease)}
+.stk-l{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:.35em;font:700 .52em var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--blue-40)}
+.stk-l span:nth-child(2){text-align:center;color:var(--peach)}.stk-l span:last-child{text-align:right}
+.bars{display:flex;flex-direction:column;gap:.28em}
+.bar{display:grid;grid-template-columns:var(--lw,11em) minmax(0,1fr) 2.8em;align-items:center;gap:.7em;font-size:.72em}
+.bar>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--blue-40)}
+.bar.top>span:first-child{color:#fff;font-weight:700}
+.bar .v{font-family:var(--serif);font-weight:700;color:#fff;text-align:right}
+.tr{position:relative;height:.6em;border-radius:99px;background:rgba(255,255,255,.07)}
+.tr i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--steel);width:var(--to);animation:grow 1.1s var(--ease)}
+.tr i.hi{background:#fff}
+.tr em{position:absolute;top:-.3em;bottom:-.3em;width:3px;margin-left:-1.5px;border-radius:2px;background:var(--orange);left:var(--p)}
+@keyframes grow{from{width:var(--from)}}
+.dots{display:flex;gap:1.1em}
+.dots div{display:flex;flex-direction:column;align-items:center;gap:.25em;font:700 .5em var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--blue-40)}
+.dots i{width:2.6em;height:2.6em;border-radius:50%;display:grid;place-items:center;font:700 1.9em var(--serif);font-style:normal;color:var(--navy)}
+
+.plen{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:1em;align-items:start;padding:.8em 1.2em;border:1px solid rgba(247,140,22,.5);border-radius:14px;background:rgba(247,140,22,.05)}
+.plen .k{font:700 .6em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--peach);padding-top:.25em;white-space:nowrap}
+.plen div{display:grid;grid-template-columns:1.5em 1fr;gap:.55em;font-size:.76em;line-height:1.35;color:var(--ice)}
+.plen div b.n{display:grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;background:var(--orange);color:var(--navy);font:700 .85em var(--mono)}
+.plen div span b{color:#fff}
+
+.ft{display:flex;align-items:center;justify-content:space-between;gap:1em}
+.ft .st{font-size:.58em;color:var(--navy-40)}
+.ctl{display:flex;gap:.45em}
+.ctl button{display:inline-flex;align-items:center;gap:.4em;height:2em;padding:0 .8em;border-radius:7px;border:1px solid var(--line);font-size:.56em;font-weight:600;color:var(--blue-40)}
+.ctl button:hover{color:#fff;border-color:var(--peach)}
+.ctl button svg{width:1.2em;height:1.2em}
+
+.toast{position:absolute;left:50%;top:1.1em;transform:translate(-50%,.6em);opacity:0;pointer-events:none;z-index:5;padding:.55em 1.1em;border-radius:99px;background:rgba(2,13,24,.92);border:1px solid rgba(247,140,22,.6);font-size:.8em;color:#fff;transition:all .5s var(--ease);white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast b{color:var(--peach)}
+.banner{position:absolute;left:50%;bottom:3.4em;transform:translateX(-50%);z-index:5;padding:.45em 1em;border-radius:8px;background:rgba(207,61,61,.2);border:1px solid rgba(207,61,61,.6);font-size:.66em;color:#fff;display:none}
+.banner.on{display:block}
+.gate{position:absolute;inset:0;z-index:10;display:grid;place-items:center;background:rgba(2,13,24,.78);backdrop-filter:blur(4px)}
+.gate.off{display:none}
+.gcard{width:min(30em,90%);padding:1.4em 1.5em;border-radius:14px;background:#F3ECDC;color:#18324a;box-shadow:0 1.4em 3em rgba(0,0,0,.55)}
+.gcard .k{font:700 .62em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--rust)}
+.gcard h2{font-family:var(--serif);font-size:1.5em;color:var(--navy);margin:.3em 0 .35em;line-height:1.1}
+.gcard p{font-size:.78em;line-height:1.45;color:#33556D}
+.gcard input{width:100%;margin-top:.8em;font:inherit;font-size:.9em;padding:.6em .8em;border-radius:8px;border:1px solid var(--navy-40);background:#fff;color:var(--navy)}
+.gcard .row{display:flex;gap:.6em;justify-content:flex-end;margin-top:1em;flex-wrap:wrap}
+.gcard .row button{height:2.5em;padding:0 1.1em;border-radius:8px;border:1.5px solid var(--navy);color:var(--navy);font-weight:700;font-size:.8em}
+.gcard .row .go{background:var(--navy);color:#fff}
+.gcard .msg{min-height:1.3em;margin-top:.6em;font-size:.72em;color:var(--red)}
+@media (max-aspect-ratio:4/3){.stage{width:100vw;height:100vh;aspect-ratio:auto}.qs{grid-template-columns:1fr;grid-template-rows:none}.plen{grid-template-columns:1fr}.ui{overflow:auto}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media print{.ctl,.gate,.toast,.banner{display:none!important}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="ui">
+    <header class="hd">
+      <div class="brand"><div class="eyebrow">Alvarez &amp; Marsal · DTS · <b>Bússola 2027</b></div><h1>Resultado ao vivo <span class="live off" id="live"><i></i><span id="liveTxt">conectando</span></span></h1></div>
+      <div class="count" id="count"></div>
+    </header>
+    <section class="headline" id="headline"></section>
+    <main class="qs" id="qs"></main>
+    <section class="plen" id="plen"></section>
+    <footer class="ft"><span class="st" id="st"></span><div class="ctl" id="ctl"></div></footer>
+  </div>
+  <div class="toast" id="toast"></div>
+  <div class="banner" id="banner"></div>
+  <div class="gate off" id="gate"></div>
+</div>
+<script>
+/* constantes do modelo, copiadas da bússola no build (mesma fonte) */
+/* ===================================================================== */
+/* 1 · MODELO: dimensões, posição do planejamento e os itens             */
+/* ===================================================================== */
+const VERSION = 'bussola-dts-3';
+const CFG = window.BUSSOLA_CONFIG || {};
+const clamp = (v, a = 0, b = 100) => Math.max(a, Math.min(b, v));
+const avg = arr => arr.length ? arr.reduce((s, x) => s + x, 0) / arr.length : null;
+const median = arr => { if (!arr.length) return null; const s = [...arr].sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt1 = n => (Math.round(n * 10) / 10).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+// Posição do planejamento FY27 em cada dimensão (0–100). Serve de referência; o participante não a vê.
+const DIMS = {
+  PORTA:   { nome: 'Porta de entrada', esq: 'CFO · chamado na crise', dir: 'CIO · chamado para não falhar', plan: 40, w: .20, leitura: 'Entrar pela dor que o cliente já tem (ERP em crise, custo de TI, pós-M&A) e ficar para não falhar de novo.' },
+  FOCO:    { nome: 'Foco do portfólio', esq: 'Abrir frentes', dir: 'Núcleo forte', plan: 80, w: .20, leitura: 'Núcleo forte (eficiência de TI, programas críticos e M&A) com expansão seletiva.' },
+  RECEITA: { nome: 'Modelo de receita', esq: 'Por hora', dir: 'Por resultado', plan: 80, w: .10, leitura: 'Preço ligado a resultado, risco evitado ou recorrência.' },
+  PRODUTO: { nome: 'Entrega', esq: 'Relatório', dir: 'Produto que fica', plan: 85, w: .05, leitura: 'Entrega concreta e artefatos prontos, não um PPT.' },
+  IA:      { nome: 'Inteligência artificial', esq: 'Prática própria', dir: 'Dentro dos produtos, com Data & IA', plan: 90, w: .07, leitura: 'IA como base interna de todos os produtos; oferta de IA junto com Data & IA.' },
+  FABRICA: { nome: 'Fábrica × parceiros', esq: 'Fábrica própria', dir: 'Parceiros, DTS no comando', plan: 85, w: .05, leitura: 'Situações críticas com parceiros de engenharia, sem fábrica própria.' },
+  ANCORAS: { nome: 'Âncoras do núcleo', esq: 'Fora das âncoras', dir: 'Nas âncoras', plan: 100, w: .10, leitura: 'Custo de TI (1.1, 2.7), programas críticos (2.3) e tecnologia em transações (3.2–3.4).' },
+  PILARES: { nome: 'Mesa de investimento', esq: 'Longe do plano', dir: 'Como o plano', plan: 100, w: .15, leitura: 'Esforço concentrado em reestruturação, execução/eficiência e M&A; operações e apostas como expansão.' },
+  CONSOL:  { nome: 'Consolidação', esq: 'Catálogo amplo', dir: '33 → 23 produtos', plan: 100, w: .08, leitura: 'De 33 para 23 produtos; diagnóstico isolado e implementação de ERP deixam de ser vendidos à parte.' }
+};
+const PLAN_MESA = [25, 35, 25, 10, 5];
+
+// Bloco 1 · reflexos (até 30 segundos cada: dá tempo de ler antes de escolher). L/R dizem o valor de cada lado na dimensão.
+const REFLEX = [
+  { id: 'r1', tema: 'O motor', q: 'No seu barco, o que você prefere pagar?', L: 'O reboque, quando o motor parar no mar', R: 'A revisão do motor antes de zarpar', dim: 'PORTA', vL: 0, vR: 100, dts: 'Ser chamado na crise ou acompanhar sempre.' },
+  { id: 'r2', tema: 'O resgate', q: 'Quando a TI de um cliente está em perigo, DTS é…', L: 'O resgate que chega na tempestade', R: 'O prático que guia o navio longe das pedras', dim: 'PORTA', vL: 0, vR: 100, dts: 'A mesma pergunta, por outro ângulo.' },
+  { id: 'r3', tema: 'A pesca', q: 'Para voltar com o barco cheio, você lança…', L: 'Uma rede enorme, que pega de tudo', R: 'O anzol certo, no cardume certo', dim: 'FOCO', vL: 0, vR: 100, dts: 'Catálogo amplo ou poucas e boas escolhas.' },
+  { id: 'r4', tema: 'O quinhão', q: 'Como o pescador prefere ser pago?', L: 'Com uma parte do que pescar', R: 'Com a diária, pescando ou não', dim: 'RECEITA', vL: 100, vR: 0, dts: 'Preço por resultado ou por hora trabalhada.' },
+  { id: 'r5', tema: 'O fim da viagem', q: 'No fim da viagem, o que fica com o dono do navio?', L: 'Um relatório contando a travessia', R: 'Instrumentos novos, instalados a bordo', dim: 'PRODUTO', vL: 0, vR: 100, dts: 'Serviço que explica ou produto que fica.' },
+  { id: 'r6', tema: 'O radar', q: 'A IA é o radar da frota. Ele fica…', L: 'Instalado em cada navio, com Data & IA', R: 'Num navio próprio, só de radar', dim: 'IA', vL: 100, vR: 0, dts: 'IA dentro de cada produto ou uma prática de IA à parte.' },
+  { id: 'r7', tema: 'O estaleiro', q: 'Para ter navios novos, DTS…', L: 'Monta o próprio estaleiro', R: 'Comanda a obra em estaleiros parceiros', dim: 'FABRICA', vL: 0, vR: 100, dts: 'Construir sistemas e agentes ou liderar parceiros de engenharia.' },
+  { id: 'r8', tema: 'O mar novo', q: 'Mar desconhecido pela frente. Como você navega?', L: 'Uma rota por vez, até conhecer cada corrente', R: 'Três rotas novas ao mesmo tempo', dim: 'FOCO', vL: 100, vR: 0, dts: 'Profundidade ou amplitude.' }
+];
+const REFLEX_MS = 30000;
+
+const ROTAS = [
+  { id: 'A', nome: 'A estrada de sempre', txt: 'Seguimos com tudo que já oferecemos; cada serviço vendido por si.', pro: 'Sem custo de mudança.', con: 'Ninguém sabe exatamente para que nos chamar.', foco: 20 },
+  { id: 'B', nome: 'Três destinos e um desvio', txt: 'Concentramos o esforço em três problemas com orçamento e urgência; frente nova só quando houver oportunidade.', pro: 'Somos a primeira escolha em poucos problemas.', con: 'Deixamos de vender algumas coisas à parte.', foco: 85 },
+  { id: 'C', nome: 'Mapa aberto', txt: 'Abrimos todas as frentes novas ao mesmo tempo: verticais, supply chain, assinaturas.', pro: 'Mais mercado endereçável.', con: 'Time e investimento diluídos; receita incerta no primeiro ano.', foco: 10 }
+];
+const MESAS = [
+  { id: 'P1', nome: 'Reestruturação e turnaround de TI', sub: 'custo, desempenho e comando da área' },
+  { id: 'P2', nome: 'Programas críticos e eficiência do gasto', sub: 'ERP atrasado, fiscal, contratos e nuvem' },
+  { id: 'P3', nome: 'Tecnologia em fusões e aquisições', sub: 'diligência, integração e separação' },
+  { id: 'P4', nome: 'Operações e verticais', sub: 'supply chain, saúde, varejo, financeiro' },
+  { id: 'P5', nome: 'Apostas novas', sub: 'valor da IA, radar de investidas, assinaturas' }
+];
+const CALLS = [
+  { id: 'cfo', quem: 'CFO', av: 'CFO', txt: 'Preciso tirar 20% do custo de TI sem parar a operação.', core: true, porta: 0 },
+  { id: 'erp', quem: 'Patrocinador do ERP', av: 'ERP', txt: 'O programa atrasou e a CBS chega em 2027. Alguém assume?', core: true, porta: 0 },
+  { id: 'fundo', quem: 'Sócio de fundo', av: 'PE', txt: 'Fechamos a compra em 30 dias. Quais riscos de TI mexem no preço?', core: true, porta: 0 },
+  { id: 'ceo', quem: 'CEO', av: 'CEO', txt: 'O CIO pediu demissão. Quem segura a área até acharmos outro?', core: true, porta: 0 },
+  { id: 'coo', quem: 'COO', av: 'COO', txt: 'Estoque alto e ruptura ao mesmo tempo. O sistema não resolve.', exp: true },
+  { id: 'cio_prev', quem: 'CIO', av: 'CIO', txt: 'Está tudo funcionando. Quero alguém olhando a TI comigo todo mês, sem surpresas.', porta: 100 },
+  { id: 'cio_diag', quem: 'CIO', av: 'CIO', txt: 'Quero um diagnóstico de maturidade e uma estratégia digital para três anos.', neg: true },
+  { id: 'cio_erp', quem: 'CIO', av: 'CIO', txt: 'Vamos implantar um ERP novo. Vocês lideram a implementação?', neg: true },
+  { id: 'cons_ia', quem: 'Conselheiro', av: 'CONS', txt: 'Investimos milhões em IA. Quanto voltou? Ninguém sabe.', cand: true }
+];
+const IA_OPTS = [
+  { id: 'a', txt: 'Sim. Vamos montar uma prática de IA própria de DTS.', ia: 15 },
+  { id: 'b', txt: 'A IA está dentro de cada produto nosso. A oferta de IA fazemos junto com Data & IA.', ia: 100 },
+  { id: 'c', txt: 'IA é com a prática de Data & IA. DTS cuida da TI.', ia: 45 },
+  { id: 'd', txt: 'Montamos uma fábrica de agentes e vendemos como plataforma.', ia: 25, fabrica: 0 }
+];
+const PRIO = [
+  { id: 'custo', txt: 'Reduzir o custo de tecnologia', top: true },
+  { id: 'programa', txt: 'Recuperar um programa crítico atrasado', top: true },
+  { id: 'deal', txt: 'Traduzir tecnologia em preço e sinergia numa transação', top: true },
+  { id: 'erp', txt: 'Implementar ERP e sistemas de ponta a ponta', top: false },
+  { id: 'estrategia', txt: 'Desenhar a estratégia digital e medir a maturidade de TI', top: false }
+];
+// Manobra 16 · os ventos da venda: como DTS vende hoje (1 a 5) e o que mais segura a venda (duas âncoras)
+const VENTOS = [
+  { v: 1, nome: 'Calmaria', txt: 'esperamos o cliente ligar' },
+  { v: 2, nome: 'Brisa', txt: 'vendemos quando a oportunidade aparece' },
+  { v: 3, nome: 'Vento moderado', txt: 'cada diretor vende do seu jeito' },
+  { v: 4, nome: 'Vento forte', txt: 'temos pipeline e rituais, sem método comum' },
+  { v: 5, nome: 'Vento de popa', txt: 'máquina de venda: metas, rituais e MDs juntos' }
+];
+const ANCORAS_VENDA = [
+  { id: 'tempo', mar: 'Sem tempo no convés', nome: 'Tempo para vender', txt: 'A entrega toma a agenda; sobra pouco tempo para prospectar.' },
+  { id: 'oferta', mar: 'Sem carta náutica', nome: 'Oferta clara', txt: 'Difícil dizer em uma frase o que DTS vende e por quê.' },
+  { id: 'ferramenta', mar: 'Sem instrumentos', nome: 'Ferramentas de venda', txt: 'Falta CRM, pipeline visível e material pronto para propor.' },
+  { id: 'treino', mar: 'Sem treino de manobra', nome: 'Treinamento comercial', txt: 'Falta método de prospecção, negociação e fechamento.' },
+  { id: 'coach', mar: 'Sem mestre a bordo', nome: 'Coach de venda', txt: 'Falta quem acompanhe as propostas e ensine na prática.' },
+  { id: 'gtm', mar: 'Navegando sozinho', nome: 'Go-to-market com os MDs', txt: 'Pouca venda junto com os MDs e as outras práticas da A&M.' },
+  { id: 'provas', mar: 'Sem farol de referência', nome: 'Cases e referências', txt: 'Faltam casos, números e clientes que falem por DTS.' },
+  { id: 'gente', mar: 'Tripulação curta', nome: 'Gente que vende', txt: 'Faltam perfis comerciais e seniores para abrir portas.' }
+];
+const ESPELHO = [
+  { id: 'A', mar: 'O resgate na tempestade', txt: '…o CFO chama quando a TI falhou.', sub: 'Entramos na crise, com acesso ao CEO e ao conselho.', porta: 10 },
+  { id: 'B', mar: 'O prático do canal', txt: '…o CIO chama para não falhar.', sub: 'Presença recorrente e lembrança de marca em TI.', porta: 90 },
+  { id: 'C', mar: 'O resgate que fica a bordo', txt: '…entra pela dor que o CIO já tem e fica para não falhar de novo.', sub: 'ERP em crise, custo de TI, pós-M&A: a porta é o problema de hoje.', porta: 40 }
+];
+const ARQUETIPOS = { // nome · txt (painel) · lema, desafio e pergunta (carta do comandante)
+  NW: { nome: 'Rebocador de salvamento', txt: 'Chega quando o navio está à deriva, com poucas e boas armas e acesso ao CEO. O desafio: ficar a bordo depois da tempestade.',
+    lema: 'Para você, DTS chega quando a TI do cliente está à deriva, chamada pelo CFO, com poucas e boas ofertas.', desafio: 'ficar a bordo depois da tempestade', pergunta: 'Como transformar cada resgate em uma relação que continua depois da crise?' },
+  NE: { nome: 'Prático de confiança', txt: 'O CIO chama antes do canal perigoso. Poucos problemas, acompanhamento contínuo. O desafio: ser lembrado antes da tempestade.',
+    lema: 'Para você, DTS guia o CIO antes do canal perigoso, com poucas ofertas fortes e presença contínua.', desafio: 'ser chamado antes da tempestade, e não depois', pergunta: 'O que faz o CIO chamar DTS antes de o problema existir?' },
+  SW: { nome: 'Guarda costeira', txt: 'Atende qualquer emergência de tecnologia; ninguém fica sem resposta. O desafio: ser a primeira escolha em alguma.',
+    lema: 'Para você, DTS atende qualquer emergência de tecnologia do cliente, com um catálogo amplo.', desafio: 'ser a primeira escolha em alguma coisa', pergunta: 'Em qual emergência DTS quer ser a primeira a ser chamada?' },
+  SE: { nome: 'Estaleiro da frota', txt: 'Cuida da frota inteira, junto ao CIO, o ano todo. Mais mercado; o desafio é foco e investimento comercial.',
+    lema: 'Para você, DTS cuida da frota inteira do CIO, o ano todo, em muitas frentes.', desafio: 'ter foco e investimento comercial para tantas frentes', pergunta: 'Quais frentes ficam no cais para o investimento caber?' },
+  C:  { nome: 'Resgate que fica a bordo', txt: 'Entra pela dor que o cliente já tem e fica para não falhar de novo, sem abrir mão do foco.',
+    lema: 'Para você, DTS entra pela dor que o cliente já tem e fica para ele não falhar de novo.', desafio: 'não perder o foco depois de embarcar', pergunta: 'Qual dor de hoje abre a porta da relação de amanhã?' }
+};
+
+// Bloco do casco (encontro de 06/11): papel do diretor, integridade do time e a quem cada um recorre.
+const PAPEIS = [
+  { id: 'front', nome: 'Front do projeto', sub: 'com o cliente, na entrega' },
+  { id: 'qualidade', nome: 'Gate de qualidade', sub: 'revisar e garantir o que sai' },
+  { id: 'vender', nome: 'Vender e abrir portas', sub: 'originar, propor e fechar' },
+  { id: 'expandir', nome: 'Expandir contas', sub: 'presença ativa nas contas atuais' },
+  { id: 'pessoas', nome: 'Desenvolver o time', sub: 'pessoas, coaching e carreira' },
+  { id: 'ofertas', nome: 'Construir ofertas', sub: 'produtos, IA e conteúdo de mercado' },
+  { id: 'burocracias', nome: 'Burocracias', sub: 'relatórios, aprovações e gestão interna' }
+];
+const CASCO = [
+  { id: 'confianca', nome: 'Confiança', curto: 'Confiança', txt: 'Aqui eu posso admitir um erro ou uma fraqueza sem medo.' },
+  { id: 'conflito', nome: 'Conflito produtivo', curto: 'Conflito', txt: 'Quando discordamos, debatemos o mérito com franqueza, e não pelos corredores.' },
+  { id: 'compromisso', nome: 'Compromisso', curto: 'Compromisso', txt: 'Saímos das reuniões com decisões claras, que todos sustentam, mesmo quem discordou.' },
+  { id: 'cobranca', nome: 'Cobrança mútua', curto: 'Cobrança', txt: 'Cobramos uns aos outros quando alguém não entrega o combinado.' },
+  { id: 'resultado', nome: 'Resultado coletivo', curto: 'Resultado', txt: 'O resultado de DTS vem antes do resultado da minha frente.' }
+];
+const CHAMADOS = [
+  { id: 'porta', q: 'para abrir a porta de um CFO ou CEO?', tema: 'Abrir a porta de um CFO ou CEO' },
+  { id: 'trilho', q: 'quando um projeto começa a sair do trilho?', tema: 'Projeto saindo do trilho' },
+  { id: 'proposta', q: 'para montar uma proposta difícil e fechar a venda?', tema: 'Proposta difícil e fechamento' }
+];
+const CARGOS = ['Diretor', 'Senior Director', 'Managing Director'];
+// Catálogo de hoje (Planejamento FY27, slide 15): 33 produtos em quatro pilares. É o manifesto de carga da manobra 15.
+const CATALOGO = [
+  { id: 'adv', pilar: 'IT Advisory', curto: 'IT Advisory', itens: ['Tech Maturity & Value Assessment', 'C-Level Tech Enablement', 'Embedded Tech Leadership', 'Interim CIO/CTO Leadership', 'Digital Strategy & Roadmapping', 'Operating Model Design & Tech Org Restructuring', 'IT Resilience & Business Continuity Planning', 'Tech Spend Optimization', 'Tax Incentives', 'Strategic Tech Tax Planning'] },
+  { id: 'trf', pilar: 'Transformação Tecnológica', curto: 'Transformação Tecnológica', itens: ['Sourcing Strategy & Implementation', 'TMO', 'PMO', 'Execução e Remediação de programas', 'IT Governance Strategy e ITSM Implementation', 'Diagnóstico de Maturidade Ágil', 'Implementação de ATO'] },
+  { id: 'ma', pilar: 'Technology M&A Advisory & Transformation', curto: 'Technology M&A', itens: ['Technology Due Diligence Risk Assessment', 'IT M&A Strategy and Design', 'Day 1 Readiness & Transition Roadmap', 'IT Post Merger Integration Office', 'IT Carve-Out & Transition Office', 'Tech Exit Readiness & Value Creation', 'M&A Technology Advisory & Value Office'] },
+  { id: 'mod', pilar: 'Modernização Tecnológica e Evolução Digital', curto: 'Modernização e Evolução Digital', itens: ['Desenho de Arquitetura de Sistemas e Infra', 'Modernização de aplicações e infraestrutura', 'Diagnóstico de Infraestrutura', 'Cloud Migration Support & Leadership', 'Eficiência em Cloud (FinOps)', 'Observability strategy', 'Gestão e controle de testes / QA (Redwolf)', 'Customer & User Experience', 'Automação Inteligente e Aumento de Produtividade'] }
+];
+const PRODUTOS = CATALOGO.flatMap(g => g.itens.map((nome, k) => ({ id: g.id + (k + 1), nome, g: g.id, pilar: g.curto })));
+
+/* ===================================================================== */
+/* MOSTRADOR VIVO · lê a planilha, conta cada resposta e escreve o        */
+/* diagnóstico do time. As constantes do modelo vêm da própria bússola.   */
+/* ===================================================================== */
+const MC = window.MOSTRADOR_CONFIG || {};
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const sum = a => a.reduce((s, x) => s + (+x || 0), 0);
+const sdev = a => { if (a.length < 2) return 0; const m = avg(a); return Math.sqrt(avg(a.map(x => (x - m) ** 2))); };
+const pc = (k, n) => n ? Math.round(k / n * 100) : 0;
+const normName = n => String(n || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+const lc = s => s ? s[0].toLowerCase() + s.slice(1) : s;
+const DEMO = new URLSearchParams(location.search).has('demo');
+
+const DEC_ORDER = [...REFLEX.map(r => r.id), 'rota', 'mesa', 'telefone', 'contrato', 'ia', 'prio', 'roupa', 'venda', 'papel_hoje', 'papel_ideal', 'casco', 'chamado', 'espelho', 'frase'];
+const ATOS = [['Porto', ['capa']], ['Tempestade', ['rx_intro', 'rx_treino', ...REFLEX.map(r => r.id)]], ['Navegação', ['rota', 'mesa', 'telefone', 'contrato']], ['Águas profundas', ['ia', 'prio', 'roupa', 'venda']], ['Casco', ['papel_hoje', 'papel_ideal', 'casco', 'chamado']], ['Farol', ['espelho']], ['Amanhecer', ['frase', 'final']]];
+const RX_CURTO = { r1: ['Reboque na crise', 'Revisão antes'], r2: ['O resgate', 'O prático'], r3: ['Rede enorme', 'Anzol certo'], r4: ['Parte da pesca', 'A diária'], r5: ['Relatório', 'Instrumentos a bordo'], r6: ['Radar em cada navio', 'Navio só de radar'], r7: ['Estaleiro próprio', 'Estaleiros parceiros'], r8: ['Uma rota por vez', 'Três rotas juntas'] };
+const IA_CURTO = { a: 'Prática própria de IA', b: 'IA dentro dos produtos, com Data & IA', c: 'IA é com Data & IA', d: 'Fábrica de agentes própria' };
+const MESA_CURTA = ['Reestruturação de TI', 'Programas e eficiência', 'Tecnologia em M&A', 'Operações e verticais', 'Apostas novas'];
+const PAPEL_CURTO = { front: 'Front do projeto', qualidade: 'Gate de qualidade', vender: 'Vender', expandir: 'Expandir contas', pessoas: 'Desenvolver o time', ofertas: 'Construir ofertas', burocracias: 'Burocracias' };
+const quadOf = (x, y) => Math.abs(x) <= 12 && y >= -12 ? 'C' : (y >= 0 ? 'N' : 'S') + (x < 0 ? 'W' : 'E');
+const angOf = (x, y) => Math.round((Math.atan2(x, y) * 180 / Math.PI + 360) % 360);
+const ventoNome = v => VENTOS[clamp(Math.round(v), 1, 5) - 1].nome;
+
+/* ---------------- linhas da planilha → participantes ---------------- */
+function participantes(rs) {
+  const out = new Map();
+  rs.forEach(r => {
+    let a = r._a || null;
+    if (!a && r.estado) { try { const e = typeof r.estado === 'string' ? JSON.parse(r.estado) : r.estado; a = e && e.a; } catch (e) { } }
+    const num = k => { const v = r[k]; if (v === '' || v == null) return null; const n = Number(v); return isNaN(n) ? null : n; };
+    const st = r.status || (r.concluidoEm ? 'concluída' : 'em andamento');
+    const p = { id: String(r.sessionId || ''), nome: r.nome || '', done: st === 'concluída', etapa: r.etapa || (st === 'concluída' ? 'final' : 'capa'), a: a || {},
+      arq: r.arquetipo || '', x: num('x'), y: num('y'), conv: num('opiniaoFormada'), ader: num('aderencia'), vel: num('velocidadeMed'), hes: num('hesitacoes'), dur: num('duracaoSeg'),
+      dims: Object.fromEntries(Object.keys(DIMS).map(k => [k, num(k)])), ts: Date.parse(r.atualizadoEm || r.concluidoEm || r.iniciadoEm || '') || 0 };
+    if (!p.id || !p.nome) return;
+    const k = normName(p.nome), o = out.get(k); if (!o || p.ts >= o.ts) out.set(k, p); // a resposta mais recente de cada comandante
+  });
+  return [...out.values()];
+}
+const passou = (p, step) => p.done || DEC_ORDER.indexOf(p.etapa) > DEC_ORDER.indexOf(step);
+function posicao(p) { // 0 a 1 ao longo da rota, de porto em porto
+  if (p.done) return 1;
+  const i = ATOS.findIndex(x => x[1].includes(p.etapa)); if (i < 0) return 0;
+  const st = ATOS[i][1]; return Math.min(.995, (i + st.indexOf(p.etapa) / st.length) / (ATOS.length - 1));
+}
+
+/* ---------------- contagem: cada pergunta com quem já passou por ela ---------------- */
+function contar(P) {
+  const done = P.filter(p => p.done), going = P.filter(p => !p.done), who = step => P.filter(p => passou(p, step));
+  const A = { P, done, going, n: P.length, nD: done.length, nG: going.length };
+  A.dur = median(done.map(p => p.dur).filter(v => v != null));
+  A.ader = avg(done.map(p => p.ader).filter(v => v != null));
+  A.vel = median(done.map(p => p.vel).filter(v => v != null));
+  A.hes = sum(done.map(p => p.hes || 0));
+  A.dim = Object.fromEntries(Object.keys(DIMS).map(k => [k, avg(done.map(p => p.dims[k]).filter(v => v != null))]));
+  const xs = done.filter(p => p.x != null && p.y != null);
+  A.team = xs.length ? { x: avg(xs.map(p => p.x)), y: avg(xs.map(p => p.y)) } : null; if (A.team) A.team.ang = angOf(A.team.x, A.team.y);
+  A.plan = { x: DIMS.PORTA.plan - 50, y: DIMS.FOCO.plan - 50 }; A.plan.ang = angOf(A.plan.x, A.plan.y);
+  A.arq = Object.entries(ARQUETIPOS).map(([q, x]) => ({ q, nome: x.nome, n: done.filter(p => p.arq === x.nome).length })).sort((a, b) => b.n - a.n);
+  A.porta = done.map(p => p.dims.PORTA).filter(v => v != null);
+  // farol e carta náutica
+  let g = who('espelho'); A.farol = { n: g.length, c: ESPELHO.map(e => ({ id: e.id, nome: e.mar, n: g.filter(p => p.a.espelho === e.id).length })) };
+  g = who('rota'); A.rota = { n: g.length, c: ROTAS.map(r => ({ id: r.id, nome: r.nome, n: g.filter(p => p.a.rota === r.id).length })) };
+  // porão
+  g = who('mesa').filter(p => Array.isArray(p.a.mesa) && sum(p.a.mesa) === 100);
+  A.mesa = { n: g.length, m: MESAS.map((x, i) => avg(g.map(p => p.a.mesa[i]))) };
+  A.mesa.nucleo = g.length ? avg(g.map(p => p.a.mesa[0] + p.a.mesa[1] + p.a.mesa[2])) : null;
+  // rádio
+  g = who('telefone').filter(p => p.a.tel && Array.isArray(p.a.tel.atender));
+  A.tel = { n: g.length, c: CALLS.map(c => ({ c, at: g.filter(p => p.a.tel.atender.includes(c.id)).length, first: g.filter(p => p.a.tel.atender[0] === c.id).length, cx: g.filter(p => p.a.tel.postal === c.id).length })).sort((a, b) => b.at - a.at || b.first - a.first) };
+  // contrato
+  g = who('contrato').filter(p => p.a.contrato && p.a.contrato.v != null); const cv = g.map(p => +p.a.contrato.v);
+  A.contrato = { n: g.length, m: avg(cv), fixo: cv.filter(v => v <= 35).length, misto: cv.filter(v => v > 35 && v < 65).length, res: cv.filter(v => v >= 65).length };
+  // sonar
+  g = who('ia').filter(p => p.a.ia); A.ia = { n: g.length, c: IA_OPTS.map(o => ({ id: o.id, nome: IA_CURTO[o.id], n: g.filter(p => p.a.ia === o.id).length })).sort((a, b) => b.n - a.n) };
+  // diário de bordo
+  g = who('prio').filter(p => Array.isArray(p.a.prio) && p.a.prio.length === PRIO.length);
+  A.prio = { n: g.length, c: PRIO.map(x => ({ x, pos: avg(g.map(p => p.a.prio.indexOf(x.id) + 1)), first: g.filter(p => p.a.prio[0] === x.id).length })).sort((a, b) => (a.pos ?? 9) - (b.pos ?? 9)) };
+  // manifesto de carga
+  g = who('roupa').filter(p => Array.isArray(p.a.carga));
+  const novas = new Map(); g.forEach(p => (p.a.cargaNova || []).forEach(nm => { const k = normName(nm), o = novas.get(k) || { nome: nm, n: 0 }; o.n++; novas.set(k, o); }));
+  A.carga = { n: g.length, m: g.length ? avg(g.map(p => p.a.carga.length + (p.a.cargaNova || []).length)) : null,
+    prod: PRODUTOS.map(x => ({ x, n: g.filter(p => p.a.carga.includes(x.id)).length })).map(o => ({ ...o, f: g.length ? o.n / g.length : 0 })).sort((a, b) => b.f - a.f),
+    novas: [...novas.values()].sort((a, b) => b.n - a.n) };
+  // ventos da venda
+  g = who('venda').filter(p => p.a.vento); const vs = g.map(p => +p.a.vento);
+  A.vento = { n: g.length, m: avg(vs), sd: sdev(vs), hist: [1, 2, 3, 4, 5].map(v => vs.filter(x => x === v).length) };
+  A.anc = ANCORAS_VENDA.map(x => ({ x, n: g.filter(p => (p.a.ancoras || []).includes(x.id)).length })).sort((a, b) => b.n - a.n);
+  // quarto de serviço
+  const gh = who('papel_hoje').filter(p => p.a.papel && Array.isArray(p.a.papel.hoje) && sum(p.a.papel.hoje) === 100);
+  const gi = who('papel_ideal').filter(p => p.a.papel && Array.isArray(p.a.papel.ideal) && sum(p.a.papel.ideal) === 100);
+  A.papel = { nH: gh.length, nI: gi.length, c: PAPEIS.map((x, i) => ({ x, h: avg(gh.map(p => +p.a.papel.hoje[i] || 0)), i: avg(gi.map(p => +p.a.papel.ideal[i] || 0)), sd: sdev(gi.map(p => +p.a.papel.ideal[i] || 0)) })) };
+  // casco
+  g = who('casco').filter(p => Array.isArray(p.a.casco) && p.a.casco.length === CASCO.length && p.a.casco.every(v => v != null));
+  A.casco = { n: g.length, c: CASCO.map((x, i) => { const v = g.map(p => +p.a.casco[i]); return { x, m: avg(v), r: v.filter(z => z <= 2).length, y: v.filter(z => z === 3).length, gg: v.filter(z => z >= 4).length }; }) };
+  A.casco.idx = g.length ? Math.round((avg(A.casco.c.map(c => c.m)) - 1) / 4 * 100) : null;
+  // tempestade
+  A.rx = REFLEX.map(r => { const gg = who(r.id).filter(p => p.a.rx && p.a.rx[r.id]); const v = gg.map(p => p.a.rx[r.id]); return { r, n: gg.length, L: v.filter(z => z.side === 'L').length, R: v.filter(z => z.side === 'R').length, H: v.filter(z => z.side == null).length }; });
+  // garrafas
+  A.frases = P.filter(p => passou(p, 'frase') && p.a.frase).map(p => String(p.a.frase)).filter(Boolean);
+  return A;
+}
+
+/* ---------------- o diagnóstico do time, com fatos e números ---------------- */
+function diagnostico(A) {
+  const D = { blocos: [], conv: [], div: [], pautas: [] };
+  if (!A.nD) {
+    D.eb = 'Diagnóstico do time'; D.titulo = A.nG ? 'A frota está no mar' : 'Aguardando as primeiras agulhas';
+    D.sub = A.nG ? `${A.nG} comandante${A.nG > 1 ? 's' : ''} em travessia. O diagnóstico aparece quando a primeira bússola for concluída; cada pergunta abaixo já conta quem passou por ela.` : 'Assim que os diretores começarem, as respostas entram aqui sozinhas.';
+    return D;
+  }
+  const top = A.arq[0], seg = A.arq[1], dif = A.team ? Math.abs(((A.team.ang - A.plan.ang) + 540) % 360 - 180) : null;
+  const mp = A.dim.PORTA, mf = A.dim.FOCO, sdP = sdev(A.porta);
+  const cfo = A.porta.filter(v => v < 38).length, meio = A.porta.filter(v => v >= 38 && v <= 62).length, cio = A.porta.filter(v => v > 62).length;
+  D.eb = `Diagnóstico do time · ${A.nD} bússola${A.nD > 1 ? 's' : ''} concluída${A.nD > 1 ? 's' : ''}${A.nG ? ` · ${A.nG} em travessia` : ''}`;
+  const um = q => q === 'SW' ? 'uma' : 'um', o_ = q => q === 'SW' ? 'a' : 'o';
+  if (top.n / A.nD >= .4 || A.nD < 3) { D.titulo = `O time é ${um(top.q)} ${top.nome.toLowerCase()}`; }
+  else D.titulo = `Time dividido entre ${o_(top.q)} ${top.nome.toLowerCase()} e ${o_(seg.q)} ${seg.nome.toLowerCase()}`;
+  const lado = mp < 42 ? 'mais perto do CFO, na crise' : mp > 58 ? 'mais perto do CIO, na prevenção' : 'no meio do dilema';
+  D.sub = `<b>${top.n} de ${A.nD}</b> diretores ${top.n === 1 ? 'cai' : 'caem'} n${o_(top.q)} ${top.nome.toLowerCase()}. ${ARQUETIPOS[top.q].lema.replace('Para você, ', 'Para eles, ')} Na média, o time fica <b>${lado}</b> (porta ${Math.round(mp)}, plano ${DIMS.PORTA.plan}) e com foco ${Math.round(mf)} (plano ${DIMS.FOCO.plan})${dif != null ? `: direção a <b>${Math.round(dif)}°</b> da rota do planejamento` : ''}.`;
+  D.curto = `<b>${top.n} de ${A.nD}</b> diretores n${o_(top.q)} ${top.nome.toLowerCase()} · porta de entrada <b>${Math.round(mp)}</b> (plano ${DIMS.PORTA.plan}) · foco <b>${Math.round(mf)}</b> (plano ${DIMS.FOCO.plan})${dif != null ? ` · <b>${Math.round(dif)}°</b> da rota do plano` : ''}.`;
+  // os seis blocos
+  D.blocos.push({ k: 'Rumo', bn: `${Math.round(dif ?? 0)}°`, sm: 'da rota do plano', p: `${sdP < 15 ? '<b>Alinhado</b>' : sdP < 25 ? '<b>Parcialmente alinhado</b>' : '<b>Dividido</b>'} no dilema: ${cfo} pendem ao CFO, ${meio} ficam no meio, ${cio} ao CIO (desvio de ${Math.round(sdP)} pontos).` });
+  if (A.farol.n) { const f = [...A.farol.c].sort((a, b) => b.n - a.n); D.blocos.push({ k: 'O farol, com calma', bn: `${pc(f[0].n, A.farol.n)}%`, sm: lc(f[0].nome), p: `Votos: ${A.farol.c.map(c => `${lc(c.nome)} <b>${c.n}</b>`).join(' · ')}. O plano corresponde ao resgate que fica a bordo.` }); }
+  if (A.mesa.n) { const gaps = A.mesa.m.map((v, i) => ({ i, v, d: v - PLAN_MESA[i] })); const big = gaps.reduce((a, b) => Math.abs(b.d) > Math.abs(a.d) ? b : a); const maior = gaps.reduce((a, b) => b.v > a.v ? b : a);
+    D.blocos.push({ k: 'Onde pôr o esforço', bn: `${Math.round(A.mesa.nucleo)}%`, sm: 'no núcleo (plano 85%)', p: `Maior aposta: <b>${lc(MESAS[maior.i].nome)}</b> (${Math.round(maior.v)} caixas, plano ${PLAN_MESA[maior.i]}). Maior desvio: ${lc(MESAS[big.i].nome)} (${big.d > 0 ? '+' : ''}${Math.round(big.d)}).` }); }
+  if (A.carga.n) { const fica = A.carga.prod.filter(o => o.f >= .75), cais = A.carga.prod.filter(o => o.f <= .25);
+    D.blocos.push({ k: 'O catálogo de 2027', bn: `${Math.round(A.carga.m)}`, sm: 'a bordo · hoje 33, plano 23', p: `<b>${fica.length}</b> seguem com consenso (3 de cada 4 ou mais)${fica[0] ? `, como ${esc(fica[0].x.nome)}` : ''}; <b>${cais.length}</b> ficam no cais${cais[0] ? `, como ${esc(cais[cais.length - 1].x.nome)}` : ''}.` }); }
+  if (A.vento.n) { const a1 = A.anc[0], a2 = A.anc[1];
+    D.blocos.push({ k: 'Como DTS vende', bn: fmt1(A.vento.m), sm: `de 5 · ${lc(ventoNome(A.vento.m))}`, p: `O que mais segura a venda: <b>${lc(a1.x.nome)}</b> (${pc(a1.n, A.vento.n)}%)${a2 && a2.n ? ` e ${lc(a2.x.nome)} (${pc(a2.n, A.vento.n)}%)` : ''}.` }); }
+  if (A.casco.n || A.papel.nI) { const w = A.casco.n ? A.casco.c.reduce((a, b) => b.m < a.m ? b : a) : null; const dl = A.papel.nI ? A.papel.c.map(c => ({ c, d: (c.i ?? 0) - (c.h ?? 0) })) : []; const up = dl.length ? dl.reduce((a, b) => b.d > a.d ? b : a) : null, dn = dl.length ? dl.reduce((a, b) => b.d < a.d ? b : a) : null; const bu = A.papel.c.find(c => c.x.id === 'burocracias');
+    D.blocos.push({ k: 'A tripulação', bn: A.casco.idx != null ? `${A.casco.idx}` : '—', sm: 'integridade do casco (0–100)', p: `${w ? `Rebite mais fraco: <b>${lc(w.x.nome)}</b> (${fmt1(w.m)} de 5). ` : ''}${up && up.d >= 2 ? `Em 2027, mais ${lc(PAPEL_CURTO[up.c.x.id])} (+${Math.round(up.d)}) e menos ${lc(PAPEL_CURTO[dn.c.x.id])} (${Math.round(dn.d)}).` : ''}${bu && bu.h != null && bu.i != null ? ` Burocracias: ${Math.round(bu.h)}% hoje → ${Math.round(bu.i)}% em 2027.` : ''}` }); }
+  // onde o time converge e onde diverge
+  const cand = [];
+  if (A.farol.n >= 2) { const f = [...A.farol.c].sort((a, b) => b.n - a.n)[0]; cand.push({ s: f.n / A.farol.n, t: `No farol, ${lc(f.nome)}` }); }
+  if (A.rota.n >= 2) { const f = [...A.rota.c].sort((a, b) => b.n - a.n)[0]; cand.push({ s: f.n / A.rota.n, t: `Rota: ${lc(f.nome)}` }); }
+  if (A.ia.n >= 2) cand.push({ s: A.ia.c[0].n / A.ia.n, t: `IA: ${lc(A.ia.c[0].nome)}` });
+  A.rx.filter(x => x.n >= 2).forEach(x => { const lado = x.L >= x.R ? 0 : 1, k = Math.max(x.L, x.R); cand.push({ s: k / x.n, t: `${x.r.tema}: ${lc(RX_CURTO[x.r.id][lado])}`, rx: x }); });
+  if (A.carga.n >= 2) A.carga.prod.slice(0, 2).forEach(o => cand.push({ s: o.f, t: `${esc(o.x.nome)} segue no catálogo` }));
+  if (A.vento.n >= 2 && A.anc[0].n) cand.push({ s: A.anc[0].n / A.vento.n, t: `Falta ${lc(A.anc[0].x.nome)} para vender` });
+  D.conv = cand.filter(c => c.s >= .7).sort((a, b) => b.s - a.s).slice(0, 4).map(c => ({ v: `${Math.round(c.s * 100)}%`, t: c.t }));
+  const dv = [];
+  A.rx.filter(x => x.n >= 3).forEach(x => { const s = Math.max(x.L, x.R) / x.n; if (s <= .62) dv.push({ o: s, v: `${x.L}×${x.R}`, t: `${x.r.tema}: ${lc(RX_CURTO[x.r.id][0])} ou ${lc(RX_CURTO[x.r.id][1])}` }); });
+  if (A.porta.length >= 3 && sdP >= 20) dv.push({ o: .5, v: `±${Math.round(sdP)}`, t: 'O dilema CFO × CIO' });
+  if (A.vento.n >= 3 && A.vento.sd >= 1.1) dv.push({ o: .55, v: `±${fmt1(A.vento.sd)}`, t: 'Como DTS vende hoje' });
+  if (A.papel.nI >= 3) { const x = A.papel.c.reduce((a, b) => b.sd > a.sd ? b : a); if (x.sd >= 10) dv.push({ o: .58, v: `±${Math.round(x.sd)}`, t: `Tempo em ${lc(PAPEL_CURTO[x.x.id])} em 2027` }); }
+  D.div = dv.sort((a, b) => a.o - b.o).slice(0, 4);
+  // pautas para a plenária
+  if (Math.abs(mp - DIMS.PORTA.plan) >= 12) D.pautas.push(`O time aponta mais para ${mp > DIMS.PORTA.plan ? 'o CIO (prevenção)' : 'o CFO (crise)'} do que o plano: <b>porta ${Math.round(mp)} × ${DIMS.PORTA.plan}</b>. Decidir a porta de entrada.`);
+  if (cfo && cio) D.pautas.push(`O dilema divide o time: <b>${cfo} para a crise e ${cio} para a prevenção</b>. Começar a plenária por aqui.`);
+  if (Math.abs(mf - DIMS.FOCO.plan) >= 15) D.pautas.push(`Foco do portfólio em <b>${Math.round(mf)}</b>, contra ${DIMS.FOCO.plan} do plano: ${mf < DIMS.FOCO.plan ? 'o time quer abrir mais frentes' : 'o time quer ainda mais foco'}.`);
+  if (A.carga.n) { const cais = A.carga.prod.filter(o => o.f <= .25); if (cais.length) D.pautas.push(`<b>${cais.length} produto${cais.length > 1 ? 's' : ''}</b> de hoje fica${cais.length > 1 ? 'm' : ''} no cais para 3 de cada 4: confirmar saída ou fusão.`); }
+  if (A.vento.n && A.anc[0].n) D.pautas.push(`Atacar primeiro <b>${lc(A.anc[0].x.nome)}</b>: a âncora que mais segura a venda (${pc(A.anc[0].n, A.vento.n)}% dos diretores).`);
+  if (A.casco.n) { const w = A.casco.c.reduce((a, b) => b.m < a.m ? b : a); if (w.m < 3.5) D.pautas.push(`Reforçar o rebite <b>${lc(w.x.nome)}</b> (${fmt1(w.m)} de 5) antes de dividir contas e metas.`); }
+  D.pautas = D.pautas.slice(0, 5);
+  return D;
+}
+function diagnosticoTexto(A, D) {
+  const L = [`BÚSSOLA DTS 2027 · ${D.eb}`, '', D.titulo.toUpperCase(), D.sub.replace(/<[^>]+>/g, ''), ''];
+  D.blocos.forEach(b => L.push(`${b.k}: ${b.bn} ${b.sm}. ${b.p.replace(/<[^>]+>/g, '')}`));
+  if (D.conv.length) { L.push('', 'Onde o time converge:'); D.conv.forEach(c => L.push(`- ${c.v} · ${c.t.replace(/<[^>]+>/g, '')}`)); }
+  if (D.div.length) { L.push('', 'Onde o time diverge:'); D.div.forEach(c => L.push(`- ${c.v} · ${c.t}`)); }
+  if (D.pautas.length) { L.push('', 'Para a plenária:'); D.pautas.forEach((p, i) => L.push(`${i + 1}. ${p.replace(/<[^>]+>/g, '')}`)); }
+  L.push('', `Fonte: ${A.nD} bússolas concluídas e ${A.nG} em travessia · ${new Date().toLocaleString('pt-BR')}`);
+  return L.join('\n');
+}
+
+/* ---------------- peças visuais (poucas) ---------------- */
+let prev = {}, prevNum = {}, vistos = new Set(), primeiraLeitura = true;
+const anim = (k, v) => { const f = prev[k] ?? 0; prev[k] = v; return `--from:${f.toFixed(1)}%;--to:${v.toFixed(1)}%`; };
+const numero = (k, v, fmt = 'int') => `<span class="cnt" data-k="${k}" data-to="${v ?? ''}" data-f="${fmt}">${v == null ? '—' : fmtN(v, fmt)}</span>`;
+const fmtN = (v, f) => f === 'dec' ? fmt1(v) : f === 'pct' ? Math.round(v) + '%' : Math.round(v).toString();
+function contarAnimado(root) {
+  $$('.cnt', root).forEach(el => { const to = parseFloat(el.dataset.to); if (isNaN(to)) return; const k = el.dataset.k, from = prevNum[k] ?? 0; prevNum[k] = to; if (from === to) return;
+    const t0 = performance.now(), f = el.dataset.f; const step = t => { const q = Math.min(1, (t - t0) / 1100), e = 1 - Math.pow(1 - q, 3); el.textContent = fmtN(from + (to - from) * e, f); if (q < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
+}
+const bar = (k, label, v, max, o = {}) => { const w = max ? clamp(v / max * 100) : 0; return `<div class="bar ${o.top ? 'top' : ''}"><span title="${esc(o.title || label)}">${label}</span><div class="tr"><i class="${o.top ? 'hi' : ''}" style="${anim(k, w)}"></i>${o.plan != null ? `<em style="--p:${clamp(o.plan / max * 100)}%" title="plano"></em>` : ''}</div><span class="v">${o.txt ?? Math.round(v)}</span></div>`; };
+const corCasco = m => m == null ? '#7EA1C3' : m < 2.6 ? '#CF3D3D' : m < 3.5 ? '#F9C20A' : '#9ACC3C';
+const card = (nb, pergunta, n, corpo) => `<article class="qc"><span class="nb">${nb}</span><div class="qq">${pergunta}<span>${n ? `${n} resp.` : 'aguardando'}</span></div>${corpo}</article>`;
+const espera = '<p class="wait">A resposta aparece aqui assim que os diretores passarem por esta pergunta.</p>';
+
+/* ---------------- as quatro perguntas ---------------- */
+function q1(A) { // Que consultoria DTS quer ser?
+  const f = A.farol; if (!f.n) return card(1, 'Que consultoria DTS quer ser?', 0, espera);
+  const by = id => f.c.find(c => c.id === id), top = [...f.c].sort((a, b) => b.n - a.n)[0], mp = A.dim.PORTA;
+  const seg = (id, cor) => `<i style="flex-grow:${by(id).n};background:${cor}" title="${by(id).nome}: ${by(id).n}"></i>`;
+  return card(1, 'Que consultoria DTS quer ser?', f.n, `<div class="ans">${top.nome} <em>${pc(top.n, f.n)}%</em></div>
+    <p class="fact">No farol: crise com o CFO <b>${by('A').n}</b> · fica a bordo <b>${by('C').n}</b> · prevenção com o CIO <b>${by('B').n}</b>.${mp != null ? ` Porta de entrada média <b>${Math.round(mp)}</b> (plano ${DIMS.PORTA.plan}).` : ''}</p>
+    <div class="viz"><div class="stk">${seg('A', '#5E8AB4')}${seg('C', '#F78C16')}${seg('B', '#BFD0E1')}</div><div class="stk-l"><span>CFO · crise</span><span>fica a bordo · plano</span><span>CIO · prevenção</span></div></div>`);
+}
+function q2(A) { // Onde concentrar o esforço comercial?
+  const m = A.mesa; if (!m.n) return card(2, 'Onde concentrar o esforço em 2027?', 0, espera);
+  const i = m.m.indexOf(Math.max(...m.m));
+  return card(2, 'Onde concentrar o esforço em 2027?', m.n, `<div class="ans">${MESA_CURTA[i]} <em>${Math.round(m.m[i])} de 100</em></div>
+    <p class="fact">De 100 caixas de esforço comercial; o plano põe ${PLAN_MESA[i]} nesse pilar. Núcleo do time: <b>${Math.round(m.nucleo)}%</b>, contra 85% do plano.</p>
+    <div class="viz bars">${MESAS.map((x, k) => bar('m' + k, MESA_CURTA[k], m.m[k], 50, { plan: PLAN_MESA[k], top: k === i, title: x.nome })).join('')}</div>`);
+}
+function q3(A) { // O que segura a venda?
+  const v = A.vento; if (!v.n) return card(3, 'O que mais segura a venda?', 0, espera);
+  const a = A.anc;
+  return card(3, 'O que mais segura a venda?', v.n, `<div class="ans">${a[0].x.nome} <em>${pc(a[0].n, v.n)}%</em></div>
+    <p class="fact">Vento comercial de DTS hoje: <b>${fmt1(v.m)} de 5</b> (${lc(ventoNome(v.m))}). Cada diretor apontou as duas âncoras que mais pesam.</p>
+    <div class="viz bars">${a.slice(0, 3).map((o, k) => bar('a' + o.x.id, o.x.nome, o.n, v.n, { top: k === 0, txt: pc(o.n, v.n) + '%', title: o.x.txt })).join('')}</div>`);
+}
+function q4(A) { // A tripulação está pronta?
+  const c = A.casco; if (!c.n && !A.papel.nI) return card(4, 'A tripulação está pronta?', 0, espera);
+  const w = c.n ? c.c.reduce((a, b) => b.m < a.m ? b : a) : null;
+  const dl = A.papel.nI ? A.papel.c.map(x => ({ x, d: (x.i ?? 0) - (x.h ?? 0) })) : [], up = dl.length ? dl.reduce((a, b) => b.d > a.d ? b : a) : null, dn = dl.length ? dl.reduce((a, b) => b.d < a.d ? b : a) : null;
+  const rot = c.idx == null ? '' : c.idx >= 75 ? 'casco firme' : c.idx >= 55 ? 'pontos de atenção' : 'casco com vazamentos';
+  return card(4, 'A tripulação está pronta?', c.n || A.papel.nI, `<div class="ans">${c.idx != null ? `Casco ${c.idx}/100 <em>${rot}</em>` : 'Casco ainda sem leitura'}</div>
+    <p class="fact">${w ? `Rebite mais fraco: <b>${lc(w.x.nome)}</b> (${fmt1(w.m)} de 5).` : ''}${up && up.d >= 2 ? ` Em 2027 o time quer <b>mais ${lc(PAPEL_CURTO[up.x.x.id])}</b> (+${Math.round(up.d)}) e <b>menos ${lc(PAPEL_CURTO[dn.x.x.id])}</b> (${Math.round(dn.d)}).` : ''}</p>
+    ${c.n ? `<div class="viz dots">${c.c.map(x => `<div><i style="background:${corCasco(x.m)}">${fmt1(x.m)}</i>${x.x.curto}</div>`).join('')}</div>` : ''}`);
+}
+
+/* ---------------- desenho ---------------- */
+let A = contar([]), assinatura = '';
+function desenhar() {
+  const D = diagnostico(A);
+  $('#count').innerHTML = `<div class="ct hi"><b>${numero('kD', A.nD)}</b><span>concluídas</span></div><div class="ct"><b>${numero('kG', A.nG)}</b><span>respondendo agora</span></div>`;
+  $('#headline').innerHTML = `<div class="eb">${D.eb}</div><h2>${D.titulo}</h2>${D.curto ? `<p>${D.curto}</p>` : `<p>${D.sub}</p>`}`;
+  $('#qs').innerHTML = q1(A) + q2(A) + q3(A) + q4(A);
+  $('#plen').innerHTML = `<span class="k">Para a plenária</span>` + (D.pautas.length ? D.pautas.slice(0, 3).map((p, i) => `<div><b class="n">${i + 1}</b><span>${p}</span></div>`).join('') : '<div><b class="n">·</b><span>As decisões aparecem com as primeiras bússolas concluídas.</span></div>');
+  contarAnimado(document);
+  A.done.forEach(p => vistos.add(p.id));
+}
+let toastQ = [], toastOn = false;
+function avisar(html) { toastQ.push(html); if (!toastOn) proximoAviso(); }
+function proximoAviso() { const t = $('#toast'), h = toastQ.shift(); if (!h) { toastOn = false; return; } toastOn = true; t.innerHTML = h; t.classList.add('on'); setTimeout(() => { t.classList.remove('on'); setTimeout(proximoAviso, 500); }, 3200); }
+
+/* ---------------- leitura da planilha ---------------- */
+let ultimaOk = 0, fonte = DEMO ? 'demo' : 'planilha';
+const senha = () => MC.painelToken || (() => { try { return localStorage.getItem('mostrador-senha') || ''; } catch (e) { return ''; } })();
+async function ler() {
+  const u = String(MC.sheetsEndpoint || '').trim(); if (!/^https:\/\//.test(u)) throw Object.assign(new Error('Este arquivo não tem o link da planilha (sheetsEndpoint).'), { cfg: true });
+  const tk = senha(); if (!tk) throw Object.assign(new Error('Digite a senha do painel.'), { auth: true });
+  const res = await fetch(u + '?painel=1&token=' + encodeURIComponent(tk) + '&t=' + Date.now(), { cache: 'no-store' });
+  const d = await res.json(); if (d && d.erro) throw Object.assign(new Error(d.erro === 'token inválido' ? 'Senha do painel incorreta.' : d.erro), { auth: /token|TOKEN/i.test(d.erro) });
+  if (!d || !Array.isArray(d.linhas)) throw new Error('Resposta inesperada da planilha.');
+  return d.linhas;
+}
+function aplicar(rows) {
+  const P = participantes(rows), sig = JSON.stringify(P.map(p => [p.id, p.etapa, p.done, p.ts]));
+  const novos = P.filter(p => p.done && !vistos.has(p.id)), antes = new Set(A.P.map(p => p.id));
+  if (!primeiraLeitura) { novos.forEach(p => avisar(`⚓ Nova agulha no mostrador · <b>${esc(p.arq || 'bússola concluída')}</b>`)); P.filter(p => !p.done && !antes.has(p.id)).forEach(() => avisar('⛵ Mais um comandante soltou as amarras')); }
+  A = contar(P); if (sig !== assinatura) { assinatura = sig; desenhar(); }
+  primeiraLeitura = false;
+}
+async function ciclo() {
+  try { const rows = fonte === 'demo' ? Demo.linhas() : await ler(); aplicar(rows); ultimaOk = Date.now(); $('#banner').classList.remove('on'); $('#gate').classList.add('off'); }
+  catch (e) { if (e.auth || e.cfg) { portao(e.message); } else { $('#banner').textContent = 'Sem conexão com a planilha: mostrando os últimos dados. ' + (e.message || ''); $('#banner').classList.add('on'); } }
+  status();
+}
+function status() { const l = $('#live'), age = ultimaOk ? Math.round((Date.now() - ultimaOk) / 1000) : null; l.className = 'live ' + (fonte === 'demo' ? 'demo' : age != null && age < 40 ? '' : 'off'); $('#liveTxt').textContent = fonte === 'demo' ? 'simulação' : age == null ? 'conectando' : age < 40 ? 'ao vivo' : 'sem sinal';
+  const s = $('#st'); if (s) s.textContent = fonte === 'demo' ? 'Simulação com dados fictícios, para ensaio' : age == null ? 'Lendo a planilha…' : `Dados da planilha · atualizado há ${age} s · cada pergunta conta quem já passou por ela`; }
+function portao(msg) {
+  const g = $('#gate'); g.classList.remove('off');
+  g.innerHTML = `<div class="gcard"><div class="k">Mostrador vivo · conexão</div><h2>Ligar o mostrador à planilha</h2><p>Digite a senha do painel (o TOKEN do Codigo.gs). Ela fica guardada só neste computador. Para ensaiar sem dados, veja a simulação.</p><input id="gsenha" type="password" autocomplete="off" placeholder="Senha do painel"><div class="msg">${esc(msg || '')}</div><div class="row"><button data-g="demo">Ver simulação</button><button class="go" data-g="ok">Conectar</button></div></div>`;
+  setTimeout(() => { const i = $('#gsenha'); if (i) i.focus(); }, 50);
+}
+function conectar() { const v = ($('#gsenha') || {}).value; if (!v) return; try { localStorage.setItem('mostrador-senha', v.trim()); } catch (e) { } fonte = 'planilha'; ultimaOk = 0; $('#gate').classList.add('off'); ciclo(); }
+
+/* ---------------- simulação para ensaio (dados fictícios) ---------------- */
+const Demo = (() => {
+  let seed = 11, t = 0, gente = []; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280, pick = arr => arr[Math.floor(rnd() * arr.length)];
+  const FR = ['a conta de TI não fecha e o CFO precisa de resposta em semanas', 'o ERP travou e a reforma tributária não espera', 'o fundo quer saber quanto a tecnologia vale antes de assinar', 'quer alguém olhando a TI com ele todo mês', 'o CIO saiu e a área precisa de comando', 'quer provar o retorno da IA para o conselho', ''];
+  const PAP = [[30, 20, 15, 10, 10, 5, 10], [35, 25, 10, 10, 5, 5, 10], [40, 15, 15, 10, 5, 5, 10], [25, 20, 20, 15, 10, 0, 10]], PAPI = [[20, 15, 25, 20, 10, 5, 5], [25, 20, 20, 15, 10, 5, 5], [15, 15, 30, 20, 10, 5, 5], [20, 10, 25, 25, 10, 10, 0]];
+  const NUC = ['adv1', 'adv3', 'adv4', 'adv6', 'adv8', 'trf1', 'trf3', 'trf4', 'ma1', 'ma2', 'ma3', 'ma4', 'ma5', 'mod2', 'mod4', 'mod5', 'mod9'];
+  function pessoa(i) {
+    const porta = clamp(44 + (rnd() - .5) * 75), foco = clamp(70 + (rnd() - .5) * 60);
+    const rx = Object.fromEntries(REFLEX.map(r => { const v = r.dim === 'PORTA' ? porta : r.dim === 'FOCO' ? foco : clamp(DIMS[r.dim].plan + (rnd() - .5) * 110); return [r.id, rnd() < .07 ? { side: null, ms: null, hesitou: true } : { side: Math.abs(r.vL - v) < Math.abs(r.vR - v) ? 'L' : 'R', ms: Math.round(1500 + rnd() * 9000) }]; }));
+    const calls = CALLS.map(c => c.id).sort(() => rnd() - .5), anc = ['tempo', 'tempo', 'tempo', 'ferramenta', 'ferramenta', 'gtm', 'oferta', 'treino', 'coach', 'provas', 'gente']; const a1 = pick(anc); let a2 = pick(anc); while (a2 === a1) a2 = pick(anc);
+    const a = { rx, rota: pick(['B', 'B', 'B', 'A', 'C']), mesa: pick([[30, 35, 20, 10, 5], [20, 40, 25, 10, 5], [25, 30, 25, 10, 10], [10, 25, 15, 30, 20], [35, 35, 20, 5, 5]]), tel: { atender: calls.slice(0, 3), postal: calls[5] }, contrato: { v: Math.round(clamp(62 + (rnd() - .5) * 90) / 5) * 5, moves: 2 },
+      ia: pick(['b', 'b', 'b', 'c', 'a', 'd']), prio: PRIO.map(x => x.id).sort(() => rnd() - .5), carga: PRODUTOS.filter(x => rnd() < (NUC.includes(x.id) ? .86 : .3)).map(x => x.id), cargaNova: rnd() < .3 ? [pick(['Governança e valor de IA', 'Radar das investidas', 'Tech para private equity'])] : [],
+      vento: pick([1, 2, 2, 2, 3, 3, 4]), ancoras: [a1, a2], papel: { hoje: pick(PAP), ideal: pick(PAPI) }, casco: [4, 3, 3, 2, 4].map(v => clamp(Math.round(v + (rnd() - .5) * 2.4), 1, 5)), espelho: pick(['C', 'C', 'A', 'B', 'C', 'A']), frase: pick(FR) };
+    const x = Math.round(porta - 50), y = Math.round(foco - 50), q = quadOf(x, y);
+    const dims = { PORTA: porta, FOCO: foco, RECEITA: a.contrato.v, PRODUTO: clamp(70 + (rnd() - .5) * 60), IA: a.ia === 'b' ? 95 : a.ia === 'c' ? 50 : 20, FABRICA: clamp(75 + (rnd() - .5) * 60), ANCORAS: clamp(70 + (rnd() - .5) * 60), PILARES: clamp(78 + (rnd() - .5) * 40), CONSOL: clamp(100 - Math.abs(a.carga.length - 23) * 6) };
+    const ms = Object.values(rx).filter(v => v.side).map(v => v.ms);
+    return { id: 'demo-' + i, nome: 'Comandante ' + (1000 + Math.floor(rnd() * 8999)).toString(36).toUpperCase(), a, x, y, q, dims, ader: Math.round(Object.keys(DIMS).reduce((s, k) => s + DIMS[k].w * (100 - Math.abs(dims[k] - DIMS[k].plan)), 0)), vel: median(ms) / 1000, hes: Object.values(rx).filter(v => !v.side).length, conv: Math.round(40 + rnd() * 55), passo: -1 - Math.floor(rnd() * 7), dur: Math.round(520 + rnd() * 420) };
+  }
+  return { linhas() {
+    if (!gente.length) gente = Array.from({ length: 14 }, (_, i) => pessoa(i));
+    t++; const ST = ['capa', 'rx_intro', ...DEC_ORDER, 'final'];
+    gente.forEach(g => { if (g.passo < ST.length - 1) g.passo += rnd() < .85 ? 1 : 0; });
+    return gente.filter(g => g.passo >= 0).map(g => { const et = ST[Math.min(g.passo, ST.length - 1)], done = et === 'final';
+      return Object.assign({ sessionId: g.id, nome: g.nome, status: done ? 'concluída' : 'em andamento', etapa: et, _a: g.a, atualizadoEm: new Date().toISOString() },
+        done ? { arquetipo: ARQUETIPOS[g.q].nome, x: g.x, y: g.y, opiniaoFormada: g.conv, aderencia: g.ader, velocidadeMed: g.vel, hesitacoes: g.hes, duracaoSeg: g.dur, ...g.dims } : {}); });
+  } };
+})();
+
+/* ---------------- início ---------------- */
+const IC = { full: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>', ref: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>', copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>' };
+$('#ctl').innerHTML = `<button data-c="ref">${IC.ref}Atualizar</button><button data-c="copy">${IC.copy}Copiar diagnóstico</button><button data-c="full">${IC.full}Tela cheia</button>`;
+document.addEventListener('click', async e => {
+  const c = e.target.closest('[data-c]');
+  if (c) { const k = c.dataset.c;
+    if (k === 'ref') ciclo();
+    if (k === 'full') { const s = $('#stage'); document.fullscreenElement ? document.exitFullscreen() : (s.requestFullscreen ? s.requestFullscreen() : null); }
+    if (k === 'copy') { const txt = diagnosticoTexto(A, diagnostico(A)); try { await navigator.clipboard.writeText(txt); } catch (er) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); } avisar('📋 Diagnóstico copiado em texto'); }
+    return; }
+  const g = e.target.closest('[data-g]');
+  if (g) { if (g.dataset.g === 'ok') conectar(); if (g.dataset.g === 'demo') { fonte = 'demo'; $('#gate').classList.add('off'); arrancar(); } }
+});
+document.addEventListener('keydown', e => { if (e.target && e.target.id === 'gsenha') { if (e.key === 'Enter') conectar(); return; } if (e.key.toLowerCase() === 'f') $('#ctl [data-c="full"]').click(); });
+let cicloT = null;
+function arrancar() { clearInterval(cicloT); ciclo(); cicloT = setInterval(ciclo, (fonte === 'demo' ? 2.5 : Math.max(4, MC.intervaloSeg || 8)) * 1000); }
+setInterval(status, 1000);
+desenhar(); status(); arrancar();
+</script>
+</body>
+</html>
