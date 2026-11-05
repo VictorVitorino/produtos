@@ -21,13 +21,26 @@ Se mudar o `Codigo.gs` depois de implantado: **Implantar → Gerenciar implanta�
 - Plano B: na tela final aparecem **Copiar minhas respostas** e **Baixar arquivo**. A pessoa manda o texto ou o arquivo para você, e no painel você usa **Abrir arquivos de resposta** (ou cola o texto) para incluí-las.
 - Quem recomeça e responde de novo: vale a resposta mais recente; a antiga fica na planilha marcada como "substituída" e não entra no Resumo nem no painel.
 
+## A lógica do diagnóstico: 4 frentes
+
+A carta de cada diretor e o mostrador do time usam o mesmo motor. Cada frente responde em cinco passos: o que foi respondido, o que isso quer dizer, como se compara ao planejamento, o que levar para a conversa e as ações sugeridas. As ações são sugestões; o time decide estas e outras.
+
+| Frente | Respostas que entram | Respostas possíveis | Exemplo de ação sugerida |
+|---|---|---|---|
+| 1 · Que tipo de consultoria DTS quer ser? | Reflexos do motor e do resgate, chamados atendidos no rádio, escolha do farol | **O resgate na crise** (CFO chama quando a TI falhou) · **Entrar na crise e ficar a bordo** (o plano) · **O prático que previne** (CIO chama para não falhar) | Oferta de continuidade depois do resgate; escolher as 3 dores de entrada; oferta recorrente ao CIO |
+| 2 · Poucas coisas muito bem, ou muitas? | Rota, reflexos da pesca e do mar novo, porão (núcleo), produtos mantidos no manifesto | **Poucas coisas, muito bem feitas** · **Um núcleo forte e poucas apostas** · **Muitas frentes ao mesmo tempo**. Avisa se o discurso é de foco e o catálogo ficou cheio | Definir produtos âncora com dono; aposentar o que ficou no cais; abrir frentes com parceiros |
+| 3 · Como DTS deve vender e cobrar? | Porão (onde vai o esforço), contrato e reflexo do quinhão (preço), vento comercial (1 a 5), as duas âncoras da venda | **Esforço em [pilar], com preço fixo / misto / ligado ao resultado**; quanto a venda tem método hoje; o que mais trava | Uma ação para cada âncora (horas fixas de venda, pipeline único, duplas de venda, cases com números…); rito comercial semanal; testar preço por resultado |
+| 4 · O time está pronto para isso? | Divisão do tempo hoje e em 2027 (com burocracias), os cinco rebites do casco, a quem o time recorre | **Sim: casco firme** · **Quase: pontos de atenção** · **Ainda não: o casco vaza**; o que precisa sair da agenda do diretor | Uma ação para o rebite mais fraco; passar front para gerentes; cortar burocracias; formar segunda referência |
+
+Faixas usadas: porta de entrada abaixo de 38 é crise, acima de 62 é prevenção, entre elas é "entrar e ficar"; foco acima de 62 é foco, abaixo de 38 é amplitude. Quando o farol (com calma) e os reflexos apontam para lados diferentes, o diagnóstico diz isso. No fim da carta, cada diretor pode propor outra ação; ela vai para a coluna `acaoPropria` da planilha e aparece no plano de ação do mostrador, sem nome.
+
 ## Mostrador vivo (o resultado na tela, enquanto respondem)
 
 Abra `mostrador-vivo.html` no computador do projetor e digite a senha do painel (o TOKEN do `Codigo.gs`); ela fica guardada só naquele computador. A tela lê a planilha a cada 8 segundos e mostra:
 
 - **Manchete:** o diagnóstico do time em uma frase (o arquétipo que predomina, porta de entrada e foco contra o plano).
-- **Quatro perguntas:** que consultoria DTS quer ser (farol), onde concentrar o esforço (porão), o que mais segura a venda (âncoras e vento comercial) e se a tripulação está pronta (casco e papel em 2027). Cada uma conta quem já passou por aquela pergunta, então os números sobem enquanto o time responde.
-- **Para a plenária:** as três decisões que os dados pedem.
+- **As 4 frentes:** a resposta do time em cada uma e o que ela quer dizer. Cada uma conta quem já passou por aquela pergunta, então os números sobem enquanto o time responde.
+- **Plano de ação:** o botão abre as ações sugeridas por frente. Toque uma vez para aprovar, de novo para descartar; acrescente outras ações na hora; as ideias dos diretores aparecem ali. **Copiar plano** leva tudo em texto para o PPT.
 
 Contadores no topo mostram concluídas e quem está respondendo agora. **Copiar diagnóstico** leva o texto com os números para o PPT. Para ensaiar sem respostas, abra com `?demo` no fim do endereço (dados fictícios). Não envie este arquivo aos diretores.
 

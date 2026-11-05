@@ -895,6 +895,40 @@ input[type=range].helmslider:active::-webkit-slider-thumb{transform:scale(1.15)}
 .c-take .k{font:700 .58em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--peach)}
 .c-take b{font-family:var(--serif);font-weight:700;font-size:1.02em;line-height:1.25}
 .carta .sync{color:var(--ink-2);font-size:max(10.5px,.7em)}
+.c-n{display:inline-grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;background:var(--navy);color:var(--peach);font:700 .95em var(--mono);flex:none}
+.c-k .c-n{font-size:1em}
+button.c-take{text-align:left;cursor:pointer;transition:background .2s,transform .2s}
+button.c-take:hover{background:#0b3a5e;transform:translateY(-1px)}
+/* diagnóstico completo e plano de ação */
+.planobox{position:absolute;inset:0;z-index:60;display:grid;place-items:center;padding:1.2em;font-size:clamp(12.5px,2.3cqh,18px);background:rgba(2,11,20,.7);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s}
+.planobox.on{opacity:1;pointer-events:auto}
+.pcard2{display:flex;flex-direction:column;width:min(64em,100%);max-height:100%;border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 1.4em 3em rgba(0,0,0,.55);overflow:hidden}
+.pcard2 .ph{display:flex;justify-content:space-between;gap:1em;padding:1em 1.3em .7em;border-bottom:1px solid rgba(0,43,73,.15)}
+.pcard2 .ph .k{font:700 .62em var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--rust)}
+.pcard2 .ph h3{font-family:var(--serif);font-size:1.5em;line-height:1.1;color:var(--navy);margin:.15em 0 .2em}
+.pcard2 .ph p{font-size:.8em;line-height:1.4;color:var(--ink-2);max-width:48em}
+.pcard2 .x{width:1.8em;height:1.8em;border-radius:50%;border:1.5px solid var(--navy);color:var(--navy);font-size:1.2em;line-height:1;flex:none}
+.pbody{overflow:auto;padding:.7em 1.3em;display:flex;flex-direction:column;gap:.7em}
+.fr{border:1px solid rgba(0,43,73,.14);border-radius:10px;background:rgba(255,255,255,.6);padding:.7em .9em}
+.fh{display:flex;gap:.7em;align-items:center;margin-bottom:.45em}
+.fh .fq{display:block;font:700 .6em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.fh b{font-family:var(--serif);font-size:1.15em;color:var(--navy)}
+.fg{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:1em}
+.fr h4{font:700 .58em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--rust);margin:.35em 0 .2em}
+.fr h4:first-child{margin-top:0}
+.fr p,.fr li{font-size:.78em;line-height:1.4;color:var(--ink)}
+.fr ul{padding-left:1.1em;display:flex;flex-direction:column;gap:.25em}
+.fr .cv{font-family:var(--serif);font-weight:600;color:var(--navy)}
+.fr .ac ul{list-style:none;padding-left:0}
+.fr .ac li{position:relative;padding-left:1.4em}
+.fr .ac li::before{content:"";position:absolute;left:0;top:.2em;width:.85em;height:.85em;border:1.5px solid var(--navy);border-radius:3px}
+.fr.own textarea{width:100%;font:inherit;font-size:.85em;padding:.5em .7em;border-radius:8px;border:1px solid var(--navy-40);background:#fff;color:var(--ink);resize:vertical}
+.fr.own .cnt2{display:block;text-align:right;font-size:.62em;color:var(--ink-2)}
+.pcard2 .pf{display:flex;justify-content:flex-end;gap:.6em;padding:.7em 1.3em;border-top:1px solid rgba(0,43,73,.15)}
+.pcard2 .pf button{height:2.4em;padding:0 1.1em;border-radius:8px;border:1.5px solid var(--navy);color:var(--navy);font:700 .8em var(--sans)}
+.pcard2 .pf .yes{background:var(--navy);color:#fff}
+@media (max-width:760px){.fg{grid-template-columns:1fr}}
+
 /* recomeçar do porto */
 .askbox{position:absolute;inset:0;z-index:60;display:grid;place-items:center;padding:1.2em;font-size:clamp(13px,2.42cqh,19px);background:rgba(2,11,20,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s}
 .askbox.on{opacity:1;pointer-events:auto}
@@ -1596,6 +1630,7 @@ function buildRow() {
   REFLEX.forEach(x => { const v = a.rx[x.id] || {}; row[x.id] = v.side == null ? 'hesitou' : v.side === 'L' ? x.L : x.R; row[x.id + '_ms'] = v.ms == null ? '' : v.ms; });
   row.revisoes = REFLEX.filter(x => (a.rx[x.id] || {}).revisto).length;
   row.cargo = S.cargo || '';
+  row.acaoPropria = a.acao || '';
   row.status = S.finishedAt ? 'concluída' : 'em andamento'; row.etapa = (STEPS[S.step] || {}).id || ''; row.progresso = Math.max(0, Math.round((DEC.indexOf(row.etapa) + 1) / DEC.length * 100));
   const pp = a.papel || { hoje: [], ideal: null }, cc = a.casco || [], ch = a.chama || {};
   PAPEIS.forEach((x, i) => { row['hoje_' + x.id] = pp.hoje[i] == null ? '' : pp.hoje[i]; row['ideal_' + x.id] = pp.ideal ? pp.ideal[i] : ''; });
@@ -1608,6 +1643,140 @@ function buildRow() {
 
 /* ===================================================================== */
 
+/* ===================================================================== */
+/* DIAGNÓSTICO DAS 4 FRENTES · o mesmo motor para a carta de cada diretor */
+/* e para o mostrador do time. Cada frente responde em 5 passos:          */
+/* o que foi dito → o que quer dizer → como se compara ao plano →         */
+/* o que levar para a conversa → ações sugeridas (em aberto).             */
+/* ===================================================================== */
+const ZP = v => v == null ? null : v < 38 ? 'crise' : v > 62 ? 'prev' : 'meio';   // porta de entrada (plano: meio)
+const ZF = v => v == null ? null : v < 38 ? 'amplo' : v > 62 ? 'foco' : 'equil';  // foco do portfólio (plano: foco)
+const minus = s => s ? s[0].toLowerCase() + s.slice(1) : s;
+const ACAO_ANCORA = {
+  tempo: 'Reservar horas fixas por semana, para cada diretor, só para venda e originação.',
+  oferta: 'Escrever uma página por produto âncora: a dor, a entrega e o preço, numa frase que qualquer diretor repita.',
+  ferramenta: 'Adotar um pipeline único (CRM) com revisão a cada 15 dias e uma biblioteca de propostas prontas.',
+  treino: 'Criar uma trilha de venda consultiva por trimestre: prospecção, negociação e fechamento.',
+  coach: 'Formar duplas de venda: um diretor experiente acompanha duas propostas por mês de cada colega.',
+  gtm: 'Fazer um encontro mensal com os MDs de outras práticas para originar juntos, com metas conjuntas.',
+  provas: 'Publicar 5 cases com números em 60 dias e combinar clientes que sirvam de referência.',
+  gente: 'Definir quem abre portas no time e contratar ou alocar um perfil comercial sênior.'
+};
+const ACAO_REBITE = {
+  confianca: 'Abrir o encontro mensal com uma rodada curta de "um erro que me ensinou algo", começando pelos mais seniores.',
+  conflito: 'Combinar a regra: discordância se fala na reunião, com argumentos; o que sai de lá é decisão do time.',
+  compromisso: 'Encerrar toda reunião com a decisão escrita, um dono e um prazo.',
+  cobranca: 'Manter um quadro de compromissos do time, revisto a cada 15 dias, onde todos cobram todos.',
+  resultado: 'Colocar uma meta coletiva de DTS no reconhecimento de cada diretor, acima da meta da frente.'
+};
+const SIGNIFICA_REBITE = {
+  confianca: 'Sem confiança, ninguém admite um erro nem pede ajuda.',
+  conflito: 'As discordâncias ficam nos corredores, e não na mesa.',
+  compromisso: 'As decisões não são sustentadas por todos depois da reunião.',
+  cobranca: 'Quando alguém não entrega o combinado, ninguém cobra.',
+  resultado: 'A meta de cada frente vem antes da meta de DTS.'
+};
+const ACAO_PAPEL_MAIS = {
+  vender: 'Reservar horas fixas na semana para vender e abrir portas.', expandir: 'Dar a cada diretor um conjunto de contas para expandir, com plano de conta.',
+  pessoas: 'Separar tempo fixo para desenvolver o time: coaching e conversas de carreira.', ofertas: 'Dar a cada diretor uma oferta para construir, com prazo.',
+  qualidade: 'Formalizar o diretor como gate de qualidade: o que ele revisa antes de sair.', front: 'Definir em quais projetos o diretor fica no front com o cliente.', burocracias: 'Organizar as rotinas internas para que tomem menos tempo.'
+};
+const ACAO_PAPEL_MENOS = {
+  front: 'Passar parte do front do projeto para os gerentes, com o diretor revisando o que sai.', burocracias: 'Listar as burocracias do diretor e decidir o que cortar, simplificar ou delegar.',
+  qualidade: 'Delegar parte da revisão aos gerentes seniores, com critérios claros.', vender: 'Concentrar a venda em quem tem mais acesso e liberar os outros para a entrega.',
+  expandir: 'Concentrar a expansão de contas em quem cuida da relação.', pessoas: 'Apoiar o desenvolvimento do time com o RH e com mentores.', ofertas: 'Concentrar a construção de ofertas num grupo pequeno.'
+};
+
+function frentes(sg) {
+  const eu = sg.modo === 'eu', F = [];
+  // ---------- 1 · Que tipo de consultoria DTS quer ser?
+  { const z = sg.zP;
+    const R = { crise: 'O resgate na crise', meio: 'Entrar na crise e ficar a bordo', prev: 'O prático que previne' };
+    const S = { crise: 'DTS entra quando a TI do cliente já deu errado, chamada pelo CFO. Ganha acesso e urgência, mas a relação tende a acabar junto com a crise.',
+      meio: 'DTS entra pela dor que o cliente já tem (custo de TI, programa atrasado, pós-fusão) e fica para ele não falhar de novo.',
+      prev: 'DTS acompanha o CIO de forma contínua para a TI não falhar. A relação é longa, mas depende de DTS ser lembrada antes de existir o problema.' };
+    const C = { crise: 'O planejamento propõe entrar pela crise e ficar depois dela. Esta resposta fica mais no resgate do que o plano.', meio: 'É exatamente o que o planejamento propõe.',
+      prev: 'O planejamento propõe entrar pela dor de hoje e ficar. Esta resposta vai mais para a prevenção do que o plano.' };
+    const P = { crise: 'Como transformar cada resgate em uma relação que continua?', meio: 'Quais dores abrem a porta, e qual oferta nos mantém a bordo depois?', prev: 'O que faz o CIO chamar DTS antes de o problema existir?' };
+    const A = { crise: ['Criar uma oferta de continuidade para depois do resgate (por exemplo, PMO ou TMO de 6 a 12 meses).', 'Revisitar os clientes resgatados nos últimos 2 anos com uma proposta de acompanhamento.', 'Medir quantos resgates viram contrato recorrente.'],
+      meio: ['Escolher as 3 dores de entrada de DTS e a oferta de permanência de cada uma.', 'Fazer uma revisão com o cliente 90 dias depois de cada entrega, para propor a próxima fase.', 'Medir recompra: quanto da receita vem de clientes que já atendemos.'],
+      prev: ['Desenhar uma oferta recorrente para o CIO (acompanhamento mensal da TI).', 'Montar uma agenda de relacionamento com CIOs: encontros, conteúdo e diagnósticos curtos.', 'Manter uma porta de entrada pela crise, para abrir contas novas.'] };
+    F.push({ id: 'tipo', pergunta: 'Que tipo de consultoria DTS quer ser?', resposta: z ? R[z] : null, disse: sg.ev.tipo, significa: z ? S[z] : '', compara: z ? C[z] + (sg.dissonancia && sg.farol ? ` Repare: no farol, com calma, ${eu ? 'você escolheu' : 'a maioria escolheu'} "${minus(sg.farol)}", mas ${eu ? 'seus reflexos e o rádio' : 'os reflexos e o rádio do time'} puxaram para ${minus(R[z])}. Vale conversar sobre essa diferença.` : '') : '', conversa: z ? P[z] : '', acoes: z ? A[z] : [] }); }
+  // ---------- 2 · Poucas coisas muito bem, ou muitas coisas?
+  { const z = sg.zF, n = sg.nProd;
+    const R = { foco: 'Poucas coisas, muito bem feitas', equil: 'Um núcleo forte e poucas apostas', amplo: 'Muitas frentes ao mesmo tempo' };
+    const S = { foco: 'DTS escolhe poucos problemas para ser a primeira escolha do cliente e concentra time e esforço neles.', equil: 'DTS mantém um núcleo e abre poucas frentes novas, com critério.', amplo: 'DTS atende muitos problemas e mercados. Há mais oportunidades, mas o time e o esforço ficam mais espalhados.' };
+    let sig = z ? S[z] : '';
+    if (z === 'foco' && n != null && n >= 30) sig += ' Mas atenção: o discurso é de foco e quase todo o catálogo de hoje continua a bordo.';
+    if (z === 'amplo' && n != null && n <= 20) sig += ' Curioso: pede amplitude, mas enxuga o catálogo.';
+    const comp = !z ? '' : (z === 'foco' ? 'O planejamento também propõe foco' : 'O planejamento propõe mais foco do que isso') + ': um núcleo forte e 23 produtos (hoje são 33).' + (n != null ? ` ${eu ? 'Você ficou' : 'O time ficou, em média,'} com ${n} produtos.` : '');
+    const P = { foco: 'Quais produtos saem do catálogo, e quem é dono de cada um que fica?', equil: 'Quais são as poucas apostas novas, e com que critério entram?', amplo: 'DTS tem time e investimento para tantas frentes?' };
+    const A = { foco: ['Definir os produtos âncora de 2027 e um dono para cada.', 'Fundir ou aposentar os produtos que ficaram no cais.', 'Concentrar a maior parte do esforço comercial no núcleo.'],
+      equil: ['Fechar o núcleo de produtos âncora e escolher no máximo 2 apostas novas.', 'Dar a cada aposta um responsável, uma meta e uma data para revisar.', 'Aposentar o que não é núcleo nem aposta.'],
+      amplo: ['Priorizar as frentes pelo tamanho do mercado e pela chance de ganhar.', 'Abrir frentes novas com parceiros antes de montar time próprio.', 'Revisar em 6 meses e fechar o que não ganhou tração.'] };
+    F.push({ id: 'foco', pergunta: 'DTS deve fazer poucas coisas muito bem, ou muitas coisas?', resposta: z ? R[z] : null, disse: sg.ev.foco, significa: sig, compara: comp, conversa: z ? P[z] : '', acoes: z ? A[z] : [] }); }
+  // ---------- 3 · Como DTS deve vender e cobrar?
+  { const v = sg.vento, rc = sg.receita, anc = sg.anc || [], ok = sg.mesaTop != null || v != null;
+    const preco = rc == null ? '' : rc >= 60 ? 'preço ligado ao resultado' : rc <= 40 ? 'preço fixo' : 'preço misto';
+    const resp = !ok ? null : (sg.mesaTop != null ? `Esforço em ${minus(MESAS[sg.mesaTop].nome)}` : 'Vender com método') + (preco ? `, com ${preco}` : '');
+    const mat = v == null ? '' : v <= 2 ? 'Hoje a venda de DTS depende de o cliente aparecer. Para crescer, ela precisa de método e de rotina.' : v < 4 ? 'Cada diretor vende do seu jeito. Falta um método comum.' : 'Já existe rotina comercial. O desafio é ganhar escala.';
+    const trava = anc.length ? ` O que mais trava: ${anc.map(id => minus((ANCORAS_VENDA.find(x => x.id === id) || {}).nome || '')).join(' e ')}.` : '';
+    let comp = 'O planejamento propõe preço ligado ao resultado e esforço concentrado em reestruturação, programas críticos e M&A.';
+    if (rc != null && rc < 60) comp += ` ${eu ? 'Você prefere' : 'O time prefere'} um preço mais fixo do que o plano.`;
+    if (sg.mesaTop != null && sg.mesaTop >= 3) comp += ` A aposta principal ${eu ? 'que você fez' : 'do time'} está fora desse núcleo.`;
+    const acoes = anc.map(id => ACAO_ANCORA[id]).filter(Boolean).slice(0, 2);
+    if (v != null && v < 4) acoes.push('Criar um rito comercial semanal: pipeline, propostas e próximos passos de cada diretor.');
+    if (rc != null && rc < 60) acoes.push('Testar 2 propostas com parte do preço ligada ao resultado.');
+    F.push({ id: 'venda', pergunta: 'Como DTS deve vender e cobrar?', resposta: resp, disse: sg.ev.venda, significa: (mat + trava).trim(), compara: ok ? comp : '', conversa: 'O que precisa mudar na rotina dos diretores para a venda virar método?', acoes: acoes.slice(0, 3) }); }
+  // ---------- 4 · O time está pronto para isso?
+  { const c = sg.casco, idx = c && c.length === 5 && c.every(x => x != null) ? Math.round((avg(c) - 1) / 4 * 100) : null;
+    const lo = idx != null ? c.indexOf(Math.min(...c)) : -1, w = lo >= 0 ? CASCO[lo] : null;
+    const pp = sg.papel, dl = pp && pp.h && pp.i ? PAPEIS.map((x, i) => ({ id: x.id, nome: x.nome, d: (pp.i[i] || 0) - (pp.h[i] || 0) })) : [];
+    const up = dl.length ? dl.reduce((a, b) => b.d > a.d ? b : a) : null, dn = dl.length ? dl.reduce((a, b) => b.d < a.d ? b : a) : null;
+    const resp = idx == null ? (up && up.d > 0 ? 'Pronto, se o papel do diretor mudar' : null) : idx >= 75 ? 'Sim: o casco está firme' : idx >= 55 ? 'Quase: o casco tem pontos de atenção' : 'Ainda não: o casco está vazando';
+    let sig = '';
+    if (up && up.d >= 5 && dn && dn.d <= -5) sig += `Para ganhar tempo em "${minus(up.nome)}", o diretor precisa tirar tempo de "${minus(dn.nome)}". `;
+    if (w && c[lo] <= 3) sig += SIGNIFICA_REBITE[w.id] + ' É o ponto mais frágil.';
+    else if (idx != null) sig += 'Nenhum dos cinco pontos de integridade está fraco.';
+    const acoes = [];
+    if (w && c[lo] <= 3) acoes.push(ACAO_REBITE[w.id]);
+    if (dn && dn.d <= -5 && ACAO_PAPEL_MENOS[dn.id]) acoes.push(ACAO_PAPEL_MENOS[dn.id]);
+    if (up && up.d >= 5 && ACAO_PAPEL_MAIS[up.id]) acoes.push(ACAO_PAPEL_MAIS[up.id]);
+    (sg.dependencias || []).forEach(t => acoes.push(`Formar uma segunda referência no time para "${minus(t)}", hoje concentrado em uma pessoa.`));
+    (sg.lacunas || []).forEach(t => acoes.push(`Desenvolver ou buscar quem cubra "${minus(t)}": parte do time não tem a quem recorrer.`));
+    F.push({ id: 'time', pergunta: 'O time está pronto para isso?', resposta: resp, disse: sg.ev.time, significa: sig.trim(), compara: 'O planejamento não fixa uma meta para o casco: ele é a leitura do próprio time. No encontro, as notas de todos são somadas.', conversa: 'O que sai da agenda do diretor para o papel de 2027 caber?', acoes: acoes.slice(0, 3) }); }
+  return F;
+}
+
+/* ---------- sinais de UM diretor (a carta individual) ---------- */
+function sinaisEu(a, r) {
+  const d = r.d, side = id => (a.rx[id] || {}).side, ev = { tipo: [], foco: [], venda: [], time: [] };
+  const rxTxt = (id, L, R) => side(id) === 'L' ? L : side(id) === 'R' ? R : null;
+  const t1 = rxTxt('r1', 'Preferiu pagar o reboque quando o motor parar, em vez da revisão antes de zarpar.', 'Preferiu a revisão antes de zarpar ao reboque na hora da pane.'); if (t1) ev.tipo.push(t1);
+  const t2 = rxTxt('r2', 'Viu DTS como o resgate que chega na tempestade.', 'Viu DTS como o prático que guia o navio longe das pedras.'); if (t2) ev.tipo.push(t2);
+  const esp = ESPELHO.find(e => e.id === a.espelho); if (esp) ev.tipo.push(`No farol, com calma, escolheu "${minus(esp.mar)}": ${esp.txt.replace('…', 'a consultoria que ')}`);
+  const c1 = CALLS.find(c => c.id === (a.tel.atender || [])[0]); if (c1) ev.tipo.push(`No rádio, atendeu primeiro: ${c1.quem}, "${c1.txt}"`);
+  const rota = ROTAS.find(x => x.id === a.rota); if (rota) ev.foco.push(`Escolheu a rota "${rota.nome}": ${minus(rota.txt)}`);
+  const t3 = rxTxt('r3', 'Para pescar, lançaria uma rede enorme, que pega de tudo.', 'Para pescar, lançaria o anzol certo, no cardume certo.'); if (t3) ev.foco.push(t3);
+  const t8 = rxTxt('r8', 'Em mar desconhecido, navegaria uma rota por vez.', 'Em mar desconhecido, abriria três rotas ao mesmo tempo.'); if (t8) ev.foco.push(t8);
+  const nP = a.roupa && a.roupa.moves ? a.roupa.n : null; if (nP != null) ev.foco.push(`Manteve ${(a.carga || []).length} dos 33 produtos de hoje${(a.cargaNova || []).length ? ` e propôs ${(a.cargaNova || []).length} novo${(a.cargaNova || []).length > 1 ? 's' : ''}` : ''}.`);
+  const tot = sum(a.mesa || []), top = tot ? a.mesa.indexOf(Math.max(...a.mesa)) : null;
+  if (tot) ev.venda.push(`Pôs a maior parte do esforço comercial em ${minus(MESAS[top].nome)} (${a.mesa[top]} de 100 caixas).`);
+  if (a.contrato && a.contrato.moves) ev.venda.push(`Assinaria o contrato ${a.contrato.v <= 35 ? 'mais no fixo' : a.contrato.v >= 65 ? 'mais no resultado' : 'meio a meio entre fixo e resultado'}.`);
+  const t4 = rxTxt('r4', 'Pagaria o pescador com uma parte do que pescar (resultado).', 'Pagaria o pescador pela diária, pescando ou não (hora).'); if (t4) ev.venda.push(t4);
+  const w = VENTOS.find(x => x.v === a.vento); if (w) ev.venda.push(`Vê DTS vendendo como "${minus(w.nome)}": ${w.txt}.`);
+  const an = (a.ancoras || []).map(id => (ANCORAS_VENDA.find(x => x.id === id) || {}).nome).filter(Boolean); if (an.length) ev.venda.push(`Apontou o que mais segura a venda: ${an.map(minus).join(' e ')}.`);
+  const P = a.papel || {}; if (P.hoje && sum(P.hoje) === 100) { const i = P.hoje.indexOf(Math.max(...P.hoje)); ev.time.push(`Hoje passa mais tempo em ${minus(PAPEIS[i].nome)} (${P.hoje[i]}% da semana).`); }
+  if (P.ideal) { const dl = PAPEIS.map((x, i) => ({ x, d: P.ideal[i] - (P.hoje[i] || 0) })); const up = dl.reduce((m, b) => b.d > m.d ? b : m), dn = dl.reduce((m, b) => b.d < m.d ? b : m); if (up.d > 0 && dn.d < 0) ev.time.push(`Em 2027 quer mais ${minus(up.x.nome)} (+${up.d}) e menos ${minus(dn.x.nome)} (${dn.d}).`); }
+  const cs = a.casco || []; if (cs.length === 5 && cs.every(x => x != null)) { const lo = cs.indexOf(Math.min(...cs)); ev.time.push(`Deu a nota mais baixa (${cs[lo]} de 5) para: "${CASCO[lo].txt}"`); }
+  const cal = esp ? ZP(esp.porta) : null;
+  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev };
+}
+function planoTexto(F, titulo) {
+  const L = [titulo, ''];
+  F.forEach((f, i) => { L.push(`${i + 1}. ${f.pergunta}`, `   Resposta: ${f.resposta || 'sem resposta ainda'}`); if (f.significa) L.push(`   O que quer dizer: ${f.significa}`); if (f.compara) L.push(`   Comparado ao plano: ${f.compara}`); if (f.conversa) L.push(`   Para conversar: ${f.conversa}`); f.acoes.forEach(a => L.push(`   [ ] ${a}`)); L.push(''); });
+  return L.join('\n');
+}
 
 /* ===================================================================== */
 /* 6 · CENA, HUD, NAVEGAÇÃO E SOM                                        */
@@ -2624,7 +2793,7 @@ function cartaLeituras(r) {
 SCREENS.final = {
   layout: 'final',
   html() {
-    const r = S.result || (S.result = compute(S.a)), arq = ARQUETIPOS[r.quad], L = cartaLeituras(r);
+    const r = S.result || (S.result = compute(S.a)), arq = ARQUETIPOS[r.quad], FR = frentes(sinaisEu(S.a, r));
     const nm = splitChars(arq.nome).html.replace(/class="ch"/g, 'class="ch2"');
     const vel = r.velocidade, hes = r.hesitacoes;
     const storm = vel == null ? 'Na tempestade, nenhuma escolha foi feita a tempo.' : `<b>${vel <= 8 ? 'Instinto rápido' : 'Instinto ponderado'}:</b> ${fmt1(vel)} s por escolha na tempestade, ${hes ? `com ${hes === 1 ? 'uma hesitação' : hes + ' hesitações'} (${esc(r.hesTemas.join(', ').toLowerCase())})` : 'sem hesitar'}.`;
@@ -2634,9 +2803,9 @@ SCREENS.final = {
       <div class="eyebrow">Carta do comandante <span class="sep">·</span> <b>${esc(S.nome || 'comandante')}</b>${CFG.mostrarAderencia ? ` <span class="sep">·</span> aderência ao plano ${r.aderencia}/100` : ''}</div>
       <div class="arch-name" id="archName">${nm}</div>
       <p class="c-lema later" style="--i:0">${arq.lema} <b>Desafio:</b> ${arq.desafio}.</p>
-      <div class="c-grid">${L.map((x, i) => `<div class="c-card later" style="--i:${i + 1}"><div class="c-k">${x.ic}<span>${x.k}</span></div><b class="c-v">${x.v}</b>${x.viz ? `<div class="c-viz">${x.viz}</div>` : ''}<span class="c-d">${x.d}</span></div>`).join('')}</div>
+      <div class="c-grid">${FR.map((f, i) => `<div class="c-card later" style="--i:${i + 1}"><div class="c-k"><span class="c-n">${i + 1}</span><span>${f.pergunta}</span></div><b class="c-v">${f.resposta || 'Sem resposta suficiente'}</b><span class="c-d">${(f.significa.match(/^[^.]*\./) || [f.significa])[0]}</span></div>`).join('')}</div>
       <div class="c-storm later" style="--i:5">${CI.bolt}<span>${storm}</span></div>
-      <div class="c-take later" style="--i:6"><span class="k">Leve para a mesa</span><b>${arq.pergunta}</b></div>
+      <button type="button" class="c-take c-plan later" style="--i:6" data-a="plano"><span class="k">Seu plano de ação</span><b>Ver por que cada resposta e as ações sugeridas →</b></button>
       <div class="sync later" style="--i:7" id="sync"></div>
     </div>`;
   },
@@ -2654,6 +2823,22 @@ SCREENS.final = {
   },
   nav() { return { back: true, alt: [{ a: 'replay', label: ICON.replay + ' Ver de novo', short: ICON.replay, cls: '' }], hint: (() => { const st = Sync.status(); return !st.enabled ? 'envie as respostas à facilitação' : st.pending ? 'aguarde o envio' : 'pode fechar esta página'; })() }; }
 };
+
+/* ---------- o diagnóstico completo e o plano de ação (abre pelo botão da carta) ---------- */
+function abrirPlano() {
+  const r = S.result || (S.result = compute(S.a)), F = frentes(sinaisEu(S.a, r)), comPlano = CFG.mostrarPlano !== false;
+  let m = $('#planobox'); if (!m) { m = document.createElement('div'); m.id = 'planobox'; m.className = 'planobox'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.addEventListener('click', e => { if (e.target === m) fecharPlano(); }); stage.appendChild(m); }
+  m.innerHTML = `<div class="pcard2"><div class="ph"><div><span class="k">Bússola DTS 2027 · ${esc(S.nome || 'comandante')}</span><h3>Seu diagnóstico e plano de ação</h3><p>Para cada frente: o que você respondeu, o que isso quer dizer e o que dá para fazer. As ações são sugestões: no encontro, o time decide estas e outras.</p></div><button type="button" class="x" data-a="plano-fechar" aria-label="Fechar">×</button></div>
+    <div class="pbody">${F.map((f, i) => `<section class="fr"><div class="fh"><span class="c-n">${i + 1}</span><div><span class="fq">${f.pergunta}</span><b>${f.resposta || 'Sem resposta suficiente'}</b></div></div>
+      <div class="fg"><div><h4>O que você respondeu</h4><ul>${(f.disse.length ? f.disse : ['Esta parte não foi respondida.']).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div><h4>O que isso quer dizer</h4><p>${f.significa}</p>${comPlano && f.compara ? `<h4>Comparado ao planejamento</h4><p>${f.compara}</p>` : ''}<h4>Para conversar no encontro</h4><p class="cv">${f.conversa}</p></div>
+      <div class="ac"><h4>Ações sugeridas</h4><ul>${f.acoes.map(a => `<li>${a}</li>`).join('') || '<li>Sem sugestão: faltam respostas nesta frente.</li>'}</ul></div></div></section>`).join('')}
+      <section class="fr own"><h4>E você, que outra ação proporia para DTS em 2027?</h4><textarea id="acaoPropria" maxlength="280" rows="2" placeholder="Escreva aqui. Vai para a facilitação, sem nome, junto com sua bússola.">${esc(S.a.acao || '')}</textarea><span class="cnt2" id="acaoCnt">${(S.a.acao || '').length}/280</span></section></div>
+    <div class="pf"><button type="button" data-a="plano-copiar">Copiar meu plano</button><button type="button" class="yes" data-a="plano-fechar">Fechar</button></div></div>`;
+  m.classList.add('on'); setTimeout(() => { const b = m.querySelector('.x'); if (b) b.focus(); }, 60);
+}
+function fecharPlano() { const m = $('#planobox'); if (m) m.classList.remove('on'); }
+async function copiarPlano(btn) { const r = S.result || compute(S.a), F = frentes(sinaisEu(S.a, r)); let txt = planoTexto(F, `Bússola DTS 2027 · plano de ação · ${S.nome || ''}`); if (S.a.acao) txt += `\nMinha ação: ${S.a.acao}\n`; try { await navigator.clipboard.writeText(txt); btn.textContent = 'Copiado ✓'; } catch (e) { btn.textContent = 'Não deu para copiar'; } setTimeout(() => { btn.textContent = 'Copiar meu plano'; }, 2500); }
 
 /* ---------- plano B: levar as respostas à facilitação sem a planilha ---------- */
 const respostaJson = () => JSON.stringify({ linhas: [buildRow()] }, null, 1);
@@ -2735,6 +2920,9 @@ document.addEventListener('click', e => {
     case 'keep': if (!busy) { rxLocked = true; go(S.step + 1, { fast: true }); } break;
     case 'sound': Sound.setOn(!Sound.on); dock(); break;
     case 'painel': location.search = '?painel'; break;
+    case 'plano': abrirPlano(); break;
+    case 'plano-fechar': fecharPlano(); break;
+    case 'plano-copiar': copiarPlano(el); break;
     case 'copiar-resp': copiarResp(el); break;
     case 'baixar-resp': baixarResp(); break;
     case 'reset': askRestart(); break;
@@ -2767,6 +2955,7 @@ $('#cartela').addEventListener('click', () => cartelaSkip && cartelaSkip());
 document.addEventListener('input', e => {
   const el = e.target; if (!el.dataset) return;
   if (el.dataset.a === 'contrato') { S.a.contrato.v = +el.value; S.a.contrato.moves++; save(); SCR.update(); }
+  if (el.id === 'acaoPropria') { S.a.acao = el.value; save(); const c = $('#acaoCnt'); if (c) c.textContent = el.value.length + '/280'; }
   if (el.id === 'frase') { const c = $('#fcnt'); if (c) c.textContent = el.value.length + '/140'; }
   if (el.classList && el.classList.contains('nmi')) chamadoInput(el);
 });
@@ -2774,6 +2963,7 @@ document.addEventListener('change', e => {
  if (e.target.dataset && e.target.dataset.a === 'contrato') miniCompass(); });
 document.addEventListener('keydown', e => {
   if (PAINEL) return;
+  if ($('#planobox.on')) { if (e.key === 'Escape') { e.preventDefault(); fecharPlano(); } return; }
   if ($('#askbox.on')) { if (e.key === 'Escape') { e.preventDefault(); closeRestart(); } return; }
   if ($('#cartela').classList.contains('on')) { if (['Enter', ' ', 'Escape'].includes(e.key)) { e.preventDefault(); cartelaSkip && cartelaSkip(); } return; }
   if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) { if (e.key === 'Enter' && e.target.id === 'novaCarga') { e.preventDefault(); cargaNovaAdd(); } return; }

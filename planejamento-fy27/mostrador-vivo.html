@@ -116,6 +116,39 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .gcard .row button{height:2.5em;padding:0 1.1em;border-radius:8px;border:1.5px solid var(--navy);color:var(--navy);font-weight:700;font-size:.8em}
 .gcard .row .go{background:var(--navy);color:#fff}
 .gcard .msg{min-height:1.3em;margin-top:.6em;font-size:.72em;color:var(--red)}
+.plen{grid-template-columns:auto minmax(0,1fr) auto;align-items:center}
+.plen .pt{font-size:.82em;color:var(--ice)}.plen .pt b{color:#fff;font-family:var(--serif)}
+.plen .abre{height:2.3em;padding:0 1.2em;border-radius:8px;background:var(--orange);color:var(--navy);font-weight:700;font-size:.82em;white-space:nowrap}
+.plen .abre:hover{background:#ffa033}
+.plano{position:absolute;inset:0;z-index:8;display:none;place-items:center;padding:1.2em 1.6em;background:radial-gradient(110% 80% at 15% -10%,#0b3150 0%,#04182a 50%,#020d18 100%);backdrop-filter:blur(4px);font-size:2.05cqh}
+.plano.on{display:grid}
+.pl{display:flex;flex-direction:column;gap:.7em;width:100%;height:100%;min-height:0}
+.plh{display:flex;justify-content:space-between;gap:1em;align-items:flex-start}
+.plh .eb{font:700 .6em var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--peach)}
+.plh h2{font-family:var(--serif);font-size:1.8em;color:#fff;line-height:1.05;margin:.1em 0 .15em}
+.plh p{font-size:.8em;color:var(--blue-40)}
+.plh .x{width:1.9em;height:1.9em;border-radius:50%;border:1.5px solid var(--line);color:#fff;font-size:1.2em}
+.plg{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7em}
+.plg section{display:flex;flex-direction:column;gap:.5em;padding:.8em .9em;border:1px solid var(--line);border-radius:12px;background:var(--card);min-height:0;overflow:auto}
+.plg .fh{display:flex;gap:.6em;align-items:flex-start}
+.plg .nb{flex:none;width:1.7em;height:1.7em;border-radius:50%;display:grid;place-items:center;font:700 .85em var(--mono);color:var(--navy);background:var(--peach)}
+.plg .fq{display:block;font:700 .54em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue-40)}
+.plg .fh b{font-family:var(--serif);font-size:1.05em;line-height:1.15;color:#fff}
+.plg .ev{list-style:none;display:flex;flex-direction:column;gap:.3em}
+.plg .ev li{font-size:.66em;line-height:1.35;color:var(--blue-40);padding-left:.8em;border-left:2px solid var(--line)}
+.plg .cv{font-family:var(--serif);font-weight:600;font-size:.8em;line-height:1.3;color:var(--peach)}
+.acs{display:flex;flex-direction:column;gap:.35em;margin-top:auto}
+.acao{text-align:left;font-size:.68em;line-height:1.35;padding:.5em .65em .5em 2.1em;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ice);position:relative}
+.acao::before{content:"";position:absolute;left:.65em;top:.55em;width:.95em;height:.95em;border-radius:3px;border:1.5px solid var(--blue-80)}
+.acao.ok{border-color:rgba(154,204,60,.7);background:rgba(154,204,60,.12);color:#fff}.acao.ok::before{background:var(--green);border-color:var(--green)}
+.acao.nao{opacity:.45;text-decoration:line-through}.acao.nao::before{border-color:var(--red);background:rgba(207,61,61,.4)}
+.nova{font:inherit;font-size:.66em;padding:.5em .65em;border-radius:8px;border:1px dashed rgba(191,208,225,.4);background:transparent;color:#fff}
+.nova::placeholder{color:var(--navy-40)}
+.plf{display:flex;align-items:center;justify-content:space-between;gap:1em}
+.plf .id{display:flex;flex-wrap:wrap;gap:.3em .9em;align-items:baseline;font-size:.68em;color:var(--ice)}
+.plf .id b{font:700 .9em var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--peach)}
+.plf .id .vz{color:var(--navy-40)}
+.plf button{height:2.2em;padding:0 1em;border-radius:8px;border:1px solid var(--line);color:#fff;font-size:.72em;font-weight:600}
 @media (max-aspect-ratio:4/3){.stage{width:100vw;height:100vh;aspect-ratio:auto}.qs{grid-template-columns:1fr;grid-template-rows:none}.plen{grid-template-columns:1fr}.ui{overflow:auto}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media print{.ctl,.gate,.toast,.banner{display:none!important}}
@@ -135,6 +168,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   </div>
   <div class="toast" id="toast"></div>
   <div class="banner" id="banner"></div>
+  <div class="plano" id="plano"></div>
   <div class="gate off" id="gate"></div>
 </div>
 <script>
@@ -282,6 +316,140 @@ const CATALOGO = [
 const PRODUTOS = CATALOGO.flatMap(g => g.itens.map((nome, k) => ({ id: g.id + (k + 1), nome, g: g.id, pilar: g.curto })));
 
 /* ===================================================================== */
+/* DIAGNÓSTICO DAS 4 FRENTES · o mesmo motor para a carta de cada diretor */
+/* e para o mostrador do time. Cada frente responde em 5 passos:          */
+/* o que foi dito → o que quer dizer → como se compara ao plano →         */
+/* o que levar para a conversa → ações sugeridas (em aberto).             */
+/* ===================================================================== */
+const ZP = v => v == null ? null : v < 38 ? 'crise' : v > 62 ? 'prev' : 'meio';   // porta de entrada (plano: meio)
+const ZF = v => v == null ? null : v < 38 ? 'amplo' : v > 62 ? 'foco' : 'equil';  // foco do portfólio (plano: foco)
+const minus = s => s ? s[0].toLowerCase() + s.slice(1) : s;
+const ACAO_ANCORA = {
+  tempo: 'Reservar horas fixas por semana, para cada diretor, só para venda e originação.',
+  oferta: 'Escrever uma página por produto âncora: a dor, a entrega e o preço, numa frase que qualquer diretor repita.',
+  ferramenta: 'Adotar um pipeline único (CRM) com revisão a cada 15 dias e uma biblioteca de propostas prontas.',
+  treino: 'Criar uma trilha de venda consultiva por trimestre: prospecção, negociação e fechamento.',
+  coach: 'Formar duplas de venda: um diretor experiente acompanha duas propostas por mês de cada colega.',
+  gtm: 'Fazer um encontro mensal com os MDs de outras práticas para originar juntos, com metas conjuntas.',
+  provas: 'Publicar 5 cases com números em 60 dias e combinar clientes que sirvam de referência.',
+  gente: 'Definir quem abre portas no time e contratar ou alocar um perfil comercial sênior.'
+};
+const ACAO_REBITE = {
+  confianca: 'Abrir o encontro mensal com uma rodada curta de "um erro que me ensinou algo", começando pelos mais seniores.',
+  conflito: 'Combinar a regra: discordância se fala na reunião, com argumentos; o que sai de lá é decisão do time.',
+  compromisso: 'Encerrar toda reunião com a decisão escrita, um dono e um prazo.',
+  cobranca: 'Manter um quadro de compromissos do time, revisto a cada 15 dias, onde todos cobram todos.',
+  resultado: 'Colocar uma meta coletiva de DTS no reconhecimento de cada diretor, acima da meta da frente.'
+};
+const SIGNIFICA_REBITE = {
+  confianca: 'Sem confiança, ninguém admite um erro nem pede ajuda.',
+  conflito: 'As discordâncias ficam nos corredores, e não na mesa.',
+  compromisso: 'As decisões não são sustentadas por todos depois da reunião.',
+  cobranca: 'Quando alguém não entrega o combinado, ninguém cobra.',
+  resultado: 'A meta de cada frente vem antes da meta de DTS.'
+};
+const ACAO_PAPEL_MAIS = {
+  vender: 'Reservar horas fixas na semana para vender e abrir portas.', expandir: 'Dar a cada diretor um conjunto de contas para expandir, com plano de conta.',
+  pessoas: 'Separar tempo fixo para desenvolver o time: coaching e conversas de carreira.', ofertas: 'Dar a cada diretor uma oferta para construir, com prazo.',
+  qualidade: 'Formalizar o diretor como gate de qualidade: o que ele revisa antes de sair.', front: 'Definir em quais projetos o diretor fica no front com o cliente.', burocracias: 'Organizar as rotinas internas para que tomem menos tempo.'
+};
+const ACAO_PAPEL_MENOS = {
+  front: 'Passar parte do front do projeto para os gerentes, com o diretor revisando o que sai.', burocracias: 'Listar as burocracias do diretor e decidir o que cortar, simplificar ou delegar.',
+  qualidade: 'Delegar parte da revisão aos gerentes seniores, com critérios claros.', vender: 'Concentrar a venda em quem tem mais acesso e liberar os outros para a entrega.',
+  expandir: 'Concentrar a expansão de contas em quem cuida da relação.', pessoas: 'Apoiar o desenvolvimento do time com o RH e com mentores.', ofertas: 'Concentrar a construção de ofertas num grupo pequeno.'
+};
+
+function frentes(sg) {
+  const eu = sg.modo === 'eu', F = [];
+  // ---------- 1 · Que tipo de consultoria DTS quer ser?
+  { const z = sg.zP;
+    const R = { crise: 'O resgate na crise', meio: 'Entrar na crise e ficar a bordo', prev: 'O prático que previne' };
+    const S = { crise: 'DTS entra quando a TI do cliente já deu errado, chamada pelo CFO. Ganha acesso e urgência, mas a relação tende a acabar junto com a crise.',
+      meio: 'DTS entra pela dor que o cliente já tem (custo de TI, programa atrasado, pós-fusão) e fica para ele não falhar de novo.',
+      prev: 'DTS acompanha o CIO de forma contínua para a TI não falhar. A relação é longa, mas depende de DTS ser lembrada antes de existir o problema.' };
+    const C = { crise: 'O planejamento propõe entrar pela crise e ficar depois dela. Esta resposta fica mais no resgate do que o plano.', meio: 'É exatamente o que o planejamento propõe.',
+      prev: 'O planejamento propõe entrar pela dor de hoje e ficar. Esta resposta vai mais para a prevenção do que o plano.' };
+    const P = { crise: 'Como transformar cada resgate em uma relação que continua?', meio: 'Quais dores abrem a porta, e qual oferta nos mantém a bordo depois?', prev: 'O que faz o CIO chamar DTS antes de o problema existir?' };
+    const A = { crise: ['Criar uma oferta de continuidade para depois do resgate (por exemplo, PMO ou TMO de 6 a 12 meses).', 'Revisitar os clientes resgatados nos últimos 2 anos com uma proposta de acompanhamento.', 'Medir quantos resgates viram contrato recorrente.'],
+      meio: ['Escolher as 3 dores de entrada de DTS e a oferta de permanência de cada uma.', 'Fazer uma revisão com o cliente 90 dias depois de cada entrega, para propor a próxima fase.', 'Medir recompra: quanto da receita vem de clientes que já atendemos.'],
+      prev: ['Desenhar uma oferta recorrente para o CIO (acompanhamento mensal da TI).', 'Montar uma agenda de relacionamento com CIOs: encontros, conteúdo e diagnósticos curtos.', 'Manter uma porta de entrada pela crise, para abrir contas novas.'] };
+    F.push({ id: 'tipo', pergunta: 'Que tipo de consultoria DTS quer ser?', resposta: z ? R[z] : null, disse: sg.ev.tipo, significa: z ? S[z] : '', compara: z ? C[z] + (sg.dissonancia && sg.farol ? ` Repare: no farol, com calma, ${eu ? 'você escolheu' : 'a maioria escolheu'} "${minus(sg.farol)}", mas ${eu ? 'seus reflexos e o rádio' : 'os reflexos e o rádio do time'} puxaram para ${minus(R[z])}. Vale conversar sobre essa diferença.` : '') : '', conversa: z ? P[z] : '', acoes: z ? A[z] : [] }); }
+  // ---------- 2 · Poucas coisas muito bem, ou muitas coisas?
+  { const z = sg.zF, n = sg.nProd;
+    const R = { foco: 'Poucas coisas, muito bem feitas', equil: 'Um núcleo forte e poucas apostas', amplo: 'Muitas frentes ao mesmo tempo' };
+    const S = { foco: 'DTS escolhe poucos problemas para ser a primeira escolha do cliente e concentra time e esforço neles.', equil: 'DTS mantém um núcleo e abre poucas frentes novas, com critério.', amplo: 'DTS atende muitos problemas e mercados. Há mais oportunidades, mas o time e o esforço ficam mais espalhados.' };
+    let sig = z ? S[z] : '';
+    if (z === 'foco' && n != null && n >= 30) sig += ' Mas atenção: o discurso é de foco e quase todo o catálogo de hoje continua a bordo.';
+    if (z === 'amplo' && n != null && n <= 20) sig += ' Curioso: pede amplitude, mas enxuga o catálogo.';
+    const comp = !z ? '' : (z === 'foco' ? 'O planejamento também propõe foco' : 'O planejamento propõe mais foco do que isso') + ': um núcleo forte e 23 produtos (hoje são 33).' + (n != null ? ` ${eu ? 'Você ficou' : 'O time ficou, em média,'} com ${n} produtos.` : '');
+    const P = { foco: 'Quais produtos saem do catálogo, e quem é dono de cada um que fica?', equil: 'Quais são as poucas apostas novas, e com que critério entram?', amplo: 'DTS tem time e investimento para tantas frentes?' };
+    const A = { foco: ['Definir os produtos âncora de 2027 e um dono para cada.', 'Fundir ou aposentar os produtos que ficaram no cais.', 'Concentrar a maior parte do esforço comercial no núcleo.'],
+      equil: ['Fechar o núcleo de produtos âncora e escolher no máximo 2 apostas novas.', 'Dar a cada aposta um responsável, uma meta e uma data para revisar.', 'Aposentar o que não é núcleo nem aposta.'],
+      amplo: ['Priorizar as frentes pelo tamanho do mercado e pela chance de ganhar.', 'Abrir frentes novas com parceiros antes de montar time próprio.', 'Revisar em 6 meses e fechar o que não ganhou tração.'] };
+    F.push({ id: 'foco', pergunta: 'DTS deve fazer poucas coisas muito bem, ou muitas coisas?', resposta: z ? R[z] : null, disse: sg.ev.foco, significa: sig, compara: comp, conversa: z ? P[z] : '', acoes: z ? A[z] : [] }); }
+  // ---------- 3 · Como DTS deve vender e cobrar?
+  { const v = sg.vento, rc = sg.receita, anc = sg.anc || [], ok = sg.mesaTop != null || v != null;
+    const preco = rc == null ? '' : rc >= 60 ? 'preço ligado ao resultado' : rc <= 40 ? 'preço fixo' : 'preço misto';
+    const resp = !ok ? null : (sg.mesaTop != null ? `Esforço em ${minus(MESAS[sg.mesaTop].nome)}` : 'Vender com método') + (preco ? `, com ${preco}` : '');
+    const mat = v == null ? '' : v <= 2 ? 'Hoje a venda de DTS depende de o cliente aparecer. Para crescer, ela precisa de método e de rotina.' : v < 4 ? 'Cada diretor vende do seu jeito. Falta um método comum.' : 'Já existe rotina comercial. O desafio é ganhar escala.';
+    const trava = anc.length ? ` O que mais trava: ${anc.map(id => minus((ANCORAS_VENDA.find(x => x.id === id) || {}).nome || '')).join(' e ')}.` : '';
+    let comp = 'O planejamento propõe preço ligado ao resultado e esforço concentrado em reestruturação, programas críticos e M&A.';
+    if (rc != null && rc < 60) comp += ` ${eu ? 'Você prefere' : 'O time prefere'} um preço mais fixo do que o plano.`;
+    if (sg.mesaTop != null && sg.mesaTop >= 3) comp += ` A aposta principal ${eu ? 'que você fez' : 'do time'} está fora desse núcleo.`;
+    const acoes = anc.map(id => ACAO_ANCORA[id]).filter(Boolean).slice(0, 2);
+    if (v != null && v < 4) acoes.push('Criar um rito comercial semanal: pipeline, propostas e próximos passos de cada diretor.');
+    if (rc != null && rc < 60) acoes.push('Testar 2 propostas com parte do preço ligada ao resultado.');
+    F.push({ id: 'venda', pergunta: 'Como DTS deve vender e cobrar?', resposta: resp, disse: sg.ev.venda, significa: (mat + trava).trim(), compara: ok ? comp : '', conversa: 'O que precisa mudar na rotina dos diretores para a venda virar método?', acoes: acoes.slice(0, 3) }); }
+  // ---------- 4 · O time está pronto para isso?
+  { const c = sg.casco, idx = c && c.length === 5 && c.every(x => x != null) ? Math.round((avg(c) - 1) / 4 * 100) : null;
+    const lo = idx != null ? c.indexOf(Math.min(...c)) : -1, w = lo >= 0 ? CASCO[lo] : null;
+    const pp = sg.papel, dl = pp && pp.h && pp.i ? PAPEIS.map((x, i) => ({ id: x.id, nome: x.nome, d: (pp.i[i] || 0) - (pp.h[i] || 0) })) : [];
+    const up = dl.length ? dl.reduce((a, b) => b.d > a.d ? b : a) : null, dn = dl.length ? dl.reduce((a, b) => b.d < a.d ? b : a) : null;
+    const resp = idx == null ? (up && up.d > 0 ? 'Pronto, se o papel do diretor mudar' : null) : idx >= 75 ? 'Sim: o casco está firme' : idx >= 55 ? 'Quase: o casco tem pontos de atenção' : 'Ainda não: o casco está vazando';
+    let sig = '';
+    if (up && up.d >= 5 && dn && dn.d <= -5) sig += `Para ganhar tempo em "${minus(up.nome)}", o diretor precisa tirar tempo de "${minus(dn.nome)}". `;
+    if (w && c[lo] <= 3) sig += SIGNIFICA_REBITE[w.id] + ' É o ponto mais frágil.';
+    else if (idx != null) sig += 'Nenhum dos cinco pontos de integridade está fraco.';
+    const acoes = [];
+    if (w && c[lo] <= 3) acoes.push(ACAO_REBITE[w.id]);
+    if (dn && dn.d <= -5 && ACAO_PAPEL_MENOS[dn.id]) acoes.push(ACAO_PAPEL_MENOS[dn.id]);
+    if (up && up.d >= 5 && ACAO_PAPEL_MAIS[up.id]) acoes.push(ACAO_PAPEL_MAIS[up.id]);
+    (sg.dependencias || []).forEach(t => acoes.push(`Formar uma segunda referência no time para "${minus(t)}", hoje concentrado em uma pessoa.`));
+    (sg.lacunas || []).forEach(t => acoes.push(`Desenvolver ou buscar quem cubra "${minus(t)}": parte do time não tem a quem recorrer.`));
+    F.push({ id: 'time', pergunta: 'O time está pronto para isso?', resposta: resp, disse: sg.ev.time, significa: sig.trim(), compara: 'O planejamento não fixa uma meta para o casco: ele é a leitura do próprio time. No encontro, as notas de todos são somadas.', conversa: 'O que sai da agenda do diretor para o papel de 2027 caber?', acoes: acoes.slice(0, 3) }); }
+  return F;
+}
+
+/* ---------- sinais de UM diretor (a carta individual) ---------- */
+function sinaisEu(a, r) {
+  const d = r.d, side = id => (a.rx[id] || {}).side, ev = { tipo: [], foco: [], venda: [], time: [] };
+  const rxTxt = (id, L, R) => side(id) === 'L' ? L : side(id) === 'R' ? R : null;
+  const t1 = rxTxt('r1', 'Preferiu pagar o reboque quando o motor parar, em vez da revisão antes de zarpar.', 'Preferiu a revisão antes de zarpar ao reboque na hora da pane.'); if (t1) ev.tipo.push(t1);
+  const t2 = rxTxt('r2', 'Viu DTS como o resgate que chega na tempestade.', 'Viu DTS como o prático que guia o navio longe das pedras.'); if (t2) ev.tipo.push(t2);
+  const esp = ESPELHO.find(e => e.id === a.espelho); if (esp) ev.tipo.push(`No farol, com calma, escolheu "${minus(esp.mar)}": ${esp.txt.replace('…', 'a consultoria que ')}`);
+  const c1 = CALLS.find(c => c.id === (a.tel.atender || [])[0]); if (c1) ev.tipo.push(`No rádio, atendeu primeiro: ${c1.quem}, "${c1.txt}"`);
+  const rota = ROTAS.find(x => x.id === a.rota); if (rota) ev.foco.push(`Escolheu a rota "${rota.nome}": ${minus(rota.txt)}`);
+  const t3 = rxTxt('r3', 'Para pescar, lançaria uma rede enorme, que pega de tudo.', 'Para pescar, lançaria o anzol certo, no cardume certo.'); if (t3) ev.foco.push(t3);
+  const t8 = rxTxt('r8', 'Em mar desconhecido, navegaria uma rota por vez.', 'Em mar desconhecido, abriria três rotas ao mesmo tempo.'); if (t8) ev.foco.push(t8);
+  const nP = a.roupa && a.roupa.moves ? a.roupa.n : null; if (nP != null) ev.foco.push(`Manteve ${(a.carga || []).length} dos 33 produtos de hoje${(a.cargaNova || []).length ? ` e propôs ${(a.cargaNova || []).length} novo${(a.cargaNova || []).length > 1 ? 's' : ''}` : ''}.`);
+  const tot = sum(a.mesa || []), top = tot ? a.mesa.indexOf(Math.max(...a.mesa)) : null;
+  if (tot) ev.venda.push(`Pôs a maior parte do esforço comercial em ${minus(MESAS[top].nome)} (${a.mesa[top]} de 100 caixas).`);
+  if (a.contrato && a.contrato.moves) ev.venda.push(`Assinaria o contrato ${a.contrato.v <= 35 ? 'mais no fixo' : a.contrato.v >= 65 ? 'mais no resultado' : 'meio a meio entre fixo e resultado'}.`);
+  const t4 = rxTxt('r4', 'Pagaria o pescador com uma parte do que pescar (resultado).', 'Pagaria o pescador pela diária, pescando ou não (hora).'); if (t4) ev.venda.push(t4);
+  const w = VENTOS.find(x => x.v === a.vento); if (w) ev.venda.push(`Vê DTS vendendo como "${minus(w.nome)}": ${w.txt}.`);
+  const an = (a.ancoras || []).map(id => (ANCORAS_VENDA.find(x => x.id === id) || {}).nome).filter(Boolean); if (an.length) ev.venda.push(`Apontou o que mais segura a venda: ${an.map(minus).join(' e ')}.`);
+  const P = a.papel || {}; if (P.hoje && sum(P.hoje) === 100) { const i = P.hoje.indexOf(Math.max(...P.hoje)); ev.time.push(`Hoje passa mais tempo em ${minus(PAPEIS[i].nome)} (${P.hoje[i]}% da semana).`); }
+  if (P.ideal) { const dl = PAPEIS.map((x, i) => ({ x, d: P.ideal[i] - (P.hoje[i] || 0) })); const up = dl.reduce((m, b) => b.d > m.d ? b : m), dn = dl.reduce((m, b) => b.d < m.d ? b : m); if (up.d > 0 && dn.d < 0) ev.time.push(`Em 2027 quer mais ${minus(up.x.nome)} (+${up.d}) e menos ${minus(dn.x.nome)} (${dn.d}).`); }
+  const cs = a.casco || []; if (cs.length === 5 && cs.every(x => x != null)) { const lo = cs.indexOf(Math.min(...cs)); ev.time.push(`Deu a nota mais baixa (${cs[lo]} de 5) para: "${CASCO[lo].txt}"`); }
+  const cal = esp ? ZP(esp.porta) : null;
+  return { modo: 'eu', zP: ZP(d.PORTA), zF: ZF(d.FOCO), nProd: nP, receita: d.RECEITA, vento: a.vento, anc: a.ancoras || [], mesaTop: top, papel: P.hoje && P.ideal ? { h: P.hoje, i: P.ideal } : null, casco: cs, dissonancia: !!(cal && cal !== ZP(d.PORTA)), farol: esp ? esp.mar : null, ev };
+}
+function planoTexto(F, titulo) {
+  const L = [titulo, ''];
+  F.forEach((f, i) => { L.push(`${i + 1}. ${f.pergunta}`, `   Resposta: ${f.resposta || 'sem resposta ainda'}`); if (f.significa) L.push(`   O que quer dizer: ${f.significa}`); if (f.compara) L.push(`   Comparado ao plano: ${f.compara}`); if (f.conversa) L.push(`   Para conversar: ${f.conversa}`); f.acoes.forEach(a => L.push(`   [ ] ${a}`)); L.push(''); });
+  return L.join('\n');
+}
+/* ===================================================================== */
 /* MOSTRADOR VIVO · lê a planilha, conta cada resposta e escreve o        */
 /* diagnóstico do time. As constantes do modelo vêm da própria bússola.   */
 /* ===================================================================== */
@@ -314,7 +482,7 @@ function participantes(rs) {
     const st = r.status || (r.concluidoEm ? 'concluída' : 'em andamento');
     const p = { id: String(r.sessionId || ''), nome: r.nome || '', done: st === 'concluída', etapa: r.etapa || (st === 'concluída' ? 'final' : 'capa'), a: a || {},
       arq: r.arquetipo || '', x: num('x'), y: num('y'), conv: num('opiniaoFormada'), ader: num('aderencia'), vel: num('velocidadeMed'), hes: num('hesitacoes'), dur: num('duracaoSeg'),
-      dims: Object.fromEntries(Object.keys(DIMS).map(k => [k, num(k)])), ts: Date.parse(r.atualizadoEm || r.concluidoEm || r.iniciadoEm || '') || 0 };
+      acao: String(r.acaoPropria || (a && a.acao) || '').trim(), dims: Object.fromEntries(Object.keys(DIMS).map(k => [k, num(k)])), ts: Date.parse(r.atualizadoEm || r.concluidoEm || r.iniciadoEm || '') || 0 };
     if (!p.id || !p.nome) return;
     const k = normName(p.nome), o = out.get(k); if (!o || p.ts >= o.ts) out.set(k, p); // a resposta mais recente de cada comandante
   });
@@ -460,39 +628,64 @@ function contarAnimado(root) {
 const bar = (k, label, v, max, o = {}) => { const w = max ? clamp(v / max * 100) : 0; return `<div class="bar ${o.top ? 'top' : ''}"><span title="${esc(o.title || label)}">${label}</span><div class="tr"><i class="${o.top ? 'hi' : ''}" style="${anim(k, w)}"></i>${o.plan != null ? `<em style="--p:${clamp(o.plan / max * 100)}%" title="plano"></em>` : ''}</div><span class="v">${o.txt ?? Math.round(v)}</span></div>`; };
 const corCasco = m => m == null ? '#7EA1C3' : m < 2.6 ? '#CF3D3D' : m < 3.5 ? '#F9C20A' : '#9ACC3C';
 const card = (nb, pergunta, n, corpo) => `<article class="qc"><span class="nb">${nb}</span><div class="qq">${pergunta}<span>${n ? `${n} resp.` : 'aguardando'}</span></div>${corpo}</article>`;
-const espera = '<p class="wait">A resposta aparece aqui assim que os diretores passarem por esta pergunta.</p>';
 
-/* ---------------- as quatro perguntas ---------------- */
-function q1(A) { // Que consultoria DTS quer ser?
-  const f = A.farol; if (!f.n) return card(1, 'Que consultoria DTS quer ser?', 0, espera);
-  const by = id => f.c.find(c => c.id === id), top = [...f.c].sort((a, b) => b.n - a.n)[0], mp = A.dim.PORTA;
-  const seg = (id, cor) => `<i style="flex-grow:${by(id).n};background:${cor}" title="${by(id).nome}: ${by(id).n}"></i>`;
-  return card(1, 'Que consultoria DTS quer ser?', f.n, `<div class="ans">${top.nome} <em>${pc(top.n, f.n)}%</em></div>
-    <p class="fact">No farol: crise com o CFO <b>${by('A').n}</b> · fica a bordo <b>${by('C').n}</b> · prevenção com o CIO <b>${by('B').n}</b>.${mp != null ? ` Porta de entrada média <b>${Math.round(mp)}</b> (plano ${DIMS.PORTA.plan}).` : ''}</p>
-    <div class="viz"><div class="stk">${seg('A', '#5E8AB4')}${seg('C', '#F78C16')}${seg('B', '#BFD0E1')}</div><div class="stk-l"><span>CFO · crise</span><span>fica a bordo · plano</span><span>CIO · prevenção</span></div></div>`);
+/* ---------------- sinais do TIME para o motor das 4 frentes ---------------- */
+function sinaisTime(A) {
+  const P = A.P, ev = { tipo: [], foco: [], venda: [], time: [] }, rx = id => A.rx.find(x => x.r.id === id);
+  const lin = (id, txtL, txtR) => { const x = rx(id); if (x && x.n) ev[id === 'r1' || id === 'r2' ? 'tipo' : id === 'r4' ? 'venda' : 'foco'].push(`${x.L} de ${x.n} ${txtL}; ${x.R} ${txtR}.`); };
+  lin('r1', 'pagariam o reboque quando o motor parar', 'preferem a revisão antes de zarpar');
+  lin('r2', 'veem DTS como o resgate na tempestade', 'como o prático que guia longe das pedras');
+  if (A.farol.n) { const by = id => A.farol.c.find(c => c.id === id).n; ev.tipo.push(`No farol, com calma: ${by('A')} pela crise com o CFO, ${by('C')} por entrar na crise e ficar, ${by('B')} pela prevenção com o CIO.`); }
+  if (A.tel.n) { const t = A.tel.c[0]; ev.tipo.push(`Chamado mais atendido no rádio: ${t.c.quem}, "${t.c.txt}" (${t.at} de ${A.tel.n}).`); }
+  if (A.rota.n) { const t = [...A.rota.c].sort((a, b) => b.n - a.n)[0]; ev.foco.push(`Rota mais escolhida: "${t.nome}" (${t.n} de ${A.rota.n}).`); }
+  lin('r3', 'lançariam a rede enorme', 'o anzol certo'); lin('r8', 'navegariam uma rota por vez', 'três rotas ao mesmo tempo');
+  if (A.carga.n) { const fica = A.carga.prod.filter(o => o.f >= .75).length, cais = A.carga.prod.filter(o => o.f <= .25); ev.foco.push(`Em média, ${Math.round(A.carga.m)} dos 33 produtos seguem. ${fica} têm consenso para ficar; ${cais.length} ficam no cais${cais[0] ? ` (como ${cais[cais.length - 1].x.nome})` : ''}.`); }
+  const mt = A.mesa.n ? A.mesa.m.indexOf(Math.max(...A.mesa.m)) : null;
+  if (mt != null) ev.venda.push(`Maior parte do esforço comercial em ${minus(MESAS[mt].nome)}: ${Math.round(A.mesa.m[mt])} de 100 caixas, em média.`);
+  if (A.contrato.n) ev.venda.push(`No contrato: ${A.contrato.fixo} preferem mais fixo, ${A.contrato.misto} meio a meio, ${A.contrato.res} mais no resultado.`);
+  lin('r4', 'pagariam o pescador com parte da pesca (resultado)', 'pela diária (hora)');
+  if (A.vento.n) ev.venda.push(`O time vê DTS vendendo como "${minus(ventoNome(A.vento.m))}" (${fmt1(A.vento.m)} de 5).`);
+  const anc = A.anc.filter(o => o.n).slice(0, 2); if (anc.length) ev.venda.push(`O que mais segura a venda: ${anc.map(o => `${minus(o.x.nome)} (${o.n} de ${A.vento.n})`).join(' e ')}.`);
+  const pp = A.papel; let papel = null;
+  if (pp.nH && pp.nI) { papel = { h: pp.c.map(c => c.h || 0), i: pp.c.map(c => c.i || 0) }; const dl = pp.c.map(c => ({ c, d: (c.i || 0) - (c.h || 0) })); const up = dl.reduce((a, b) => b.d > a.d ? b : a), dn = dl.reduce((a, b) => b.d < a.d ? b : a); ev.time.push(`Em 2027, o time quer mais ${minus(up.c.x.nome)} (+${Math.round(up.d)} pontos) e menos ${minus(dn.c.x.nome)} (${Math.round(dn.d)}).`); const bu = pp.c.find(c => c.x.id === 'burocracias'); if (bu) ev.time.push(`Burocracias: ${Math.round(bu.h || 0)}% da semana hoje, ${Math.round(bu.i || 0)}% desejado em 2027.`); }
+  const casco = A.casco.n ? A.casco.c.map(c => c.m) : []; if (A.casco.n) { const lo = casco.indexOf(Math.min(...casco)); ev.time.push(`Nota mais baixa do casco (${fmt1(casco[lo])} de 5): "${CASCO[lo].txt}"`); }
+  const dependencias = [], lacunas = [];
+  CHAMADOS.forEach(c => { const cnt = {}; let tot = 0, nin = 0; P.filter(p => passou(p, 'chamado')).forEach(p => ((p.a.chama || {})[c.id] || []).forEach(nm => { if (nm === '—') { nin++; return; } tot++; const k = normName(nm); cnt[k] = (cnt[k] || 0) + 1; })); const top = Math.max(0, ...Object.values(cnt)); if (tot >= 4 && top / tot >= .45) dependencias.push(c.tema); if (nin >= Math.max(2, A.n / 4)) lacunas.push(c.tema); });
+  const fTop = A.farol.n ? [...A.farol.c].sort((a, b) => b.n - a.n)[0] : null, fz = fTop ? ZP((ESPELHO.find(e => e.id === fTop.id) || {}).porta) : null, zp = ZP(A.dim.PORTA);
+  return { modo: 'time', zP: zp, zF: ZF(A.dim.FOCO), nProd: A.carga.n ? Math.round(A.carga.m) : null, receita: A.dim.RECEITA, vento: A.vento.n ? A.vento.m : null, anc: anc.map(o => o.x.id), mesaTop: mt, papel, casco, dependencias, lacunas, dissonancia: !!(fz && zp && fz !== zp), farol: fTop ? fTop.nome : null, ev };
 }
-function q2(A) { // Onde concentrar o esforço comercial?
-  const m = A.mesa; if (!m.n) return card(2, 'Onde concentrar o esforço em 2027?', 0, espera);
-  const i = m.m.indexOf(Math.max(...m.m));
-  return card(2, 'Onde concentrar o esforço em 2027?', m.n, `<div class="ans">${MESA_CURTA[i]} <em>${Math.round(m.m[i])} de 100</em></div>
-    <p class="fact">De 100 caixas de esforço comercial; o plano põe ${PLAN_MESA[i]} nesse pilar. Núcleo do time: <b>${Math.round(m.nucleo)}%</b>, contra 85% do plano.</p>
-    <div class="viz bars">${MESAS.map((x, k) => bar('m' + k, MESA_CURTA[k], m.m[k], 50, { plan: PLAN_MESA[k], top: k === i, title: x.nome })).join('')}</div>`);
+
+/* ---------------- as quatro frentes na tela ---------------- */
+const espera = '<p class="wait">A resposta aparece aqui assim que os diretores passarem por estas perguntas.</p>';
+function cartaoFrente(f, i, A) {
+  const nResp = [A.farol.n, A.carga.n || A.rota.n, A.vento.n || A.mesa.n, A.casco.n || A.papel.nI][i];
+  let viz = '';
+  if (i === 0 && A.farol.n) { const by = id => A.farol.c.find(c => c.id === id).n; viz = `<div class="viz"><div class="stk"><i style="flex-grow:${by('A')};background:#5E8AB4"></i><i style="flex-grow:${by('C')};background:#F78C16"></i><i style="flex-grow:${by('B')};background:#BFD0E1"></i></div><div class="stk-l"><span>CFO · crise</span><span>fica a bordo · plano</span><span>CIO · prevenção</span></div></div>`; }
+  if (i === 1 && A.carga.n) viz = `<div class="viz bars">${bar('cat', 'Produtos a bordo', A.carga.m, 33, { plan: 23, top: true, txt: Math.round(A.carga.m) + '/33' })}</div>`;
+  if (i === 2 && A.vento.n) viz = `<div class="viz bars">${A.anc.slice(0, 3).map((o, k) => bar('a' + o.x.id, o.x.nome, o.n, A.vento.n, { top: k === 0, txt: pc(o.n, A.vento.n) + '%', title: o.x.txt })).join('')}</div>`;
+  if (i === 3 && A.casco.n) viz = `<div class="viz dots">${A.casco.c.map(x => `<div><i style="background:${corCasco(x.m)}">${fmt1(x.m)}</i>${x.x.curto}</div>`).join('')}</div>`;
+  return card(i + 1, f.pergunta, nResp, f.resposta ? `<div class="ans">${f.resposta}</div><p class="fact">${f.significa}</p>${viz}` : espera);
 }
-function q3(A) { // O que segura a venda?
-  const v = A.vento; if (!v.n) return card(3, 'O que mais segura a venda?', 0, espera);
-  const a = A.anc;
-  return card(3, 'O que mais segura a venda?', v.n, `<div class="ans">${a[0].x.nome} <em>${pc(a[0].n, v.n)}%</em></div>
-    <p class="fact">Vento comercial de DTS hoje: <b>${fmt1(v.m)} de 5</b> (${lc(ventoNome(v.m))}). Cada diretor apontou as duas âncoras que mais pesam.</p>
-    <div class="viz bars">${a.slice(0, 3).map((o, k) => bar('a' + o.x.id, o.x.nome, o.n, v.n, { top: k === 0, txt: pc(o.n, v.n) + '%', title: o.x.txt })).join('')}</div>`);
+
+/* ---------------- o plano de ação do time (botão) ---------------- */
+let planoEst = (() => { try { return JSON.parse(localStorage.getItem('mostrador-plano') || '{}'); } catch (e) { return {}; } })();
+planoEst.marca = planoEst.marca || {}; planoEst.extra = planoEst.extra || { tipo: [], foco: [], venda: [], time: [] };
+const guardaPlano = () => { try { localStorage.setItem('mostrador-plano', JSON.stringify(planoEst)); } catch (e) { } };
+function abrirPlano() {
+  const F = frentes(sinaisTime(A)), ideias = A.P.map(p => p.acao).filter(Boolean);
+  const g = $('#plano'); g.classList.add('on');
+  g.innerHTML = `<div class="pl"><div class="plh"><div><span class="eb">Plano de ação do time · ${A.nD} bússola${A.nD === 1 ? '' : 's'} concluída${A.nD === 1 ? '' : 's'}</span><h2>O que fazer com este diagnóstico</h2><p>Sugestões a partir das respostas. O time decide: toque para aprovar ou descartar, e acrescente outras ações.</p></div><button class="x" data-c="fecha-plano" aria-label="Fechar">×</button></div>
+    <div class="plg">${F.map((f, i) => `<section><div class="fh"><span class="nb">${i + 1}</span><div><span class="fq">${f.pergunta}</span><b>${f.resposta || 'Ainda sem resposta'}</b></div></div>
+      ${f.disse.length ? `<ul class="ev">${f.disse.slice(0, 3).map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+      ${f.conversa && f.resposta ? `<p class="cv">${f.conversa}</p>` : ''}
+      <div class="acs">${[...f.acoes, ...planoEst.extra[f.id]].map(a => { const m = planoEst.marca[a] || ''; return `<button class="acao ${m}" data-ac="${esc(a)}">${esc(a)}</button>`; }).join('')}<input class="nova" data-fr="${f.id}" placeholder="+ outra ação (Enter para incluir)"></div></section>`).join('')}</div>
+    <div class="plf"><div class="id"><b>Ideias dos diretores</b>${ideias.length ? ideias.slice(0, 6).map(x => `<span>“${esc(x)}”</span>`).join('') : '<span class="vz">Nenhuma ainda: cada diretor pode propor uma ação no fim da bússola.</span>'}</div><button data-c="copia-plano">Copiar plano</button></div></div>`;
 }
-function q4(A) { // A tripulação está pronta?
-  const c = A.casco; if (!c.n && !A.papel.nI) return card(4, 'A tripulação está pronta?', 0, espera);
-  const w = c.n ? c.c.reduce((a, b) => b.m < a.m ? b : a) : null;
-  const dl = A.papel.nI ? A.papel.c.map(x => ({ x, d: (x.i ?? 0) - (x.h ?? 0) })) : [], up = dl.length ? dl.reduce((a, b) => b.d > a.d ? b : a) : null, dn = dl.length ? dl.reduce((a, b) => b.d < a.d ? b : a) : null;
-  const rot = c.idx == null ? '' : c.idx >= 75 ? 'casco firme' : c.idx >= 55 ? 'pontos de atenção' : 'casco com vazamentos';
-  return card(4, 'A tripulação está pronta?', c.n || A.papel.nI, `<div class="ans">${c.idx != null ? `Casco ${c.idx}/100 <em>${rot}</em>` : 'Casco ainda sem leitura'}</div>
-    <p class="fact">${w ? `Rebite mais fraco: <b>${lc(w.x.nome)}</b> (${fmt1(w.m)} de 5).` : ''}${up && up.d >= 2 ? ` Em 2027 o time quer <b>mais ${lc(PAPEL_CURTO[up.x.x.id])}</b> (+${Math.round(up.d)}) e <b>menos ${lc(PAPEL_CURTO[dn.x.x.id])}</b> (${Math.round(dn.d)}).` : ''}</p>
-    ${c.n ? `<div class="viz dots">${c.c.map(x => `<div><i style="background:${corCasco(x.m)}">${fmt1(x.m)}</i>${x.x.curto}</div>`).join('')}</div>` : ''}`);
+function textoPlanoTime() {
+  const F = frentes(sinaisTime(A)); const L = [`BÚSSOLA DTS 2027 · PLANO DE AÇÃO DO TIME (${A.nD} bússolas)`, ''];
+  F.forEach((f, i) => { L.push(`${i + 1}. ${f.pergunta}`, `   Resposta do time: ${f.resposta || 'sem resposta ainda'}`); if (f.significa) L.push(`   O que quer dizer: ${f.significa}`); if (f.compara) L.push(`   Comparado ao plano: ${f.compara}`); [...f.acoes, ...planoEst.extra[f.id]].forEach(a => { const m = planoEst.marca[a]; L.push(`   ${m === 'ok' ? '[aprovada]' : m === 'nao' ? '[descartada]' : '[a decidir]'} ${a}`); }); L.push(''); });
+  const ideias = A.P.map(p => p.acao).filter(Boolean); if (ideias.length) { L.push('Ideias dos diretores:'); ideias.forEach(x => L.push(`- ${x}`)); }
+  return L.join('\n');
 }
 
 /* ---------------- desenho ---------------- */
@@ -500,12 +693,16 @@ let A = contar([]), assinatura = '';
 function desenhar() {
   const D = diagnostico(A);
   $('#count').innerHTML = `<div class="ct hi"><b>${numero('kD', A.nD)}</b><span>concluídas</span></div><div class="ct"><b>${numero('kG', A.nG)}</b><span>respondendo agora</span></div>`;
-  $('#headline').innerHTML = `<div class="eb">${D.eb}</div><h2>${D.titulo}</h2>${D.curto ? `<p>${D.curto}</p>` : `<p>${D.sub}</p>`}`;
-  $('#qs').innerHTML = q1(A) + q2(A) + q3(A) + q4(A);
-  $('#plen').innerHTML = `<span class="k">Para a plenária</span>` + (D.pautas.length ? D.pautas.slice(0, 3).map((p, i) => `<div><b class="n">${i + 1}</b><span>${p}</span></div>`).join('') : '<div><b class="n">·</b><span>As decisões aparecem com as primeiras bússolas concluídas.</span></div>');
+  const F = frentes(sinaisTime(A)), nAc = sum(F.map(f => f.acoes.length)), ideias = A.P.filter(p => p.acao).length, aprov = Object.values(planoEst.marca).filter(m => m === 'ok').length;
+  const top = A.arq[0], resumo = A.nD && F[0].resposta ? `<b>${top.n} de ${A.nD}</b> ${top.n === 1 ? 'diretor pensa' : 'diretores pensam'} assim. Em resumo: ${minus(F[0].resposta)}${F[1].resposta ? `, com ${minus(F[1].resposta)}` : ''}${F[3].resposta ? `. Time: ${minus(F[3].resposta)}` : ''}.` : D.sub;
+  $('#headline').innerHTML = `<div class="eb">${D.eb}</div><h2>${D.titulo}</h2><p>${resumo}</p>`;
+  $('#qs').innerHTML = F.map((f, i) => cartaoFrente(f, i, A)).join('');
+  $('#plen').innerHTML = `<span class="k">Plano de ação</span><div class="pt">${nAc ? `<b>${nAc}</b> ações sugeridas a partir das respostas${aprov ? ` · <b>${aprov}</b> aprovadas` : ''}${ideias ? ` · <b>${ideias}</b> ideias dos diretores` : ''}. O time decide estas e outras.` : 'As sugestões aparecem quando as respostas chegarem.'}</div><button class="abre" data-c="plano">Abrir o plano de ação →</button>`;
+  if ($('#plano').classList.contains('on')) abrirPlano();
   contarAnimado(document);
   A.done.forEach(p => vistos.add(p.id));
 }
+function desenharSemPlano() { const on = $('#plano').classList.contains('on'); $('#plano').classList.remove('on'); desenhar(); if (on) $('#plano').classList.add('on'); }
 let toastQ = [], toastOn = false;
 function avisar(html) { toastQ.push(html); if (!toastOn) proximoAviso(); }
 function proximoAviso() { const t = $('#toast'), h = toastQ.shift(); if (!h) { toastOn = false; return; } toastOn = true; t.innerHTML = h; t.classList.add('on'); setTimeout(() => { t.classList.remove('on'); setTimeout(proximoAviso, 500); }, 3200); }
@@ -572,18 +769,23 @@ const Demo = (() => {
 
 /* ---------------- início ---------------- */
 const IC = { full: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>', ref: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>', copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>' };
-$('#ctl').innerHTML = `<button data-c="ref">${IC.ref}Atualizar</button><button data-c="copy">${IC.copy}Copiar diagnóstico</button><button data-c="full">${IC.full}Tela cheia</button>`;
+$('#ctl').innerHTML = `<button data-c="ref">${IC.ref}Atualizar</button><button data-c="copy">${IC.copy}Copiar diagnóstico</button><button data-c="limpa" title="Apagar as marcações e ações acrescentadas no plano">Limpar plano</button><button data-c="full">${IC.full}Tela cheia</button>`;
 document.addEventListener('click', async e => {
   const c = e.target.closest('[data-c]');
   if (c) { const k = c.dataset.c;
     if (k === 'ref') ciclo();
+    if (k === 'plano') abrirPlano();
+    if (k === 'limpa' && confirm('Apagar as marcações e as ações acrescentadas no plano de ação?')) { planoEst = { marca: {}, extra: { tipo: [], foco: [], venda: [], time: [] } }; guardaPlano(); desenhar(); }
+    if (k === 'fecha-plano') $('#plano').classList.remove('on');
+    if (k === 'copia-plano') { const txt = textoPlanoTime(); try { await navigator.clipboard.writeText(txt); } catch (er) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); } avisar('📋 Plano de ação copiado'); }
     if (k === 'full') { const s = $('#stage'); document.fullscreenElement ? document.exitFullscreen() : (s.requestFullscreen ? s.requestFullscreen() : null); }
-    if (k === 'copy') { const txt = diagnosticoTexto(A, diagnostico(A)); try { await navigator.clipboard.writeText(txt); } catch (er) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); } avisar('📋 Diagnóstico copiado em texto'); }
+    if (k === 'copy') { const txt = diagnostico(A).titulo + '\n\n' + textoPlanoTime(); try { await navigator.clipboard.writeText(txt); } catch (er) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); } avisar('📋 Diagnóstico copiado em texto'); }
     return; }
+  const ac = e.target.closest('[data-ac]'); if (ac) { const k = ac.dataset.ac, m = planoEst.marca[k]; planoEst.marca[k] = !m ? 'ok' : m === 'ok' ? 'nao' : ''; guardaPlano(); abrirPlano(); desenharSemPlano(); return; }
   const g = e.target.closest('[data-g]');
   if (g) { if (g.dataset.g === 'ok') conectar(); if (g.dataset.g === 'demo') { fonte = 'demo'; $('#gate').classList.add('off'); arrancar(); } }
 });
-document.addEventListener('keydown', e => { if (e.target && e.target.id === 'gsenha') { if (e.key === 'Enter') conectar(); return; } if (e.key.toLowerCase() === 'f') $('#ctl [data-c="full"]').click(); });
+document.addEventListener('keydown', e => { if (e.target && e.target.classList && e.target.classList.contains('nova')) { if (e.key === 'Enter' && e.target.value.trim()) { planoEst.extra[e.target.dataset.fr].push(e.target.value.trim()); guardaPlano(); abrirPlano(); desenharSemPlano(); } return; } if (e.key === 'Escape') $('#plano').classList.remove('on'); if (e.target && e.target.id === 'gsenha') { if (e.key === 'Enter') conectar(); return; } if (e.key.toLowerCase() === 'f') $('#ctl [data-c="full"]').click(); });
 let cicloT = null;
 function arrancar() { clearInterval(cicloT); ciclo(); cicloT = setInterval(ciclo, (fonte === 'demo' ? 2.5 : Math.max(4, MC.intervaloSeg || 8)) * 1000); }
 setInterval(status, 1000);
