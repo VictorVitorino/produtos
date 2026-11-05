@@ -34,6 +34,11 @@ A carta de cada diretor e o mostrador do time usam o mesmo motor. Cada frente re
 
 Faixas usadas: porta de entrada abaixo de 38 é crise, acima de 62 é prevenção, entre elas é "entrar e ficar"; foco acima de 62 é foco, abaixo de 38 é amplitude. Quando o farol (com calma) e os reflexos apontam para lados diferentes, o diagnóstico diz isso. No fim da carta, cada diretor pode propor outra ação; ela vai para a coluna `acaoPropria` da planilha e aparece no plano de ação do mostrador, sem nome.
 
+### Atualizar e Limpar resultados (topo do mostrador)
+
+- **Atualizar:** lê a planilha na hora. O mostrador já se atualiza sozinho a cada 8 segundos; o botão serve para não esperar.
+- **Limpar resultados:** use antes de começar com os diretores, para tirar os testes. As respostas de agora saem do mostrador e da aba Respostas e vão para a aba **Arquivo** da planilha, com a data e hora (nada é apagado). Pede a senha do painel. Se o Apps Script implantado ainda for o antigo, o mostrador zera só nesta tela (conta a partir daquela hora) e avisa que a planilha não foi limpa.
+
 ### A leitura em 4 abas (carta de cada diretor e mostrador do time)
 
 O botão do plano de ação abre a mesma leitura nos dois lugares, em 4 abas:

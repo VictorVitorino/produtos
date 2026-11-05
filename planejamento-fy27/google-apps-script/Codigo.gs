@@ -41,6 +41,23 @@ function doPost(e) {
       var sp = aba_();
       return json_({ sucesso: true, ping: true, respostas: Math.max(0, sp.getLastRow() - 1), geradoEm: new Date().toISOString() });
     }
+    // "Limpar resultados" do mostrador: as linhas vão para a aba Arquivo (nada é apagado) e o mostrador recomeça do zero
+    if (payload.tipo === 'limpar') {
+      if (!TOKEN || TOKEN === SENHA_PADRAO || payload.token !== TOKEN) return json_({ sucesso: false, erro: 'senha inválida' });
+      var sl = aba_(), n = sl.getLastRow() - 1;
+      if (n < 1) return json_({ sucesso: true, limpo: true, arquivadas: 0 });
+      var hl = sl.getRange(1, 1, 1, sl.getLastColumn()).getValues()[0];
+      var dados = sl.getRange(2, 1, n, hl.length).getValues();
+      var ssl = SpreadsheetApp.getActiveSpreadsheet(), arq = ssl.getSheetByName('Arquivo') || ssl.insertSheet('Arquivo');
+      var ha = arq.getLastRow() > 0 ? arq.getRange(1, 1, 1, arq.getLastColumn()).getValues()[0] : ['arquivadoEm'];
+      hl.forEach(function (k) { if (k && ha.indexOf(k) < 0) ha.push(k); });
+      arq.getRange(1, 1, 1, ha.length).setValues([ha]);
+      var quando = new Date().toISOString();
+      var saida = dados.map(function (r) { return ha.map(function (k) { if (k === 'arquivadoEm') return quando; var i = hl.indexOf(k); return i < 0 ? '' : r[i]; }); });
+      arq.getRange(Math.max(arq.getLastRow(), 1) + 1, 1, saida.length, ha.length).setValues(saida);
+      sl.getRange(2, 1, n, hl.length).clearContent();
+      return json_({ sucesso: true, limpo: true, arquivadas: n });
+    }
     var linha = payload.linha || {};
     if (!linha.sessionId) return json_({ sucesso: false, erro: 'linha sem sessionId' });
     linha.atualizadoEm = new Date().toISOString();

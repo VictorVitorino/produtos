@@ -46,6 +46,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .live.demo{color:var(--blue-40);border-color:rgba(191,208,225,.45)}.live.demo i{background:var(--blue-80)}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(247,140,22,.6)}70%{box-shadow:0 0 0 .7em rgba(247,140,22,0)}100%{box-shadow:0 0 0 0 rgba(247,140,22,0)}}
 .count{display:flex;gap:1.6em;align-items:baseline}
+.hdr{display:flex;align-items:center;gap:1.4em}
+.acts{display:flex;flex-direction:column;gap:.35em}
+.acts button{display:inline-flex;align-items:center;gap:.45em;height:2.1em;padding:0 .9em;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:.62em;font-weight:600;color:var(--ice);white-space:nowrap}
+.acts button:hover{color:#fff;border-color:var(--peach)}
+.acts button svg{width:1.15em;height:1.15em}
+.acts button.zera:hover{border-color:var(--red);color:#fff;background:rgba(207,61,61,.18)}
+.acts button[disabled]{opacity:.5;pointer-events:none}
+
 .ct{display:flex;align-items:baseline;gap:.4em}
 .ct b{font-family:var(--serif);font-weight:700;font-size:2.3em;line-height:1;color:#fff}
 .ct span{font:700 .58em var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--blue-40)}
@@ -117,7 +125,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .gcard .row .go{background:var(--navy);color:#fff}
 .gcard .msg{min-height:1.3em;margin-top:.6em;font-size:.72em;color:var(--red)}
 .plen{grid-template-columns:auto minmax(0,1fr) auto;align-items:center}
-.plen .pt{font-size:.82em;color:var(--ice)}.plen .pt b{color:#fff;font-family:var(--serif)}
+.plen .pt{display:block;font-size:.82em;color:var(--ice)}.plen .pt b{color:#fff;font-family:var(--serif)}
 .plen .abre{height:2.3em;padding:0 1.2em;border-radius:8px;background:var(--orange);color:var(--navy);font-weight:700;font-size:.82em;white-space:nowrap}
 .plen .abre:hover{background:#ffa033}
 .plano{position:absolute;inset:0;z-index:8;display:none;place-items:center;padding:1.2em 1.6em;background:radial-gradient(110% 80% at 15% -10%,#0b3150 0%,#04182a 50%,#020d18 100%);backdrop-filter:blur(4px);font-size:2.05cqh}
@@ -193,7 +201,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <div class="ui">
     <header class="hd">
       <div class="brand"><div class="eyebrow">Alvarez &amp; Marsal · DTS · <b>Bússola 2027</b></div><h1>Resultado ao vivo <span class="live off" id="live"><i></i><span id="liveTxt">conectando</span></span></h1></div>
-      <div class="count" id="count"></div>
+      <div class="hdr"><div class="count" id="count"></div><div class="acts" id="acts"></div></div>
     </header>
     <section class="headline" id="headline"></section>
     <main class="qs" id="qs"></main>
@@ -873,12 +881,26 @@ async function ler() {
   if (!d || !Array.isArray(d.linhas)) throw new Error('Resposta inesperada da planilha.');
   return d.linhas;
 }
+let desde = (() => { try { return +localStorage.getItem('mostrador-desde') || 0; } catch (e) { return 0; } })();
 function aplicar(rows) {
+  if (desde && fonte !== 'demo') rows = rows.filter(r => (Date.parse(r.atualizadoEm || r.concluidoEm || r.iniciadoEm || '') || 0) >= desde);
   const P = participantes(rows), sig = JSON.stringify(P.map(p => [p.id, p.etapa, p.done, p.ts]));
   const novos = P.filter(p => p.done && !vistos.has(p.id)), antes = new Set(A.P.map(p => p.id));
   if (!primeiraLeitura) { novos.forEach(p => avisar(`⚓ Nova agulha no mostrador · <b>${esc(p.arq || 'bússola concluída')}</b>`)); P.filter(p => !p.done && !antes.has(p.id)).forEach(() => avisar('⛵ Mais um comandante soltou as amarras')); }
   A = contar(P); if (sig !== assinatura) { assinatura = sig; desenhar(); }
   primeiraLeitura = false;
+}
+async function limparResultados(btn) {
+  const n = A.n;
+  if (fonte === 'demo') { if (confirm('Recomeçar a simulação do zero?')) location.reload(); return; }
+  if (!confirm(`Limpar os resultados do mostrador?\n\n${n ? `As ${n} resposta${n > 1 ? 's' : ''} de agora saem` : 'As respostas de agora saem'} da tela e da aba Respostas e vão para a aba "Arquivo" da planilha. Nada é apagado.\n\nUse antes de começar com os diretores, para tirar os testes.`)) return;
+  btn.disabled = true; let srv = null;
+  try { const res = await fetch(String(MC.sheetsEndpoint).trim(), { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ tipo: 'limpar', token: senha() }) }); srv = await res.json(); } catch (e) { srv = null; }
+  btn.disabled = false;
+  if (srv && srv.limpo) { desde = 0; try { localStorage.removeItem('mostrador-desde'); } catch (e) { } avisar(`🧹 Resultados limpos · ${srv.arquivadas} resposta${srv.arquivadas === 1 ? '' : 's'} na aba Arquivo`); }
+  else if (srv && /senha/.test(srv.erro || '')) { avisar('Senha do painel incorreta: nada foi limpo'); return; }
+  else { desde = Date.now(); try { localStorage.setItem('mostrador-desde', String(desde)); } catch (e) { } avisar('🧹 Zerado nesta tela. A planilha não foi limpa: cole o Codigo.gs novo e implante uma nova versão'); }
+  A = contar([]); assinatura = ''; vistos.clear(); primeiraLeitura = true; desenhar(); ciclo();
 }
 async function ciclo() {
   try { const rows = fonte === 'demo' ? Demo.linhas() : await ler(); aplicar(rows); ultimaOk = Date.now(); $('#banner').classList.remove('on'); $('#gate').classList.add('off'); }
@@ -886,7 +908,7 @@ async function ciclo() {
   status();
 }
 function status() { const l = $('#live'), age = ultimaOk ? Math.round((Date.now() - ultimaOk) / 1000) : null; l.className = 'live ' + (fonte === 'demo' ? 'demo' : age != null && age < 40 ? '' : 'off'); $('#liveTxt').textContent = fonte === 'demo' ? 'simulação' : age == null ? 'conectando' : age < 40 ? 'ao vivo' : 'sem sinal';
-  const s = $('#st'); if (s) s.textContent = fonte === 'demo' ? 'Simulação com dados fictícios, para ensaio' : age == null ? 'Lendo a planilha…' : `Dados da planilha · atualizado há ${age} s · cada pergunta conta quem já passou por ela`; }
+  const s = $('#st'); if (s) s.textContent = fonte === 'demo' ? 'Simulação com dados fictícios, para ensaio' : age == null ? 'Lendo a planilha…' : `Dados da planilha · atualizado há ${age} s${desde ? ` · contando desde ${new Date(desde).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : ''} · cada pergunta conta quem já passou por ela`; }
 function portao(msg) {
   const g = $('#gate'); g.classList.remove('off');
   g.innerHTML = `<div class="gcard"><div class="k">Mostrador vivo · conexão</div><h2>Ligar o mostrador à planilha</h2><p>Digite a senha do painel (o TOKEN do Codigo.gs). Ela fica guardada só neste computador. Para ensaiar sem dados, veja a simulação.</p><input id="gsenha" type="password" autocomplete="off" placeholder="Senha do painel"><div class="msg">${esc(msg || '')}</div><div class="row"><button data-g="demo">Ver simulação</button><button class="go" data-g="ok">Conectar</button></div></div>`;
@@ -923,12 +945,14 @@ const Demo = (() => {
 })();
 
 /* ---------------- início ---------------- */
-const IC = { full: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>', ref: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>', copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>' };
-$('#ctl').innerHTML = `<button data-c="ref">${IC.ref}Atualizar</button><button data-c="copy">${IC.copy}Copiar diagnóstico</button><button data-c="limpa" title="Apagar as marcações e ações acrescentadas no plano">Limpar plano</button><button data-c="full">${IC.full}Tela cheia</button>`;
+const IC = { lixo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>', full: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>', ref: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>', copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>' };
+$('#acts').innerHTML = `<button data-c="ref">${IC.ref}Atualizar</button><button class="zera" data-c="zera">${IC.lixo}Limpar resultados</button>`;
+$('#ctl').innerHTML = `<button data-c="copy">${IC.copy}Copiar diagnóstico</button><button data-c="limpa" title="Apagar as marcações e ações acrescentadas no plano">Limpar plano</button><button data-c="full">${IC.full}Tela cheia</button>`;
 document.addEventListener('click', async e => {
   const c = e.target.closest('[data-c]');
   if (c) { const k = c.dataset.c;
-    if (k === 'ref') ciclo();
+    if (k === 'ref') { c.disabled = true; await ciclo(); c.disabled = false; avisar(ultimaOk && Date.now() - ultimaOk < 5000 ? '↻ Atualizado agora' : 'Não consegui ler a planilha agora'); }
+    if (k === 'zera') limparResultados(c);
     if (k === 'plano') abrirPlano(0);
     if (k === 'limpa' && confirm('Apagar as marcações e as ações acrescentadas no plano de ação?')) { planoEst = { marca: {}, extra: { tipo: [], foco: [], venda: [], time: [] } }; guardaPlano(); desenhar(); }
     if (k === 'aba') abrirPlano(+c.dataset.i);
