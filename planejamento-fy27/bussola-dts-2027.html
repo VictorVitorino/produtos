@@ -1224,7 +1224,12 @@ body.painel .content{padding:4.4em 2.2em 1.6em;display:block;color:var(--ink);ba
   .ps{display:flex!important;break-after:page;min-height:auto;padding:6mm 0}
   .noprint{display:none!important}
 }
+
+/* selo da hospedagem (ex.: "Powered by Netlify", fixo no canto inferior direito): os botões da navegação saem de baixo dele */
+html.host-badge .dock{padding-right:300px}
+@media (max-width:1100px){html.host-badge{--dock:136px}html.host-badge .dock{padding-right:28px;align-items:flex-start;padding-top:10px}}
 </style>
+<script>try{if(/(^|\.)netlify\.(app|com)$/.test(location.hostname)||(window.BUSSOLA_CONFIG||{}).reservarCanto)document.documentElement.classList.add('host-badge')}catch(e){}</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
