@@ -19,7 +19,7 @@ Se mudar o `Codigo.gs` depois de implantado: **Implantar → Gerenciar implanta�
 - O arquivo, aberto de qualquer lugar (link ou baixado), envia a resposta à planilha ao terminar. A tela só diz "enviada" quando a planilha confirma.
 - Sem internet, ou se a planilha recusar, a resposta fica guardada no navegador e é reenviada sozinha; a tela pede para manter a página aberta.
 - Plano B: na tela final aparecem **Copiar minhas respostas** e **Baixar arquivo**. A pessoa manda o texto ou o arquivo para você, e no painel você usa **Abrir arquivos de resposta** (ou cola o texto) para incluí-las.
-- Quem recomeça e responde de novo: vale a resposta mais recente; a antiga fica na planilha marcada como "substituída" e não entra no Resumo nem no painel.
+- Quem aperta "Recomeçar": a última resposta **concluída** continua valendo no mostrador enquanto a nova tentativa não terminar. Só quando a nova tentativa for concluída ela substitui a anterior, que fica na planilha marcada como "substituída" (nada é apagado). Se a pessoa nunca tinha concluído, vale a tentativa mais recente.
 
 ## A lógica do diagnóstico: 4 frentes
 

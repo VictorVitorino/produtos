@@ -108,26 +108,30 @@ function seguro_(v) {
   return v;
 }
 
-// Uma resposta "ativa" por pessoa: se alguém recomeça e responde de novo, a mais recente vale e a anterior fica como "substituída".
+// Uma resposta "ativa" por pessoa. Vale a tentativa mais recente, MAS enquanto ela não estiver concluída, a última resposta
+// concluída continua valendo: quem aperta "Recomeçar" não some do mostrador; a nova tentativa só substitui a anterior ao concluir.
 function chaveNome_(s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim(); }
 function ts_(v) { if (v instanceof Date) return v.getTime(); var t = Date.parse(v); return isNaN(t) ? 0 : t; }
 function recalcularAtivas_(sh) {
   var n = sh.getLastRow() - 1; if (n < 1) return;
   var header = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
-  var cN = header.indexOf('nome') + 1, cI = header.indexOf('iniciadoEm') + 1, cA = header.indexOf('atualizadoEm') + 1, cV = header.indexOf('ativa') + 1;
+  var cN = header.indexOf('nome') + 1, cI = header.indexOf('iniciadoEm') + 1, cA = header.indexOf('atualizadoEm') + 1, cV = header.indexOf('ativa') + 1, cS = header.indexOf('status') + 1;
   if (!cN || !cV) return;
   var nomes = sh.getRange(2, cN, n, 1).getValues(), atv = sh.getRange(2, cV, n, 1).getValues();
-  var ini = cI ? sh.getRange(2, cI, n, 1).getValues() : [], att = cA ? sh.getRange(2, cA, n, 1).getValues() : [];
-  var melhor = {};
+  var ini = cI ? sh.getRange(2, cI, n, 1).getValues() : [], att = cA ? sh.getRange(2, cA, n, 1).getValues() : [], sts = cS ? sh.getRange(2, cS, n, 1).getValues() : [];
+  var ultima = {}, concl = {};
   for (var i = 0; i < n; i++) {
     var k = chaveNome_(nomes[i][0]); if (!k) continue;
     var t = ts_(ini[i] && ini[i][0]) || ts_(att[i] && att[i][0]);
-    if (!(k in melhor) || t >= melhor[k].t) melhor[k] = { i: i, t: t };
+    if (!(k in ultima) || t >= ultima[k].t) ultima[k] = { i: i, t: t };
+    if (sts[i] && sts[i][0] === 'concluída' && (!(k in concl) || t >= concl[k].t)) concl[k] = { i: i, t: t };
   }
   var mudou = false;
   for (var j = 0; j < n; j++) {
     var k2 = chaveNome_(nomes[j][0]);
-    var novo = !k2 || melhor[k2].i === j ? 'sim' : 'substituída';
+    var vale = ultima[k2] && ultima[k2].i;
+    if (k2 && concl[k2] && !(sts[ultima[k2].i] && sts[ultima[k2].i][0] === 'concluída')) vale = concl[k2].i; // tentativa nova ainda não concluída: vale a última concluída
+    var novo = !k2 || vale === j ? 'sim' : 'substituída';
     if (atv[j][0] !== novo) { atv[j][0] = novo; mudou = true; }
   }
   if (mudou) sh.getRange(2, cV, n, 1).setValues(atv);
